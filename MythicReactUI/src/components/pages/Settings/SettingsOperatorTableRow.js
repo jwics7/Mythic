@@ -1,5 +1,7 @@
+import TableCell from '@mui/material/TableCell';
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React from 'react';
-import {Button, DialogContent, DialogTitle, TextField} from '@mui/material';
+import {DialogContent, DialogTitle, TextField} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
@@ -18,7 +20,6 @@ import {SettingsAPITokenDialog, SettingsOperatorDialog} from './SettingsOperator
 import { SettingsOperatorDeleteDialog } from './SettingsOperatorDeleteDialog';
 import { MythicDialog } from '../../MythicComponents/MythicDialog';
 import { toLocalTime } from '../../utilities/Time';
-import MythicStyledTableCell from '../../MythicComponents/MythicTableCell';
 import {SettingsOperatorUIConfigDialog} from './SettingsOperatorUIConfigDialog';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { snackActions } from '../../utilities/Snackbar';
@@ -30,7 +31,7 @@ import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import {SettingsOperatorSecretsConfigDialog} from "./SettingsOperatorSecretsConfigDialog";
 import SmartToyTwoToneIcon from '@mui/icons-material/SmartToyTwoTone';
-import {useTheme} from '@mui/material/styles';
+
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import {gql, useMutation} from '@apollo/client';
@@ -42,6 +43,7 @@ import {MythicTableEmptyState, MythicTableErrorState, MythicTableLoadingState} f
 import {MythicClientSideTablePagination, useMythicClientPagination} from "../../MythicComponents/MythicTablePagination";
 import {APITokenRow} from "./SettingsOperatorAPITokenRow";
 import {MythicSectionHeader} from "../../MythicComponents/MythicPageHeader";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 import {
     MythicDialogBody,
     MythicDialogButton,
@@ -49,8 +51,9 @@ import {
     MythicDialogSection,
     MythicFormNote
 } from "../../MythicComponents/MythicDialogLayout";
-import {MythicStateChip} from "../../MythicComponents/MythicStateChip";
+import {MythicStatusChip} from "../../MythicComponents/MythicStatusChip";
 import {SettingsOperatorAliasesDialog} from "./SettingsOperatorAliasesDialog";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
 
 const createAPITokenMutation = gql`
 mutation createAPITokenMutation($operator_id: Int, $name: String, $scopes: [String!]){
@@ -118,7 +121,7 @@ const GetAPITokens = gql`
     }
 `;
 export function SettingsOperatorTableRow(props){
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const [open, setOpen] = React.useState(false);
     const [openUpdate, setOpenUpdateDialog] = React.useState(false);
     const [openDelete, setOpenDeleteDialog] = React.useState(false);
@@ -255,20 +258,20 @@ export function SettingsOperatorTableRow(props){
     return (
         <React.Fragment>
             <TableRow key={props.id}>
-                <MythicStyledTableCell >
-                    <IconButton className={`mythic-table-row-icon-action ${props.deleted ? "mythic-table-row-icon-action-success" : "mythic-table-row-icon-action-hover-danger"}`} size="small" onClick={()=>{setOpenDeleteDialog(true);}}
+                <TableCell >
+                    <MythicActionButton iconOnly tone={props.deleted ? "success" : "error"} emphasis={props.deleted ? "always" : "hover"} size="small" onClick={()=>{setOpenDeleteDialog(true);}}
                               disabled={(isMe || !props.userIsAdmin)}>
                         {props.deleted ? <RestoreFromTrashIcon fontSize="small" /> : <DeleteIcon fontSize="small" />}
-                    </IconButton>
-                  {openDelete && 
-                      <MythicDialog open={openDelete} 
-                      onClose={()=>{setOpenDeleteDialog(false);}} 
+                    </MythicActionButton>
+                  {openDelete &&
+                      <MythicDialog open={openDelete}
+                      onClose={()=>{setOpenDeleteDialog(false);}}
                       innerDialog={<SettingsOperatorDeleteDialog onClose={()=>{setOpenDeleteDialog(false);}}  onAccept={onAcceptDelete} {...props} />}
                         />
                   }
-                  
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+
+                </TableCell>
+                <TableCell>
                     <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                         {props.account_type === "bot" &&
                             <SmartToyTwoToneIcon style={{marginRight: "10px"}} />
@@ -282,8 +285,8 @@ export function SettingsOperatorTableRow(props){
                             Current Op: {props.operation.name}
                         </Typography>
                     }
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     <MythicStyledTooltip title={"Adjust Username/Password"}>
                         <IconButton size="medium"
                                     disabled={!(isMe || props.userIsAdmin)}
@@ -291,16 +294,16 @@ export function SettingsOperatorTableRow(props){
                                     color="error" ><PasswordIcon /></IconButton>
                     </MythicStyledTooltip>
                   {openUpdate &&
-                    <MythicDialog open={openUpdate} 
-                     onClose={()=>{setOpenUpdateDialog(false);}} 
+                    <MythicDialog open={openUpdate}
+                     onClose={()=>{setOpenUpdateDialog(false);}}
                     innerDialog={<SettingsOperatorDialog onAccept={onAccept}
                                                          handleClose={()=>{setOpenUpdateDialog(false);}}
                                                          title="Update Operator Username/Password"  {...props}/>}
                 />
                   }
-                    
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+
+                </TableCell>
+                <TableCell>
                     <Switch
                         checked={props.view_utc_time}
                         disabled={!isMe}
@@ -309,8 +312,8 @@ export function SettingsOperatorTableRow(props){
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                         name="view_utc_time"
                       />
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                   {((props.id === me.user.id) || (props.userIsAdmin && props.account_type === "bot")) &&
                       <>
                           <MythicStyledTooltip title={"Configure UI preferences"} tooltipStyle={{display: "inline-block"}}>
@@ -365,9 +368,9 @@ export function SettingsOperatorTableRow(props){
                           }
                       </>
                   }
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <Box className="mythic-state-toggle-cell">
+                </TableCell>
+                <TableCell>
+                    <MythicCluster gap="sm" align="center" wrap={false} className="mythic-state-toggle-cell">
                         <Switch
                             color="success"
                             checked={props.active}
@@ -377,17 +380,17 @@ export function SettingsOperatorTableRow(props){
                             name="active"
                             size="small"
                           />
-                        <MythicStateChip label={props.active ? "Active" : "Disabled"} state={props.active ? "active" : "disabled"} />
-                    </Box>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                        <MythicStatusChip label={props.active ? "Active" : "Disabled"} status={props.active ? "active" : "disabled"} />
+                    </MythicCluster>
+                </TableCell>
+                <TableCell>
                     <b>Last Login: </b>{toLocalTime(props.last_login, me?.user?.view_utc_time )}<br/>
                     <Typography style={{fontSize: theme.typography.pxToRem(12),}}>
                         Created at: {toLocalTime(props.creation_time, me?.user?.view_utc_time )}
                     </Typography>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>{props.email}</MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>{props.email}</TableCell>
+                <TableCell>
                     <Switch
                         color={ isMe || !props.userIsAdmin ? "secondary" : "info"}
                         checked={props.admin}
@@ -396,19 +399,19 @@ export function SettingsOperatorTableRow(props){
                         inputProps={{ 'aria-label': 'primary checkbox' }}
                         name="admin"
                       />
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                   { ((props.id === me.user.id) || (props.userIsAdmin && props.account_type === "bot")) &&
                     <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
                       {open ? <KeyboardArrowUpIcon className="mythicElement"/> : <KeyboardArrowDownIcon className="mythicElement"/>}
                     </IconButton>
                   }
-                    
-                </MythicStyledTableCell>
+
+                </TableCell>
             </TableRow>
               {((props.id === me.user.id) || (props.userIsAdmin && props.account_type === "bot")) && open &&
                   <TableRow>
-                    <MythicStyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
+                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
                       <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={1}>
                           <MythicSectionHeader
@@ -418,23 +421,23 @@ export function SettingsOperatorTableRow(props){
                               <>
                               {showDeleted ? (
                                   <MythicStyledTooltip title={"Hide API Tokens"}>
-                                      <IconButton className="mythic-dialog-title-action" size="small" onClick={() => setShowDeleted(!showDeleted)}><VisibilityIcon fontSize="small" /></IconButton>
+                                      <MythicActionButton iconOnly tone="neutral"  size="small" onClick={() => setShowDeleted(!showDeleted)}><VisibilityIcon fontSize="small" /></MythicActionButton>
                                   </MythicStyledTooltip>
 
                               ) : (
                                   <MythicStyledTooltip title={"Show Deleted API Tokens"}>
-                                      <IconButton className="mythic-dialog-title-action" size="small" onClick={() => setShowDeleted(!showDeleted)}><VisibilityOffIcon fontSize="small" /></IconButton>
+                                      <MythicActionButton iconOnly tone="neutral"  size="small" onClick={() => setShowDeleted(!showDeleted)}><VisibilityOffIcon fontSize="small" /></MythicActionButton>
                                   </MythicStyledTooltip>
                               )}
-                              <Button
-                                  className="mythic-dialog-title-action"
+                              <MythicActionButton tone="neutral"
+
                                   size="small"
                                   onClick={() => {setOpenNewAPIToken(true)}}
                                   variant="outlined"
                                   startIcon={<AddCircleOutlineOutlinedIcon fontSize="small" />}
                               >
                                   API Token
-                              </Button>
+                              </MythicActionButton>
                               </>
                             }
                           />
@@ -468,7 +471,7 @@ export function SettingsOperatorTableRow(props){
                             />
                         </Box>
                       </Collapse>
-                    </MythicStyledTableCell>
+                    </TableCell>
                   </TableRow>
               }
         </React.Fragment>
@@ -488,7 +491,7 @@ const APITokenValueDialog = ({tokenValue, onClose}) => {
             <DialogTitle id="form-dialog-title">Copy API Token</DialogTitle>
             <DialogContent dividers={true}>
                 <MythicDialogBody>
-                    <MythicFormNote className="mythic-api-token-copy-warning">
+                    <MythicFormNote className="mythic-api-token-copy-warning mythic-text-primary">
                         This token value is only shown once. Copy it now before closing this dialog.
                     </MythicFormNote>
                     <MythicDialogSection
@@ -507,7 +510,7 @@ const APITokenValueDialog = ({tokenValue, onClose}) => {
                 </MythicDialogBody>
             </DialogContent>
             <MythicDialogFooter>
-                <MythicDialogButton className="mythic-table-row-action-hover-info" onClick={onCopyTokenValue} startIcon={<ContentCopyIcon />}>
+                <MythicDialogButton intent="info" onClick={onCopyTokenValue} startIcon={<ContentCopyIcon />}>
                     Copy
                 </MythicDialogButton>
                 <MythicDialogButton intent="primary" onClick={onClose}>
@@ -534,13 +537,13 @@ const APITokens = ({apiTokens, error, loading, onDeleteAPIToken, onToggleActive,
                 <Table stickyHeader size="small" style={{height: "auto"}}>
                     <TableHead>
                         <TableRow>
-                            <MythicStyledTableCell style={{width: "3rem"}} />
-                            <MythicStyledTableCell style={{width: "9rem"}}>Active</MythicStyledTableCell>
-                            <MythicStyledTableCell>Created By</MythicStyledTableCell>
-                            <MythicStyledTableCell>Scopes</MythicStyledTableCell>
-                            <MythicStyledTableCell style={{width: "9rem"}}>Type</MythicStyledTableCell>
-                            <MythicStyledTableCell>Name</MythicStyledTableCell>
-                            <MythicStyledTableCell>Eventing Usage</MythicStyledTableCell>
+                            <TableCell style={{width: "3rem"}} />
+                            <TableCell style={{width: "9rem"}}>Active</TableCell>
+                            <TableCell>Created By</TableCell>
+                            <TableCell>Scopes</TableCell>
+                            <TableCell style={{width: "9rem"}}>Type</TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Eventing Usage</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

@@ -21,6 +21,7 @@ import {MythicPageBody} from "../../MythicComponents/MythicPageBody";
 import {MythicPageHeader, MythicPageHeaderChip, MythicSectionHeader} from "../../MythicComponents/MythicPageHeader";
 import {MythicToolbarButton} from "../../MythicComponents/MythicTableToolbar";
 import {TaskDisplayInteractiveSearch} from "../Search/SearchTabInteractiveTasks";
+import {MythicStack} from "../../MythicComponents/MythicLayout";
 
 const tasksQuery = gql`
 ${taskingDataFragment}
@@ -289,31 +290,31 @@ export function SingleTaskView(props){
             }
             actions={
                 <>
-                    <MythicToolbarButton className="mythic-table-row-action-hover-info" variant="outlined" onClick={getShareableLink} startIcon={<ContentCopyIcon fontSize="small" />}>
+                    <MythicToolbarButton tone="info" variant="outlined" onClick={getShareableLink} startIcon={<ContentCopyIcon fontSize="small" />}>
                         Share Link
                     </MythicToolbarButton>
                     {removing ? (
                         <>
-                            <MythicToolbarButton className="mythic-table-row-action-hover-warning" variant="outlined" onClick={cancelRemoveMode} startIcon={<CloseIcon fontSize="small" />}>
+                            <MythicToolbarButton tone="warning" variant="outlined" onClick={cancelRemoveMode} startIcon={<CloseIcon fontSize="small" />}>
                                 Cancel
                             </MythicToolbarButton>
-                            <MythicToolbarButton className="mythic-table-row-action-hover-danger" disabled={selectedRemoveCount === 0} variant="outlined" onClick={removeSelectedTasks} startIcon={<DeleteIcon fontSize="small" />}>
+                            <MythicToolbarButton tone="error" disabled={selectedRemoveCount === 0} variant="outlined" onClick={removeSelectedTasks} startIcon={<DeleteIcon fontSize="small" />}>
                                 Remove Selected
                             </MythicToolbarButton>
                         </>
                     ) : (
-                        <MythicToolbarButton className="mythic-table-row-action-hover-warning" variant="outlined" onClick={enterRemoveMode} startIcon={<PlaylistRemoveIcon fontSize="small" />}>
+                        <MythicToolbarButton tone="warning" variant="outlined" onClick={enterRemoveMode} startIcon={<PlaylistRemoveIcon fontSize="small" />}>
                             Remove Tasks
                         </MythicToolbarButton>
                     )}
                 </>
             }
         />
-        <div className="mythic-single-task-list">
+        <MythicStack component="div" gap="sm" className="mythic-single-task-list mythic-full-width mythic-min-height-0">
             {tasks.map( (task) => (
                 task.type === "task" ? (
-                    <div className={`mythic-single-task-card-row${removing ? " mythic-single-task-card-row-removing" : ""}`} key={"taskdisplay:" + task.display_id}>
-                        <div className="mythic-single-task-display">
+                    <div className={`mythic-single-task-card-row mythic-align-start mythic-gap-sm mythic-min-width-0 mythic-full-width mythic-grid${removing ? " mythic-single-task-card-row-removing" : ""}`} key={"taskdisplay:" + task.display_id}>
+                        <div className="mythic-single-task-display mythic-min-width-0 mythic-full-width">
                             {
                                 task.is_interactive_task ? (
                                     <TaskDisplayInteractiveSearch key={"taskinteractdisplay" + task.id} me={me} task={task} responsesSurrounding={5} />
@@ -323,7 +324,7 @@ export function SingleTaskView(props){
                             }
                         </div>
                         {removing ? (
-                            <label className={`mythic-single-task-remove-control${task.checked ? " mythic-single-task-remove-control-selected" : ""}`}>
+                            <label className={`mythic-single-task-remove-control mythic-text-error mythic-clickable mythic-font-size-caption mythic-font-weight-strong mythic-justify-center mythic-flex mythic-flex-column mythic-align-center mythic-border-radius mythic-flex-fixed${task.checked ? " mythic-single-task-remove-control-selected" : ""}`}>
                                 <Checkbox
                                     checked={task.checked}
                                     color="error"
@@ -344,11 +345,11 @@ export function SingleTaskView(props){
                         title={getCallbackTitle(task)}
                         subtitle={
                             <>
-                                Callback <Link className="mythic-single-task-callback-link" color="inherit" underline="always" target="_blank" rel="noreferrer" href={"/new/callbacks/" + task.display_id}>#{task.display_id}</Link>
+                                Callback <Link className="mythic-single-task-callback-link mythic-break-anywhere mythic-font-weight-extra-bold" color="inherit" underline="always" target="_blank" rel="noreferrer" href={"/new/callbacks/" + task.display_id}>#{task.display_id}</Link>
                             </>
                         }
                         actions={
-                            <MythicToolbarButton className="mythic-table-row-action-hover-info" variant="outlined" onClick={() => {setTaskSearchInfo(task.display_id)}} startIcon={<PlaylistAddIcon fontSize="small" />}>
+                            <MythicToolbarButton tone="info" variant="outlined" onClick={() => {setTaskSearchInfo(task.display_id)}} startIcon={<PlaylistAddIcon fontSize="small" />}>
                                 Include Tasks
                             </MythicToolbarButton>
                         }
@@ -358,7 +359,7 @@ export function SingleTaskView(props){
 
             )
             }
-        </div>
+        </MythicStack>
         {openIncludeMoreTasksDialog &&
             <MythicDialog fullWidth={true} maxWidth="md" open={openIncludeMoreTasksDialog}
                           onClose={()=>{setOpenIncludeMoreTasksDialog(false);}}

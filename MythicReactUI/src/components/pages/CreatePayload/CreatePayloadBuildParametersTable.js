@@ -4,6 +4,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {CreatePayloadParameter} from './CreatePayloadParameter';
 import {GetGroupedParameters} from "./Step1SelectOS";
+import {MythicStack, MythicCluster} from "../../MythicComponents/MythicLayout";
 
 const CreatePayloadBuildParameterGroup = ({group, children}) => {
     const [collapsed, setCollapsed] = React.useState(false);
@@ -11,11 +12,11 @@ const CreatePayloadBuildParameterGroup = ({group, children}) => {
     const toggleCollapsed = () => setCollapsed((current) => !current);
 
     return (
-        <section className="mythic-create-parameter-group mythic-column-stack">
+        <MythicStack component="section" gap="sm" className="mythic-create-parameter-group mythic-column-stack">
             {hasHeader &&
-                <div
+                <MythicCluster component="div" gap="xs" align="center" wrap={false}
                     aria-expanded={!collapsed}
-                    className="mythic-create-parameter-group-header mythic-create-parameter-group-header-collapsible"
+                    className="mythic-create-parameter-group-header mythic-font-weight-extra-bold mythic-font-size-small mythic-line-height-snug mythic-create-parameter-group-header-collapsible mythic-clickable mythic-border-radius mythic-border"
                     onClick={toggleCollapsed}
                     onKeyDown={(event) => {
                         if(event.key === "Enter" || event.key === " "){
@@ -27,24 +28,24 @@ const CreatePayloadBuildParameterGroup = ({group, children}) => {
                     tabIndex={0}
                 >
                     {collapsed ?
-                        <ChevronRightIcon className="mythic-create-parameter-group-header-icon" fontSize="small" /> :
-                        <ExpandMoreIcon className="mythic-create-parameter-group-header-icon" fontSize="small" />
+                        <ChevronRightIcon className="mythic-create-parameter-group-header-icon mythic-flex-fixed" fontSize="small" /> :
+                        <ExpandMoreIcon className="mythic-create-parameter-group-header-icon mythic-flex-fixed" fontSize="small" />
                     }
-                    <span className="mythic-create-parameter-group-header-title">{group.name}</span>
-                </div>
+                    <span className="mythic-create-parameter-group-header-title mythic-break-anywhere mythic-min-width-0">{group.name}</span>
+                </MythicCluster>
             }
             {hasHeader ? (
                 <Collapse in={!collapsed} timeout="auto">
-                    <div className="mythic-column-stack">
+                    <MythicStack component="div" gap="sm" className="mythic-column-stack">
                         {children}
-                    </div>
+                    </MythicStack>
                 </Collapse>
             ) : (
-                <div className="mythic-column-stack">
+                <MythicStack component="div" gap="sm" className="mythic-column-stack">
                     {children}
-                </div>
+                </MythicStack>
             )}
-        </section>
+        </MythicStack>
     );
 };
 
@@ -63,7 +64,7 @@ export function CreatePayloadBuildParametersTable(props){
         }, {});
     }
     return (
-        <div className="mythic-create-parameter-scroll">
+        <MythicStack component="div" gap="md" scroll className="mythic-create-parameter-scroll mythic-full-width mythic-full-height">
             {buildParameters.map(b => (
                 b.parameters.length > 0 &&
                 <CreatePayloadBuildParameterGroup group={b} key={b?.name || 'undefined'}>
@@ -83,7 +84,7 @@ export function CreatePayloadBuildParametersTable(props){
                     ))}
                 </CreatePayloadBuildParameterGroup>
             ))}
-        </div>
+        </MythicStack>
 
     );
 }

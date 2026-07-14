@@ -1,0 +1,225 @@
+.panel {
+    padding: var(--mythic-foundation-spacing-md);
+}
+
+.panel[data-density="compact"] {
+    padding: var(--mythic-foundation-spacing-sm);
+}
+
+.panel[data-density="flush"] {
+    padding: 0;
+}
+
+.panel[data-density="spacious"] {
+    padding: var(--mythic-foundation-spacing-lg);
+}
+
+.panel[data-tone="surface"] {
+    background: var(--mythic-color-application-surface);
+}
+
+.panel[data-tone="muted"] {
+    background: var(--mythic-color-application-muted);
+}
+
+.panel[data-tone="raised"] {
+    background: var(--mythic-color-application-raised);
+}
+
+.panel[data-tone="subtle"] {
+    background: var(--mythic-effect-surface-subtle);
+}
+
+.panel[data-tone="plain"] {
+    background: transparent;
+    border: 0;
+}
+
+.panel[data-interactive="true"] {
+    cursor: pointer;
+}
+
+.panel[data-interactive="true"]:hover {
+    background: var(--mythic-effect-table-rowHover);
+    border-color: var(--mythic-color-status-primary);
+}
+
+.toolbar {
+    min-height: 2.25rem;
+    padding: var(--mythic-foundation-spacing-sm) var(--mythic-foundation-spacing-md);
+}
+
+.toolbar[data-density="compact"] {
+    min-height: 2rem;
+    padding: var(--mythic-foundation-spacing-xs) var(--mythic-foundation-spacing-sm);
+}
+
+.actionGroup {
+    margin-inline-start: auto;
+}
+
+.listRow {
+    padding: var(--mythic-foundation-spacing-sm) var(--mythic-foundation-spacing-md);
+    transition: none;
+}
+
+.listRow[data-interactive="true"] {
+    cursor: pointer;
+}
+
+.listRow[data-interactive="true"]:hover {
+    background: var(--mythic-effect-table-rowHover);
+}
+
+.listRow[data-selected="true"] {
+    background: var(--mythic-effect-table-selected);
+    border-color: var(--mythic-color-status-primary);
+}
+
+.listRow[data-disabled="true"] {
+    cursor: default;
+    opacity: 0.55;
+}
+
+.metadataList {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    margin: 0;
+}
+
+.metadataItem[data-layout="row"] {
+    display: grid;
+    gap: var(--mythic-foundation-spacing-sm);
+    grid-template-columns: minmax(6rem, max-content) minmax(0, 1fr);
+}
+
+.codeSurface {
+    background: var(--mythic-effect-code-surface);
+    color: var(--mythic-color-tasking-outputText);
+    line-height: 1.45;
+    margin: 0;
+    padding: var(--mythic-foundation-spacing-md);
+}
+
+.codeSurface[data-density="compact"] {
+    line-height: 1.4;
+    padding: 0.42rem 0.5rem;
+}
+
+.codeSurface[data-density="inline"] {
+    line-height: 1.4;
+    padding: 0.24rem 0.42rem;
+}
+
+.codeSurface[data-tone="snippet"] {
+    background: var(--mythic-effect-code-snippet-bg);
+    color: var(--mythic-palette-text-primary);
+}
+
+.emptyState {
+    min-height: 8rem;
+    padding: var(--mythic-foundation-spacing-lg);
+    text-align: center;
+}
+
+.emptyStateIcon {
+    opacity: 0.8;
+}
+
+.actionButton[data-tone="success"]:hover {
+    background: var(--mythic-effect-success-soft);
+    border-color: var(--mythic-effect-success-strong);
+    color: var(--mythic-color-status-success);
+}
+
+.actionButton[data-tone="warning"]:hover {
+    background: var(--mythic-effect-warning-soft);
+    border-color: var(--mythic-effect-warning-strong);
+    color: var(--mythic-color-status-warning);
+}
+
+.actionButton[data-tone="error"]:hover {
+    background: var(--mythic-effect-danger-soft);
+    border-color: var(--mythic-effect-danger-strong);
+    color: var(--mythic-color-status-error);
+}
+
+.actionButton[data-tone="info"]:hover {
+    background: var(--mythic-effect-info-soft);
+    border-color: var(--mythic-effect-info-strong);
+    color: var(--mythic-color-status-info);
+}
+
+.actionButton[data-icon-only="true"] {
+    background: var(--mythic-effect-control-soft-bg);
+    border: 1px solid var(--mythic-color-table-border-soft);
+    box-shadow: none;
+    color: var(--mythic-palette-text-primary);
+    height: 30px;
+    padding: 0;
+    width: 30px;
+}
+
+.actionButton[data-icon-only="false"] {
+    background: var(--mythic-effect-control-soft-bg);
+    border: 1px solid var(--mythic-color-table-border-soft);
+    border-radius: var(--mythic-foundation-radius-md);
+    box-shadow: none;
+    color: var(--mythic-palette-text-primary);
+    font-size: var(--mythic-foundation-typography-size-caption);
+    font-weight: var(--mythic-foundation-typography-weight-strong);
+    min-height: 30px;
+    text-transform: none;
+}
+
+.actionButton[data-tone="neutral"]:hover {
+    background: var(--mythic-effect-action-hover-bg);
+    border-color: var(--mythic-color-table-border);
+}
+
+.actionButton[data-emphasis="always"][data-tone="success"] {
+    color: var(--mythic-color-status-success);
+}
+
+.actionButton[data-emphasis="always"][data-tone="warning"] {
+    color: var(--mythic-color-status-warning);
+}
+
+.actionButton[data-emphasis="always"][data-tone="error"] {
+    color: var(--mythic-color-status-error);
+}
+
+.actionButton[data-emphasis="always"][data-tone="info"] {
+    color: var(--mythic-color-status-info);
+}
+
+.actionButton[data-icon-only="false"][data-emphasis="always"][data-tone="success"] {
+    background: var(--mythic-effect-success-subtle);
+    border-color: var(--mythic-effect-success-medium);
+}
+
+.actionButton[data-icon-only="false"][data-emphasis="always"][data-tone="warning"] {
+    background: var(--mythic-effect-warning-soft);
+    border-color: var(--mythic-effect-warning-strong);
+}
+
+.actionButton[data-icon-only="false"][data-emphasis="always"][data-tone="error"] {
+    background: var(--mythic-effect-danger-subtle);
+    border-color: var(--mythic-effect-danger-medium);
+}
+
+.actionButton[data-icon-only="false"][data-emphasis="always"][data-tone="info"] {
+    background: var(--mythic-effect-info-subtle);
+    border-color: var(--mythic-effect-info-medium);
+}
+
+.actionButton[data-icon-only="true"]:global(.Mui-disabled) {
+    background: var(--mythic-effect-action-disabled-bg);
+    border-color: var(--mythic-color-table-border-soft);
+    color: var(--mythic-palette-text-disabled);
+}
+
+.actionButton[data-icon-only="false"]:global(.Mui-disabled) {
+    background: var(--mythic-effect-action-disabled-bg);
+    border-color: var(--mythic-color-table-border-soft);
+    color: var(--mythic-palette-text-disabled);
+}

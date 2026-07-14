@@ -1,3 +1,4 @@
+import TableCell from '@mui/material/TableCell';
 import React, { useEffect } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -5,10 +6,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import {b64DecodeUnicode} from '../Callbacks/ResponseDisplay';
-import MythicStyledTableCell from '../../MythicComponents/MythicTableCell';
 import {MythicPageHeaderChip, MythicSectionHeader} from "../../MythicComponents/MythicPageHeader";
 import {MythicStatusChip} from "../../MythicComponents/MythicStatusChip";
 import {FileDownloadLinkWithAuth} from "../../utilities/FileDownloadWithAuth";
+import {SingleTaskMetadataSection} from "./SingleTaskLayout";
+import {MythicStack} from "../../MythicComponents/MythicLayout";
 
 
 export function TaskFilesTable(props){
@@ -27,53 +29,53 @@ export function TaskFilesTable(props){
    }
    const fileCountLabel = files.length === 1 ? "1 file" : `${files.length} files`;
   return (
-    <div className="mythic-single-task-metadata-section">
+    <SingleTaskMetadataSection>
         <MythicSectionHeader
             dense
             title="Files / Screenshots"
             subtitle="Files, payloads, downloads, uploads, and screenshots associated with these tasks."
             actions={<MythicPageHeaderChip label={fileCountLabel} />}
         />
-        <TableContainer className="mythicElement mythic-single-task-table-wrap">
+        <TableContainer className="mythicElement mythic-single-task-table-wrap mythic-surface-raised mythic-overflow-auto">
           <Table className="mythic-single-task-table mythic-single-task-files-table" size="small">
                 <TableHead>
                     <TableRow>
-                        <MythicStyledTableCell>Filename</MythicStyledTableCell>
-                        <MythicStyledTableCell style={{width: "8rem"}}>Type</MythicStyledTableCell>
-                        <MythicStyledTableCell>Remote Path</MythicStyledTableCell>
-                        <MythicStyledTableCell>Comment</MythicStyledTableCell>
-                        <MythicStyledTableCell>Hashes</MythicStyledTableCell>
+                        <TableCell>Filename</TableCell>
+                        <TableCell style={{width: "8rem"}}>Type</TableCell>
+                        <TableCell>Remote Path</TableCell>
+                        <TableCell>Comment</TableCell>
+                        <TableCell>Hashes</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                   {files.map( (file) => (
                     <TableRow key={"file" + file.id} hover>
-                      <MythicStyledTableCell className="mythic-single-task-cell-break">
+                      <TableCell className="mythic-single-task-cell-break mythic-break-anywhere mythic-pre-wrap">
                         {!file.deleted && file.complete ? (
-                          <FileDownloadLinkWithAuth className="mythic-single-task-table-link" href={"/direct/download/" + file.agent_file_id}>{b64DecodeUnicode(file.filename_text)}</FileDownloadLinkWithAuth>
+                          <FileDownloadLinkWithAuth className="mythic-single-task-table-link mythic-font-weight-bold" href={"/direct/download/" + file.agent_file_id}>{b64DecodeUnicode(file.filename_text)}</FileDownloadLinkWithAuth>
                         ) : ( 
                           !file.complete ? (
                             b64DecodeUnicode(file.filename_text) +  " (" + file.chunks_received + "/" + file.total_chunks + ")"
                           ) : (b64DecodeUnicode(file.filename_text))
                          )}
-                        </MythicStyledTableCell>
-                      <MythicStyledTableCell>
+                        </TableCell>
+                      <TableCell>
                         <TaskFileTypeChip file={file} />
-                      </MythicStyledTableCell>
-                      <MythicStyledTableCell className="mythic-single-task-cell-break">{b64DecodeUnicode(file.full_remote_path_text) === "" ? ("") : (file.host + "\n" + b64DecodeUnicode(file.full_remote_path_text)) }</MythicStyledTableCell>
-                      <MythicStyledTableCell className="mythic-single-task-cell-break">{file.comment}</MythicStyledTableCell>
-                      <MythicStyledTableCell>
-                        <div className="mythic-single-task-hash-list">
+                      </TableCell>
+                      <TableCell className="mythic-single-task-cell-break mythic-break-anywhere mythic-pre-wrap">{b64DecodeUnicode(file.full_remote_path_text) === "" ? ("") : (file.host + "\n" + b64DecodeUnicode(file.full_remote_path_text)) }</TableCell>
+                      <TableCell className="mythic-single-task-cell-break mythic-break-anywhere mythic-pre-wrap">{file.comment}</TableCell>
+                      <TableCell>
+                        <MythicStack component="div" gap="xs" className="mythic-single-task-hash-list mythic-break-anywhere mythic-monospace mythic-font-size-caption">
                           <span>MD5: {file.md5}</span>
                           <span>SHA1: {file.sha1}</span>
-                        </div>
-                      </MythicStyledTableCell>
+                        </MythicStack>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
             </Table>
           </TableContainer>
-    </div>
+    </SingleTaskMetadataSection>
   );
 }
 

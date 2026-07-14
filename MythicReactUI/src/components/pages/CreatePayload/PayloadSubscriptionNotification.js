@@ -1,7 +1,7 @@
+import {useMythicTokens} from '../../../themes/MythicThemeProvider';
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import {gql, useSubscription} from '@apollo/client';
-import {useTheme} from '@mui/material/styles';
+
 import {snackActions} from '../../utilities/Snackbar';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-json';
@@ -12,68 +12,9 @@ import { toast } from 'react-toastify';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import { MythicDialog } from '../../MythicComponents/MythicDialog';
-import {Button, Typography} from '@mui/material';
+import {Typography} from '@mui/material';
 import {FileDownloadLinkWithAuth} from "../../utilities/FileDownloadWithAuth";
-
-const PREFIX = 'PayloadSubscriptionNotification';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    typography: `${PREFIX}-typography`,
-    actionRoot: `${PREFIX}-actionRoot`,
-    icons: `${PREFIX}-icons`,
-    expand: `${PREFIX}-expand`,
-    collapse: `${PREFIX}-collapse`,
-    checkIcon: `${PREFIX}-checkIcon`,
-    button: `${PREFIX}-button`
-};
-
-const StyledMythicDialog = styled(MythicDialog)((
-    {
-        theme
-    }
-) => ({
-    [`& .${classes.root}`]: {
-        [theme.breakpoints.up('sm')]: {
-            minWidth: '344px !important',
-        },
-    },
-
-    [`& .${classes.typography}`]: {
-        fontWeight: 'bold',
-    },
-
-    [`& .${classes.actionRoot}`]: {
-        padding: '0px 8px 0px 16px',
-    },
-
-    [`& .${classes.icons}`]: {
-        marginLeft: 'auto',
-        float: "right"
-    },
-
-    [`& .${classes.expand}`]: {
-        padding: '8px 8px',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
-    },
-
-    [`& .${classes.collapse}`]: {
-        padding: 16,
-    },
-
-    [`& .${classes.checkIcon}`]: {
-        fontSize: 20,
-        color: theme.palette.text.secondary,
-        paddingRight: 4,
-    },
-
-    [`& .${classes.button}`]: {
-        padding: 0,
-        textTransform: 'none',
-    }
-}));
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 //fromNow must be in ISO format for hasura/postgres stuff
 //new Date().toISOString() will do it
@@ -108,7 +49,7 @@ subscription NewPayloadsSubscription($fromNow: timestamp!) {
 const SnackMessage = (props) => {
     return (
         <div style={{display: "flex", flexDirection: "column"}}>
-            <Typography variant="subtitle2" className={classes.typography}>
+            <Typography variant="subtitle2" className="mythic-font-weight-bold">
                     {props.payloadData.build_phase === "success" ? (
                         "Payload successfully built!"
                     ) : (
@@ -120,7 +61,7 @@ const SnackMessage = (props) => {
             {props.payloadData.build_phase === "success" &&
                 <React.Fragment>
                     <Typography gutterBottom>Agent ready for download</Typography>
-                    <FileDownloadLinkWithAuth style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" href={"/direct/download/" + props.file_id}>
+                    <FileDownloadLinkWithAuth color="textPrimary" underline="always" target="_blank" href={"/direct/download/" + props.file_id}>
                         Download here
                     </FileDownloadLinkWithAuth>
                 </React.Fragment>
@@ -131,7 +72,7 @@ const SnackMessage = (props) => {
 };
 const SnackMessageError = (props) => {
     
-    const theme = useTheme();
+    const theme = useMythicTokens();
     return (
         <React.Fragment>
             <DialogTitle id="form-dialog-title">Payload Failed to Build!!</DialogTitle>
@@ -150,9 +91,9 @@ const SnackMessageError = (props) => {
                     tabSize: 4
                 }}/>
         <DialogActions>
-          <Button className="mythic-table-row-action" variant="contained" onClick={props.onClose}>
+          <MythicActionButton tone="neutral"  variant="contained" onClick={props.onClose}>
             Close
-          </Button>
+          </MythicActionButton>
         </DialogActions>
         </React.Fragment>
     );
@@ -227,7 +168,7 @@ export function PayloadSubscriptionNotification(props) {
     }
     });
     return displayErrorDialog &&
-    <StyledMythicDialog fullWidth={true} maxWidth="xl" open={displayErrorDialog} 
+    <MythicDialog fullWidth={true} maxWidth="xl" open={displayErrorDialog}
                     onClose={handleErrorClose} 
                     innerDialog={<SnackMessageError payloadData={payloadData} onClose={handleErrorClose} />}
                 />;

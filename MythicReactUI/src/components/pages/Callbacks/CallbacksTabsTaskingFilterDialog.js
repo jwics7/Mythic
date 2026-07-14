@@ -27,6 +27,7 @@ import {
   MythicFormField,
   MythicFormSwitchRow
 } from '../../MythicComponents/MythicDialogLayout';
+import {MythicCluster, MythicStack, MythicGrid} from "../../MythicComponents/MythicLayout";
 
 const ITEM_HEIGHT = 42;
 const ITEM_PADDING_TOP = 8;
@@ -59,7 +60,7 @@ const selectedLabel = (values, singular, plural = singular) => {
 
 const FilterSummaryChip = ({icon, label, muted=false}) => (
   <Chip
-    className={`mythic-tasking-filter-summary-chip${muted ? " mythic-tasking-filter-summary-chip-muted" : ""}`}
+    className={`mythic-tasking-filter-summary-chip mythic-border-radius mythic-font-weight-strong mythic-font-size-caption${muted ? " mythic-tasking-filter-summary-chip-muted mythic-text-secondary" : ""}`}
     icon={icon}
     label={label}
     size="small"
@@ -69,14 +70,14 @@ const FilterSummaryChip = ({icon, label, muted=false}) => (
 const MultiSelectField = ({label, value, options, onChange, emptyLabel}) => {
   const renderValue = (selected) => {
     if(selected.length === 0){
-      return <span className="mythic-tasking-filter-select-empty">{emptyLabel}</span>
+      return <span className="mythic-tasking-filter-select-empty mythic-font-size-small mythic-font-weight-semibold mythic-text-secondary">{emptyLabel}</span>
     }
     return (
-      <Box className="mythic-tasking-filter-select-chips">
+      <MythicCluster gap="xs" className="mythic-tasking-filter-select-chips">
         {selected.map((selectedValue) => (
-          <Chip key={selectedValue} label={selectedValue} size="small" className="mythic-tasking-filter-selected-chip" />
+          <Chip key={selectedValue} label={selectedValue} size="small" className="mythic-tasking-filter-selected-chip mythic-border-radius mythic-border mythic-text-primary mythic-font-size-caption mythic-font-weight-bold" />
         ))}
-      </Box>
+      </MythicCluster>
     );
   }
 
@@ -205,25 +206,25 @@ export function CallbacksTabsTaskingFilterDialog(props) {
   ].filter(Boolean);
 
   return (
-    <Box className="mythic-tasking-filter-dialog">
-      <DialogTitle id="mythic-draggable-title" className="mythic-accent-dialog-title">
-        <Box className="mythic-accent-dialog-title-row">
-          <Box className="mythic-accent-dialog-title-icon">
+    <Box className="mythic-tasking-filter-dialog mythic-text-primary mythic-surface-raised">
+      <DialogTitle id="mythic-draggable-title" className="mythic-accent-dialog-title mythic-relative">
+        <MythicCluster gap="md" align="center" wrap={false} className="mythic-accent-dialog-title-row">
+          <MythicCluster gap="none" justify="center" inline wrap={false} className="mythic-accent-dialog-title-icon mythic-border-radius mythic-flex-fixed">
             <FilterAltIcon fontSize="small" />
-          </Box>
+          </MythicCluster>
           <Box sx={{minWidth: 0}}>
-            <Typography component="div" className="mythic-tasking-filter-title-main">
+            <Typography component="div" className="mythic-tasking-filter-title-main mythic-font-weight-heavy">
               Task visibility filters
             </Typography>
-            <Typography component="div" className="mythic-accent-dialog-title-subtitle">
+            <Typography component="div" className="mythic-accent-dialog-title-subtitle mythic-font-size-small mythic-font-weight-medium mythic-line-height-snug">
               Control which tasks are shown for this callback.
             </Typography>
           </Box>
-        </Box>
+        </MythicCluster>
       </DialogTitle>
-      <DialogContent dividers={true} className="mythic-tasking-filter-dialog-content">
+      <DialogContent dividers={true} className="mythic-tasking-filter-dialog-content mythic-surface-raised mythic-overflow-auto">
         <MythicDialogBody compact={true}>
-          <Box className="mythic-tasking-filter-summary">
+          <MythicCluster gap="xs" align="center" className="mythic-tasking-filter-summary">
             {activeFilters.length > 0 ? (
               activeFilters.map((filterLabel) => (
                 <FilterSummaryChip key={filterLabel} icon={<FilterAltIcon />} label={filterLabel} />
@@ -231,7 +232,7 @@ export function CallbacksTabsTaskingFilterDialog(props) {
             ) : (
               <FilterSummaryChip muted={true} icon={<FilterAltIcon />} label="No active filters" />
             )}
-          </Box>
+          </MythicCluster>
           <MythicDialogSection
             title="Operator and task state"
             description="Narrow the task list by operator, comments, or error state."
@@ -249,7 +250,7 @@ export function CallbacksTabsTaskingFilterDialog(props) {
                   emptyLabel="Any operator"
                 />
               </MythicFormField>
-              <Box className="mythic-column-stack">
+              <MythicStack gap="sm" className="mythic-column-stack">
                 <MythicFormSwitchRow
                   label="Only tasks with comments"
                   description="Require at least one comment."
@@ -276,14 +277,14 @@ export function CallbacksTabsTaskingFilterDialog(props) {
                     />
                   }
                 />
-              </Box>
+              </MythicStack>
             </MythicDialogGrid>
           </MythicDialogSection>
           <MythicDialogSection
             title="Command scope"
             description="Choose commands to include, or choose commands to hide."
           >
-            <Box className="mythic-tasking-filter-command-grid">
+            <MythicGrid gap="sm" columns="custom" className="mythic-tasking-filter-command-grid mythic-min-width-0 mythic-full-width">
               <MythicFormField
                 label="Only show commands"
                 description="When set, only matching command names remain visible."
@@ -297,7 +298,7 @@ export function CallbacksTabsTaskingFilterDialog(props) {
                 />
                 {onlyCommands.length > 0 &&
                   <Button
-                    className="mythic-tasking-filter-clear-button"
+                    className="mythic-tasking-filter-clear-button mythic-font-size-caption mythic-border-radius mythic-font-weight-strong"
                     onClick={clearAllOnlyCommands}
                     size="small"
                     startIcon={<ClearIcon fontSize="small" />}
@@ -307,7 +308,7 @@ export function CallbacksTabsTaskingFilterDialog(props) {
                   </Button>
                 }
               </MythicFormField>
-              <Box className="mythic-tasking-filter-choice-divider">or</Box>
+              <Box className="mythic-tasking-filter-choice-divider mythic-font-size-caption mythic-font-weight-strong mythic-text-secondary">or</Box>
               <MythicFormField
                 label="Hide commands"
                 description="When set, selected command names are removed from view."
@@ -321,7 +322,7 @@ export function CallbacksTabsTaskingFilterDialog(props) {
                 />
                 {everythingBut.length > 0 &&
                   <Button
-                    className="mythic-tasking-filter-clear-button"
+                    className="mythic-tasking-filter-clear-button mythic-font-size-caption mythic-border-radius mythic-font-weight-strong"
                     onClick={clearAllEverythingBut}
                     size="small"
                     startIcon={<ClearIcon fontSize="small" />}
@@ -331,7 +332,7 @@ export function CallbacksTabsTaskingFilterDialog(props) {
                   </Button>
                 }
               </MythicFormField>
-            </Box>
+            </MythicGrid>
           </MythicDialogSection>
           <MythicDialogSection
             title="Parameter matching"

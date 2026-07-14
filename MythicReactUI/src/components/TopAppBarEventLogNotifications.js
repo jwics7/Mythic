@@ -1,8 +1,9 @@
+import {useMythicTheme} from '../themes/MythicThemeProvider';
 import React from 'react';
 import {useSubscription, gql } from '@apollo/client';
 import Badge from '@mui/material/Badge';
 import NotificationsActiveTwoToneIcon from '@mui/icons-material/NotificationsActiveTwoTone';
-import { useTheme } from '@mui/material/styles';
+
 import {alertCount} from "../cache";
 import {MeContext} from "./App";
 
@@ -16,7 +17,7 @@ subscription OperationAlertCounts($operation_id: Int!){
  `;
 
 export function TopAppBarVerticalEventLogNotifications() {
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const me = React.useContext(MeContext);
     const [alerts, setAlerts] = React.useState(alertCount());
     const { loading, error } = useSubscription(SUB_Event_Logs, {
@@ -38,13 +39,13 @@ export function TopAppBarVerticalEventLogNotifications() {
     return (
             error ? (
                 <Badge color="secondary" badgeContent={"X"}>
-                    <NotificationsActiveTwoToneIcon style={{color: theme.navBarTextIconColor}} fontSize={"medium"}  />
+                    <NotificationsActiveTwoToneIcon style={{color: theme.color.navigation.icon}} fontSize={"medium"}  />
                 </Badge>
             ) : (
                 <Badge badgeContent={alerts}
                        color="error" max={99}
                 >
-                    <NotificationsActiveTwoToneIcon style={{color: theme.navBarTextIconColor}} fontSize={"medium"}/>
+                    <NotificationsActiveTwoToneIcon style={{color: theme.color.navigation.icon}} fontSize={"medium"}/>
                 </Badge>
             )
     );

@@ -85,7 +85,7 @@ export const MythicFileContext = ({agent_file_id, display_link, filename, extraS
                                  style={{height: "20px", position: "relative", cursor: "pointer", display: "inline-block"}}
                                  onClick={onPreviewMedia} />
             </MythicStyledTooltip>
-            <FileDownloadLinkWithAuth style={{wordBreak: "break-all"}} color="textPrimary" underline="always" href={"/direct/download/" + fileData.agent_file_id}>
+            <FileDownloadLinkWithAuth color="textPrimary" underline="always" href={"/direct/download/" + fileData.agent_file_id}>
                 {fileData.display_link === "" ? window.location.origin + "/direct/download/" + fileData.agent_file_id : fileData.display_link}
             </FileDownloadLinkWithAuth>
             {openPreviewMediaDialog &&

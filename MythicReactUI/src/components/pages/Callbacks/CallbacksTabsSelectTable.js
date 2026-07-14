@@ -1,3 +1,4 @@
+import TableCell from '@mui/material/TableCell';
 import React from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import Table from '@mui/material/Table';
@@ -6,7 +7,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import MythicStyledTableCell from "../../MythicComponents/MythicTableCell";
 import {MythicTableEmptyState, MythicTableLoadingState} from "../../MythicComponents/MythicStateDisplay";
 import {CallbacksTableIPCell, CallbacksTableLastCheckinCell, CallbacksTablePayloadTypeCell} from "./CallbacksTableRow";
 import {MythicClientSideTablePagination, useMythicClientPagination} from "../../MythicComponents/MythicTablePagination";
@@ -190,7 +190,7 @@ export const CallbacksTabsSelectTable = ({
                     <TableHead>
                         <TableRow>
                             {selectable &&
-                                <MythicStyledTableCell padding="checkbox">
+                                <TableCell padding="checkbox">
                                     <Checkbox
                                         checked={allSelected}
                                         color="primary"
@@ -199,10 +199,10 @@ export const CallbacksTabsSelectTable = ({
                                         onChange={handleSelectAll}
                                         size="small"
                                     />
-                                </MythicStyledTableCell>
+                                </TableCell>
                             }
                             {columns.map((column) => (
-                                <MythicStyledTableCell key={column.field} sortDirection={orderBy === column.field ? order : false} style={{width: column.width}}>
+                                <TableCell key={column.field} sortDirection={orderBy === column.field ? order : false} style={{width: column.width}}>
                                     <TableSortLabel
                                         active={orderBy === column.field}
                                         direction={orderBy === column.field ? order : "asc"}
@@ -210,7 +210,7 @@ export const CallbacksTabsSelectTable = ({
                                     >
                                         {column.headerName}
                                     </TableSortLabel>
-                                </MythicStyledTableCell>
+                                </TableCell>
                             ))}
                         </TableRow>
                     </TableHead>
@@ -250,7 +250,7 @@ export const CallbacksTabsSelectTable = ({
                                         style={{cursor: selectable || onRowClick ? "pointer" : undefined}}
                                     >
                                         {selectable &&
-                                            <MythicStyledTableCell padding="checkbox">
+                                            <TableCell padding="checkbox">
                                                 <Checkbox
                                                     checked={selected}
                                                     color="primary"
@@ -258,12 +258,12 @@ export const CallbacksTabsSelectTable = ({
                                                     onClick={(event) => handleSelectRow(event, row)}
                                                     size="small"
                                                 />
-                                            </MythicStyledTableCell>
+                                            </TableCell>
                                         }
                                         {columns.map((column) => (
-                                            <MythicStyledTableCell key={column.field}>
+                                            <TableCell key={column.field}>
                                                 {column.render ? column.render(row) : row[column.field]}
-                                            </MythicStyledTableCell>
+                                            </TableCell>
                                         ))}
                                     </TableRow>
                                 )

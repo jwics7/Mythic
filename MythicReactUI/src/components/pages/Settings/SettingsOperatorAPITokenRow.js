@@ -1,25 +1,27 @@
+import TableCell from '@mui/material/TableCell';
 import React from 'react';
-import {Box, IconButton, Typography, Link} from '@mui/material';
+import {Typography, Link} from '@mui/material';
 import TableRow from '@mui/material/TableRow';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Switch from '@mui/material/Switch';
-import MythicStyledTableCell from "../../MythicComponents/MythicTableCell";
 import {toLocalTime} from "../../utilities/Time";
-import {MythicStateChip} from "../../MythicComponents/MythicStateChip";
+import {MythicStatusChip} from "../../MythicComponents/MythicStatusChip";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 export function APITokenRow(props){
     return (
         <>
             <TableRow hover >
-                <MythicStyledTableCell>
+                <TableCell>
                     {props.deleted ? null : (
-                        <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={() => {props.onDeleteAPIToken(props.id)}}>
+                        <MythicActionButton iconOnly tone="error"  size="small" onClick={() => {props.onDeleteAPIToken(props.id)}}>
                             <DeleteIcon fontSize="small" />
-                        </IconButton>
+                        </MythicActionButton>
                     )}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <Box className="mythic-state-toggle-cell">
+                </TableCell>
+                <TableCell>
+                    <MythicCluster gap="sm" align="center" wrap={false} className="mythic-state-toggle-cell">
                         <Switch
                             color="success"
                             disabled={props.deleted}
@@ -29,13 +31,13 @@ export function APITokenRow(props){
                             name="active"
                             size="small"
                         />
-                        <MythicStateChip
+                        <MythicStatusChip
                             label={props.deleted ? "Deleted" : props.active ? "Active" : "Disabled"}
-                            state={props.deleted ? "error" : props.active ? "active" : "disabled"}
+                            status={props.deleted ? "error" : props.active ? "active" : "disabled"}
                         />
-                    </Box>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                    </MythicCluster>
+                </TableCell>
+                <TableCell>
                     <Typography>
                         {props.created_by_operator?.username}
                     </Typography>
@@ -44,13 +46,13 @@ export function APITokenRow(props){
                             Created at: {toLocalTime(props.creation_time, props.me?.user?.view_utc_time)}
                         </Typography>
                     }
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     {(props.scopes || []).join(", ")}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>{props.token_type}</MythicStyledTableCell>
-                <MythicStyledTableCell>{props.name}</MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>{props.token_type}</TableCell>
+                <TableCell>{props.name}</TableCell>
+                <TableCell>
                     {props.eventstepinstance &&
                     <>
                         <Typography>
@@ -65,7 +67,7 @@ export function APITokenRow(props){
                         </Typography>
                     </>
                     }
-                </MythicStyledTableCell>
+                </TableCell>
 
             </TableRow>
         </>

@@ -1,11 +1,12 @@
+import TableCell from '@mui/material/TableCell';
 import React, { useEffect } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import MythicStyledTableCell from '../../MythicComponents/MythicTableCell';
 import {MythicPageHeaderChip, MythicSectionHeader} from "../../MythicComponents/MythicPageHeader";
+import {SingleTaskMetadataSection} from "./SingleTaskLayout";
 
 export function TaskMITREATTACKTable(props){
    const [attacks, setAttacks] = React.useState([]);
@@ -31,31 +32,31 @@ export function TaskMITREATTACKTable(props){
    }
    const attackCountLabel = attacks.length === 1 ? "1 technique" : `${attacks.length} techniques`;
   return (
-    <div className="mythic-single-task-metadata-section">
+    <SingleTaskMetadataSection>
         <MythicSectionHeader
             dense
             title="MITRE ATT&CK Mappings"
             subtitle="Unique techniques mapped from the selected tasks."
             actions={<MythicPageHeaderChip label={attackCountLabel} />}
         />
-        <TableContainer className="mythicElement mythic-single-task-table-wrap">
+        <TableContainer className="mythicElement mythic-single-task-table-wrap mythic-surface-raised mythic-overflow-auto">
           <Table className="mythic-single-task-table mythic-single-task-mitre-table" size="small">
                 <TableHead>
                     <TableRow>
-                        <MythicStyledTableCell style={{width: "10rem"}}>Technique ID</MythicStyledTableCell>
-                        <MythicStyledTableCell>Technique</MythicStyledTableCell>
+                        <TableCell style={{width: "10rem"}}>Technique ID</TableCell>
+                        <TableCell>Technique</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                   {attacks.map( (attack) => (
                     <TableRow key={'attack' + attack.attack.id} hover>
-                      <MythicStyledTableCell>{attack.attack.t_num}</MythicStyledTableCell>
-                      <MythicStyledTableCell className="mythic-single-task-cell-break">{attack.attack.name}</MythicStyledTableCell>
+                      <TableCell>{attack.attack.t_num}</TableCell>
+                      <TableCell className="mythic-single-task-cell-break mythic-break-anywhere mythic-pre-wrap">{attack.attack.name}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
             </Table>
           </TableContainer>
-    </div>
+    </SingleTaskMetadataSection>
   );
 }

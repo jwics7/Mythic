@@ -1,5 +1,6 @@
+import {useMythicTokens} from '../../themes/MythicThemeProvider';
 import React from 'react';
-import Button from '@mui/material/Button';
+
 import DialogContent from '@mui/material/DialogContent';
 import MythicTextField from './MythicTextField';
 import {useQuery, gql, useMutation} from '@apollo/client';
@@ -8,7 +9,7 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/theme-xcode';
-import {useTheme} from '@mui/material/styles';
+
 import { snackActions } from '../utilities/Snackbar';
 import { MythicDialog } from './MythicDialog';
 import {MythicConfirmDialog} from './MythicConfirmDialog';
@@ -33,6 +34,8 @@ import {
   MythicFormGrid,
   MythicFormNote
 } from "./MythicDialogLayout";
+import {MythicStack, MythicCluster, MythicGrid, MythicTruncatedText} from "./MythicLayout";
+import {MythicActionButton, MythicPanel} from "./MythicContent";
 
 const getCreateTagTargetObject = (target_object) => {
   if(target_object === "task_id"){
@@ -134,7 +137,7 @@ export const TagsDisplay = ({tags, expand}) => {
   )
 }
 const TagChipDisplay = ({tag, expand}) => {
-  const theme = useTheme();
+  const theme = useMythicTokens();
   const [openTagDisplay, setOpenTagDisplay] = React.useState(false);
   const [label, setLabel] = React.useState(expand ? tag.tagtype.name : tag.tagtype.name[0]);
   const color = tag?.tagtype?.color || "";
@@ -248,30 +251,30 @@ const StringTagDataEntry = ({name, value}) => {
 const RenderedTagDataPreview = ({data}) => {
   const trimmedData = typeof data === "string" ? data.trim() : data;
   if(trimmedData === ""){
-    return <Box className="mythic-tag-data-preview-empty">No JSON data to render.</Box>;
+    return <MythicCluster gap="none" align="center" justify="center" wrap={false} className="mythic-tag-data-preview-empty mythic-font-size-small mythic-text-secondary">No JSON data to render.</MythicCluster>;
   }
   try {
     const parsedData = typeof data === "string" ? JSON.parse(data) : data;
     if(parsedData === null || typeof parsedData !== "object"){
       return (
-          <Box className="mythic-tag-data-preview-row">
-            <Box className="mythic-tag-data-preview-key">value</Box>
-            <Box className="mythic-tag-data-preview-value">{String(parsedData)}</Box>
-          </Box>
+          <MythicGrid gap="sm" columns="custom" className="mythic-tag-data-preview-row mythic-border mythic-min-width-0 mythic-border-radius">
+            <MythicTruncatedText component="div" className="mythic-tag-data-preview-key mythic-font-weight-extra-bold mythic-font-size-small mythic-text-secondary">value</MythicTruncatedText>
+            <Box className="mythic-tag-data-preview-value mythic-line-height-normal mythic-font-size-small mythic-break-anywhere mythic-min-width-0 mythic-text-primary">{String(parsedData)}</Box>
+          </MythicGrid>
       );
     }
     const entries = Array.isArray(parsedData) ?
         parsedData.map((value, index) => [`[${index}]`, value]) :
         Object.entries(parsedData);
     if(entries.length === 0){
-      return <Box className="mythic-tag-data-preview-empty">JSON object is empty.</Box>;
+      return <MythicCluster gap="none" align="center" justify="center" wrap={false} className="mythic-tag-data-preview-empty mythic-font-size-small mythic-text-secondary">JSON object is empty.</MythicCluster>;
     }
     return (
-        <Box className="mythic-tag-data-preview-list">
+        <MythicStack gap="sm" className="mythic-tag-data-preview-list">
           {entries.map(([key, value]) => (
-              <Box className="mythic-tag-data-preview-row" key={key}>
-                <Box className="mythic-tag-data-preview-key">{key}</Box>
-                <Box className="mythic-tag-data-preview-value">
+              <MythicGrid gap="sm" columns="custom" className="mythic-tag-data-preview-row mythic-border mythic-min-width-0 mythic-border-radius" key={key}>
+                <MythicTruncatedText component="div" className="mythic-tag-data-preview-key mythic-font-weight-extra-bold mythic-font-size-small mythic-text-secondary">{key}</MythicTruncatedText>
+                <Box className="mythic-tag-data-preview-value mythic-line-height-normal mythic-font-size-small mythic-break-anywhere mythic-min-width-0 mythic-text-primary">
                   {typeof value === "string" ? (
                       <StringTagDataEntry name={key} value={value} />
                   ) : typeof value === "boolean" ? (
@@ -282,21 +285,21 @@ const RenderedTagDataPreview = ({data}) => {
                       String(value)
                   )}
                 </Box>
-              </Box>
+              </MythicGrid>
           ))}
-        </Box>
+        </MythicStack>
     );
   } catch (error) {
-    return <Box className="mythic-tag-data-preview-empty">Enter valid JSON to render a preview.</Box>;
+    return <MythicCluster gap="none" align="center" justify="center" wrap={false} className="mythic-tag-data-preview-empty mythic-font-size-small mythic-text-secondary">Enter valid JSON to render a preview.</MythicCluster>;
   }
 }
 const TagReadonlyValue = ({children}) => (
-    <Box className="mythic-tag-readonly-value">
+    <MythicCluster gap="none" align="center" wrap={false} className="mythic-tag-readonly-value mythic-line-height-normal mythic-font-size-body-small mythic-break-anywhere mythic-border mythic-surface mythic-full-width mythic-text-primary mythic-border-radius">
       {children || "None"}
-    </Box>
+    </MythicCluster>
 )
 function ViewTagDialog(props) {
-  const theme = useTheme();
+  const theme = useMythicTokens();
   const [selectedTag, setSelectedTag] = React.useState({});
   const [objectInfo, setObjectInfo] = React.useState({object_type: "", object_id: ""});
   const {} = useQuery(getSingleTag, {
@@ -393,11 +396,11 @@ return (
           </MythicDialogSection>
           <MythicDialogSection title="Tag Data">
             {selectedTag?.is_json ? (
-                <Box className="mythic-tag-data-preview-frame mythic-tag-data-preview-frame-full">
+                <MythicPanel component="div" density="flush" tone="surface" overflow="auto" radius="md" className="mythic-tag-data-preview-frame mythic-tag-data-preview-frame-full mythic-text-primary">
                   <RenderedTagDataPreview data={selectedTag?.data || {}} />
-                </Box>
+                </MythicPanel>
             ) : (
-                <Box className="mythic-tag-editor-frame">
+                <MythicPanel component="div" density="flush" tone="surface" overflow="hidden" radius="md" className="mythic-tag-editor-frame mythic-full-width">
                   <AceEditor
                       mode="json"
                       theme={theme.palette.mode === "dark" ? "monokai" : "xcode"}
@@ -417,7 +420,7 @@ return (
                         wrapBehavioursEnabled: true,
                         wrap: true
                       }}/>
-                </Box>
+                </MythicPanel>
             )}
           </MythicDialogSection>
         </MythicDialogBody>
@@ -431,7 +434,7 @@ return (
 );
 }
 export function ViewEditTagsDialog(props) {
-  const theme = useTheme();
+  const theme = useMythicTokens();
   const [newSource, setNewSource] = React.useState("");
   const [newURL, setNewURL] = React.useState("");
   const [newData, setNewData] = React.useState("");
@@ -558,9 +561,9 @@ return (
               description={existingTags.length === 0 ? "No tags are attached yet." : "Choose the tag you want to update."}
               actions={
                 <MythicStyledTooltip title={"Add New Tag"}>
-                  <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-success" size="small" onClick={() => setOpenNewDialog(true)}>
+                  <MythicActionButton iconOnly tone="success"  size="small" onClick={() => setOpenNewDialog(true)}>
                     <AddCircleOutlineIcon fontSize="small" />
-                  </IconButton>
+                  </MythicActionButton>
                 </MythicStyledTooltip>
               }
           >
@@ -588,9 +591,9 @@ return (
                 {selectedTag.id &&
                   <MythicStyledTooltip title={"Delete Tag"}>
                     <Box sx={{alignItems: "center", alignSelf: "end", display: "flex", height: 38}}>
-                      <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={()=>{setOpenDeleteDialog(true);}}>
+                      <MythicActionButton iconOnly tone="error"  size="small" onClick={()=>{setOpenDeleteDialog(true);}}>
                         <DeleteIcon fontSize="small" />
-                      </IconButton>
+                      </MythicActionButton>
                     </Box>
                   </MythicStyledTooltip>
                 }
@@ -623,8 +626,8 @@ return (
                 </MythicFormGrid>
               </MythicDialogSection>
               <MythicDialogSection title="JSON Data">
-                <Box className="mythic-tag-data-split">
-                  <Box className="mythic-tag-editor-frame">
+                <MythicGrid gap="md" columns="custom" className="mythic-tag-data-split mythic-min-width-0 mythic-full-width">
+                  <MythicPanel component="div" density="flush" tone="surface" overflow="hidden" radius="md" className="mythic-tag-editor-frame mythic-full-width">
                     <AceEditor
                         mode="json"
                         theme={theme.palette.mode === "dark" ? "monokai" : "xcode"}
@@ -643,11 +646,11 @@ return (
                           useWorker: false,
                           wrap: true
                         }}/>
-                  </Box>
-                  <Box className="mythic-tag-data-preview-frame">
+                  </MythicPanel>
+                  <MythicPanel component="div" density="flush" tone="surface" overflow="auto" radius="md" className="mythic-tag-data-preview-frame mythic-text-primary">
                     <RenderedTagDataPreview data={newData} />
-                  </Box>
-                </Box>
+                  </MythicPanel>
+                </MythicGrid>
               </MythicDialogSection>
             </>
           }
@@ -667,7 +670,7 @@ return (
 );
 }
 export function NewTagDialog(props) {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const [newSource, setNewSource] = React.useState("");
     const [newURL, setNewURL] = React.useState("");
     const [newData, setNewData] = React.useState("");
@@ -743,9 +746,9 @@ export function NewTagDialog(props) {
                 title="Tag Type"
                 description="Select the taxonomy entry this tag should use."
                 actions={
-                  <Button className="mythic-table-row-action mythic-table-row-action-hover-info" size="small" variant="outlined" onClick={() => setOpenNewTagTypeDialog(true)}>
+                  <MythicActionButton tone="info"  size="small" variant="outlined" onClick={() => setOpenNewTagTypeDialog(true)}>
                     Manage Tag Types
-                  </Button>
+                  </MythicActionButton>
                 }
             >
               <MythicFormField label="Tag">
@@ -784,8 +787,8 @@ export function NewTagDialog(props) {
               </MythicFormGrid>
             </MythicDialogSection>
             <MythicDialogSection title="JSON Data">
-              <Box className="mythic-tag-data-split">
-                <Box className="mythic-tag-editor-frame">
+              <MythicGrid gap="md" columns="custom" className="mythic-tag-data-split mythic-min-width-0 mythic-full-width">
+                <MythicPanel component="div" density="flush" tone="surface" overflow="hidden" radius="md" className="mythic-tag-editor-frame mythic-full-width">
                   <AceEditor
                       mode="json"
                       theme={theme.palette.mode === "dark" ? "monokai" : "xcode"}
@@ -804,11 +807,11 @@ export function NewTagDialog(props) {
                         useWorker: false,
                         wrap: true
                       }}/>
-                </Box>
-                <Box className="mythic-tag-data-preview-frame">
+                </MythicPanel>
+                <MythicPanel component="div" density="flush" tone="surface" overflow="auto" radius="md" className="mythic-tag-data-preview-frame mythic-text-primary">
                   <RenderedTagDataPreview data={newData} />
-                </Box>
-              </Box>
+                </MythicPanel>
+              </MythicGrid>
             </MythicDialogSection>
           </MythicDialogBody>
         </DialogContent>

@@ -1,24 +1,27 @@
 import React from 'react';
+
 import {useQuery, gql, useLazyQuery} from '@apollo/client';
 import {snackActions} from '../../utilities/Snackbar';
 import { CreatePayloadNavigationButtons} from './CreatePayloadNavigationButtons';
-import Typography from '@mui/material/Typography';
+
 import { meState } from '../../../cache';
 import {useReactiveVar} from '@apollo/client';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import {getDefaultValueForType, getDefaultChoices} from './Step2SelectPayloadType';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import Button from '@mui/material/Button';
+
 import {MythicConfirmDialog} from "../../MythicComponents/MythicConfirmDialog";
 import {MythicAgentSVGIcon} from "../../MythicComponents/MythicAgentSVGIcon";
 import {CreatePayloadBuildParametersTable} from "./CreatePayloadBuildParametersTable";
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import { IconButton } from '@mui/material';
+
 import CloseIcon from '@mui/icons-material/Close';
 import {useMythicLazyQuery} from "../../utilities/useMythicLazyQuery";
 import {ConfigurationSummary} from "./Step1SelectOS";
+import {MythicPanel, MythicActionButton, MythicMetadataItem, MythicSectionHeading, MythicSectionDescription} from "../../MythicComponents/MythicContent";
+import {MythicStack, MythicCluster, MythicGrid} from "../../MythicComponents/MythicLayout";
 
 
 const GET_Payload_Types = gql`
@@ -392,39 +395,33 @@ export function Step4C2Profiles(props){
         setDisabledC2Add(false);
     }, [includedC2Profiles, selectedC2]);
     return (
-        <div className="mythic-create-flow-shell">
-            <div className="mythic-create-flow-content">
-                <div className="mythic-create-selection-grid">
-                    <section className="mythic-create-section">
-                        <div className="mythic-create-agent-summary">
-                            <div className="mythic-create-agent-icon">
+        <MythicStack component="div" gap="md" className="mythic-create-flow-shell mythic-min-height-0 mythic-full-height">
+            <MythicStack component="div" gap="md" className="mythic-create-flow-content mythic-flex-fill mythic-overflow-hidden mythic-min-height-0">
+                <MythicGrid component="div" gap="md" columns="custom" className="mythic-create-selection-grid mythic-flex-fixed mythic-min-width-0">
+                    <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="hidden">
+                        <MythicCluster component="div" gap="md" align="start" wrap={false} className="mythic-create-agent-summary">
+                            <MythicCluster component="div" gap="none" align="center" justify="center" wrap={false} className="mythic-create-agent-icon mythic-border-radius mythic-border">
                                 <MythicAgentSVGIcon payload_type={props.buildOptions.payload_type} style={{width: "100%", height: "100%", objectFit: "contain"}} />
-                            </div>
-                            <div className="mythic-create-meta-list">
-                                <div>
-                                    <span className="mythic-create-meta-label">Operating system</span>
-                                    <div className="mythic-create-meta-value">{props.buildOptions.os}</div>
-                                </div>
-                                <div>
-                                    <span className="mythic-create-meta-label">Description</span>
-                                    <div className="mythic-create-meta-value">{props.buildOptions.description}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <section className="mythic-create-section">
-                        <div className="mythic-create-section-header">
+                            </MythicCluster>
+                            <MythicStack component="div" gap="sm" className="mythic-create-meta-list">
+                                <MythicMetadataItem label="Operating system">{props.buildOptions.os}</MythicMetadataItem>
+                                <MythicMetadataItem label="Description">{props.buildOptions.description}</MythicMetadataItem>
+                            </MythicStack>
+                        </MythicCluster>
+                    </MythicPanel>
+                    <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="hidden">
+                        <MythicCluster component="div" gap="md" align="start" justify="between" wrap={false} className="mythic-create-section-header">
                             <div>
-                                <Typography component="div" className="mythic-create-section-title">
+                                <MythicSectionHeading component="div" className="mythic-create-section-title">
                                     Select C2 profiles
-                                </Typography>
-                                <Typography component="div" className="mythic-create-section-description">
+                                </MythicSectionHeading>
+                                <MythicSectionDescription component="div" className="mythic-create-section-description">
                                     Add one or more egress or peer profiles to configure for this payload.
-                                </Typography>
+                                </MythicSectionDescription>
                             </div>
-                        </div>
+                        </MythicCluster>
                         <Select
-                            className="mythic-create-select"
+                            className="mythic-create-select mythic-full-width"
                             value={selectedC2}
                             onChange={onChangeSelectedC2}
                         >
@@ -438,48 +435,48 @@ export function Step4C2Profiles(props){
                                 ))
                             }
                         </Select>
-                        <Button
-                                className="mythic-table-row-action mythic-table-row-action-hover-success"
+                        <MythicActionButton tone="success"
+
                                 size="small"
                                 variant="contained"
                                 onClick={addC2}
                                 disabled={disabledC2Add}
                                 startIcon={<AddCircleIcon fontSize="small" />} >
                                 Include Profile
-                        </Button>
-                    </section>
-                </div>
+                        </MythicActionButton>
+                    </MythicPanel>
+                </MythicGrid>
 
-                <section className="mythic-create-section mythic-create-section-fill">
-                    <div className="mythic-create-section-header">
+                <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="hidden" fill>
+                    <MythicCluster component="div" gap="md" align="start" justify="between" wrap={false} className="mythic-create-section-header">
                         <div>
-                            <Typography component="div" className="mythic-create-section-title">
+                            <MythicSectionHeading component="div" className="mythic-create-section-title">
                                 Include and configure C2 profiles
-                            </Typography>
-                            <Typography component="div" className="mythic-create-section-description">
+                            </MythicSectionHeading>
+                            <MythicSectionDescription component="div" className="mythic-create-section-description">
                                 Review the active C2 profiles and adjust their build-time parameters.
-                            </Typography>
+                            </MythicSectionDescription>
                         </div>
-                    </div>
-                    <div className="mythic-create-builder-split">
-                        <section className="mythic-create-section mythic-create-section-scroll">
-                            <Typography component="div" className="mythic-create-section-title" style={{textAlign: "center"}}>
+                    </MythicCluster>
+                    <MythicGrid component="div" gap="md" columns="custom" className="mythic-create-builder-split mythic-flex-fill mythic-overflow-hidden mythic-min-height-0">
+                        <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="auto">
+                            <MythicSectionHeading component="div" className="mythic-create-section-title" align="center">
                                 Configuration Summary
-                            </Typography>
+                            </MythicSectionHeading>
                             {includedC2Profiles.map( (c, index) => (
                                 <ConfigurationSummary key={c.name + index} buildParameters={c.c2profileparameters}
                                                       os={props.buildOptions.os} c2_name={c.name} />
                             ))}
-                        </section>
-                        <section className="mythic-create-section mythic-create-section-scroll">
+                        </MythicPanel>
+                        <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="auto">
                             <C2ProfileTabs includedC2Profiles={includedC2Profiles} os={props.buildOptions.os}
                                            onCloseTab={removeC2} onChange={updateC2Parameter}
                                            onChangeCreatedInstanceName={onChangeCreatedInstanceName}
                             />
-                        </section>
-                    </div>
-                </section>
-            </div>
+                        </MythicPanel>
+                    </MythicGrid>
+                </MythicPanel>
+            </MythicStack>
             {openConfirmDialog &&
                 <MythicConfirmDialog open={openConfirmDialog}
                                      title={"No C2 Profiles selected, continue?"}
@@ -487,7 +484,7 @@ export function Step4C2Profiles(props){
                                      acceptText="Accept"
                                      onSubmit={acceptConfirm} />
             }
-            <div className="mythic-create-flow-footer">
+            <div className="mythic-create-flow-footer mythic-flex-fixed">
                 <CreatePayloadNavigationButtons
                     first={props.first}
                     last={props.last}
@@ -496,7 +493,7 @@ export function Step4C2Profiles(props){
                 />
                 <br/><br/>
             </div>
-        </div>
+        </MythicStack>
     )
     /*
     return (
@@ -505,10 +502,10 @@ export function Step4C2Profiles(props){
                 <Table stickyHeader={true} size="small" style={{"maxWidth": "100%",}}>
                     <TableHead>
                         <TableRow>
-                            <MythicStyledTableCell style={{width: "4rem"}}>Include?</MythicStyledTableCell>
-                            <MythicStyledTableCell>C2 Name</MythicStyledTableCell>
-                            <MythicStyledTableCell>Pre-created Instances</MythicStyledTableCell>
-                            <MythicStyledTableCell>Description</MythicStyledTableCell>
+                            <TableCell style={{width: "4rem"}}>Include?</TableCell>
+                            <TableCell>C2 Name</TableCell>
+                            <TableCell>Pre-created Instances</TableCell>
+                            <TableCell>Description</TableCell>
                         </TableRow>
                     </TableHead>
 
@@ -516,7 +513,7 @@ export function Step4C2Profiles(props){
                         c2Profiles.map((c2) => (
                             <TableBody key={"step4c2tablerow" + c2.id}>
                                 <TableRow hover>
-                                    <MythicStyledTableCell>
+                                    <TableCell>
 
                                         <Switch
                                             checked={c2.selected}
@@ -525,11 +522,11 @@ export function Step4C2Profiles(props){
                                             name="active"
                                         />
 
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell>
+                                    </TableCell>
+                                    <TableCell>
                                         {c2.name}
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell>
+                                    </TableCell>
+                                    <TableCell>
                                         {c2.c2profileparametersinstances.length > 0 ? (
                                             <Select
                                                 style={{width: "100%", marginBottom: "5px", marginTop: "5px"}}
@@ -547,14 +544,14 @@ export function Step4C2Profiles(props){
                                                 }
                                             </Select>
                                         ) : null}
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell>
+                                    </TableCell>
+                                    <TableCell>
                                         <Typography variant="body1" align="left" id="selectc2profiles"
                                                     component="div" key={"step4desc" + c2.id}
                                                     style={{"marginLeft": "10px"}}>
                                             {c2.description}
                                         </Typography>
-                                    </MythicStyledTableCell>
+                                    </TableCell>
                                 </TableRow>
                                 {c2.selected &&
                                     <TableRow>
@@ -636,9 +633,9 @@ const C2ProfileTabs = ({includedC2Profiles, onChange, os, onCloseTab, onChangeCr
                     <Tab key={c.name + index} label={
                         <div style={{display: "flex", alignItems: "center"}}>
                                 {c.name}
-                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size='small' onClick={(e) => onCloseTabLocal(e, index)} >
+                            <MythicActionButton iconOnly tone="error"  size='small' onClick={(e) => onCloseTabLocal(e, index)} >
                                 <CloseIcon fontSize="small" />
-                            </IconButton>
+                            </MythicActionButton>
                         </div>
                     } {...a11yProps(index)} style={{flexShrink: 0}} />
                 ))}
@@ -649,7 +646,7 @@ const C2ProfileTabs = ({includedC2Profiles, onChange, os, onCloseTab, onChangeCr
                 }} >
                     {c.c2profileparametersinstances.length > 0 &&
                         <Select
-                            className="mythic-create-select"
+                            className="mythic-create-select mythic-full-width"
                             style={{marginBottom: "0.65rem"}}
                             value={c.selected_instance}
                             onChange={evt => onChangeCreatedInstanceName(evt, index, c)}

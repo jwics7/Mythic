@@ -1,7 +1,8 @@
+import MenuItem from '@mui/material/MenuItem';
 import React, { useCallback } from 'react';
 import {classes} from './styles';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import {Dropdown, DropdownMenuItem, DropdownNestedMenuItem} from "../MythicNestedMenus";
+import {Dropdown, DropdownNestedMenuItem} from "../MythicNestedMenus";
 
 const CellPreMemo = ({ style, rowIndex, columnIndex, data  }) => {
     const [openContextMenu, setOpenContextMenu] = React.useState(false);
@@ -148,28 +149,28 @@ export const ContextMenu = ({openContextMenu, dropdownAnchorRef, contextMenuOpti
                 menu={[
                     contextMenuOptions.map((option, index) => (
                         option.type === 'item' ? (
-                            <DropdownMenuItem
+                            <MenuItem
                                 key={option.name}
                                 disabled={option.disabled}
                                 className={option.className || (option.danger ? "mythic-menu-item-hover-danger" : undefined)}
                                 onClick={(event) => handleMenuItemClick(event, option.click)}
                             >
                                 {option.icon}{option.name}
-                            </DropdownMenuItem>
+                            </MenuItem>
                         ) : option.type === 'menu' ? (
                             <DropdownNestedMenuItem
                                 label={option.name}
                                 disabled={option.disabled}
                                 menu={
                                     option.menuItems.map((menuOption, indx) => (
-                                    <DropdownMenuItem
+                                    <MenuItem
                                         key={menuOption.name}
                                         disabled={menuOption.disabled}
                                         className={menuOption.className || (menuOption.danger ? "mythic-menu-item-hover-danger" : undefined)}
                                         onClick={(event) => handleMenuItemClick(event, menuOption.click)}
                                     >
                                             {menuOption.icon}{menuOption.name}
-                                        </DropdownMenuItem>
+                                        </MenuItem>
                                     ))
                                 }
                             />

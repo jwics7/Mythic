@@ -3,6 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import {a11yProps} from "../../MythicComponents/MythicTabPanel";
 import {ResponseDisplayBrowserScriptComponent} from "./ResponseDisplay";
+import {MythicStack, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
 
 function ResponseDisplayTabsLabel(props) {
     const { label, index, ...other } =
@@ -10,11 +11,11 @@ function ResponseDisplayTabsLabel(props) {
     return (
         <Tab
             label={
-                <span className="mythic-response-tab-label">
+                <MythicTruncatedText component="span" className="mythic-response-tab-label mythic-block">
                     {label}
-                </span>
+                </MythicTruncatedText>
             }
-            className="mythic-response-tab"
+            className="mythic-response-tab mythic-font-size-small mythic-font-weight-strong mythic-line-height-tight mythic-min-width-0 mythic-flex-fixed mythic-overflow-hidden mythic-border mythic-border-radius mythic-text-secondary"
             title={typeof label === "string" ? label : undefined}
             wrapped={false}
             {...a11yProps(index)}
@@ -37,7 +38,7 @@ function ResponseDisplayTabsPanel(props) {
             hidden={value !== index}
             id={`scrollable-auto-tabpanel-${index}`}
             aria-labelledby={`scrollable-auto-tab-${index}`}
-            className="mythic-response-tabs-panel"
+            className="mythic-response-tabs-panel mythic-max-width-full mythic-fill mythic-flex-column mythic-full-width mythic-overflow-auto"
             style={style}
             {...other}>
             {<React.Fragment>{children}</React.Fragment>}
@@ -51,8 +52,8 @@ export function ResponseDisplayTabs({ tabs, task, expand, displayType, output })
     };
 
     return (
-        <div className="mythic-response-tabs" style={{height: expand ? "100%" : "400px"}}>
-            <div className="mythic-response-tabs-bar">
+        <MythicStack component="div" gap="none" className="mythic-response-tabs mythic-max-width-full mythic-border-radius mythic-full-width mythic-overflow-hidden mythic-min-height-0 mythic-surface-raised mythic-border mythic-flex-fill" style={{height: expand ? "100%" : "400px"}}>
+            <div className="mythic-response-tabs-bar mythic-divider-bottom mythic-min-width-0 mythic-flex-fixed mythic-overflow-hidden mythic-surface-muted">
                 <Tabs
                     value={value}
                     variant="scrollable"
@@ -87,6 +88,6 @@ export function ResponseDisplayTabs({ tabs, task, expand, displayType, output })
                 </ResponseDisplayTabsPanel>
 
             ))}
-        </div>
+        </MythicStack>
     );
 }

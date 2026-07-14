@@ -6,6 +6,8 @@ import {TaskFilesTable} from './TaskFilesTable';
 import {TaskCredentialsTable} from './TaskCredentialsTable';
 import {useMythicLazyQuery} from "../../utilities/useMythicLazyQuery";
 import {MythicEmptyState} from "../../MythicComponents/MythicStateDisplay";
+import {SingleTaskMetadataSection} from "./SingleTaskLayout";
+import {MythicPanel} from "../../MythicComponents/MythicContent";
 
 
 const MetadataQuery = gql`
@@ -93,20 +95,20 @@ export function TaskMetadataTable(props){
         });
     }, [props.taskIDs, getMetadata]);
   return (
-    <div className="mythic-single-task-metadata">
+    <SingleTaskMetadataSection className="mythic-single-task-metadata">
         <TaskArtifactsTable tasks={tasks}/>
         <TaskMITREATTACKTable tasks={tasks}/>
         <TaskFilesTable tasks={tasks}/>
         <TaskCredentialsTable tasks={tasks}/>
         {tasks.length > 0 && !hasMetadata &&
-            <div className="mythic-single-task-empty-card">
+            <MythicPanel component="div" density="flush" tone="raised" overflow="visible" radius="md" className="mythic-single-task-empty-card mythic-full-width">
                 <MythicEmptyState
                     compact
                     title="No task metadata"
                     description="These tasks do not currently have artifacts, MITRE mappings, files, screenshots, or credentials to show."
                 />
-            </div>
+            </MythicPanel>
         }
-    </div>
+    </SingleTaskMetadataSection>
   );
 }

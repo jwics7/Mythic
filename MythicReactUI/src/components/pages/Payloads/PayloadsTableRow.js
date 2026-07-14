@@ -1,7 +1,8 @@
+import TableCell from '@mui/material/TableCell';
+import MenuItem from '@mui/material/MenuItem';
 import React, {useRef} from 'react';
-import {Button, Chip, Divider, ListItemIcon, ListItemText} from '@mui/material';
+import {Chip, Divider, ListItemIcon, ListItemText} from '@mui/material';
 import TableRow from '@mui/material/TableRow';
-import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { MythicDialog } from '../../MythicComponents/MythicDialog';
 import {DetailedPayloadComparisonTable, DetailedPayloadTable} from './DetailedPayloadTable';
@@ -19,7 +20,6 @@ import {useMutation, gql, useLazyQuery} from '@apollo/client';
 import { snackActions } from '../../utilities/Snackbar';
 import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import { MythicStyledTooltip } from '../../MythicComponents/MythicStyledTooltip';
-import MythicStyledTableCell from '../../MythicComponents/MythicTableCell';
 import {PayloadsTableRowBuildProgress} from './PayloadsTableRowBuildProgress';
 import {b64DecodeUnicode} from '../Callbacks/ResponseDisplay';
 import {CreateNewCallbackDialog} from './CreateNewCallbackDialog';
@@ -47,8 +47,10 @@ import {downloadFileFromMemory} from '../../utilities/Clipboard';
 import NotificationsOffOutlinedIcon from '@mui/icons-material/NotificationsOffOutlined';
 import {EditPayloadConfigDialog} from "./EditPayloadConfigDialog";
 import DifferenceIcon from '@mui/icons-material/Difference';
-import {Dropdown, DropdownMenuItem, DropdownNestedMenuItem} from "../../MythicComponents/MythicNestedMenus";
+import {Dropdown, DropdownNestedMenuItem} from "../../MythicComponents/MythicNestedMenus";
 import {MythicStatusChip} from "../../MythicComponents/MythicStatusChip";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 const payloadMenuItemClass = (tone = "info") => {
     return `mythic-response-action-menu-item mythic-response-action-hover-${tone}`;
@@ -104,8 +106,8 @@ export const exportPayloadConfigQuery = gql`
 query exportPayloadConfigQuery($uuid: String!) {
   exportPayloadConfig(uuid: $uuid) {
       status
-      error 
-      config 
+      error
+      config
   }
 }
 `;
@@ -133,13 +135,13 @@ export function PayloadsTableRow(props){
         } else {
           snackActions.error("Failed to build:\n" + data.rebuildPayload.error);
         }
-        
+
       },
       onError: (data) => {
         snackActions.error("Failed to trigger rebuild: " + data);
       }
     });
-    
+
     const [exportConfig] = useLazyQuery(exportPayloadConfigQuery, {
       fetchPolicy: "no-cache",
       onCompleted: (data) => {
@@ -379,7 +381,7 @@ export function PayloadsTableRow(props){
         dropdownAnchorRef.current = event?.currentTarget || event.target;
         setOpenUpdateDialog(true);
     }
-    
+
     const shouldDisplay = React.useMemo(() => {
       if(!props.deleted){
         return true;
@@ -393,18 +395,18 @@ export function PayloadsTableRow(props){
       shouldDisplay ? (
         <React.Fragment>
             <TableRow key={"payload" + props.uuid} hover>
-                <MythicStyledTableCell>
-                    <Button
+                <TableCell>
+                    <MythicActionButton tone="info"
                         aria-expanded={openUpdate ? "true" : undefined}
                         aria-haspopup="menu"
-                        className="mythic-table-row-action mythic-table-row-action-hover-info"
+
                         endIcon={<ArrowDropDownIcon fontSize="small" />}
                         size="small"
                         onClick={openMenu}
                         variant="outlined"
                     >
                         Actions
-                    </Button>
+                    </MythicActionButton>
                 {openUpdate &&
                     <ClickAwayListener onClickAway={handleClose} mouseEvent={"onMouseDown"}>
                         <Dropdown
@@ -418,7 +420,7 @@ export function PayloadsTableRow(props){
                             menu={
                                 options.map((option, index) => (
                                     option.type === 'item' ? (
-                                        <DropdownMenuItem
+                                        <MenuItem
                                             key={option.name}
                                             disabled={option.disabled}
                                             className={payloadMenuItemClass(option.tone || (option.danger ? "danger" : "info"))}
@@ -426,7 +428,7 @@ export function PayloadsTableRow(props){
                                         >
                                             <ListItemIcon>{option.icon}</ListItemIcon>
                                             <ListItemText>{option.name}</ListItemText>
-                                        </DropdownMenuItem>
+                                        </MenuItem>
                                     ) : option.type === 'divider' ? (
                                         <Divider key={option.name || `divider-${index}`} />
                                     ) : option.type === 'menu' ? (
@@ -435,7 +437,7 @@ export function PayloadsTableRow(props){
                                             disabled={option.disabled}
                                             menu={
                                                 option.menuItems.map((menuOption, indx) => (
-                                                    <DropdownMenuItem
+                                                    <MenuItem
                                                         key={menuOption.name}
                                                         disabled={menuOption.disabled}
                                                         className={payloadMenuItemClass(menuOption.tone || (menuOption.danger ? "danger" : "info"))}
@@ -443,7 +445,7 @@ export function PayloadsTableRow(props){
                                                     >
                                                         <ListItemIcon>{menuOption.icon}</ListItemIcon>
                                                         <ListItemText>{menuOption.name}</ListItemText>
-                                                    </DropdownMenuItem>
+                                                    </MenuItem>
                                                 ))
                                             }
                                         />
@@ -454,32 +456,32 @@ export function PayloadsTableRow(props){
                     </ClickAwayListener>
                 }
                 {openDescription &&
-                    <MythicDialog fullWidth={true} maxWidth="md" open={openDescription} 
-                        onClose={()=>{setOpenDescriptionDialog(false);}} 
+                    <MythicDialog fullWidth={true} maxWidth="md" open={openDescription}
+                        onClose={()=>{setOpenDescriptionDialog(false);}}
                         innerDialog={<PayloadDescriptionDialog payload_uuid={props.uuid} payload_id={props.id} onClose={()=>{setOpenDescriptionDialog(false);}} />}
                     />
                 }
                 {openFilename &&
-                    <MythicDialog fullWidth={true} maxWidth="md" open={openFilename} 
-                        onClose={()=>{setOpenFilenameDialog(false);}} 
+                    <MythicDialog fullWidth={true} maxWidth="md" open={openFilename}
+                        onClose={()=>{setOpenFilenameDialog(false);}}
                         innerDialog={<PayloadFilenameDialog payload_id={props.id} onClose={()=>{setOpenFilenameDialog(false);}} />}
                     />
                 }
                 {openBuildMessage &&
-                    <MythicDialog fullWidth={true} maxWidth="lg" open={openBuildMessage} 
-                        onClose={()=>{setOpenBuildMessageDialog(false);}} 
+                    <MythicDialog fullWidth={true} maxWidth="lg" open={openBuildMessage}
+                        onClose={()=>{setOpenBuildMessageDialog(false);}}
                         innerDialog={<PayloadBuildMessageDialog payload_id={props.id} viewError={viewError} onClose={()=>{setOpenBuildMessageDialog(false);}} />}
                     />
                 }
                 {openConfigCheckDialog &&
-                    <MythicDialog fullWidth={true} maxWidth="lg" open={openConfigCheckDialog} 
-                        onClose={()=>{setOpenConfigCheckDialog(false);}} 
+                    <MythicDialog fullWidth={true} maxWidth="lg" open={openConfigCheckDialog}
+                        onClose={()=>{setOpenConfigCheckDialog(false);}}
                         innerDialog={<PayloadConfigCheckDialog uuid={props.uuid} onClose={()=>{setOpenConfigCheckDialog(false);}} />}
                     />
                 }
                 {openRedirectRulesDialog &&
-                    <MythicDialog fullWidth={true} maxWidth="lg" open={openRedirectRulesDialog} 
-                        onClose={()=>{setOpenRedirectRulesDialog(false);}} 
+                    <MythicDialog fullWidth={true} maxWidth="lg" open={openRedirectRulesDialog}
+                        onClose={()=>{setOpenRedirectRulesDialog(false);}}
                         innerDialog={<PayloadRedirectRulesDialog uuid={props.uuid} onClose={()=>{setOpenRedirectRulesDialog(false);}} />}
                     />
                 }
@@ -495,10 +497,10 @@ export function PayloadsTableRow(props){
                                   innerDialog={<PayloadGetSampleMessageDialog uuid={props.uuid} onClose={()=>{setOpenGenerateSampleMessageDialog(false);}} />}
                     />
                 }
-                
+
                 {openCreateNewCallbackDialog &&
-                  <MythicDialog fullWidth={true} maxWidth="lg" open={openCreateNewCallbackDialog} 
-                      onClose={()=>{setOpenCreateNewCallbackDialog(false);}} 
+                  <MythicDialog fullWidth={true} maxWidth="lg" open={openCreateNewCallbackDialog}
+                      onClose={()=>{setOpenCreateNewCallbackDialog(false);}}
                       innerDialog={<CreateNewCallbackDialog uuid={props.uuid} filename={b64DecodeUnicode(props.filemetum.filename_text)} onClose={()=>{setOpenCreateNewCallbackDialog(false);}} />}
                   />
                 }
@@ -516,8 +518,8 @@ export function PayloadsTableRow(props){
                     acceptText={props.deleted? "Restore" : "Remove"}
                     acceptColor={props.deleted? "success": "error"}/>
                 }
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     <MythicStyledTooltip title={props.payloadtype.name +
                         (props.payload_type_semver === "" ? "" : `\nBuilt w/ Version: v${props.payload_type_semver}`) +
                         (props.payloadtype.semver === "" ? "" :  `\nCurrent Version: v${props.payloadtype.semver}`)
@@ -541,49 +543,49 @@ export function PayloadsTableRow(props){
                             <NotificationsOffOutlinedIcon fontSize={"small"} color={"error"} style={{backgroundColor: "white", borderRadius: "10px"}} />
                         </MythicStyledTooltip>
                     }
-                </MythicStyledTableCell>
-                <MythicStyledTableCell style={{wordBreak: "break-all"}}>
+                </TableCell>
+                <TableCell>
                     <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "0.25rem"}}>
-                        <div className="mythic-status-stack">
+                        <MythicCluster component="div" gap="xs" className="mythic-status-stack">
                             {props.auto_generated && props.task &&
                                 <MythicStyledTooltip title={"This payload was auto generated by a task"} >
-                                    <IconButton
-                                        className="mythic-table-row-icon-action mythic-table-row-icon-action-info"
+                                    <MythicActionButton iconOnly tone="info" emphasis="always"
+
                                         href={"/new/task/" + props?.task?.display_id}
                                         size="small"
                                         target={"_blank"}
                                     >
                                         <SmartToyTwoToneIcon fontSize="small" />
-                                    </IconButton>
+                                    </MythicActionButton>
                                 </MythicStyledTooltip>
                             }
                             <span>{b64DecodeUnicode(props.filemetum.filename_text)}</span>
                             {props.deleted &&
                                 <MythicStatusChip label="Deleted" status="deleted" />
                             }
-                        </div>
+                        </MythicCluster>
                         <PayloadBuildMetadataChips buildMetadata={props.build_metadata} />
                     </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-payload-progress-cell">
+                </TableCell>
+                <TableCell>
+                    <MythicCluster component="div" gap="xs" className="mythic-payload-progress-cell">
                         <PayloadsTableRowBuildStatus {...props} />
                         <PayloadsTableRowBuildProgress {...props} />
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell style={{wordBreak: "break-all"}}>{props.description}</MythicStyledTableCell>
-                <MythicStyledTableCell>
+                    </MythicCluster>
+                </TableCell>
+                <TableCell>{props.description}</TableCell>
+                <TableCell>
                     <PayloadsTableRowC2Status payloadc2profiles={props.payloadc2profiles} uuid={props.uuid} />
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     <ViewEditTags target_object={"payload_id"} target_object_id={props.id} me={props.me} />
                     <TagsDisplay tags={props.filemetum.tags} />
                     <TagsDisplay tags={props.tags} />
-                </MythicStyledTableCell>
+                </TableCell>
             </TableRow>
             {openDetailedView &&
               <MythicDialog fullWidth={true} maxWidth="lg" open={openDetailedView}
-                  onClose={()=>{setOpenDetailedView(false);}} 
+                  onClose={()=>{setOpenDetailedView(false);}}
                   innerDialog={<DetailedPayloadTable {...props} payload_id={props.id} onClose={()=>{setOpenDetailedView(false);}} />}
               />}
             {openEditPayloadConfigDialog &&

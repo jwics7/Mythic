@@ -1,51 +1,7 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import {TextField} from '@mui/material';
 import {useDebounce} from "../utilities/useDebounce";
-const PREFIX = 'MythicTextField';
-
-const classes = {
-    root: `${PREFIX}Div-root`,
-    textFieldRoot: `${PREFIX}-root`
-};
-
-const Root = styled('div')(({theme}) => ({
-      [`&.${classes.root}`]: {
-
-      },
-}));
-
-const ValidationTextField = styled(TextField)(({theme}) => ({
-    [`&.${classes.textFieldRoot}`]: {
-        '& .MuiInputBase-root': {
-            backgroundColor: theme.palette.background.paper,
-            borderRadius: theme.shape.borderRadius,
-        },
-        '& fieldset': {
-            borderColor: theme.borderColor,
-            borderWidth: 1,
-        },
-        '&:hover fieldset': {
-            borderColor: theme.palette.text.secondary,
-        },
-        '& .Mui-focused fieldset': {
-            borderColor: `${theme.palette.primary.main} !important`,
-            borderWidth: '1px !important',
-        },
-        '& input:invalid + fieldset': {
-            borderColor: theme.palette.error.main,
-            borderWidth: 2,
-        },
-        '& input:valid:focus + fieldset': {
-            borderLeftWidth: 2,
-            padding: '4px !important', // override inline-style
-        },
-        '& textarea:focus + textarea + fieldset': {
-            borderLeftWidth: 2,
-            //padding: '4px !important', // override inline-style
-        },
-    },
-}));
+import styles from './MythicTextField.module.css';
 
 const MythicTextField = ({
                              placeholder,
@@ -110,8 +66,14 @@ const MythicTextField = ({
     );
 
     return (
-        <Root style={{width:  width ? width + "rem" : "100%", display: inline ? "inline-block": "",}}>
-            <ValidationTextField
+        <div
+            className={`${styles.root} mythic-min-width-0`}
+            data-inline={inline ? "true" : undefined}
+            style={{"--mythic-field-width": width ? `${width}rem` : "100%"}}
+        >
+            <TextField
+                className={styles.field}
+                data-mythic-control="text-field"
                 fullWidth={true}
                 placeholder={placeholder}
                 value={localValue.value}
@@ -135,15 +97,10 @@ const MythicTextField = ({
                 inputProps={{...inputProps, autoComplete: resolvedAutoComplete}}
                 helperText={localError ? errorText : helperText}
                 style={{
-                    padding:0,
-                    marginBottom: marginBottom ? marginBottom : "5px",
-                    marginTop: marginTop ? marginTop: "5px",
-                    display: inline ? "inline-block": "",
-                }}
-                classes={{
-                    root: classes.textFieldRoot
+                    "--mythic-field-margin-bottom": marginBottom || "5px",
+                    "--mythic-field-margin-top": marginTop || "5px",
                 }} />
-        </Root>
+        </div>
     );
 }
 export default MythicTextField;

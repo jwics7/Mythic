@@ -21,7 +21,9 @@ import CategoryIcon from '@mui/icons-material/Category';
 import {MythicPageBody} from "../../MythicComponents/MythicPageBody";
 import {MythicPageHeader, MythicPageHeaderChip} from "../../MythicComponents/MythicPageHeader";
 import {MythicToolbarButton, MythicToolbarToggle} from "../../MythicComponents/MythicTableToolbar";
-import {MythicStateChip} from "../../MythicComponents/MythicStateChip";
+import {MythicStatusChip} from "../../MythicComponents/MythicStatusChip";
+import {MythicStack, MythicCluster, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
+import {MythicPanel} from "../../MythicComponents/MythicContent";
 
 const get_eventgroups = gql`
 query GetEventGroups {
@@ -354,18 +356,18 @@ export function Eventing({me}){
                 }
                 actions={
                     <>
-                        <MythicToolbarButton className="mythic-table-row-action-hover-info" variant="outlined" component="label" startIcon={<CloudUploadIcon fontSize="small" />}>
+                        <MythicToolbarButton tone="info" variant="outlined" component="label" startIcon={<CloudUploadIcon fontSize="small" />}>
                             Upload
                             <input onChange={onFileChange} type="file" multiple hidden/>
                         </MythicToolbarButton>
-                        <MythicToolbarButton className="mythic-table-row-action-hover-success" variant="outlined" onClick={()=>setOpenTestModal(true)} startIcon={<AddCircleIcon fontSize="small" />}>
+                        <MythicToolbarButton tone="success" variant="outlined" onClick={()=>setOpenTestModal(true)} startIcon={<AddCircleIcon fontSize="small" />}>
                             Text
                         </MythicToolbarButton>
-                        <MythicToolbarButton className="mythic-table-row-action-hover-success" variant="outlined" onClick={()=>setOpenCreateEventingStepper(true)} startIcon={<CategoryIcon fontSize="small" />}>
+                        <MythicToolbarButton tone="success" variant="outlined" onClick={()=>setOpenCreateEventingStepper(true)} startIcon={<CategoryIcon fontSize="small" />}>
                             Wizard
                         </MythicToolbarButton>
                         <MythicToolbarToggle
-                            className={showDeleted ? "mythic-table-row-action-hover-warning" : "mythic-table-row-action-hover-info"}
+                            tone={showDeleted ? "warning" : "info"}
                             checked={showDeleted}
                             onClick={() => setShowDeleted(!showDeleted)}
                             label="Deleted"
@@ -375,9 +377,9 @@ export function Eventing({me}){
                     </>
                 }
             />
-            <div className="mythic-eventing-workspace">
-                <Split direction="horizontal" className="mythic-eventing-split" sizes={[30, 70]} minSize={[360, 520]} >
-                    <div className="mythic-eventing-sidebar">
+            <MythicCluster component="div" gap="sm" wrap={false} align="stretch" className="mythic-eventing-workspace mythic-fill mythic-overflow-hidden">
+                <MythicCluster component={Split} gap="none" wrap={false} align="stretch" direction="horizontal" className="mythic-eventing-split mythic-full-width mythic-overflow-hidden mythic-min-height-0 mythic-full-height" sizes={[30, 70]} minSize={[360, 520]} >
+                    <MythicPanel component="div" density="flush" layout="stack" overflow="hidden" tone="raised" className="mythic-eventing-sidebar mythic-min-height-0">
                         <div style={{width: "100%", height: '100%', display: "flex", flexDirection: "column"}}>
                             {openTestModal &&
                                 <MythicDialog fullWidth={true} maxWidth="xl" open={openTestModal}
@@ -397,14 +399,14 @@ export function Eventing({me}){
                                               innerDialog={<CreateEventingStepper onClose={onCloseStepper} />}
                                 />
                             }
-                            <div className="mythic-eventing-sidebar-toolbar">
-                                <div className="mythic-eventing-sidebar-title-row">
+                            <MythicStack component="div" gap="sm" className="mythic-eventing-sidebar-toolbar mythic-divider-bottom">
+                                <MythicCluster component="div" gap="md" align="start" justify="between" wrap={false} className="mythic-eventing-sidebar-title-row">
                                     <div>
-                                        <div className="mythic-eventing-sidebar-title">Registered event groups</div>
-                                        <div className="mythic-eventing-sidebar-subtitle">Browse workflows by run state</div>
+                                        <div className="mythic-eventing-sidebar-title mythic-font-size-small mythic-font-weight-extra-bold mythic-line-height-tight mythic-text-primary">Registered event groups</div>
+                                        <div className="mythic-eventing-sidebar-subtitle mythic-font-weight-medium mythic-font-size-caption mythic-line-height-tight mythic-text-secondary">Browse workflows by run state</div>
                                     </div>
-                                    <span className="mythic-eventing-sidebar-count">{filteredEventGroups.length}/{visibleEventGroups.length}</span>
-                                </div>
+                                    <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-eventing-sidebar-count mythic-line-height-compact mythic-font-size-caption mythic-font-weight-extra-bold mythic-border-radius mythic-flex-fixed">{filteredEventGroups.length}/{visibleEventGroups.length}</MythicCluster>
+                                </MythicCluster>
                                 <TextField
                                     className="mythic-eventing-sidebar-search"
                                     size="small"
@@ -420,7 +422,7 @@ export function Eventing({me}){
                                         )
                                     }}
                                 />
-                                <div className="mythic-eventing-filter-row">
+                                <MythicCluster component="div" gap="xs" wrap={false} align="stretch" className="mythic-eventing-filter-row">
                                     {sidebarFilterOptions.map((filterOption) => {
                                         const filterCount = filterOption.key === "all" ? visibleEventGroups.length : sidebarFilterCounts[filterOption.key];
                                         return (
@@ -428,45 +430,45 @@ export function Eventing({me}){
                                                 key={filterOption.key}
                                                 type="button"
                                                 onClick={() => setSidebarFilter(filterOption.key)}
-                                                className={`mythic-eventing-filter-button ${sidebarFilter === filterOption.key ? "mythic-eventing-filter-button-active" : ""}`.trim()}
+                                                className={`mythic-eventing-filter-button mythic-gap-xs mythic-nowrap mythic-clickable mythic-font-weight-strong mythic-font-size-caption mythic-inline-cluster mythic-border-radius mythic-border mythic-text-secondary mythic-flex-fixed ${sidebarFilter === filterOption.key ? "mythic-eventing-filter-button-active" : ""}`.trim()}
                                             >
                                                 <span>{filterOption.label}</span>
-                                                <span className="mythic-eventing-filter-count">{filterCount || 0}</span>
+                                                <span className="mythic-eventing-filter-count mythic-inherit-color">{filterCount || 0}</span>
                                             </button>
                                         );
                                     })}
-                                </div>
-                            </div>
+                                </MythicCluster>
+                            </MythicStack>
                             <ListItem onClick={() => setSelectedEventGroup({id: 0})}
-                                      className={`mythic-eventing-list-item mythic-eventing-list-item-all ${selectedEventGroup.id === 0 ? "mythic-eventing-list-item-selected" : ""}`.trim()}>
-                                <div className="mythic-eventing-status-dot mythic-eventing-status-all" />
-                                <div className="mythic-eventing-list-item-content">
-                                    <div className="mythic-eventing-list-item-main">
-                                        <span className="mythic-eventing-list-item-name">All workflow runs</span>
-                                        <MythicStateChip compact label={visibleEventGroups.length} state="info" />
-                                    </div>
-                                    <div className="mythic-eventing-list-item-meta">Review instances across all event groups</div>
+                                      className={`mythic-eventing-list-item mythic-clickable mythic-gap-sm mythic-eventing-list-item-all mythic-border-radius mythic-min-width-0 mythic-flex ${selectedEventGroup.id === 0 ? "mythic-eventing-list-item-selected" : ""}`.trim()}>
+                                <div className="mythic-eventing-status-dot mythic-eventing-status-all mythic-border-radius-pill" />
+                                <div className="mythic-eventing-list-item-content mythic-min-width-0 mythic-flex-fill">
+                                    <MythicCluster component="div" gap="sm" align="center" justify="between" wrap={false} className="mythic-eventing-list-item-main">
+                                        <MythicTruncatedText component="span" className="mythic-eventing-list-item-name mythic-font-size-body-small mythic-line-height-snug mythic-font-weight-extra-bold mythic-flex-fill mythic-text-primary">All workflow runs</MythicTruncatedText>
+                                        <MythicStatusChip size="compact" label={visibleEventGroups.length} status="info" />
+                                    </MythicCluster>
+                                    <MythicCluster component="div" gap="none" align="stretch" className="mythic-eventing-list-item-meta mythic-font-weight-semibold mythic-font-size-caption mythic-line-height-tight mythic-text-secondary">Review instances across all event groups</MythicCluster>
                                 </div>
                             </ListItem>
-                            <div className="mythic-eventing-list-scroll">
+                            <div className="mythic-eventing-list-scroll mythic-min-height-0 mythic-full-height">
                                 <List className="mythic-eventing-list">
                                     {filteredEventGroups.length === 0 ? (
-                                        <div className="mythic-eventing-list-empty">No workflows match this view</div>
+                                        <div className="mythic-eventing-list-empty mythic-font-size-small mythic-font-weight-semibold mythic-text-secondary">No workflows match this view</div>
                                     ) : filteredEventGroups.map( (eventGroup) => {
                                         const status = getEventGroupStatus(eventGroup);
                                         return (
                                             <ListItem key={eventGroup.id + eventGroup.name} onClick={() => setSelectedEventGroup(eventGroup)}
-                                                      className={`mythic-eventing-list-item ${selectedEventGroup.id === eventGroup.id ? "mythic-eventing-list-item-selected" : ""} mythic-eventing-list-item-${status.key}`.trim()}>
-                                                <div className={`mythic-eventing-status-dot mythic-eventing-status-${status.key}`} />
-                                                <div className="mythic-eventing-list-item-content">
-                                                    <div className="mythic-eventing-list-item-main">
-                                                        <span className={`mythic-eventing-list-item-name ${eventGroup.deleted ? "mythic-eventing-list-item-name-deleted" : ""}`.trim()}>{eventGroup.name}</span>
-                                                        <MythicStateChip compact label={status.label} state={getEventGroupStateChipState(status.key)} />
-                                                    </div>
-                                                    <div className="mythic-eventing-list-item-meta">
+                                                      className={`mythic-eventing-list-item mythic-clickable mythic-gap-sm mythic-border-radius mythic-min-width-0 mythic-flex ${selectedEventGroup.id === eventGroup.id ? "mythic-eventing-list-item-selected" : ""} mythic-border-radius mythic-min-width-0 mythic-flex mythic-eventing-list-item-${status.key}`.trim()}>
+                                                <div className={`mythic-eventing-status-dot mythic-border-radius-pill mythic-eventing-status-${status.key}`} />
+                                                <div className="mythic-eventing-list-item-content mythic-min-width-0 mythic-flex-fill">
+                                                    <MythicCluster component="div" gap="sm" align="center" justify="between" wrap={false} className="mythic-eventing-list-item-main">
+                                                        <span className={`mythic-eventing-list-item-name mythic-font-size-body-small mythic-line-height-snug mythic-font-weight-extra-bold mythic-truncate mythic-flex-fill mythic-text-primary ${eventGroup.deleted ? "mythic-eventing-list-item-name-deleted mythic-text-secondary" : ""}`.trim()}>{eventGroup.name}</span>
+                                                        <MythicStatusChip size="compact" label={status.label} status={getEventGroupStateChipState(status.key)} />
+                                                    </MythicCluster>
+                                                    <MythicCluster component="div" gap="none" align="stretch" className="mythic-eventing-list-item-meta mythic-font-weight-semibold mythic-font-size-caption mythic-line-height-tight mythic-text-secondary">
                                                         <span>{eventGroup.trigger || "No trigger"}</span>
-                                                        <span className="mythic-eventing-runas-chip">{eventGroup.run_as || "unknown"}</span>
-                                                    </div>
+                                                        <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-eventing-runas-chip mythic-font-size-xs mythic-line-height-compact mythic-font-weight-extra-bold mythic-border-radius mythic-border mythic-text-secondary">{eventGroup.run_as || "unknown"}</MythicCluster>
+                                                    </MythicCluster>
                                                 </div>
                                             </ListItem>
                                         );
@@ -475,15 +477,15 @@ export function Eventing({me}){
                             </div>
                             <Divider />
                         </div>
-                    </div>
-                    <div className="mythic-eventing-content">
-                        <div style={{width: "100%", height: "100%"}}>
+                    </MythicPanel>
+                    <MythicPanel component="div" density="flush" layout="cluster" overflow="hidden" tone="raised" className="mythic-eventing-content mythic-min-height-0">
+                        <div className="mythic-min-width-0" style={{width: "100%", height: "100%"}}>
                             <EventGroupTable selectedEventGroup={selectedEventGroup} me={me} showInstances={true} showGraph={true} />
                         </div>
-                    </div>
-                </Split>
+                    </MythicPanel>
+                </MythicCluster>
 
-            </div>
+            </MythicCluster>
         </MythicPageBody>
     )
 }

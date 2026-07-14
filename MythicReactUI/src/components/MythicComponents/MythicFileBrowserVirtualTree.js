@@ -1,5 +1,3 @@
-import { alpha } from "@mui/material";
-import { styled } from '@mui/material/styles';
 import React, { useCallback, useMemo } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList as List } from "react-window";
@@ -13,180 +11,10 @@ import { Typography } from '@mui/material';
 import { MythicStyledTooltip } from "./MythicStyledTooltip";
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import { areEqual } from 'react-window';
+import styles from './MythicFileBrowserVirtualTree.module.css';
+import {MythicStack} from "./MythicLayout";
 
-const PREFIX = 'FileBrowserVirtualTree';
-
-const classes = {
-  rowContainer: `${PREFIX}-rowContainer`,
-  row: `${PREFIX}-row`,
-  rowButtonWrapper: `${PREFIX}-rowButtonWrapper`,
-  rowButton: `${PREFIX}-rowButton`,
-  rowLabel: `${PREFIX}-rowLabel`,
-  heading: `${PREFIX}-heading`,
-  secondaryHeading: `${PREFIX}-secondaryHeading`,
-  taskAndTimeDisplay: `${PREFIX}-taskAndTimeDisplay`,
-  secondaryHeadingExpanded: `${PREFIX}-secondaryHeadingExpanded`,
-  icon: `${PREFIX}-icon`,
-  details: `${PREFIX}-details`,
-  column: `${PREFIX}-column`,
-  paper: `${PREFIX}-paper`,
-  table: `${PREFIX}-table`,
-  visuallyHidden: `${PREFIX}-visuallyHidden`
-};
-
-const StyledAutoSizer = styled(AutoSizer)((
-  {
-    theme
-  }
-) => ({
-  height: "100%",
-  minHeight: 0,
-  minWidth: 0,
-  overflow: "hidden",
-  width: "100%",
-
-  [`& .${classes.rowContainer}`]: {
-    cursor: "pointer",
-    overflow: "hidden",
-    transition: "background-color 120ms ease, color 120ms ease",
-  },
-
-  [`& .${classes.rowContainer}:hover`]: {
-    backgroundColor: theme.palette.action.hover,
-  },
-
-  [`& .${classes.row}`]: {
-    display: "flex",
-    alignItems: "center",
-    height: "100%",
-    minWidth: "fit-content",
-    paddingRight: theme.spacing(1),
-    userSelect: "none",
-    whiteSpace: "nowrap",
-    width: "100%",
-  },
-
-  [`& .${classes.row}[data-deleted="true"]`]: {
-    textDecoration: "line-through",
-  },
-
-  [`& .${classes.rowButtonWrapper}`]: {
-    alignSelf: "stretch",
-    borderLeft: `2px dashed ${alpha(theme.palette.text.primary, 0.34)}`,
-    flex: "0 0 14px",
-    marginLeft: 7,
-  },
-
-  [`& .${classes.rowButton}`]: {
-    alignItems: "center",
-    display: "inline-flex",
-    flex: "0 0 auto",
-    justifyContent: "center",
-    width: theme.spacing(3),
-  },
-
-  [`& .${classes.rowLabel}`]: {
-    color: theme.palette.text.primary,
-    fontFamily: "inherit",
-    fontSize: theme.typography.pxToRem(13),
-    lineHeight: 1.35,
-    margin: 0,
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-  },
-
-  [`& .${classes.rowLabel}[data-muted="true"]`]: {
-    color: theme.palette.text.secondary,
-  },
-
-  [`& .${classes.heading}`]: {
-    fontSize: theme.typography.pxToRem(15),
-    whiteSpace: 'pre-line',
-},
-
-  [`& .${classes.secondaryHeading}`]: {
-      fontSize: theme.typography.pxToRem(15),
-      //color: theme.palette.text.secondary,
-      overflow: 'hidden',
-      display: 'block',
-      textOverflow: 'ellipsis',
-      maxWidth: 'calc(90vw)',
-      whiteSpace: 'nowrap',
-  },
-
-  [`& .${classes.taskAndTimeDisplay}`]: {
-      fontSize: theme.typography.pxToRem(12),
-      color: theme.palette.text.secondary,
-      overflow: 'hidden',
-      display: 'block',
-      textOverflow: 'ellipsis',
-      maxWidth: 'calc(90vw)',
-      whiteSpace: 'nowrap',
-  },
-
-  [`& .${classes.secondaryHeadingExpanded}`]: {
-      fontSize: theme.typography.pxToRem(15),
-      //color: theme.palette.text.secondary,
-      display: 'block',
-      overflow: 'auto',
-      maxWidth: 'calc(90vw)',
-      whiteSpace: 'break-word',
-  },
-
-  [`& .${classes.icon}`]: {
-      flex: "0 0 auto",
-      height: 16,
-      marginLeft: 3,
-      marginRight: 5,
-      verticalAlign: 'middle',
-      width: 16,
-  },
-
-  [`& .${classes.icon}[data-folder="true"]`]: {
-      color: theme.folderColor,
-  },
-
-  [`& .${classes.icon}[data-empty="true"]`]: {
-      color: theme.emptyFolderColor,
-  },
-
-  [`& .${classes.details}`]: {
-      alignItems: 'center',
-  },
-
-  [`& .${classes.column}`]: {
-      padding: '0 5px 0 0',
-      display: 'inline-block',
-      margin: 0,
-      height: 'auto',
-  },
-
-  [`& .${classes.paper}`]: {
-      width: '100%',
-      height: "100%",
-      marginBottom: 0,
-      minHeight: 0,
-      minWidth: 0,
-      overflow: "hidden",
-  },
-
-  [`& .${classes.table}`]: {
-      minWidth: 750,
-  },
-
-  [`& .${classes.visuallyHidden}`]: {
-      border: 0,
-      clip: 'rect(0 0 0 0)',
-      height: 1,
-      margin: -1,
-      overflow: 'hidden',
-      padding: 0,
-      position: 'absolute',
-      top: 20,
-      width: 1,
-  }
-}));
+const classes = styles;
 function itemKey(index, data) {
     // Find the item at the specified index.
     // In this case "data" is an Array that was passed to List as "itemData".
@@ -239,11 +67,11 @@ const VirtualTreeRow = React.memo(({
       return "";
     }
   return (
-    <div className={`${classes.rowContainer} hoverme ${selectedPath()}`.trim()}
+    <div className={`${classes.rowContainer} mythic-clickable mythic-overflow-hidden hoverme ${selectedPath()}`.trim()}
          style={ListProps.style}
          onContextMenu={handleContextClick}
          onClick={handleOnClickRow}>
-    <div className={classes.row} data-deleted={itemTreeData.deleted ? "true" : undefined}>
+    <div className={`${classes.row} mythic-nowrap mythic-align-center mythic-flex mythic-full-height mythic-full-width`} data-deleted={itemTreeData.deleted ? "true" : undefined}>
         {[...Array(itemTreeData.depth)].map((o, i) => (
             <span
                 className={classes.rowButtonWrapper}
@@ -252,29 +80,29 @@ const VirtualTreeRow = React.memo(({
         ))}
 
           {itemTreeData.is_group ? (
-              <WidgetsIcon className={classes.icon} />
+              <WidgetsIcon className={`${classes.icon} mythic-flex-fixed`} />
           ): itemTreeData.root  ? (
-              <ComputerIcon className={classes.icon}  />
+              <ComputerIcon className={`${classes.icon} mythic-flex-fixed`}  />
           ) : !itemTreeData.can_have_children ? (
-              <DescriptionIcon className={classes.icon} />
+              <DescriptionIcon className={`${classes.icon} mythic-flex-fixed`} />
           ) : itemTreeData.isOpen ? (
             <FontAwesomeIcon 
               icon={faFolderOpen} 
-              className={classes.icon}
+              className={`${classes.icon} mythic-flex-fixed`}
               data-folder={item?.has_children || item.success ? "true" : undefined}
               data-empty={item?.has_children || item.success ? undefined : "true"}
               size={"lg"}
               onClick={handleOnClickButton} />
           ) : (
               <FontAwesomeIcon 
-                className={classes.icon}
+                className={`${classes.icon} mythic-flex-fixed`}
                 data-folder={item?.has_children || item.success ? "true" : undefined}
                 data-empty={item?.has_children || item.success ? undefined : "true"}
                 size={"lg"}
                 icon={faFolder} onClick={handleOnClickButton} />
           )}
           <Typography
-              className={classes.rowLabel}
+              className={`${classes.rowLabel} mythic-truncate mythic-line-height-normal mythic-overflow-hidden`}
               data-muted={item?.has_children || item.success !== null ? undefined : "true"}
               component="pre">
               {itemTreeData.name}
@@ -282,11 +110,11 @@ const VirtualTreeRow = React.memo(({
 
           {item.success === true && itemTreeData.depth > 0 ? (
               <MythicStyledTooltip title='Successfully listed contents of folder'>
-                  <CheckCircleOutlineIcon className={classes.icon} fontSize='small' color="success" />
+                  <CheckCircleOutlineIcon className={`${classes.icon} mythic-flex-fixed`} fontSize='small' color="success" />
               </MythicStyledTooltip>
           ) : item.success === false && itemTreeData.depth > 0 ? (
               <MythicStyledTooltip title='Failed to list contents of folder'>
-                  <ErrorIcon className={classes.icon} fontSize='small' color="error" />
+                  <ErrorIcon className={`${classes.icon} mythic-flex-fixed`} fontSize='small' color="error" />
               </MythicStyledTooltip>
           ) : null}
 
@@ -449,8 +277,8 @@ const FileBrowserVirtualTreePreMemo = ({
       }
   }, [selectedFolderData, flattenedNodes]);
   return flattenedNodes.length > 0 ? (
-    <div className="mythic-process-browser-table-shell">
-      <StyledAutoSizer>
+    <MythicStack component="div" gap="none" fullSize overflow="hidden" position="relative" className="mythic-process-browser-table-shell">
+      <AutoSizer className="mythic-full-height mythic-min-height-0 mythic-min-width-0 mythic-overflow-hidden mythic-full-width">
       {(AutoSizerProps) => (
         <List
           itemData={flattenedNodes}
@@ -476,8 +304,8 @@ const FileBrowserVirtualTreePreMemo = ({
           )}
         </List>
       )}
-    </StyledAutoSizer>
-    </div>
+    </AutoSizer>
+    </MythicStack>
   ) : null;
 };
 export const FileBrowserVirtualTree = React.memo(FileBrowserVirtualTreePreMemo);

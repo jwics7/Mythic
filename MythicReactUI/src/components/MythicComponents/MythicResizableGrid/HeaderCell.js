@@ -133,7 +133,7 @@ const HeaderCell = ({
                     {isFiltered &&
                         <button
                             aria-label={`Edit filter for ${typeof headerLabel === "string" ? headerLabel : "column"}`}
-                            className={`${classes.headerIndicator} ${classes.headerFilterIcon}`}
+                            className={`${classes.headerIndicator} ${classes.headerFilterIcon} mythic-border-radius`}
                             onClick={handleFilterIndicatorClick}
                             title="Edit Filter"
                             type="button"
@@ -142,7 +142,7 @@ const HeaderCell = ({
                         </button>
                     }
                     {isSorted &&
-                        <span className={`${classes.headerIndicator} ${classes.headerSortIcon}`} title={`Sorted ${sortDirection === 'ASC' ? 'ascending' : 'descending'}`}>
+                        <span className={`${classes.headerIndicator} ${classes.headerSortIcon} mythic-border-radius`} title={`Sorted ${sortDirection === 'ASC' ? 'ascending' : 'descending'}`}>
                             <HeaderSortIcon fontSize="inherit" />
                         </span>
                     }

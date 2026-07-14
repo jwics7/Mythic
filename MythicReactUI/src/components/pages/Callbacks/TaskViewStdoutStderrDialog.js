@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useQuery, gql} from '@apollo/client';
 import LinearProgress from '@mui/material/LinearProgress';
-import {useTheme} from '@mui/material/styles';
+
 import {MythicModifyStringDialog} from "../../MythicComponents/MythicDialog";
 
 const getParametersQuery = gql`

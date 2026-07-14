@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from '@mui/material';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -12,12 +12,12 @@ import {EditBlockListDialog} from './EditBlockListDialog';
 import {snackActions} from '../../utilities/Snackbar';
 import {useMutation, gql} from '@apollo/client';
 import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '@mui/material/IconButton';
 import {MythicConfirmDialog} from '../../MythicComponents/MythicConfirmDialog';
 import EditIcon from '@mui/icons-material/Edit';
 import {MythicPageHeader, MythicPageHeaderChip} from "../../MythicComponents/MythicPageHeader";
 import {MythicToolbarButton} from "../../MythicComponents/MythicTableToolbar";
 import {MythicTableEmptyState} from "../../MythicComponents/MythicStateDisplay";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 const newBlockListEntry = gql`
 mutation newBlockListsEntries($entries: [disabledcommandsprofile_insert_input!]!) {
@@ -276,13 +276,13 @@ function CommandBlockListTableRow(props){
     return (
         <TableRow hover>
             <TableCell>
-                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={()=>{setOpenDeleteDialog(true);}}><DeleteIcon fontSize="small" /></IconButton>
+                <MythicActionButton iconOnly tone="error"  size="small" onClick={()=>{setOpenDeleteDialog(true);}}><DeleteIcon fontSize="small" /></MythicActionButton>
                 {openDelete &&
                     <MythicConfirmDialog onClose={() => {setOpenDeleteDialog(false);}} onSubmit={onAcceptDelete} open={openDelete}/>
                 }
             </TableCell>
             <TableCell>
-                <Button className="mythic-table-row-action" size="small" onClick={()=>{setOpenUpdateDialog(true);}} startIcon={<EditIcon/>} variant="outlined">Edit</Button>
+                <MythicActionButton tone="neutral"  size="small" onClick={()=>{setOpenUpdateDialog(true);}} startIcon={<EditIcon/>} variant="outlined">Edit</MythicActionButton>
                 {openUpdate &&
                     <MythicDialog open={openUpdate} fullWidth maxWidth={"lg"}
                         onClose={()=>{setOpenUpdateDialog(false);}} 

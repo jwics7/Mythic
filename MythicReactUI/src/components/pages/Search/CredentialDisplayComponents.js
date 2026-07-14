@@ -1,5 +1,6 @@
 import React from 'react';
 import {Chip} from '@mui/material';
+import {MythicCluster, MythicGrid, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
 
 export const parseCredentialMetadata = (metadata) => {
     if(metadata === undefined || metadata === null){
@@ -55,17 +56,18 @@ export const getCredentialValidityChips = (metadata) => {
 export function CredentialInspectorSection({title, actions, children, tone=""}){
     const sectionClassName = [
         "mythic-credential-search-section",
+        "mythic-min-width-0",
         tone ? `mythic-credential-search-section-${tone}` : "",
     ].filter(Boolean).join(" ");
     return (
         <section className={sectionClassName}>
-            <div className="mythic-credential-search-section-header">
+            <MythicCluster component="div" gap="sm" align="center" justify="between" wrap={false} className="mythic-credential-search-section-header mythic-font-weight-heavy mythic-letter-spacing-reset mythic-uppercase mythic-font-size-xs mythic-text-secondary">
                 <span>{title}</span>
-                {actions && <div className="mythic-credential-search-section-actions">{actions}</div>}
-            </div>
-            <div className="mythic-credential-search-section-body">
+                {actions && <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-credential-search-section-actions mythic-flex-fixed">{actions}</MythicCluster>}
+            </MythicCluster>
+            <MythicGrid component="div" gap="xs" columns="custom" className="mythic-credential-search-section-body mythic-min-width-0">
                 {children}
-            </div>
+            </MythicGrid>
         </section>
     )
 }
@@ -75,21 +77,22 @@ export function CredentialDetail({label, value, chip, wide=false, code=false, ac
     const displayValue = value === undefined || value === null || value === "" ? "-" : value;
     const detailClassName = [
         "mythic-credential-search-detail",
+        "mythic-border mythic-border-radius mythic-min-width-0",
         wide ? "mythic-credential-search-detail-wide" : "",
         emphasis ? "mythic-credential-search-detail-emphasis" : "",
         tone ? `mythic-credential-search-detail-${tone}` : "",
     ].filter(Boolean).join(" ");
     return (
         <div className={detailClassName}>
-            <span>{label}</span>
-            <div className="mythic-credential-search-detail-value-row">
-                <strong className={code ? "mythic-credential-search-code" : ""} title={isReactValue ? undefined : `${displayValue}`}>
+            <MythicTruncatedText component="span" className="mythic-font-size-xs">{label}</MythicTruncatedText>
+            <MythicGrid component="div" gap="xs" columns="custom" className="mythic-credential-search-detail-value-row mythic-min-width-0 mythic-align-center">
+                <strong className={`mythic-truncate mythic-text-primary ${emphasis ? "mythic-font-weight-heavy" : ""} ${code ? "mythic-credential-search-code mythic-monospace" : ""}`.trim()} title={isReactValue ? undefined : `${displayValue}`}>
                     {displayValue}
                 </strong>
-                {action && <div className="mythic-credential-search-detail-action">{action}</div>}
-            </div>
+                {action && <MythicCluster component="div" gap="none" align="center" wrap={false} className="mythic-credential-search-detail-action mythic-flex-fixed">{action}</MythicCluster>}
+            </MythicGrid>
             {chip &&
-                <Chip size="small" color={chip.color} variant="outlined" label={chip.label} className="mythic-credential-search-inline-chip" />
+                <Chip size="small" color={chip.color} variant="outlined" label={chip.label} className="mythic-credential-search-inline-chip mythic-max-width-full" />
             }
         </div>
     )
@@ -98,34 +101,35 @@ export function CredentialDetail({label, value, chip, wide=false, code=false, ac
 export function CredentialMetadataPair({name, value, tone=""}){
     const pairClassName = [
         "mythic-credential-search-metadata-pair",
+        "mythic-border mythic-border-radius mythic-min-width-0",
         tone ? `mythic-credential-search-metadata-pair-${tone}` : "",
     ].filter(Boolean).join(" ");
     return (
         <div className={pairClassName}>
-            <span title={name}>{name}</span>
-            <strong title={compactMetadataValue(value)}>
+            <MythicTruncatedText component="span" className="mythic-font-size-xs" title={name}>{name}</MythicTruncatedText>
+            <MythicTruncatedText component="strong" className="mythic-text-primary" title={compactMetadataValue(value)}>
                 <MetadataValue value={value} />
-            </strong>
+            </MythicTruncatedText>
         </div>
     )
 }
 
 export function MetadataValue({value}){
     if(Array.isArray(value)){
-        return <Chip size="small" variant="outlined" label={`array[${value.length}]`} className="mythic-credential-search-mini-chip" />
+        return <Chip size="small" variant="outlined" label={`array[${value.length}]`} className="mythic-credential-search-mini-chip mythic-max-width-full" />
     }
     if(isPlainObject(value)){
         const entries = Object.entries(value);
         return (
-            <div className="mythic-credential-search-nested-metadata">
+            <MythicGrid component="div" gap="none" columns="custom" className="mythic-credential-search-nested-metadata mythic-monospace mythic-min-width-0">
                 {entries.map(([key, nestedValue]) => (
-                    <div key={key}>
-                        <span>{key}</span>
-                        <strong>{compactMetadataValue(nestedValue)}</strong>
+                    <div key={key} className="mythic-min-width-0">
+                        <MythicTruncatedText component="span" className="mythic-font-size-xs">{key}</MythicTruncatedText>
+                        <MythicTruncatedText component="strong" className="mythic-font-size-xs">{compactMetadataValue(nestedValue)}</MythicTruncatedText>
                     </div>
                 ))}
-            </div>
+            </MythicGrid>
         )
     }
-    return <span>{compactMetadataValue(value)}</span>
+    return <MythicTruncatedText component="span" >{compactMetadataValue(value)}</MythicTruncatedText>
 }

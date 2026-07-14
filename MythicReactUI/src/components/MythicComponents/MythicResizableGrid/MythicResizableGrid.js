@@ -593,7 +593,7 @@ const MythicResizableGrid = ({
     name,
 }) => {
     return (
-        <div className={classes.root}>
+        <div className={`${classes.root} mythic-border-radius`}>
             <AutoSizer style={{height: "100%", width: "100%"}}>
                 {(AutoSizerProps) => (
                     <ResizableGridWrapper

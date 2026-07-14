@@ -1,5 +1,6 @@
+import TableCell from '@mui/material/TableCell';
 import React from 'react';
-import Button from '@mui/material/Button';
+
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -20,7 +21,7 @@ import {mythicFetch} from "../../utilities/MythicConnection";
 import MythicTextField from "../../MythicComponents/MythicTextField";
 import {ResponseDisplayPlaintext} from "../Callbacks/ResponseDisplayPlaintext";
 import {snackActions} from "../../utilities/Snackbar";
-import { useTheme } from '@mui/material/styles';
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import {useDebounce} from "../../utilities/useDebounce";
 import {MythicDialog, MythicModifyStringDialog} from "../../MythicComponents/MythicDialog";
 import {testFileWebhookMutation} from "./CreateEventWorkflowDialog";
@@ -31,12 +32,13 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import SearchIcon from '@mui/icons-material/Search';
 import TerminalIcon from '@mui/icons-material/Terminal';
-import MythicStyledTableCell from "../../MythicComponents/MythicTableCell";
 import {MythicTableEmptyState, MythicTableLoadingState} from "../../MythicComponents/MythicStateDisplay";
 import {MythicClientSideTablePagination, useMythicClientPagination} from "../../MythicComponents/MythicTablePagination";
 import {TaskParametersDialog} from "../Callbacks/TaskParametersDialog";
 import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
 import {APITokenScopeSelector, defaultAPITokenScopes, normalizeAPITokenScopeSelection} from "../../MythicComponents/APITokenScopeSelector";
+import {MythicCluster, MythicStack, MythicGrid, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton, MythicPanel, MythicText} from "../../MythicComponents/MythicContent";
 
 function getSteps(){
     return ['Trigger Metadata', 'Steps', 'Confirm']
@@ -280,24 +282,24 @@ function CreateEventingStepperNavigationButtons(props){
     const disabledButtons = (me?.user?.current_operation_id || 0) <= 0;
     return (
 
-        <DialogActions className="mythic-eventing-wizard-actions">
-            <Button className="mythic-table-row-action mythic-table-row-action-hover-warning" onClick={props.cancel} variant="outlined">Cancel</Button>
-            <Button
-                className="mythic-table-row-action"
+        <DialogActions className="mythic-eventing-wizard-actions mythic-gap-sm mythic-divider-top">
+            <MythicActionButton tone="warning"  onClick={props.cancel} variant="outlined">Cancel</MythicActionButton>
+            <MythicActionButton tone="neutral"
+
                 variant={"outlined"}
                 disabled={props.first}
                 onClick={props.back}
             >
                 Back
-            </Button>
-                <Button
-                    className={`mythic-table-row-action ${props.last ? "mythic-table-row-action-hover-success" : "mythic-table-row-action-hover-info"}`}
+            </MythicActionButton>
+                <MythicActionButton
+                    tone={props.last ? "success" : "info"}
                     variant="outlined"
                     onClick={props.finished}
                     disabled={disabledButtons}
                 >
                     {props.last ? (props.submitLabel || "Create") : 'Next'}
-                </Button>
+                </MythicActionButton>
         </DialogActions>
     );
 }
@@ -839,7 +841,7 @@ const ChooseOneOrCustom = ({choices, prevData, updateData, choicesLabel, textFie
         }
     }, []);
     return (
-        <div className="mythic-eventing-choice-row">
+        <MythicGrid component="div" gap="sm" columns="custom" className="mythic-eventing-choice-row mythic-align-start">
             <FormControl sx={{display: "inline-block", width: "100%",}}>
                 <TextField
                     label={choicesLabel}
@@ -856,14 +858,14 @@ const ChooseOneOrCustom = ({choices, prevData, updateData, choicesLabel, textFie
                     ))}
                 </TextField>
             </FormControl>
-            <span className="mythic-eventing-choice-separator">or</span>
-            <div className="mythic-eventing-choice-custom">
+            <MythicCluster component="span" gap="none" justify="center" inline wrap={false} className="mythic-eventing-choice-separator mythic-font-weight-heavy mythic-font-size-xs mythic-border-radius mythic-border mythic-text-secondary">or</MythicCluster>
+            <div className="mythic-eventing-choice-custom mythic-min-width-0">
                 <MythicTextField placeholder={textFieldPlaceholder} name={textFieldName}
                                  onChange={onChangeLocalValue}
                                  value={value}
                                  marginBottom={"0px"}/>
             </div>
-        </div>
+        </MythicGrid>
     )
 }
 const GetArrayValues = ({prevData, updateData, textFieldPlaceholder, textFieldName}) => {
@@ -891,21 +893,21 @@ const GetArrayValues = ({prevData, updateData, textFieldPlaceholder, textFieldNa
         }
     }, [])
     return (
-        <div className="mythic-eventing-array-list">
+        <MythicStack component="div" gap="sm" align="start" className="mythic-eventing-array-list">
             {arrayValues.map( (a, i) => (
-                <div className="mythic-eventing-array-row" key={"arrayentry" + i}>
-                    <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={() => removeElement(i)}>
+                <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-eventing-array-row mythic-full-width" key={"arrayentry" + i}>
+                    <MythicActionButton iconOnly tone="error"  size="small" onClick={() => removeElement(i)}>
                         <DeleteIcon fontSize="small" />
-                    </IconButton>
+                    </MythicActionButton>
                     <MythicTextField onChange={(name, value, error) => updateElement(i, value)} value={a}
                     name={textFieldName} placeholder={textFieldPlaceholder} marginBottom={"0px"}/>
-                </div>
+                </MythicCluster>
                 )
             )}
-            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-success" size="small" onClick={addElement}>
+            <MythicActionButton iconOnly tone="success"  size="small" onClick={addElement}>
                 <AddCircleOutlineIcon fontSize="small" />
-            </IconButton>
-        </div>
+            </MythicActionButton>
+        </MythicStack>
     )
 }
 const GetMultipleFileSelect = ({prevData, updateData}) => {
@@ -938,24 +940,24 @@ const GetMultipleFileSelect = ({prevData, updateData}) => {
         setFiles((currentFiles) => currentFiles.filter((_, i) => i !== index));
     }
     return (
-        <div className="mythic-eventing-file-select">
-            <Button className="mythic-table-row-action mythic-table-row-action-hover-success" variant="outlined" component="label" style={{display: "inline-block"}}>
+        <MythicStack component="div" gap="sm" className="mythic-eventing-file-select">
+            <MythicActionButton tone="success"  variant="outlined" component="label" style={{display: "inline-block"}}>
                 Select files
                 <input onChange={onFileMultChange} type="file" hidden multiple />
-            </Button>
+            </MythicActionButton>
             { files.length > 0 &&
-                <div className="mythic-eventing-file-chip-list">
+                <MythicCluster component="div" gap="xs" align="stretch" className="mythic-eventing-file-chip-list">
                     {files?.map((f, i) => (
-                        <span className="mythic-eventing-file-chip" key={"selected-file" + f.name + i}>
-                            <span className="mythic-eventing-file-chip-name">{f.name}</span>
+                        <MythicCluster component="span" gap="xs" inline wrap={false} className="mythic-eventing-file-chip mythic-font-weight-strong mythic-font-size-caption mythic-line-height-tight mythic-border-radius mythic-text-primary" key={"selected-file" + f.name + i}>
+                            <MythicTruncatedText component="span" className="mythic-eventing-file-chip-name">{f.name}</MythicTruncatedText>
                             <IconButton className="mythic-eventing-file-chip-remove" size="small" aria-label={"Remove " + f.name} onClick={() => removeFile(i)}>
                                 <DeleteIcon fontSize="small" />
                             </IconButton>
-                        </span>
+                        </MythicCluster>
                     ))}
-                </div>
+                </MythicCluster>
             }
-        </div>
+        </MythicStack>
     )
 }
 const getRunAsDescription = ({runAs}) => {
@@ -1055,32 +1057,32 @@ const CreateEventingStep1 = ({finished, back, first, last, cancel, prevData}) =>
         }
     }, [prevData]);
     return (
-        <div className="mythic-eventing-wizard-step">
-            <div className="mythic-eventing-wizard-step-scroll">
-                <div className="mythic-eventing-metadata-layout">
-                    <div className="mythic-eventing-metadata-card mythic-eventing-metadata-card-wide">
-                        <div className="mythic-eventing-metadata-card-header">
-                            <div className="mythic-eventing-metadata-card-title">Workflow identity</div>
-                            <div className="mythic-eventing-metadata-card-subtitle">Name and describe what this workflow is meant to do.</div>
+        <MythicStack component="div" gap="none" className="mythic-eventing-wizard-step mythic-min-height-0 mythic-flex-fill">
+            <div className="mythic-eventing-wizard-step-scroll mythic-scroll-region mythic-flex-fill">
+                <MythicGrid component="div" gap="md" columns="custom" className="mythic-eventing-metadata-layout mythic-min-width-0">
+                    <MythicPanel component="div" density="flush" tone="inherit" overflow="hidden" radius="md" className="mythic-eventing-metadata-card mythic-eventing-metadata-card-wide mythic-grid-span-full">
+                        <div className="mythic-eventing-metadata-card-header mythic-divider-bottom">
+                            <MythicText component="div" preset="title" className="mythic-eventing-metadata-card-title">Workflow identity</MythicText>
+                            <MythicText component="div" preset="supporting" className="mythic-eventing-metadata-card-subtitle">Name and describe what this workflow is meant to do.</MythicText>
                         </div>
-                        <div className="mythic-eventing-metadata-field-grid">
-                            <div className="mythic-eventing-metadata-field">
-                                <div className="mythic-eventing-metadata-label">Workflow name</div>
+                        <MythicGrid component="div" gap="md" columns="custom" className="mythic-eventing-metadata-field-grid">
+                            <div className="mythic-eventing-metadata-field mythic-min-width-0">
+                                <MythicText component="div" preset="label" className="mythic-eventing-metadata-label">Workflow name</MythicText>
                                 <MythicTextField placeholder={"My custom workflow..."} onChange={(name, value, error) => setName(value)} value={name} marginBottom={"0px"} />
                             </div>
-                            <div className="mythic-eventing-metadata-field">
-                                <div className="mythic-eventing-metadata-label">Description</div>
+                            <div className="mythic-eventing-metadata-field mythic-min-width-0">
+                                <MythicText component="div" preset="label" className="mythic-eventing-metadata-label">Description</MythicText>
                                 <MythicTextField placeholder={"My custom workflow description..."} onChange={(name, value, error) => setDescription(value)} value={description} marginBottom={"0px"} />
                             </div>
+                        </MythicGrid>
+                    </MythicPanel>
+                    <MythicPanel component="div" density="flush" tone="inherit" overflow="hidden" radius="md" className="mythic-eventing-metadata-card mythic-eventing-metadata-card-wide mythic-grid-span-full">
+                        <div className="mythic-eventing-metadata-card-header mythic-divider-bottom">
+                            <MythicText component="div" preset="title" className="mythic-eventing-metadata-card-title">Trigger behavior</MythicText>
+                            <MythicText component="div" preset="supporting" className="mythic-eventing-metadata-card-subtitle">{triggerOptionsData[trigger]?.description}</MythicText>
                         </div>
-                    </div>
-                    <div className="mythic-eventing-metadata-card mythic-eventing-metadata-card-wide">
-                        <div className="mythic-eventing-metadata-card-header">
-                            <div className="mythic-eventing-metadata-card-title">Trigger behavior</div>
-                            <div className="mythic-eventing-metadata-card-subtitle">{triggerOptionsData[trigger]?.description}</div>
-                        </div>
-                        <div className="mythic-eventing-metadata-field">
-                            <div className="mythic-eventing-metadata-label">Trigger</div>
+                        <div className="mythic-eventing-metadata-field mythic-min-width-0">
+                            <MythicText component="div" preset="label" className="mythic-eventing-metadata-label">Trigger</MythicText>
                             <FormControl sx={{ display: "inline-block", width: "100%" }} size="small">
                                 <TextField
                                     label={"When should this workflow start"}
@@ -1098,58 +1100,58 @@ const CreateEventingStep1 = ({finished, back, first, last, cancel, prevData}) =>
                                 </TextField>
                             </FormControl>
                         </div>
-                        <div className="mythic-eventing-metadata-field">
-                            <div className="mythic-eventing-metadata-label">Trigger data</div>
+                        <div className="mythic-eventing-metadata-field mythic-min-width-0">
+                            <MythicText component="div" preset="label" className="mythic-eventing-metadata-label">Trigger data</MythicText>
                             {triggerOptionsData[trigger]?.trigger_data?.length > 0 ?
-                                (<div className="mythic-eventing-trigger-parameter-list mythic-column-stack">
+                                (<MythicStack component="div" gap="sm" className="mythic-eventing-trigger-parameter-list mythic-column-stack">
                                     {triggerData?.map( t => (
                                         <CreatePayloadParameter key={t.name} onChange={onChangeTriggerData} displayMode="card" {...t} getOtherParameters={() => {}} />
                                     ))}
-                                </div>) :
-                                (<div className="mythic-eventing-metadata-empty">None</div>)
+                                </MythicStack>) :
+                                (<MythicCluster component="div" gap="none" inline wrap={false} className="mythic-eventing-metadata-empty mythic-font-size-caption mythic-font-weight-extra-bold mythic-border-radius mythic-text-secondary">None</MythicCluster>)
                             }
                         </div>
-                    </div>
-                    <div className="mythic-eventing-metadata-card">
-                        <div className="mythic-eventing-metadata-card-header">
-                            <div className="mythic-eventing-metadata-card-title">Run context</div>
-                            <div className="mythic-eventing-metadata-card-subtitle">{getRunAsDescription({runAs})}</div>
+                    </MythicPanel>
+                    <MythicPanel component="div" density="flush" tone="inherit" overflow="hidden" radius="md" className="mythic-eventing-metadata-card">
+                        <div className="mythic-eventing-metadata-card-header mythic-divider-bottom">
+                            <MythicText component="div" preset="title" className="mythic-eventing-metadata-card-title">Run context</MythicText>
+                            <MythicText component="div" preset="supporting" className="mythic-eventing-metadata-card-subtitle">{getRunAsDescription({runAs})}</MythicText>
                         </div>
-                        <div className="mythic-eventing-metadata-field">
-                            <div className="mythic-eventing-metadata-label">Run as</div>
+                        <div className="mythic-eventing-metadata-field mythic-min-width-0">
+                            <MythicText component="div" preset="label" className="mythic-eventing-metadata-label">Run as</MythicText>
                             <ChooseOneOrCustom choices={runAsOptions} choicesLabel={""} updateData={setRunAs}
                                 textFieldName={"Custom operator"} textFieldPlaceholder={"Specific operator..."}
                                 prevData={prevData?.run_as}/>
                         </div>
-                    </div>
-                    <div className="mythic-eventing-metadata-card">
-                        <div className="mythic-eventing-metadata-card-header">
-                            <div className="mythic-eventing-metadata-card-title">Optional inputs</div>
-                            <div className="mythic-eventing-metadata-card-subtitle">Keywords and files can be referenced by workflow steps later.</div>
+                    </MythicPanel>
+                    <MythicPanel component="div" density="flush" tone="inherit" overflow="hidden" radius="md" className="mythic-eventing-metadata-card">
+                        <div className="mythic-eventing-metadata-card-header mythic-divider-bottom">
+                            <MythicText component="div" preset="title" className="mythic-eventing-metadata-card-title">Optional inputs</MythicText>
+                            <MythicText component="div" preset="supporting" className="mythic-eventing-metadata-card-subtitle">Keywords and files can be referenced by workflow steps later.</MythicText>
                         </div>
-                        <div className="mythic-eventing-metadata-field">
-                            <div className="mythic-eventing-metadata-label">Keywords</div>
+                        <div className="mythic-eventing-metadata-field mythic-min-width-0">
+                            <MythicText component="div" preset="label" className="mythic-eventing-metadata-label">Keywords</MythicText>
                             <GetArrayValues updateData={setKeywords} prevData={prevData?.keywords}
                             textFieldName={"keyword"} textFieldPlaceholder={"Keyword"}/>
                         </div>
-                        <div className="mythic-eventing-metadata-field">
-                            <div className="mythic-eventing-metadata-label">Files</div>
+                        <div className="mythic-eventing-metadata-field mythic-min-width-0">
+                            <MythicText component="div" preset="label" className="mythic-eventing-metadata-label">Files</MythicText>
                             <GetMultipleFileSelect prevData={prevData?.files} updateData={setFiles} />
                         </div>
-                    </div>
-                    <div className="mythic-eventing-metadata-card mythic-eventing-metadata-card-wide">
-                        <div className="mythic-eventing-metadata-card-header">
-                            <div className="mythic-eventing-metadata-card-title">Environment</div>
-                            <div className="mythic-eventing-metadata-card-subtitle">Provide JSON key-value pairs that every step can read.</div>
+                    </MythicPanel>
+                    <MythicPanel component="div" density="flush" tone="inherit" overflow="hidden" radius="md" className="mythic-eventing-metadata-card mythic-eventing-metadata-card-wide mythic-grid-span-full">
+                        <div className="mythic-eventing-metadata-card-header mythic-divider-bottom">
+                            <MythicText component="div" preset="title" className="mythic-eventing-metadata-card-title">Environment</MythicText>
+                            <MythicText component="div" preset="supporting" className="mythic-eventing-metadata-card-subtitle">Provide JSON key-value pairs that every step can read.</MythicText>
                         </div>
                         <div className="mythic-eventing-metadata-editor">
                             <ResponseDisplayPlaintext plaintext={environmentRef.current} onChangeContent={onChangeEnvironment} initial_mode={"json"} autoFormat={false} />
                         </div>
-                    </div>
-                </div>
+                    </MythicPanel>
+                </MythicGrid>
             </div>
             <CreateEventingStepperNavigationButtons first={first} last={last} finished={finishedStep1} back={back} cancel={cancel} />
-        </div>
+        </MythicStack>
     )
 }
 
@@ -1176,11 +1178,11 @@ const EventingAPITokenScopeSelector = ({scopes, onChange}) => (
     />
 )
 const EventingStepConfigSection = ({title, description, children, className = ""}) => (
-    <div className={`mythic-eventing-step-config-section ${className}`.trim()}>
-        <div className="mythic-eventing-step-config-section-header">
-            <div className="mythic-eventing-step-config-section-title">{title}</div>
+    <div className={`mythic-eventing-step-config-section mythic-border-radius mythic-border mythic-min-width-0 mythic-overflow-hidden mythic-surface-raised ${className}`.trim()}>
+        <div className="mythic-eventing-step-config-section-header mythic-divider-bottom">
+            <MythicText component="div" preset="compact-title" className="mythic-eventing-step-config-section-title">{title}</MythicText>
             {description &&
-                <div className="mythic-eventing-step-config-section-subtitle">{description}</div>
+                <MythicText component="div" preset="supporting" className="mythic-eventing-step-config-section-subtitle">{description}</MythicText>
             }
         </div>
         <div className="mythic-eventing-step-config-section-body">
@@ -1189,17 +1191,17 @@ const EventingStepConfigSection = ({title, description, children, className = ""
     </div>
 )
 const EventingStepFieldBlock = ({label, description, required = false, children, className = ""}) => (
-    <div className={`mythic-eventing-step-field ${className}`.trim()}>
-        <div className="mythic-eventing-step-field-heading">
-            <span className="mythic-eventing-step-field-label">{label}</span>
+    <div className={`mythic-eventing-step-field mythic-min-width-0 ${className}`.trim()}>
+        <MythicCluster component="div" gap="xs" align="center" className="mythic-eventing-step-field-heading">
+            <MythicText component="span" preset="label" className="mythic-eventing-step-field-label">{label}</MythicText>
             {required &&
-                <span className="mythic-eventing-step-field-required">Required</span>
+                <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-eventing-step-field-required mythic-text-warning mythic-font-weight-heavy mythic-line-height-compact mythic-border-radius">Required</MythicCluster>
             }
-        </div>
+        </MythicCluster>
         {description &&
-            <div className="mythic-eventing-step-field-description">{description}</div>
+            <MythicText component="div" preset="caption" className="mythic-eventing-step-field-description">{description}</MythicText>
         }
-        <div className="mythic-eventing-step-field-control">
+        <div className="mythic-eventing-step-field-control mythic-min-width-0">
             {children}
         </div>
     </div>
@@ -1207,41 +1209,41 @@ const EventingStepFieldBlock = ({label, description, required = false, children,
 const eventingActionDataHelp = "At execution time, any values here that are the names of an input will be swapped out before the action runs.";
 const EventingActionDataShell = ({children}) => (
     <>
-        <Typography component="div" className="mythic-eventing-step-help-text">
+        <Typography component="div" className="mythic-eventing-step-help-text mythic-font-weight-medium mythic-font-size-caption mythic-border-radius mythic-text-secondary">
             {eventingActionDataHelp}
         </Typography>
-        <div className="mythic-column-stack">
+        <MythicStack component="div" gap="sm" className="mythic-column-stack">
             {children}
-        </div>
+        </MythicStack>
     </>
 )
 const EventingActionDataField = ({label, description, required = false, children, className = ""}) => (
-    <div className={`mythic-eventing-action-data-card ${className}`.trim()}>
-        <div className="mythic-eventing-action-data-copy">
-            <div className="mythic-eventing-action-data-title-row">
-                <Typography component="div" className="mythic-eventing-action-data-title">
+    <div className={`mythic-eventing-action-data-card mythic-gap-md mythic-border-radius mythic-border mythic-min-width-0 mythic-grid mythic-surface ${className}`.trim()}>
+        <div className="mythic-eventing-action-data-copy mythic-min-width-0">
+            <MythicCluster component="div" gap="sm" align="center" className="mythic-eventing-action-data-title-row">
+                <Typography component="div" className="mythic-eventing-action-data-title mythic-font-size-small mythic-line-height-snug mythic-text-primary">
                     {label}
                 </Typography>
                 {required &&
-                    <span className="mythic-eventing-action-data-chip">Required</span>
+                    <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-eventing-action-data-chip mythic-text-warning mythic-font-weight-heavy mythic-line-height-compact mythic-border-radius">Required</MythicCluster>
                 }
-            </div>
+            </MythicCluster>
             {description &&
-                <Typography component="div" className="mythic-eventing-action-data-description">
+                <MythicText preset="caption" component="div" className="mythic-eventing-action-data-description">
                     {description}
-                </Typography>
+                </MythicText>
             }
         </div>
-        <div className="mythic-eventing-action-data-control">
+        <div className="mythic-eventing-action-data-control mythic-min-width-0">
             {children}
         </div>
     </div>
 )
 const EventingStepEmptyInline = ({children}) => (
-    <div className="mythic-eventing-step-empty-inline">{children}</div>
+    <MythicCluster component="div" gap="none" align="center" wrap={false} className="mythic-eventing-step-empty-inline mythic-font-size-caption mythic-font-weight-bold mythic-border-radius mythic-text-secondary">{children}</MythicCluster>
 )
 const EventingStepInputs = ({updateStep, index, localInputOptions, step1Data, prevData, syncKey = ""}) => {
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const [localInputs, setLocalInputs] = React.useState(Array.isArray(prevData) ? prevData : []);
     const skipNextInputUpdate = React.useRef(false);
     const addLocalInput = () => {
@@ -1314,17 +1316,17 @@ const EventingStepInputs = ({updateStep, index, localInputOptions, step1Data, pr
         }
     }, [syncKey]);
     return (
-        <div className="mythic-eventing-step-dynamic-section">
-            <div className="mythic-eventing-step-list">
+        <MythicStack component="div" gap="sm" align="start" className="mythic-eventing-step-dynamic-section">
+            <MythicStack component="div" gap="sm" className="mythic-eventing-step-list mythic-full-width">
                 {localInputs.length === 0 &&
                     <EventingStepEmptyInline>No inputs configured.</EventingStepEmptyInline>
                 }
                 {localInputs.map( (d, i) => (
-                    <div className="mythic-eventing-step-list-item mythic-eventing-step-list-item-editable" key={"localinputs" + i}>
-                        <div className="mythic-eventing-step-input-grid">
-                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger mythic-eventing-step-row-action" size="small" onClick={() => removeLocalInput(i)}>
+                    <MythicCluster component="div" gap="sm" align="start" wrap={false} className="mythic-eventing-step-list-item mythic-eventing-step-list-item-editable mythic-block mythic-border-radius mythic-border mythic-full-width" key={"localinputs" + i}>
+                        <MythicGrid component="div" gap="sm" columns="custom" className="mythic-eventing-step-input-grid mythic-min-width-0 mythic-align-center">
+                            <MythicActionButton iconOnly tone="error" className="mythic-eventing-step-row-action" size="small" onClick={() => removeLocalInput(i)}>
                                 <DeleteIcon fontSize="small" />
-                            </IconButton>
+                            </MythicActionButton>
                             <MythicTextField name={"Input name"} placeholder={"Input name"}
                                              onChange={(name, value, error) => onChangeLocalInputName(i, value)}
                                              value={localInputs[i].name}
@@ -1349,7 +1351,7 @@ const EventingStepInputs = ({updateStep, index, localInputOptions, step1Data, pr
                             </FormControl>
                             {localInputs[i].type === "env" && triggerOptionsData[step1Data.trigger].env.length > 0 ?
                                 (
-                                    <div className="mythic-eventing-choice-row mythic-eventing-step-choice-row">
+                                    <MythicGrid component="div" gap="sm" columns="custom" className="mythic-eventing-choice-row mythic-align-start mythic-eventing-step-choice-row">
                                         <FormControl sx={{display: "inline-block", width: "100%"}}>
                                             <TextField
                                                 label={"Environment option"}
@@ -1369,14 +1371,14 @@ const EventingStepInputs = ({updateStep, index, localInputOptions, step1Data, pr
                                                 ))}
                                             </TextField>
                                         </FormControl>
-                                        <span className="mythic-eventing-choice-separator">or</span>
-                                        <div className="mythic-eventing-choice-custom">
+                                        <MythicCluster component="span" gap="none" justify="center" inline wrap={false} className="mythic-eventing-choice-separator mythic-font-weight-heavy mythic-font-size-xs mythic-border-radius mythic-border mythic-text-secondary">or</MythicCluster>
+                                        <div className="mythic-eventing-choice-custom mythic-min-width-0">
                                             <MythicTextField placeholder={""} name={"Custom value"}
                                                              onChange={(name, value, error) => onChangeLocalInputValue(i, value)}
                                                              value={localInputs[i].value}
                                                              marginBottom={"0px"} />
                                         </div>
-                                    </div>
+                                    </MythicGrid>
                                 )
                                 :
                                 (<MythicTextField placeholder={""} name={"Input value"}
@@ -1396,15 +1398,15 @@ const EventingStepInputs = ({updateStep, index, localInputOptions, step1Data, pr
                                     onChange={(scopes) => onChangeLocalInputScopes(i, scopes)}
                                 />
                             }
-                            <div className="mythic-eventing-step-helper-text">{getInputTypeDescription(localInputs[i].type)}</div>
-                        </div>
-                    </div>
+                            <MythicText component="div" preset="caption" className="mythic-eventing-step-helper-text">{getInputTypeDescription(localInputs[i].type)}</MythicText>
+                        </MythicGrid>
+                    </MythicCluster>
                 ))}
-            </div>
-            <Button className="mythic-table-row-action mythic-table-row-action-hover-success" onClick={addLocalInput} variant="outlined" startIcon={<AddCircleIcon fontSize="small" />}>
+            </MythicStack>
+            <MythicActionButton tone="success"  onClick={addLocalInput} variant="outlined" startIcon={<AddCircleIcon fontSize="small" />}>
                 Add input
-            </Button>
-        </div>
+            </MythicActionButton>
+        </MythicStack>
     )
 }
 const EventingStepOutputs = ({updateStep, index, selectedAction, prevData}) => {
@@ -1448,23 +1450,23 @@ const EventingStepOutputs = ({updateStep, index, selectedAction, prevData}) => {
         }
     }, [prevData]);
     return (
-        <div className="mythic-eventing-step-dynamic-section">
-            <div className="mythic-eventing-step-list">
+        <MythicStack component="div" gap="sm" align="start" className="mythic-eventing-step-dynamic-section">
+            <MythicStack component="div" gap="sm" className="mythic-eventing-step-list mythic-full-width">
                 {localOutputs.length === 0 &&
                     <EventingStepEmptyInline>No outputs configured.</EventingStepEmptyInline>
                 }
                 {localOutputs.map( (d, i) => (
-                    <div className="mythic-eventing-step-list-item mythic-eventing-step-list-item-editable" key={"localoutputs" + i}>
-                        <div className="mythic-eventing-step-output-grid">
-                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger mythic-eventing-step-row-action" size="small" onClick={() => removeLocalOutput(i)}>
+                    <MythicCluster component="div" gap="sm" align="start" wrap={false} className="mythic-eventing-step-list-item mythic-eventing-step-list-item-editable mythic-block mythic-border-radius mythic-border mythic-full-width" key={"localoutputs" + i}>
+                        <MythicGrid component="div" gap="sm" columns="custom" className="mythic-eventing-step-output-grid mythic-min-width-0 mythic-align-center">
+                            <MythicActionButton iconOnly tone="error" className="mythic-eventing-step-row-action" size="small" onClick={() => removeLocalOutput(i)}>
                                 <DeleteIcon fontSize="small" />
-                            </IconButton>
+                            </MythicActionButton>
                             <MythicTextField name={"Output name"} placeholder={"Output name"}
                                              onChange={(name, value, error) => onChangeLocalOutputName(i, value)}
                                              value={localOutputs[i].name}
                                              marginBottom={"0px"}/>
                             {outputOptionsData[selectedAction].output_fields.length > 0 ? (
-                                <div className="mythic-eventing-choice-row mythic-eventing-step-choice-row">
+                                <MythicGrid component="div" gap="sm" columns="custom" className="mythic-eventing-choice-row mythic-align-start mythic-eventing-step-choice-row">
                                     <FormControl sx={{display: "inline-block", width: "100%"}}>
                                         <TextField
                                             label={"Output option"}
@@ -1484,28 +1486,28 @@ const EventingStepOutputs = ({updateStep, index, selectedAction, prevData}) => {
                                             ))}
                                         </TextField>
                                     </FormControl>
-                                    <span className="mythic-eventing-choice-separator">or</span>
-                                    <div className="mythic-eventing-choice-custom">
+                                    <MythicCluster component="span" gap="none" justify="center" inline wrap={false} className="mythic-eventing-choice-separator mythic-font-weight-heavy mythic-font-size-xs mythic-border-radius mythic-border mythic-text-secondary">or</MythicCluster>
+                                    <div className="mythic-eventing-choice-custom mythic-min-width-0">
                                         <MythicTextField placeholder={""} name={"Custom value"}
                                                          onChange={(name, value, error) => onChangeLocalOutputValue(i, value)}
                                                          value={localOutputs[i].value}
                                                          marginBottom={"0px"}/>
                                     </div>
-                                </div>
+                                </MythicGrid>
                             ) : (
                                 <MythicTextField placeholder={""} name={"Custom value"}
                                                  onChange={(name, value, error) => onChangeLocalOutputValue(i, value)}
                                                  value={localOutputs[i].value}
                                                  marginBottom={"0px"}/>
                             )}
-                        </div>
-                    </div>
+                        </MythicGrid>
+                    </MythicCluster>
                 ))}
-            </div>
-            <Button className="mythic-table-row-action mythic-table-row-action-hover-success" onClick={addLocalOutput} variant="outlined" startIcon={<AddCircleIcon fontSize="small" />}>
+            </MythicStack>
+            <MythicActionButton tone="success"  onClick={addLocalOutput} variant="outlined" startIcon={<AddCircleIcon fontSize="small" />}>
                 Add output
-            </Button>
-        </div>
+            </MythicActionButton>
+        </MythicStack>
     )
 }
 const EventingTaskCreateExistingTaskDialog = ({loading, onClose, onSelect, tasks}) => {
@@ -1531,7 +1533,7 @@ const EventingTaskCreateExistingTaskDialog = ({loading, onClose, onSelect, tasks
         <>
             <DialogTitle>Select an executed task</DialogTitle>
             <DialogContent dividers={true}>
-                <Typography className="mythic-eventing-task-helper-summary" component="div">
+                <Typography className="mythic-eventing-task-helper-summary mythic-font-weight-semibold mythic-font-size-small mythic-border-radius mythic-text-secondary" component="div">
                     Pick a previous task to copy its parsed parameters and parameter group into this step.
                 </Typography>
                 <div className="mythic-eventing-task-helper-filter">
@@ -1547,11 +1549,11 @@ const EventingTaskCreateExistingTaskDialog = ({loading, onClose, onSelect, tasks
                     <Table stickyHeader size="small" style={{height: "auto"}}>
                         <TableHead>
                             <TableRow>
-                                <MythicStyledTableCell style={{width: "6rem"}}>Task</MythicStyledTableCell>
-                                <MythicStyledTableCell>Callback</MythicStyledTableCell>
-                                <MythicStyledTableCell style={{width: "8rem"}}>Payload type</MythicStyledTableCell>
-                                <MythicStyledTableCell style={{width: "9rem"}}>Parameter group</MythicStyledTableCell>
-                                <MythicStyledTableCell>Display parameters</MythicStyledTableCell>
+                                <TableCell style={{width: "6rem"}}>Task</TableCell>
+                                <TableCell>Callback</TableCell>
+                                <TableCell style={{width: "8rem"}}>Payload type</TableCell>
+                                <TableCell style={{width: "9rem"}}>Parameter group</TableCell>
+                                <TableCell>Display parameters</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -1581,15 +1583,15 @@ const EventingTaskCreateExistingTaskDialog = ({loading, onClose, onSelect, tasks
                                     style={{cursor: "pointer"}}
                                     tabIndex={0}
                                 >
-                                    <MythicStyledTableCell>{task.display_id}</MythicStyledTableCell>
-                                    <MythicStyledTableCell>{getEventingTaskCallbackDisplay(task)}</MythicStyledTableCell>
-                                    <MythicStyledTableCell>{getEventingTaskPayloadType(task)}</MythicStyledTableCell>
-                                    <MythicStyledTableCell>{task.parameter_group_name || "Default"}</MythicStyledTableCell>
-                                    <MythicStyledTableCell>
-                                        <Typography className="mythic-eventing-task-helper-preview" component="div">
+                                    <TableCell>{task.display_id}</TableCell>
+                                    <TableCell>{getEventingTaskCallbackDisplay(task)}</TableCell>
+                                    <TableCell>{getEventingTaskPayloadType(task)}</TableCell>
+                                    <TableCell>{task.parameter_group_name || "Default"}</TableCell>
+                                    <TableCell>
+                                        <Typography className="mythic-eventing-task-helper-preview mythic-font-size-caption mythic-line-height-normal mythic-overflow-hidden mythic-text-secondary" component="div">
                                             {task.display_params || task.original_params || task.mythic_parsed_params || "No parameters"}
                                         </Typography>
-                                    </MythicStyledTableCell>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -1600,7 +1602,7 @@ const EventingTaskCreateExistingTaskDialog = ({loading, onClose, onSelect, tasks
                 }
             </DialogContent>
             <DialogActions>
-                <Button className="mythic-table-row-action" onClick={onClose} variant="outlined">Close</Button>
+                <MythicActionButton tone="neutral"  onClick={onClose} variant="outlined">Close</MythicActionButton>
             </DialogActions>
         </>
     )
@@ -1630,7 +1632,7 @@ const EventingTaskCreateCallbackDialog = ({callbacks, loading, onClose, onSelect
         <>
             <DialogTitle>Select a callback for tasking</DialogTitle>
             <DialogContent dividers={true}>
-                <Typography className="mythic-eventing-task-helper-summary" component="div">
+                <Typography className="mythic-eventing-task-helper-summary mythic-font-weight-semibold mythic-font-size-small mythic-border-radius mythic-text-secondary" component="div">
                     Choose an active callback that has this command loaded, then fill out the tasking modal without submitting a task.
                 </Typography>
                 <div className="mythic-eventing-task-helper-filter">
@@ -1646,12 +1648,12 @@ const EventingTaskCreateCallbackDialog = ({callbacks, loading, onClose, onSelect
                     <Table stickyHeader size="small" style={{height: "auto"}}>
                         <TableHead>
                             <TableRow>
-                                <MythicStyledTableCell style={{width: "6rem"}}>Callback</MythicStyledTableCell>
-                                <MythicStyledTableCell>User</MythicStyledTableCell>
-                                <MythicStyledTableCell>Host</MythicStyledTableCell>
-                                <MythicStyledTableCell style={{width: "8rem"}}>Callback type</MythicStyledTableCell>
-                                <MythicStyledTableCell style={{width: "8rem"}}>Command type</MythicStyledTableCell>
-                                <MythicStyledTableCell>Description</MythicStyledTableCell>
+                                <TableCell style={{width: "6rem"}}>Callback</TableCell>
+                                <TableCell>User</TableCell>
+                                <TableCell>Host</TableCell>
+                                <TableCell style={{width: "8rem"}}>Callback type</TableCell>
+                                <TableCell style={{width: "8rem"}}>Command type</TableCell>
+                                <TableCell>Description</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -1681,12 +1683,12 @@ const EventingTaskCreateCallbackDialog = ({callbacks, loading, onClose, onSelect
                                     style={{cursor: "pointer"}}
                                     tabIndex={0}
                                 >
-                                    <MythicStyledTableCell>{entry.callback.display_id}</MythicStyledTableCell>
-                                    <MythicStyledTableCell>{entry.callback.user}</MythicStyledTableCell>
-                                    <MythicStyledTableCell>{entry.callback.host}</MythicStyledTableCell>
-                                    <MythicStyledTableCell>{entry.callback.payload?.payloadtype?.name}</MythicStyledTableCell>
-                                    <MythicStyledTableCell>{entry.command.payloadtype?.name}</MythicStyledTableCell>
-                                    <MythicStyledTableCell>{entry.callback.description}</MythicStyledTableCell>
+                                    <TableCell>{entry.callback.display_id}</TableCell>
+                                    <TableCell>{entry.callback.user}</TableCell>
+                                    <TableCell>{entry.callback.host}</TableCell>
+                                    <TableCell>{entry.callback.payload?.payloadtype?.name}</TableCell>
+                                    <TableCell>{entry.command.payloadtype?.name}</TableCell>
+                                    <TableCell>{entry.callback.description}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -1697,7 +1699,7 @@ const EventingTaskCreateCallbackDialog = ({callbacks, loading, onClose, onSelect
                 }
             </DialogContent>
             <DialogActions>
-                <Button className="mythic-table-row-action" onClick={onClose} variant="outlined">Close</Button>
+                <MythicActionButton tone="neutral"  onClick={onClose} variant="outlined">Close</MythicActionButton>
             </DialogActions>
         </>
     )
@@ -1982,13 +1984,13 @@ const EventingStepActionDataTaskCreate = ({updateStep, index, prevData, step1Dat
                 required
                 description={"This is the name of the command you want to execute. If this command is part of a command augmentation container (like forge), then you need to also specify that container's name in the payload_type field below."}
             >
-                <div className="mythic-eventing-task-create-command-row">
+                <MythicStack component="div" gap="sm" align="start" className="mythic-eventing-task-create-command-row">
                     <MythicTextField onChange={onChangeValue} value={actionData.command_name} name={"command_name"} />
-                    <div className="mythic-eventing-task-create-command-actions">
+                    <MythicCluster component="div" gap="sm" align="center" justify="start" className="mythic-eventing-task-create-command-actions">
                         <MythicStyledTooltip title="Use the parsed parameters from a previous execution of this command">
                             <span>
-                                <Button
-                                    className="mythic-table-row-action mythic-table-row-action-hover-info"
+                                <MythicActionButton tone="info"
+
                                     disabled={actionData.command_name.trim() === ""}
                                     onClick={fetchExistingTasks}
                                     size="small"
@@ -1996,13 +1998,13 @@ const EventingStepActionDataTaskCreate = ({updateStep, index, prevData, step1Dat
                                     variant="outlined"
                                 >
                                     Use task
-                                </Button>
+                                </MythicActionButton>
                             </span>
                         </MythicStyledTooltip>
                         <MythicStyledTooltip title="Open the normal tasking modal on a selected callback and capture the final parameters">
                             <span>
-                                <Button
-                                    className="mythic-table-row-action mythic-table-row-action-hover-info"
+                                <MythicActionButton tone="info"
+
                                     disabled={actionData.command_name.trim() === ""}
                                     onClick={fetchTaskingCallbacks}
                                     size="small"
@@ -2010,11 +2012,11 @@ const EventingStepActionDataTaskCreate = ({updateStep, index, prevData, step1Dat
                                     variant="outlined"
                                 >
                                     Build params
-                                </Button>
+                                </MythicActionButton>
                             </span>
                         </MythicStyledTooltip>
-                    </div>
-                </div>
+                    </MythicCluster>
+                </MythicStack>
             </EventingActionDataField>
             <EventingActionDataField
                 label="Payload Type"
@@ -2261,12 +2263,12 @@ const EventingStepActionDataConditionalCheck = ({allSteps, updateStep, index, pr
                 label="Step Names"
                 description="These are the step names that can be conditionally skipped."
             >
-                <div className="mythic-eventing-action-array-list">
+                <MythicStack component="div" gap="sm" className="mythic-eventing-action-array-list">
                     {actionData.steps.map( (s, i) => (
-                        <div className="mythic-eventing-action-array-row" key={"step" + s + i}>
-                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={() => removeStep(i)}>
+                        <MythicGrid component="div" gap="sm" columns="custom" className="mythic-eventing-action-array-row mythic-min-width-0 mythic-align-center" key={"step" + s + i}>
+                            <MythicActionButton iconOnly tone="error"  size="small" onClick={() => removeStep(i)}>
                                 <DeleteIcon fontSize="small" />
-                            </IconButton>
+                            </MythicActionButton>
                             <FormControl sx={{display: "inline-block", width: "100%"}} size="small">
                                 <TextField
                                     label={"Step to potentially skip"}
@@ -2283,12 +2285,12 @@ const EventingStepActionDataConditionalCheck = ({allSteps, updateStep, index, pr
                                     ))}
                                 </TextField>
                             </FormControl>
-                        </div>
+                        </MythicGrid>
                     ))}
-                    <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-success" size="small" onClick={addStep}>
+                    <MythicActionButton iconOnly tone="success"  size="small" onClick={addStep}>
                         <AddCircleOutlineIcon fontSize="small" />
-                    </IconButton>
-                </div>
+                    </MythicActionButton>
+                </MythicStack>
             </EventingActionDataField>
         </EventingActionDataShell>
     )
@@ -2699,7 +2701,7 @@ const EventingUserInteractionSourcePicker = ({localInputOptions, onChange, defau
         }
     }
     return (
-        <div className="mythic-eventing-user-input-source-cell">
+        <MythicStack component="div" gap="xs" className="mythic-eventing-user-input-source-cell mythic-full-width">
             <TextField
                 label={`Default Value Source`}
                 select
@@ -2714,11 +2716,11 @@ const EventingUserInteractionSourcePicker = ({localInputOptions, onChange, defau
                 ))}
             </TextField>
             {default_value_source !== "custom" &&
-                <div className="mythic-eventing-step-helper-text">
+                <MythicText component="div" preset="caption" className="mythic-eventing-step-helper-text">
                     Resolved from {default_value} when the step pauses.
-                </div>
+                </MythicText>
             }
-        </div>
+        </MythicStack>
     )
 }
 const EventingUserInteractionChoicesEditor = ({input, index, updateInputFields}) => {
@@ -2742,29 +2744,29 @@ const EventingUserInteractionChoicesEditor = ({input, index, updateInputFields})
         setChoices(nextChoices);
     }
     return (
-        <div className="mythic-eventing-user-input-choices">
-            <div className="mythic-eventing-user-input-choice-list">
+        <MythicStack component="div" gap="xs" className="mythic-eventing-user-input-choices mythic-border-radius mythic-border mythic-full-width mythic-surface">
+            <MythicStack component="div" gap="sm" className="mythic-eventing-user-input-choice-list mythic-full-width">
                 {choices.length === 0 &&
                     <EventingStepEmptyInline>No choices configured.</EventingStepEmptyInline>
                 }
                 {choices.map((choice, choiceIndex) => (
-                    <div className="mythic-eventing-user-input-choice-row" key={`choice-${index}-${choiceIndex}`}>
-                        <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={() => removeChoice(choiceIndex)}>
+                    <MythicGrid component="div" gap="sm" columns="custom" className="mythic-eventing-user-input-choice-row mythic-min-width-0 mythic-full-width mythic-align-center" key={`choice-${index}-${choiceIndex}`}>
+                        <MythicActionButton iconOnly tone="error"  size="small" onClick={() => removeChoice(choiceIndex)}>
                             <DeleteIcon fontSize="small" />
-                        </IconButton>
+                        </MythicActionButton>
                         <MythicTextField
                             placeholder={`Choice ${choiceIndex + 1}`}
                             onChange={(name, value) => updateChoice(choiceIndex, value)}
                             value={choice}
                             marginBottom="0px"
                         />
-                    </div>
+                    </MythicGrid>
                 ))}
-                <Button className="mythic-table-row-action mythic-table-row-action-hover-success" onClick={addChoice} size="small" variant="outlined" startIcon={<AddCircleIcon fontSize="small" />}>
+                <MythicActionButton tone="success"  onClick={addChoice} size="small" variant="outlined" startIcon={<AddCircleIcon fontSize="small" />}>
                     Add choice
-                </Button>
-            </div>
-        </div>
+                </MythicActionButton>
+            </MythicStack>
+        </MythicStack>
     )
 }
 const EventingStepUserInteraction = ({config, localInputOptions, onChange}) => {
@@ -2804,20 +2806,20 @@ const EventingStepUserInteraction = ({config, localInputOptions, onChange}) => {
         updateUserInteraction({inputs: nextInputs});
     }
     return (
-        <div className="mythic-eventing-step-dynamic-section mythic-eventing-step-user-interaction-section">
-            <div className="mythic-eventing-step-switch-stack">
-                <label className="mythic-eventing-step-switch-row">
-                    <span className="mythic-eventing-step-switch-copy">
-                        <span className="mythic-eventing-step-switch-title">Require approval</span>
-                        <span className="mythic-eventing-step-switch-subtitle">Pause before this step runs until an operator approves it.</span>
-                    </span>
+        <MythicStack component="div" gap="sm" align="stretch" className="mythic-eventing-step-dynamic-section mythic-eventing-step-user-interaction-section mythic-full-width">
+            <MythicStack component="div" gap="sm" className="mythic-eventing-step-switch-stack">
+                <MythicCluster component="label" gap="sm" align="center" wrap={false} className="mythic-eventing-step-switch-row mythic-clickable mythic-border-radius mythic-border">
+                    <MythicStack component="span" gap="none" className="mythic-eventing-step-switch-copy mythic-flex-fill">
+                        <MythicText component="span" preset="compact-heading" className="mythic-eventing-step-switch-title">Require approval</MythicText>
+                        <MythicText component="span" preset="micro-supporting" className="mythic-eventing-step-switch-subtitle">Pause before this step runs until an operator approves it.</MythicText>
+                    </MythicStack>
                     <Switch
                         checked={userInteraction.approval_required}
                         onChange={(event) => updateUserInteraction({approval_required: event.target.checked})}
                         color={"info"}
                         inputProps={{ 'aria-label': 'require approval' }}
                     />
-                </label>
+                </MythicCluster>
                 {userInteraction.approval_required &&
                     <MythicTextField
                         placeholder="Prompt shown to the approving user..."
@@ -2827,7 +2829,7 @@ const EventingStepUserInteraction = ({config, localInputOptions, onChange}) => {
                     />
                 }
                 {userInteraction.approval_required &&
-                    <div className="mythic-eventing-step-approval-policy-row">
+                    <MythicStack component="div" gap="xs" className="mythic-eventing-step-approval-policy-row mythic-full-width">
                         <TextField
                             label="Bot approval role"
                             select
@@ -2848,23 +2850,23 @@ const EventingStepUserInteraction = ({config, localInputOptions, onChange}) => {
                                 <MenuItem key={`user-interaction-approver-${value}`} value={value}>{data.label}</MenuItem>
                             ))}
                         </TextField>
-                        <div className="mythic-eventing-step-helper-text">
+                        <MythicText component="div" preset="caption" className="mythic-eventing-step-helper-text">
                             {userInteractionBotApprovalApprovers[userInteraction.approval_policy.bot_context.approver]?.description}
-                        </div>
-                    </div>
+                        </MythicText>
+                    </MythicStack>
                 }
-                <label className="mythic-eventing-step-switch-row">
-                    <span className="mythic-eventing-step-switch-copy">
-                        <span className="mythic-eventing-step-switch-title">Require user input</span>
-                        <span className="mythic-eventing-step-switch-subtitle">Collect key/value data and merge it into this step's runtime inputs.</span>
-                    </span>
+                <MythicCluster component="label" gap="sm" align="center" wrap={false} className="mythic-eventing-step-switch-row mythic-clickable mythic-border-radius mythic-border">
+                    <MythicStack component="span" gap="none" className="mythic-eventing-step-switch-copy mythic-flex-fill">
+                        <MythicText component="span" preset="compact-heading" className="mythic-eventing-step-switch-title">Require user input</MythicText>
+                        <MythicText component="span" preset="micro-supporting" className="mythic-eventing-step-switch-subtitle">Collect key/value data and merge it into this step's runtime inputs.</MythicText>
+                    </MythicStack>
                     <Switch
                         checked={userInteraction.input_required || userInteraction.inputs.length > 0}
                         onChange={(event) => updateUserInteraction(event.target.checked ? {input_required: true} : {input_required: false, inputs: []})}
                         color={"info"}
                         inputProps={{ 'aria-label': 'require user input' }}
                     />
-                </label>
+                </MythicCluster>
                 {(userInteraction.input_required || userInteraction.inputs.length > 0) &&
                     <MythicTextField
                         placeholder="Prompt shown with the input fields..."
@@ -2873,19 +2875,19 @@ const EventingStepUserInteraction = ({config, localInputOptions, onChange}) => {
                         marginBottom="0px"
                     />
                 }
-            </div>
+            </MythicStack>
             {(userInteraction.input_required || userInteraction.inputs.length > 0) &&
-                <div className="mythic-eventing-step-list">
+                <MythicStack component="div" gap="sm" className="mythic-eventing-step-list mythic-full-width">
                     {userInteraction.inputs.length === 0 &&
                         <EventingStepEmptyInline>No input fields configured.</EventingStepEmptyInline>
                     }
                     {userInteraction.inputs.map((input, index) => (
-                        <div className="mythic-eventing-step-list-item mythic-eventing-step-list-item-editable mythic-eventing-user-input-field-row" key={`user-interaction-input-${index}`}>
-                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={() => removeInputField(index)}>
+                        <MythicCluster component="div" gap="sm" align="start" wrap={false} className="mythic-eventing-step-list-item mythic-eventing-step-list-item-editable mythic-block mythic-eventing-user-input-field-row mythic-border-radius mythic-border mythic-full-width" key={`user-interaction-input-${index}`}>
+                            <MythicActionButton iconOnly tone="error"  size="small" onClick={() => removeInputField(index)}>
                                 <DeleteIcon fontSize="small" />
-                            </IconButton>
-                            <div className="mythic-eventing-step-list-content">
-                                <div className="mythic-eventing-step-field-grid">
+                            </MythicActionButton>
+                            <div className="mythic-eventing-step-list-content mythic-min-width-0 mythic-flex-fill">
+                                <MythicGrid component="div" gap="md" columns="custom" className="mythic-eventing-step-field-grid mythic-min-width-0">
                                     <MythicTextField
                                         name={"Name"}
                                         placeholder="Input name"
@@ -2935,7 +2937,7 @@ const EventingStepUserInteraction = ({config, localInputOptions, onChange}) => {
                                                 default_value: nextValue,
                                             })}
                                         />
-                                </div>
+                                </MythicGrid>
                                 {input.type !== "ChooseOne" && input.default_value_source === "custom" &&
                                     <MythicTextField
                                         name={"Default Value"}
@@ -2952,29 +2954,29 @@ const EventingStepUserInteraction = ({config, localInputOptions, onChange}) => {
                                         updateInputFields={updateInputFields}
                                     />
                                 }
-                                <label className="mythic-eventing-step-switch-row mythic-eventing-step-switch-row-compact">
-                                    <span className="mythic-eventing-step-switch-copy">
-                                        <span className="mythic-eventing-step-switch-title">Required</span>
-                                        <span className="mythic-eventing-step-switch-subtitle">User must supply this value before the step resumes.</span>
-                                    </span>
+                                <MythicCluster component="label" gap="sm" align="center" wrap={false} className="mythic-eventing-step-switch-row mythic-clickable mythic-eventing-step-switch-row-compact mythic-border-radius mythic-border mythic-full-width">
+                                    <MythicStack component="span" gap="none" className="mythic-eventing-step-switch-copy mythic-flex-fill">
+                                        <MythicText component="span" preset="compact-heading" className="mythic-eventing-step-switch-title">Required</MythicText>
+                                        <MythicText component="span" preset="micro-supporting" className="mythic-eventing-step-switch-subtitle">User must supply this value before the step resumes.</MythicText>
+                                    </MythicStack>
                                     <Switch
                                         checked={input.required}
                                         onChange={(event) => updateInputField(index, "required", event.target.checked)}
                                         color={"info"}
                                         inputProps={{ 'aria-label': 'required user input' }}
                                     />
-                                </label>
+                                </MythicCluster>
                             </div>
-                        </div>
+                        </MythicCluster>
                     ))}
-                </div>
+                </MythicStack>
             }
             {(userInteraction.input_required || userInteraction.inputs.length > 0) &&
-                <Button className="mythic-table-row-action mythic-table-row-action-hover-success" onClick={addInputField} variant="outlined" startIcon={<AddCircleIcon fontSize="small" />}>
+                <MythicActionButton tone="success"  onClick={addInputField} variant="outlined" startIcon={<AddCircleIcon fontSize="small" />}>
                     Add input field
-                </Button>
+                </MythicActionButton>
             }
-        </div>
+        </MythicStack>
     )
 }
 const EventingStep = ({step, allSteps, updateStep, index, step1Data, updateStep1Data}) => {
@@ -3084,38 +3086,38 @@ const EventingStep = ({step, allSteps, updateStep, index, step1Data, updateStep1
         }
     }, [allSteps, name]);
     return (
-        <div className="mythic-eventing-step-config-card mythic-eventing-step-config-card-modern">
-            <div className="mythic-eventing-step-config-summary">
-                <div className="mythic-eventing-step-config-summary-copy">
-                    <div className="mythic-eventing-step-config-summary-title">{name || `Step ${index + 1}`}</div>
-                    <div className="mythic-eventing-step-config-summary-subtitle">{description || "Describe what this step does and how it should run."}</div>
+        <MythicPanel component="div" density="flush" tone="inherit" overflow="hidden" radius="md" className="mythic-eventing-step-config-card mythic-eventing-step-config-card-modern">
+            <MythicCluster component="div" gap="md" align="start" justify="between" wrap={false} className="mythic-eventing-step-config-summary mythic-divider-bottom">
+                <div className="mythic-eventing-step-config-summary-copy mythic-min-width-0">
+                    <div className="mythic-eventing-step-config-summary-title mythic-font-weight-heavy mythic-font-size-body mythic-line-height-tight mythic-text-primary">{name || `Step ${index + 1}`}</div>
+                    <MythicText component="div" preset="supporting" className="mythic-eventing-step-config-summary-subtitle">{description || "Describe what this step does and how it should run."}</MythicText>
                 </div>
-                <div className="mythic-eventing-step-config-summary-actions">
-                    <span className="mythic-eventing-step-action-chip">{selectedAction}</span>
+                <MythicCluster component="div" gap="sm" align="start" wrap={false} className="mythic-eventing-step-config-summary-actions mythic-flex-fixed">
+                    <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-eventing-step-action-chip mythic-font-size-caption mythic-line-height-tight mythic-font-weight-extra-bold mythic-border-radius mythic-text-primary">{selectedAction}</MythicCluster>
                     {hasUserInteractionConfig(userInteraction) &&
-                        <span className="mythic-eventing-step-action-chip mythic-eventing-step-action-chip-warning">user interaction</span>
+                        <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-eventing-step-action-chip mythic-font-size-caption mythic-line-height-tight mythic-font-weight-extra-bold mythic-eventing-step-action-chip-warning mythic-text-warning mythic-border-radius mythic-text-primary">user interaction</MythicCluster>
                     }
-                    <label className="mythic-eventing-step-switch-row">
-                        <span className="mythic-eventing-step-switch-copy">
-                            <span className="mythic-eventing-step-switch-title">Continue on error</span>
-                            <span className="mythic-eventing-step-switch-subtitle">Allow later steps to run if this one fails.</span>
-                        </span>
+                    <MythicCluster component="label" gap="sm" align="center" wrap={false} className="mythic-eventing-step-switch-row mythic-clickable mythic-border-radius mythic-border">
+                        <MythicStack component="span" gap="none" className="mythic-eventing-step-switch-copy mythic-flex-fill">
+                            <MythicText component="span" preset="compact-heading" className="mythic-eventing-step-switch-title">Continue on error</MythicText>
+                            <MythicText component="span" preset="micro-supporting" className="mythic-eventing-step-switch-subtitle">Allow later steps to run if this one fails.</MythicText>
+                        </MythicStack>
                         <Switch
                             checked={continueOnError}
                             onChange={onChangeContinueOnError}
                             color={"info"}
                             inputProps={{ 'aria-label': 'continue on error' }}
                         />
-                    </label>
-                </div>
-            </div>
-            <div className="mythic-eventing-step-config-content">
+                    </MythicCluster>
+                </MythicCluster>
+            </MythicCluster>
+            <MythicStack component="div" gap="md" className="mythic-eventing-step-config-content">
                 <EventingStepConfigSection
-                    className="mythic-eventing-step-config-section-wide"
+                    className="mythic-eventing-step-config-section-wide mythic-full-width"
                     title="Step identity"
                     description="Give this step a clear name so other steps can reference it."
                 >
-                    <div className="mythic-eventing-step-field-grid">
+                    <MythicGrid component="div" gap="md" columns="custom" className="mythic-eventing-step-field-grid mythic-min-width-0">
                         <EventingStepFieldBlock label="Name">
                             <MythicTextField placeholder={"Step name..."} onChange={onChangeName} value={name}
                                              marginBottom={"0px"}/>
@@ -3124,10 +3126,10 @@ const EventingStep = ({step, allSteps, updateStep, index, step1Data, updateStep1
                             <MythicTextField placeholder={"Step description..."} onChange={onChangeDescription} value={description}
                                              marginBottom={"0px"}/>
                         </EventingStepFieldBlock>
-                    </div>
+                    </MythicGrid>
                 </EventingStepConfigSection>
                 <EventingStepConfigSection
-                    className="mythic-eventing-step-config-section-wide"
+                    className="mythic-eventing-step-config-section-wide mythic-full-width"
                     title="Action"
                     description={actionOptionsData[selectedAction]?.description}
                 >
@@ -3150,7 +3152,7 @@ const EventingStep = ({step, allSteps, updateStep, index, step1Data, updateStep1
                         </FormControl>
                     </EventingStepFieldBlock>
                 </EventingStepConfigSection>
-                <div className="mythic-eventing-step-section-stack">
+                <MythicStack component="div" gap="md" className="mythic-eventing-step-section-stack">
                     <EventingStepConfigSection
                         title="Inputs"
                         description="Map values from triggers, environment data, Mythic, or earlier step outputs."
@@ -3168,20 +3170,20 @@ const EventingStep = ({step, allSteps, updateStep, index, step1Data, updateStep1
                                             step1Data={step1Data} updateStep={updateStep}
                                             prevData={step?.outputs || []}/>
                     </EventingStepConfigSection>
-                </div>
+                </MythicStack>
                 <EventingStepConfigSection
-                    className="mythic-eventing-step-config-section-wide"
+                    className="mythic-eventing-step-config-section-wide mythic-full-width"
                     title="User interaction"
                     description="Pause before execution to request approval, runtime input, or both."
                 >
                     <EventingStepUserInteraction config={userInteraction} localInputOptions={localInputOptions} onChange={onChangeUserInteraction} />
                 </EventingStepConfigSection>
                 <EventingStepConfigSection
-                    className="mythic-eventing-step-config-section-wide"
+                    className="mythic-eventing-step-config-section-wide mythic-full-width"
                     title="Action data"
                     description="Configure the values this action needs when it runs."
                 >
-                    <div className="mythic-eventing-step-action-data">
+                    <div className="mythic-eventing-step-action-data mythic-min-width-0">
                         {ActionDataElement !== null && ActionDataElement !== undefined &&
                             <ActionDataElement allSteps={allSteps} updateStep={updateStep} index={index}
                                                prevData={step?.action_data} step1Data={step1Data}
@@ -3192,21 +3194,21 @@ const EventingStep = ({step, allSteps, updateStep, index, step1Data, updateStep1
                     </div>
                 </EventingStepConfigSection>
                 <EventingStepConfigSection
-                    className="mythic-eventing-step-config-section-wide"
+                    className="mythic-eventing-step-config-section-wide mythic-full-width"
                     title="Dependencies"
                     description="Choose steps that must finish before this step can start."
                 >
-                    <div className="mythic-eventing-step-dynamic-section">
-                        <div className="mythic-eventing-step-list">
+                    <MythicStack component="div" gap="sm" align="start" className="mythic-eventing-step-dynamic-section">
+                        <MythicStack component="div" gap="sm" className="mythic-eventing-step-list mythic-full-width">
                             {dependsOn.length === 0 &&
                                 <EventingStepEmptyInline>No dependencies configured.</EventingStepEmptyInline>
                             }
                             {dependsOn.map((d, i) => (
-                                <div className="mythic-eventing-step-list-item" key={"dependson" + i}>
-                                    <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={() => removeDependsOn(i)}>
+                                <MythicCluster component="div" gap="sm" align="start" wrap={false} className="mythic-eventing-step-list-item mythic-border-radius mythic-border mythic-full-width" key={"dependson" + i}>
+                                    <MythicActionButton iconOnly tone="error"  size="small" onClick={() => removeDependsOn(i)}>
                                         <DeleteIcon fontSize="small" />
-                                    </IconButton>
-                                    <div className="mythic-eventing-step-list-content">
+                                    </MythicActionButton>
+                                    <div className="mythic-eventing-step-list-content mythic-min-width-0 mythic-flex-fill">
                                         <FormControl sx={{display: "inline-block", width: "100%"}} size="small">
                                             <TextField
                                                 label={"Which step must complete before this step executes"}
@@ -3226,16 +3228,16 @@ const EventingStep = ({step, allSteps, updateStep, index, step1Data, updateStep1
                                             </TextField>
                                         </FormControl>
                                     </div>
-                                </div>
+                                </MythicCluster>
                             ))}
-                        </div>
-                        <Button className="mythic-table-row-action mythic-table-row-action-hover-success" onClick={addDependsOn} variant="outlined" startIcon={<AddCircleIcon fontSize="small" />}>
+                        </MythicStack>
+                        <MythicActionButton tone="success"  onClick={addDependsOn} variant="outlined" startIcon={<AddCircleIcon fontSize="small" />}>
                             Add dependency
-                        </Button>
-                    </div>
+                        </MythicActionButton>
+                    </MythicStack>
                 </EventingStepConfigSection>
-            </div>
-        </div>
+            </MythicStack>
+        </MythicPanel>
     )
 }
 const inputsHelp = `
@@ -3243,7 +3245,7 @@ Steps:
     Steps are the building blocks of workflows. They define the specific actions that happen, what to do if there's an error, what kind of data should get passed to the action, what kind of data to take in from outside sources (other steps, env, etc), and what kind of data to make available to other steps.
 
 Inputs:
-    Inputs are a dictionary with key/value pairs. When starting a step, Mythic iterates through the inputs and checks to see if the input's "key" is available in the step's action data. If it's present, then that key is swapped out with the corresponding value. This happens for all the inputs before the final action data is passed along to the action. This allows you to provide "placeholders" in your action data for things that you don't know while you're creating this workflow (for example: the callback id for a new callback trigger). 
+    Inputs are a dictionary with key/value pairs. When starting a step, Mythic iterates through the inputs and checks to see if the input's "key" is available in the step's action data. If it's present, then that key is swapped out with the corresponding value. This happens for all the inputs before the final action data is passed along to the action. This allows you to provide "placeholders" in your action data for things that you don't know while you're creating this workflow (for example: the callback id for a new callback trigger).
 
 Action data:
     Action data is the set of key/value pairs that are needed by the action to perform the required action. This is highly specific to the corresponding action and has been updated in the UI for each action that's available with required fields marked as required and descriptions for all other fields.
@@ -3327,22 +3329,22 @@ const CreateEventingStep2 = ({finished, back, first, last, cancel, prevData, ste
         }
     }, [prevData]);
     return (
-        <div className="mythic-eventing-wizard-step">
-            <div className="mythic-eventing-wizard-toolbar">
+        <MythicStack component="div" gap="none" className="mythic-eventing-wizard-step mythic-min-height-0 mythic-flex-fill">
+            <MythicCluster component="div" gap="none" align="center" justify="between" wrap={false} className="mythic-eventing-wizard-toolbar mythic-divider-bottom">
                 <div>
-                    <div className="mythic-eventing-wizard-toolbar-title">{steps.length} configured {steps.length === 1 ? "step" : "steps"}</div>
-                    <div className="mythic-eventing-wizard-toolbar-subtitle">{step1Data?.trigger || "manual"} trigger</div>
+                    <MythicText component="div" preset="title" className="mythic-eventing-wizard-toolbar-title">{steps.length} configured {steps.length === 1 ? "step" : "steps"}</MythicText>
+                    <div className="mythic-eventing-wizard-toolbar-subtitle mythic-font-weight-semibold mythic-font-size-caption mythic-text-secondary">{step1Data?.trigger || "manual"} trigger</div>
                 </div>
-                <div className="mythic-eventing-wizard-toolbar-actions">
-                    <Button className="mythic-table-row-action mythic-table-row-action-hover-info" onClick={() => setDisplayHelp(true)} variant={"outlined"}
+                <MythicCluster component="div" gap="sm" justify="end" align="stretch" className="mythic-eventing-wizard-toolbar-actions mythic-flex-fixed">
+                    <MythicActionButton tone="info"  onClick={() => setDisplayHelp(true)} variant={"outlined"}
                             size={"small"}>
                         Display Help
-                    </Button>
-                    <Button className="mythic-table-row-action mythic-table-row-action-hover-success" size={"small"} onClick={addStep} variant="outlined" startIcon={<AddCircleIcon fontSize="small" />}>
+                    </MythicActionButton>
+                    <MythicActionButton tone="success"  size={"small"} onClick={addStep} variant="outlined" startIcon={<AddCircleIcon fontSize="small" />}>
                         Add Step
-                    </Button>
-                </div>
-            </div>
+                    </MythicActionButton>
+                </MythicCluster>
+            </MythicCluster>
             {displayHelp &&
                 <MythicDialog fullWidth={true} maxWidth="xl" open={displayHelp}
                               onClose={(e) => {
@@ -3355,37 +3357,37 @@ const CreateEventingStep2 = ({finished, back, first, last, cancel, prevData, ste
                               />}
                 />
             }
-            <div className={`mythic-eventing-wizard-step-browser ${steps.length === 0 ? "mythic-eventing-wizard-step-browser-empty" : ""}`.trim()}>
+            <div className={`mythic-eventing-wizard-step-browser mythic-fill mythic-flex ${steps.length === 0 ? "mythic-eventing-wizard-step-browser-empty mythic-block" : ""}`.trim()}>
                 {steps.length > 0 &&
-                    <div className="mythic-eventing-step-nav">
-                        <div className="mythic-eventing-step-nav-header">
-                            <div className="mythic-eventing-step-nav-title">Step index</div>
-                            <div className="mythic-eventing-step-nav-subtitle">Jump to a step</div>
+                    <MythicStack component="div" gap="none" className="mythic-eventing-step-nav mythic-min-height-0">
+                        <div className="mythic-eventing-step-nav-header mythic-divider-bottom">
+                            <MythicText component="div" preset="compact-title" className="mythic-eventing-step-nav-title">Step index</MythicText>
+                            <div className="mythic-eventing-step-nav-subtitle mythic-font-weight-semibold mythic-font-size-xs mythic-line-height-tight mythic-text-secondary">Jump to a step</div>
                         </div>
-                        <div className="mythic-eventing-step-nav-list">
+                        <MythicStack component="div" gap="xs" className="mythic-eventing-step-nav-list mythic-min-height-0 mythic-flex-fill">
                             {steps.map((s, i) => (
                                 <button
-                                    className={`mythic-eventing-step-nav-item ${activeStepIndex === i ? "mythic-eventing-step-nav-item-active" : ""}`.trim()}
+                                    className={`mythic-eventing-step-nav-item mythic-clickable mythic-align-start mythic-gap-sm mythic-flex mythic-border-radius mythic-min-width-0 mythic-full-width mythic-text-secondary ${activeStepIndex === i ? "mythic-eventing-step-nav-item-active mythic-text-primary" : ""}`.trim()}
                                     key={"step-nav" + i}
                                     onClick={() => scrollToStep(i)}
                                     type="button"
                                 >
-                                    <span className="mythic-eventing-step-nav-number">{i + 1}</span>
-                                    <span className="mythic-eventing-step-nav-copy">
-                                        <span className="mythic-eventing-step-nav-name">{s.name || "Unnamed step"}</span>
-                                        <span className="mythic-eventing-step-nav-action">{s.action || "task_create"}</span>
-                                    </span>
+                                    <MythicCluster component="span" gap="none" justify="center" inline wrap={false} className="mythic-eventing-step-nav-number mythic-line-height-compact mythic-font-size-caption mythic-border-radius">{i + 1}</MythicCluster>
+                                    <MythicStack component="span" gap="none" className="mythic-eventing-step-nav-copy mythic-flex-fill">
+                                        <MythicTruncatedText component="span" className="mythic-eventing-step-nav-name mythic-inherit-color mythic-font-weight-heavy mythic-font-size-small mythic-line-height-tight">{s.name || "Unnamed step"}</MythicTruncatedText>
+                                        <MythicTruncatedText component="span" className="mythic-eventing-step-nav-action mythic-font-size-xs mythic-font-weight-bold mythic-line-height-tight mythic-text-secondary">{s.action || "task_create"}</MythicTruncatedText>
+                                    </MythicStack>
                                 </button>
                             ))}
-                        </div>
-                    </div>
+                        </MythicStack>
+                    </MythicStack>
                 }
-                <div className="mythic-eventing-wizard-step-scroll mythic-eventing-wizard-step-scroll-browser" onScroll={updateActiveStepFromScroll} ref={stepScrollRef}>
+                <div className="mythic-eventing-wizard-step-scroll mythic-eventing-wizard-step-scroll-browser mythic-scroll-region mythic-flex-fill" onScroll={updateActiveStepFromScroll} ref={stepScrollRef}>
                     {steps.length === 0 ? (
-                        <div className="mythic-eventing-wizard-empty">
-                            <div className="mythic-eventing-wizard-empty-title">No steps configured</div>
-                            <div className="mythic-eventing-wizard-empty-subtitle">Add a step to start building this workflow.</div>
-                        </div>
+                        <MythicPanel component="div" density="flush" tone="inherit" overflow="hidden" radius="md" className="mythic-eventing-wizard-empty mythic-font-weight-semibold mythic-font-size-small mythic-text-secondary">
+                            <div className="mythic-eventing-wizard-empty-title mythic-font-weight-heavy mythic-font-size-body mythic-text-primary">No steps configured</div>
+                            <div className="mythic-eventing-wizard-empty-subtitle mythic-font-weight-semibold mythic-font-size-small mythic-text-secondary">Add a step to start building this workflow.</div>
+                        </MythicPanel>
                     ) : steps.map( (s, i) => (
                         <div
                             className="mythic-eventing-step-shell"
@@ -3396,15 +3398,15 @@ const CreateEventingStep2 = ({finished, back, first, last, cancel, prevData, ste
                                 }
                             }}
                         >
-                            <div className="mythic-eventing-step-shell-header">
+                            <MythicCluster component="div" gap="md" align="center" justify="between" wrap={false} className="mythic-eventing-step-shell-header">
                                 <div>
-                                    <div className="mythic-eventing-step-shell-title">Step {i + 1}</div>
-                                    <div className="mythic-eventing-step-shell-subtitle">{s.name || "Unnamed step"}</div>
+                                    <div className="mythic-eventing-step-shell-title mythic-font-size-caption mythic-line-height-tight">Step {i + 1}</div>
+                                    <MythicText component="div" preset="title" className="mythic-eventing-step-shell-subtitle">{s.name || "Unnamed step"}</MythicText>
                                 </div>
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={() => removeStep(i)}>
+                                <MythicActionButton iconOnly tone="error"  size="small" onClick={() => removeStep(i)}>
                                     <DeleteIcon fontSize="small" />
-                                </IconButton>
-                            </div>
+                                </MythicActionButton>
+                            </MythicCluster>
                             <EventingStep step={s} allSteps={steps} updateStep={updateStep} index={i}
                                           step1Data={step1Data} updateStep1Data={updateStep1Data}/>
                         </div>
@@ -3412,7 +3414,7 @@ const CreateEventingStep2 = ({finished, back, first, last, cancel, prevData, ste
                 </div>
             </div>
             <CreateEventingStepperNavigationButtons first={first} last={last} finished={finishedStep2} back={backStep2} cancel={cancel} />
-        </div>
+        </MythicStack>
     )
 }
 
@@ -3604,10 +3606,10 @@ const CreateEventingStep3 = ({finished, back, first, last, cancel, prevData, ste
         }
     }
     return (
-        <div className="mythic-eventing-wizard-step">
-            <div className="mythic-eventing-wizard-step-scroll">
-                <div className="mythic-eventing-wizard-review-card">
-                <div className="mythic-eventing-wizard-review-toolbar">
+        <MythicStack component="div" gap="none" className="mythic-eventing-wizard-step mythic-min-height-0 mythic-flex-fill">
+            <div className="mythic-eventing-wizard-step-scroll mythic-scroll-region mythic-flex-fill">
+                <MythicStack component="div" gap="none" className="mythic-eventing-wizard-review-card mythic-border-radius mythic-border mythic-overflow-hidden mythic-min-height-0 mythic-full-height">
+                <MythicCluster component="div" gap="sm" align="center" className="mythic-eventing-wizard-review-toolbar mythic-divider-bottom">
                     <FormControl sx={{display: "inline-block", width: "12rem",}}>
                         <TextField
                             label={"Reformat output"}
@@ -3624,10 +3626,10 @@ const CreateEventingStep3 = ({finished, back, first, last, cancel, prevData, ste
                             ))}
                         </TextField>
                     </FormControl>
-                    <Button className="mythic-table-row-action mythic-table-row-action-hover-info" onClick={testOutput} size={"small"} variant="outlined">Test output</Button>
-                    <Button className="mythic-table-row-action mythic-table-row-action-hover-info" onClick={previewGraph} size={"small"} variant="outlined" startIcon={<AccountTreeIcon fontSize="small" />}>
+                    <MythicActionButton tone="info"  onClick={testOutput} size={"small"} variant="outlined">Test output</MythicActionButton>
+                    <MythicActionButton tone="info"  onClick={previewGraph} size={"small"} variant="outlined" startIcon={<AccountTreeIcon fontSize="small" />}>
                         Graph
-                    </Button>
+                    </MythicActionButton>
                     {openEventStepRender.open &&
                         <MythicDialog fullWidth={true} maxWidth="xl" open={openEventStepRender.open}
                                       onClose={() => {
@@ -3638,15 +3640,15 @@ const CreateEventingStep3 = ({finished, back, first, last, cancel, prevData, ste
                                       }} selectedEventGroup={openEventStepRender.data} useSuppliedData={true}/>}
                         />
                     }
-                </div>
-                <div className="mythic-eventing-wizard-editor">
+                </MythicCluster>
+                <div className="mythic-eventing-wizard-editor mythic-flex-fill mythic-overflow-hidden mythic-min-height-0">
                 <ResponseDisplayPlaintext autoFormat={false} plaintext={renderedVersion} onChangeContent={onChangeFileText} initial_mode={outputFormat} expand={true} />
                 </div>
-                </div>
+                </MythicStack>
             </div>
             <CreateEventingStepperNavigationButtons first={first} last={last} finished={finishedStep3} back={back} cancel={cancel}
                                                     submitLabel={mode === "edit" ? "Update" : "Create"}/>
-        </div>
+        </MythicStack>
     )
 }
 export function CreateEventingStepper(props){
@@ -3716,25 +3718,25 @@ export function CreateEventingStepper(props){
           mode === "duplicate" ? "Start from an existing workflow and save it as a new one." : "Build a workflow from trigger metadata through generated output."
       );
     return (
-        <DialogContent className="mythic-eventing-wizard-dialog-content">
-            <div className="mythic-eventing-wizard">
-                <div className="mythic-eventing-wizard-header">
-                    <div className="mythic-eventing-wizard-title-row">
+        <DialogContent className="mythic-eventing-wizard-dialog-content mythic-overflow-hidden">
+            <MythicStack component="div" gap="none" className="mythic-eventing-wizard mythic-min-height-0 mythic-full-height mythic-surface-raised">
+                <div className="mythic-eventing-wizard-header mythic-divider-bottom">
+                    <MythicCluster component="div" gap="none" align="start" justify="between" wrap={false} className="mythic-eventing-wizard-title-row">
                         <div>
-                            <div className="mythic-eventing-wizard-title">{wizardTitle}</div>
-                            <div className="mythic-eventing-wizard-subtitle">{wizardSubtitle}</div>
+                            <div className="mythic-eventing-wizard-title mythic-font-weight-heavy mythic-line-height-tight mythic-text-primary">{wizardTitle}</div>
+                            <div className="mythic-eventing-wizard-subtitle mythic-font-size-small mythic-font-weight-medium mythic-line-height-normal mythic-text-secondary">{wizardSubtitle}</div>
                         </div>
-                        <span className="mythic-eventing-wizard-progress-chip">Step {activeStep + 1} of {steps.length}</span>
-                    </div>
+                        <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-eventing-wizard-progress-chip mythic-font-weight-heavy mythic-line-height-compact mythic-font-size-caption mythic-border-radius mythic-flex-fixed">Step {activeStep + 1} of {steps.length}</MythicCluster>
+                    </MythicCluster>
                 </div>
-                <div className="mythic-eventing-wizard-content">
-                    <div className="mythic-eventing-wizard-content-heading">
-                        <div className="mythic-eventing-wizard-content-title">{activeStepDetails.title}</div>
-                        <div className="mythic-eventing-wizard-content-subtitle">{activeStepDetails.subtitle}</div>
+                <MythicStack component="div" gap="none" className="mythic-eventing-wizard-content mythic-min-height-0 mythic-flex-fill">
+                    <div className="mythic-eventing-wizard-content-heading mythic-divider-bottom">
+                        <div className="mythic-eventing-wizard-content-title mythic-font-weight-heavy mythic-line-height-tight mythic-font-size-body mythic-text-primary">{activeStepDetails.title}</div>
+                        <MythicText component="div" preset="supporting" className="mythic-eventing-wizard-content-subtitle">{activeStepDetails.subtitle}</MythicText>
                     </div>
                 {getStepContent(activeStep)}
-                </div>
-            </div>
+                </MythicStack>
+            </MythicStack>
         </DialogContent>
     );
-} 
+}

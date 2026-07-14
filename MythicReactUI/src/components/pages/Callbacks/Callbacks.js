@@ -1,3 +1,4 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React, { useEffect } from 'react';
 import { CallbacksTabs } from './CallbacksTabs';
 import TocIcon from '@mui/icons-material/Toc';
@@ -11,7 +12,7 @@ import {reorder} from "../../MythicComponents/MythicDraggableList";
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
-import {useTheme} from '@mui/material/styles';
+
 
 export const getCallbackIdFromClickedTab = (tabId) => {
     if(tabId === null || tabId === undefined){return 0}
@@ -33,7 +34,7 @@ export const getCallbackIdFromClickedTab = (tabId) => {
 }
 
 export function Callbacks({me}) {
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const [openCallbackImport, setOpenCallbackImport] = React.useState(false);
     const [topDisplay, setTopDisplay] = React.useState('table');
     const [newDataForTab, setNewDataForTab] = React.useState({});
@@ -226,10 +227,10 @@ export function Callbacks({me}) {
                         alignItems: "center",
                         overflow: "hidden",
                         backgroundColor: theme.palette.background.paper,
-                        borderTop: `1px solid ${theme.borderColor}`,
+                        borderTop: `1px solid ${theme.color.application.border}`,
                         borderRight: 0,
-                        borderBottom: `1px solid ${theme.borderColor}`,
-                        borderLeft: `1px solid ${theme.borderColor}`,
+                        borderBottom: `1px solid ${theme.color.application.border}`,
+                        borderLeft: `1px solid ${theme.color.application.border}`,
                         borderRadius: `${theme.shape.borderRadius}px 0 0 ${theme.shape.borderRadius}px`,
                         paddingTop: "3px",
                     }}>

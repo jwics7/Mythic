@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
-import Button from '@mui/material/Button';
+
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+
 import {useMutation,useQuery, gql} from '@apollo/client';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,10 +11,9 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import {IconButton} from '@mui/material';
+
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import MythicStyledTableCell from "../../MythicComponents/MythicTableCell";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {TextField} from '@mui/material';
 import {snackActions} from "../../utilities/Snackbar";
@@ -22,6 +21,7 @@ import {MeContext} from "../../App";
 import {EventGroupTable} from "./EventGroupTable";
 import {MythicDraggableDialogTitle} from "../../MythicComponents/MythicDraggableDialogTitle";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 const triggerManualMutation = gql(`
 mutation triggerManualMutation($eventgroup_id: Int!, $env_data: jsonb){
@@ -236,12 +236,11 @@ export function EventTriggerContextSelectDialog({onClose, triggerContext}) {
                     <TableBody>
                         {dictionaryData.map( (e, index) => (
                             <TableRow key={"dictionarydata" + index}>
-                                <MythicStyledTableCell style={{display: "flex"}} >
-                                    <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={() => removeRow(index)} >
+                                <TableCell style={{display: "flex"}} >
+                                    <MythicActionButton iconOnly tone="error"  size="small" onClick={() => removeRow(index)} >
                                         <DeleteIcon fontSize="small" />
-                                    </IconButton>
+                                    </MythicActionButton>
                                     <Select
-                                        style={{}}
                                         value={e.type}
                                         onChange={(evt) => changeRowType(evt, index)}
                                     >
@@ -254,21 +253,21 @@ export function EventTriggerContextSelectDialog({onClose, triggerContext}) {
                                     <TextField value={e.key}
                                                style={{width: "100%"}}
                                                onChange={(evt) => onChangeRowKey(evt.target.value, index)} />
-                                </MythicStyledTableCell>
-                                <MythicStyledTableCell>
+                                </TableCell>
+                                <TableCell>
                                     <TextField value={e.value}
                                                style={{width: "100%"}}
                                                onChange={(evt) => onChangeRowValue(evt.target.value, index)} />
-                                </MythicStyledTableCell>
+                                </TableCell>
                             </TableRow>
                         ))}
                         <TableRow>
-                            <MythicStyledTableCell>
-                                <Button className="mythic-table-row-action mythic-table-row-action-hover-success" onClick={addRow} variant="contained" startIcon={<AddCircleIcon fontSize="small" />}>
+                            <TableCell>
+                                <MythicActionButton tone="success"  onClick={addRow} variant="contained" startIcon={<AddCircleIcon fontSize="small" />}>
                                     Add Entry
-                                </Button>
-                            </MythicStyledTableCell>
-                            <MythicStyledTableCell></MythicStyledTableCell>
+                                </MythicActionButton>
+                            </TableCell>
+                            <TableCell></TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
@@ -276,12 +275,12 @@ export function EventTriggerContextSelectDialog({onClose, triggerContext}) {
 
             </DialogContent>
             <DialogActions>
-                <Button className="mythic-table-row-action" onClick={onClose} variant="contained">
+                <MythicActionButton tone="neutral"  onClick={onClose} variant="contained">
                     Close
-                </Button>
-                <Button className="mythic-table-row-action mythic-table-row-action-hover-success" onClick={onSubmit} variant="contained">
+                </MythicActionButton>
+                <MythicActionButton tone="success"  onClick={onSubmit} variant="contained">
                     Submit
-                </Button>
+                </MythicActionButton>
             </DialogActions>
         </React.Fragment>
     );

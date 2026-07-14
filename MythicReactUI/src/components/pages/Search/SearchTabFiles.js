@@ -741,7 +741,7 @@ const SearchTabFilesSearchPanel = (props) => {
                 </MythicToolbarSelect>
             </MythicTableToolbarGroup>
             <MythicTableToolbarGroup label="Actions">
-                <MythicToolbarButton className="mythic-toolbar-button-hover-success" variant="outlined" component="label" startIcon={<BackupIcon />}>
+                <MythicToolbarButton className="mythic-toolbar-button-hover-success mythic-font-weight-strong mythic-border mythic-border-radius mythic-text-primary" variant="outlined" component="label" startIcon={<BackupIcon />}>
                     Files
                     <input onChange={onFileChange} type="file" multiple hidden/>
                 </MythicToolbarButton>

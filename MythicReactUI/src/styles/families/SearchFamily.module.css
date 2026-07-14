@@ -1,0 +1,497 @@
+/* Search visual family. Global selectors are scoped here during the final owner migration. */
+
+:global(.mythic-process-browser-control) {
+    background-color: var(--mythic-effect-text-ghost);
+    padding: 0.15rem 0.18rem 0.15rem 0.55rem;
+}
+:global(.mythic-process-browser-controlGroup) {
+    flex: 1 1 18rem;
+    max-width: 30rem;
+}
+:global(.mythic-process-browser-controlHost) {
+    flex: 1 1 16rem;
+    max-width: 28rem;
+    padding-right: 0.35rem;
+}
+:global(.mythic-process-browser-searchInput) {
+    flex: 2 1 24rem;
+    min-width: 16rem !important;
+}
+:global(.mythic-process-browser-searchInput) :global(.MuiInputBase-input) {
+    padding-bottom: 6px;
+    padding-top: 6px;
+}
+:global(.mythic-process-inspector-tags) :global(.MuiIconButton-root), :global(.mythic-credential-search-tags) :global(.MuiIconButton-root) {
+    flex: 0 0 auto;
+}
+:global(.mythic-process-browser-selectControl) {
+    min-width: 8rem !important;
+}
+:global(.mythic-process-browser-select):global(.MuiInputBase-root) {
+    min-height: 28px;
+}
+:global(.mythic-process-browser-select) :global(.MuiSelect-select) {
+    min-height: 0 !important;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+:global(.mythic-process-browser-actions) {
+    margin-left: auto;
+}
+:global(.mythic-process-summary-strip) {
+    background-color: var(--mythic-effect-surface-opaque);
+    flex-wrap: nowrap;
+    min-height: 34px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.35rem 0.6rem;
+}
+:global(.mythic-process-summary-chip) {
+    max-width: 12rem;
+    min-height: 20px;
+    padding: 0.22rem 0.4rem;
+}
+:global(.mythic-process-indicator) {
+    font-size: 0.62rem;
+    max-width: 12rem;
+    min-height: 18px;
+    padding: 0.18rem 0.32rem;
+}
+:global(.mythic-process-summary-chip-muted) {
+    opacity: 0.58;
+}
+:global(.mythic-process-summary-chip-info) {
+    background-color: var(--mythic-effect-info-soft);
+    border-color: var(--mythic-effect-info-medium);
+    color: var(--mythic-palette-info-main);
+}
+:global(.mythic-process-indicator-deleted) {
+    background-color: var(--mythic-effect-danger-soft);
+    border-color: var(--mythic-effect-danger-medium);
+}
+:global(.mythic-process-indicator) svg {
+    font-size: var(--mythic-foundation-typography-size-small);
+}
+:global(.mythic-process-match-chip) {
+    background-color: var(--mythic-effect-info-soft);
+    border: 1px solid var(--mythic-effect-info-strong);
+    font-size: 0.6rem;
+    min-height: 17px;
+    padding: 0.16rem 0.28rem;
+}
+:global(.mythic-process-match-chip-ancestor) {
+    background-color: var(--mythic-effect-text-subtle-fill);
+    border-color: var(--mythic-color-table-border-soft);
+}
+:global(.mythic-process-inspector) {
+    box-shadow: var(--mythic-effect-process-inspector-shadow);
+    padding: 0.55rem 0.65rem 0.65rem;
+}
+:global(.mythic-process-inspector-title) svg {
+    color: var(--mythic-palette-text-secondary);
+    flex: 0 0 auto;
+}
+:global(.mythic-process-inspector-body) {
+    grid-template-columns: minmax(22rem, 1.25fr) minmax(18rem, 1fr);
+    margin-top: 0.5rem;
+}
+:global(.mythic-process-inspector-details) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+:global(.mythic-process-inspector-detail) {
+    padding: 0.34rem 0.45rem;
+}
+:global(.mythic-process-inspector-detail) span {
+    display: block;
+    font-size: var(--mythic-foundation-typography-size-xs);
+    line-height: 1.1;
+}
+:global(.mythic-process-inspector-detail) strong {
+    display: block;
+    font-size: var(--mythic-foundation-typography-size-small);
+    font-weight: var(--mythic-foundation-typography-weight-bold);
+    line-height: 1.25;
+    margin-top: 0.16rem;
+}
+:global(.mythic-process-inspector-tags) {
+    padding: 0.28rem 0.35rem;
+}
+:global(.mythic-process-inspector-tags) :global(.MuiIconButton-root) {
+    align-items: center !important;
+    background-color: var(--mythic-effect-control-subtle-bg) !important;
+    color: var(--mythic-palette-text-secondary) !important;
+    display: inline-flex !important;
+    height: 22px;
+    justify-content: center !important;
+    padding: 0 !important;
+    width: 22px;
+}
+:global(.mythic-process-inspector-tags) :global(.MuiIconButton-root):hover {
+    background-color: var(--mythic-effect-accent-soft) !important;
+    color: var(--mythic-palette-primary-main) !important;
+}
+:global(.mythic-process-inspector-command) {
+    max-height: 3.3rem;
+    min-height: 2.1rem;
+    padding: 0.4rem 0.5rem;
+    word-break: break-word;
+}
+:global(.mythic-credential-search) > :global(.gutter):global(.gutter-horizontal) {
+    flex: 0 0 8px;
+}
+:global(.mythic-credential-search-row) :global(.MuiTableCell-root) {
+    border-bottom-color: var(--mythic-color-table-border-soft);
+    height: 3.45rem;
+    max-height: 3.45rem;
+    padding-bottom: 0.28rem;
+    padding-top: 0.28rem;
+    vertical-align: middle;
+}
+:global(.mythic-credential-search-metadata-pair) strong, :global(.mythic-credential-search-jwt-json-block) > pre, :global(.mythic-credential-search-kerberos-ticket-header) strong, :global(.mythic-credential-search-kerberos-principal) strong,
+:global(.mythic-credential-search-kerberos-lifecycle-item) strong, :global(.mythic-credential-search-kerberos-technical-item) strong, :global(.mythic-credential-search-kerberos-key) strong {
+    font-family: var(--mythic-foundation-typography-family-monospacespace);
+}
+:global(.mythic-credential-search-kerberos-ticket-header) > div, :global(.mythic-credential-search-nested-metadata) > div {
+    display: grid;
+}
+:global(.mythic-credential-search-primary-cell) {
+    gap: 0.14rem;
+}
+:global(.mythic-credential-search-detail) > span, :global(.mythic-credential-search-metadata-pair) > span, :global(.mythic-credential-search-detail) strong, :global(.mythic-credential-search-metadata-pair) strong {
+    display: block;
+}
+:global(.mythic-credential-search-mini-chip), :global(.mythic-credential-search-type-chip), :global(.mythic-credential-search-inline-chip) {
+    height: 19px !important;
+}
+:global(.mythic-credential-search-mini-chip) :global(.MuiChip-label), :global(.mythic-credential-search-type-chip) :global(.MuiChip-label), :global(.mythic-credential-search-inline-chip) :global(.MuiChip-label) {
+    font-weight: var(--mythic-foundation-typography-weight-strong);
+    line-height: 1;
+    padding-left: 0.34rem;
+    padding-right: 0.34rem;
+}
+:global(.mythic-credential-search-metadata-chip):global(.MuiChip-root) {
+    background-color: var(--mythic-effect-adaptive-info-accent-soft);
+    border-color: var(--mythic-effect-adaptive-info-accent-medium);
+    color: var(--mythic-effect-adaptive-info-accent);
+}
+:global(.mythic-credential-search-identity-chip):global(.MuiChip-root), :global(.mythic-credential-search-jwt-json-block) > span, :global(.mythic-credential-search-section-identity) :global(.mythic-credential-search-section-header), :global(.mythic-credential-search-detail-identity) > span,
+:global(.mythic-credential-search-metadata-pair-identity) > span {
+    color: var(--mythic-effect-adaptive-primary-accent);
+}
+:global(.mythic-credential-search-identity-chip):global(.MuiChip-root) {
+    background-color: var(--mythic-effect-accent-subtle);
+    border-color: var(--mythic-effect-accent-medium);
+}
+:global(.mythic-credential-search-inspector-empty) {
+    min-height: 14rem;
+}
+:global(.mythic-credential-search-inspector-header) {
+    padding: 0.65rem 0.75rem;
+}
+:global(.mythic-credential-search-section) {
+    border-bottom: 1px solid var(--mythic-color-table-border-soft);
+    padding-bottom: 0.55rem;
+}
+:global(.mythic-credential-search-section):last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+:global(.mythic-credential-search-section-metadata), :global(.mythic-credential-search-section-identity) {
+    border-bottom-color: var(--mythic-color-table-border-soft);
+}
+:global(.mythic-credential-search-detail-emphasis) strong {
+    letter-spacing: 0;
+}
+:global(.mythic-credential-search-jwt-json-block) > span, :global(.mythic-credential-search-kerberos-ticket-header) span, :global(.mythic-credential-search-kerberos-principal) > span, :global(.mythic-credential-search-kerberos-lifecycle-item) > span,
+:global(.mythic-credential-search-kerberos-technical-item) > span, :global(.mythic-credential-search-kerberos-key) > span {
+    text-transform: uppercase;
+}
+:global(.mythic-credential-search-section-header) {
+    margin-bottom: 0.38rem;
+}
+:global(.mythic-credential-search-section-metadata) :global(.mythic-credential-search-section-header), :global(.mythic-credential-search-detail-metadata) > span, :global(.mythic-credential-search-metadata-pair-metadata) > span {
+    color: var(--mythic-effect-adaptive-info-accent);
+}
+:global(.mythic-credential-search-detail-wide) {
+    grid-column: 1 / -1;
+}
+:global(.mythic-credential-search-detail), :global(.mythic-credential-search-metadata-pair) {
+    padding: 0.38rem 0.48rem;
+}
+:global(.mythic-credential-search-detail-emphasis), :global(.mythic-credential-search-secret-emphasis) {
+    border-color: var(--mythic-effect-accent-strong);
+    box-shadow: inset 3px 0 0 var(--mythic-effect-accent-strong);
+}
+:global(.mythic-credential-search-detail-metadata), :global(.mythic-credential-search-metadata-pair-metadata) {
+    border-color: var(--mythic-effect-adaptive-info-accent-medium);
+    box-shadow: inset 3px 0 0 var(--mythic-effect-adaptive-info-accent);
+}
+:global(.mythic-credential-search-detail-identity), :global(.mythic-credential-search-metadata-pair-identity), :global(.mythic-credential-search-jwt-json-block) {
+    box-shadow: inset 3px 0 0 var(--mythic-effect-adaptive-primary-accent);
+}
+:global(.mythic-credential-search-detail) strong, :global(.mythic-credential-search-metadata-pair) strong {
+    color: var(--mythic-palette-text-primary);
+    font-weight: var(--mythic-foundation-typography-weight-bold);
+    line-height: 1.25;
+    margin-top: 0.18rem;
+}
+:global(.mythic-credential-search-detail-value-row) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    margin-top: 0.18rem;
+}
+:global(.mythic-credential-search-jwt-json-block) {
+    padding: 0.42rem 0.5rem;
+}
+:global(.mythic-credential-search-jwt-json-block) > pre {
+    border: 1px solid var(--mythic-color-table-border-soft);
+    color: var(--mythic-palette-text-primary);
+    line-height: 1.35;
+    margin: 0;
+    max-height: 18rem;
+    min-height: 2rem;
+    padding: 0.45rem 0.55rem;
+    white-space: pre;
+}
+:global(.mythic-credential-search-kerberos-ticket) {
+    box-shadow: inset 3px 0 0 var(--mythic-palette-secondary-main);
+    gap: 0.48rem;
+    padding: 0.5rem 0.55rem;
+}
+:global(.mythic-credential-search-kerberos-principal) {
+    border-left: 3px solid var(--mythic-palette-secondary-main);
+    padding: 0.42rem 0.48rem;
+}
+:global(.mythic-credential-search-kerberos-principal-service) {
+    border-left-color: var(--mythic-palette-secondary-main);
+}
+:global(.mythic-credential-search-kerberos-principal) strong {
+    font-size: var(--mythic-foundation-typography-size-small);
+    line-height: 1.25;
+}
+:global(.mythic-credential-search-kerberos-lifecycle) {
+    grid-template-columns: repeat(auto-fit, minmax(7.25rem, 1fr));
+    padding-top: 0.45rem;
+}
+:global(.mythic-credential-search-kerberos-lifecycle-item) {
+    gap: 0.16rem;
+}
+:global(.mythic-credential-search-kerberos-lifecycle-item) strong, :global(.mythic-credential-search-kerberos-technical-item) strong, :global(.mythic-credential-search-kerberos-key) strong {
+    font-size: var(--mythic-foundation-typography-size-xs);
+    font-weight: var(--mythic-foundation-typography-weight-bold);
+}
+:global(.mythic-credential-search-kerberos-technical) {
+    padding-top: 0.45rem;
+}
+:global(.mythic-credential-search-kerberos-technical-item), :global(.mythic-credential-search-kerberos-key) {
+    display: inline-grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 0.28rem 0.38rem;
+}
+:global(.mythic-credential-search-kerberos-key) {
+    flex: 1 1 16rem;
+}
+:global(.mythic-credential-search-nested-metadata) {
+    gap: 0.16rem;
+    white-space: normal;
+}
+:global(.mythic-credential-search-nested-metadata) > div {
+    gap: var(--mythic-foundation-spacing-xs);
+    grid-template-columns: minmax(4rem, auto) minmax(0, 1fr);
+}
+:global(.mythic-credential-search-nested-metadata) span {
+    white-space: nowrap;
+}
+:global(.mythic-credential-search-nested-metadata) strong {
+    margin: 0;
+    white-space: nowrap;
+}
+:global(.mythic-credential-search-warning-chip) {
+    height: 20px !important;
+}
+:global(.mythic-credential-search-secret), :global(.mythic-credential-search-comment) {
+    max-height: 8rem;
+    min-height: 2rem;
+    padding: 0.45rem 0.55rem;
+    word-break: break-word;
+}
+:global(.mythic-credential-search-field-action):global(.MuiIconButton-root), :global(.mythic-credential-search-secret-copy):global(.MuiIconButton-root) {
+    height: 22px !important;
+    margin-top: 0;
+    width: 22px !important;
+}
+:global(.mythic-credential-search-tags) {
+    min-height: 34px;
+    padding: 0.3rem 0.4rem;
+}
+:global(.mythic-credential-search-tags) :global(.MuiIconButton-root) {
+    align-items: center !important;
+    background-color: var(--mythic-effect-control-subtle-bg) !important;
+    color: var(--mythic-palette-text-secondary) !important;
+    display: inline-flex !important;
+    height: 22px;
+    justify-content: center !important;
+    padding: 0 !important;
+    width: 22px;
+}
+:global(.mythic-credential-search-tags) :global(.MuiIconButton-root):hover {
+    background-color: var(--mythic-effect-accent-soft) !important;
+    color: var(--mythic-palette-primary-main) !important;
+}
+:global(.mythic-process-row-deleted) {
+    color: var(--mythic-palette-text-disabled);
+    text-decoration: line-through;
+}
+:global(.mythic-process-indent) {
+    height: 1px;
+}
+:global(.mythic-process-expand-button):global(.MuiIconButton-root) {
+    height: 22px;
+    padding: 0;
+    transition: background-color 120ms ease, color 120ms ease;
+    width: 22px;
+}
+:global(.mythic-process-expand-button):global(.MuiIconButton-root):hover {
+    background-color: var(--mythic-effect-accent-soft);
+    color: var(--mythic-palette-primary-main);
+}
+:global(.mythic-process-expand-spacer) {
+    flex: 0 0 22px;
+    height: 22px;
+}
+:global(.mythic-process-name-icon) {
+    opacity: 0.85;
+}
+:global(.mythic-process-string-cell) {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+}
+:global(.mythic-process-action-button):global(.MuiIconButton-root) {
+    height: 24px;
+    padding: 0;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+    width: 24px;
+}
+:global(.mythic-process-menu-icon) {
+    flex: 0 0 1.25rem;
+    margin-right: 0.45rem;
+}
+:global(.mythic-process-menu-icon-error) {
+    color: var(--mythic-palette-error-main);
+}
+@media (max-width: 1100px) {
+    :global(.mythic-process-inspector-body) {
+        grid-template-columns: 1fr;
+    }
+    :global(.mythic-process-inspector-details) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    :global(.mythic-credential-search) {
+        flex-direction: column;
+        overflow: hidden;
+    }
+    :global(.mythic-credential-search) > :global(.gutter):global(.gutter-horizontal) {
+        display: none;
+    }
+    :global(.mythic-credential-search) > :global(.mythic-credential-search-results), :global(.mythic-credential-search) > :global(.mythic-credential-search-inspector) {
+        flex: 1 1 0 !important;
+        height: auto !important;
+        min-height: 0;
+        width: 100% !important;
+    }
+}
+@media (max-width: 760px) {
+    :global(.mythic-credential-search) {
+        gap: var(--mythic-foundation-spacing-sm);
+    }
+    :global(.mythic-credential-search-table) {
+        min-width: 45rem;
+    }
+    :global(.mythic-credential-search-inspector-header) {
+        align-items: stretch;
+        flex-direction: column;
+    }
+    :global(.mythic-credential-search-inspector-actions) {
+        justify-content: flex-start;
+    }
+    :global(.mythic-credential-search-section-body), :global(.mythic-credential-search-metadata-grid), :global(.mythic-credential-search-kerberos-route), :global(.mythic-credential-search-kerberos-lifecycle) {
+        grid-template-columns: 1fr;
+    }
+    :global(.mythic-credential-search-kerberos-route-join) {
+        display: none;
+    }
+}
+:global(.MythicResizableGrid-cell):global(.mythic-process-filter-match-row) {
+    background-image: linear-gradient(0deg,
+        var(--mythic-effect-info-soft),
+        var(--mythic-effect-info-soft)) !important;
+    border-bottom-color: var(--mythic-effect-info-strong);
+}
+:global(.MythicResizableGrid-cell):global(.mythic-process-filter-ancestor-row) {
+    background-image: linear-gradient(0deg,
+        var(--mythic-effect-text-ghost),
+        var(--mythic-effect-text-ghost)) !important;
+}
+:global(.MythicResizableGrid-cell):global(.MythicResizableGrid-rowFirstCell):global(.mythic-process-filter-ancestor-row)::before {
+    background-color: var(--mythic-palette-text-secondary);
+    opacity: 0.35;
+    width: 3px;
+}
+:global(.mythic-json-dialog-body):global(.MuiDialogContent-root) {
+    max-height: min(72vh, 54rem);
+    padding: 0.85rem !important;
+}
+:global(.mythic-json-panel) {
+    background-color: var(--mythic-effect-inline-parameter-bg);
+    padding: 0.55rem;
+}
+:global(.mythic-json-type-badge) {
+    background-color: var(--mythic-effect-compact-chip-bg);
+    min-height: 22px;
+    padding: 0.22rem 0.42rem;
+}
+:global(.mythic-json-table-wrap) {
+    max-height: 48vh;
+}
+:global(.mythic-json-table-wrap) :global(.MuiTableCell-root) {
+    border-bottom-color: var(--mythic-color-table-border-soft);
+    vertical-align: top;
+}
+:global(.mythic-json-key-cell) {
+    background-color: var(--mythic-effect-json-key-cell-bg);
+}
+:global(.mythic-json-value-empty) {
+    color: var(--mythic-palette-text-disabled);
+    font-style: italic;
+}
+:global(.mythic-json-value-boolean) {
+    padding: 0.22rem 0.45rem;
+}
+:global(.mythic-json-empty-state) {
+    font-style: italic;
+    padding: 0.45rem 0.2rem;
+}
+:global(.mythic-search-result-metric) {
+    background-color: var(--mythic-effect-search-result-metric-bg);
+    min-height: 24px;
+    padding: 0.18rem 0.45rem;
+}
+:global(.mythic-search-tabs-bar):global(.MuiPaper-root) {
+    background-image: var(--mythic-effect-section-header-gradient);
+}
+:global(.mythic-search-tabs):global(.MuiTabs-root) {
+    min-height: 42px;
+}
+:global(.mythic-search-tabs) :global(.MuiTabs-flexContainer) {
+    flex-wrap: nowrap;
+}
+:global(.mythic-search-tabs) :global(.MuiTab-root) {
+    min-height: 42px;
+    padding: 0.45rem 0.7rem;
+}
+:global(.mythic-search-tab-label) {
+    gap: 0.42rem;
+}
+:global(.mythic-search-tab-label) :global(.MuiSvgIcon-root), :global(.mythic-search-tab-label) :global(.svg-inline--fa) {
+    color: inherit;
+    font-size: var(--mythic-foundation-typography-size-title);
+}

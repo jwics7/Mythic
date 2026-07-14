@@ -7,13 +7,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import {gql, useQuery} from '@apollo/client';
-import {classes, StyledButton} from '../../MythicComponents/MythicTransferList';
+import {MythicTransferButton, MythicTransferListPane} from '../../MythicComponents/MythicTransferList';
 import {
     MythicDialogButton,
     MythicDialogBody,
     MythicDialogFooter,
     MythicDialogSection
 } from '../../MythicComponents/MythicDialogLayout';
+import {MythicStack} from "../../MythicComponents/MythicLayout";
 
 const getCommandsQuery = gql`
 query GetCallbackDetails($callback_id: Int!) {
@@ -69,14 +70,11 @@ const CustomList = ({title, items, handleToggle}) => {
             ))
     }, [items, handleToggle]);
     return (
-        <div className="mythic-transfer-list">
-            <div className="mythic-transfer-list-header">{title}</div>
-            <div className="mythic-transfer-list-body">
-                <List dense component="div" role="list" style={{padding: 0, width: "100%"}}>
-                    {renderedList}
-                </List>
-            </div>
-        </div>
+        <MythicTransferListPane title={title}>
+            <List dense component="div" role="list" style={{padding: 0, width: "100%"}}>
+                {renderedList}
+            </List>
+        </MythicTransferListPane>
         )
 };
 export function AddRemoveCallbackCommandsDialog(props) {
@@ -196,47 +194,43 @@ export function AddRemoveCallbackCommandsDialog(props) {
                 <div  style={{paddingLeft: 0, flexGrow: 1,  marginLeft: 0, marginRight: "10px", position: "relative",  overflowY: "auto", display: "flex", flexDirection: "column" }}>
                   <CustomList title={leftTitle} items={left} handleToggle={handleToggle}/>
                 </div>
-                <div className="mythic-transfer-controls">
-                  <StyledButton
+                <MythicStack component="div" gap="xs" align="center" className="mythic-transfer-controls mythic-justify-center">
+                  <MythicTransferButton
                     variant="contained"
                     size="small"
-                    className={classes.button}
                     onClick={handleAllRight}
                     disabled={left.length === 0}
                     aria-label="move all right"
                   >
                     &gt;&gt;
-                  </StyledButton>
-                  <StyledButton
+                  </MythicTransferButton>
+                  <MythicTransferButton
                     variant="contained"
                     size="small"
-                    className={classes.button}
                     onClick={handleCheckedRight}
                     aria-label="move selected right"
                   >
                     &gt;
-                  </StyledButton>
-                  <StyledButton
+                  </MythicTransferButton>
+                  <MythicTransferButton
                     variant="contained"
                     size="small"
-                    className={classes.button}
                     onClick={handleCheckedLeft}
                     aria-label="move selected left"
                   >
                     &lt;
-                  </StyledButton>
-                  <StyledButton
+                  </MythicTransferButton>
+                  <MythicTransferButton
                     variant="contained"
                     size="small"
-                    className={classes.button}
                     onClick={handleAllLeft}
                     disabled={right.length === 0}
                     aria-label="move all left"
                   >
                     &lt;&lt;
-                  </StyledButton>
+                  </MythicTransferButton>
 
-              </div>
+              </MythicStack>
                 <div style={{marginLeft: "10px", position: "relative", flexGrow: 1, display: "flex", flexDirection: "column" }}>
                   <CustomList title={rightTitle} items={right} handleToggle={handleToggle} />
                 </div>

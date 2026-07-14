@@ -1,0 +1,88 @@
+/* Chat-rendered content adapter. */
+
+:global(.mythic-chat-heading-3),
+:global(.mythic-chat-heading-4),
+:global(.mythic-chat-heading-5),
+:global(.mythic-chat-heading-6) {
+    font-size: var(--mythic-foundation-typography-size-body);
+}
+:global(.mythic-chat-paragraph):last-child {
+    margin-bottom: 0;
+}
+:global(.mythic-chat-heading-1),
+:global(.mythic-chat-heading-2) {
+    font-size: var(--mythic-foundation-typography-size-title);
+}
+:global(.mythic-chat-code-language) {
+    position: absolute;
+    background: var(--mythic-chat-markdown-surface-strong);
+    padding: 1px 5px;
+    right: 6px;
+    top: 5px;
+}
+:global(.mythic-chat-code-block) pre {
+    border-radius: var(--mythic-foundation-radius-md);
+    margin: 0;
+    overflow-x: auto;
+    padding: 10px;
+}
+:global(.mythic-chat-blockquote),
+:global(.mythic-chat-inline-code),
+:global(.mythic-chat-code-block) pre,
+:global(.mythic-chat-code-language) {
+    border: 1px solid var(--mythic-chat-markdown-border);
+}
+:global(.mythic-chat-blockquote),
+:global(.mythic-chat-inline-code),
+:global(.mythic-chat-code-block) pre {
+    background: var(--mythic-chat-markdown-surface);
+}
+:global(.mythic-chat-paragraph) {
+    margin: 0 0 6px;
+    white-space: normal;
+}
+:global(.mythic-chat-heading) {
+    margin: 0 0 6px;
+}
+:global(.mythic-chat-list) {
+    margin: 4px 0 8px;
+    padding-left: 1.25rem;
+}
+:global(.mythic-chat-list) li {
+    margin: 2px 0;
+    padding-left: 0.15rem;
+}
+:global(.mythic-chat-blockquote),
+:global(.mythic-chat-code-block),
+:global(.mythic-chat-table-wrap) {
+    margin: 6px 0;
+}
+:global(.mythic-chat-blockquote) {
+    border-left: 3px solid var(--mythic-chat-markdown-border);
+    padding: 4px 8px 4px 10px;
+}
+:global(.mythic-chat-rule) {
+    border: 0;
+    border-top: 1px solid var(--mythic-chat-markdown-border);
+    margin: 8px 0;
+}
+:global(.mythic-chat-inline-code) {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.88em;
+    padding: 1px 4px;
+}
+:global(.mythic-chat-code-block) code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: var(--mythic-foundation-typography-size-bodySmall);
+}
+:global(.mythic-chat-table-wrap) {
+    overflow-x: auto;
+    width: fit-content;
+}
+:global(.mythic-chat-table) {
+    min-width: 100%;
+}
+:global(.mythic-chat-table) :global(.MuiTableCell-root) {
+    font-size: var(--mythic-foundation-typography-size-small);
+    vertical-align: top;
+}

@@ -1,0 +1,50 @@
+.root {
+    width: var(--mythic-field-width, 100%);
+}
+
+.root[data-inline="true"] {
+    display: inline-block;
+}
+
+.field {
+    margin-bottom: var(--mythic-field-margin-bottom, 5px);
+    margin-top: var(--mythic-field-margin-top, 5px);
+    padding: 0;
+}
+
+.root[data-inline="true"] .field {
+    display: inline-block;
+}
+
+.field :global(.MuiInputBase-root) {
+    background-color: var(--mythic-palette-background-paper);
+    border-radius: var(--mythic-shape-borderRadius);
+}
+
+.field fieldset {
+    border-color: var(--mythic-color-application-border);
+    border-width: 1px;
+}
+
+.field:hover fieldset {
+    border-color: var(--mythic-palette-text-secondary);
+}
+
+.field :global(.Mui-focused) fieldset {
+    border-color: var(--mythic-palette-primary-main) !important;
+    border-width: 1px !important;
+}
+
+.field input:invalid + fieldset {
+    border-color: var(--mythic-palette-error-main);
+    border-width: 2px;
+}
+
+.field input:valid:focus + fieldset {
+    border-left-width: 2px;
+    padding: 4px !important;
+}
+
+.field textarea:focus + textarea + fieldset {
+    border-left-width: 2px;
+}

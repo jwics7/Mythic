@@ -1,3 +1,4 @@
+import {useMythicTokens} from '../../themes/MythicThemeProvider';
 import React, {useState} from 'react';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
@@ -7,10 +8,10 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/theme-xcode';
-import {useTheme} from '@mui/material/styles';
+
 
 export function MythicTextEditDialog(props) {
-    const theme = useTheme();
+    const theme = useMythicTokens();
 
   return (
     <React.Fragment>

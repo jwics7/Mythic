@@ -1,16 +1,11 @@
 
-export const MythicPageBody = ({children}) => {
+import styles from "./MythicPageBody.module.css";
+import {MythicStack} from "./MythicLayout";
+
+export const MythicPageBody = ({children, className = "", ...props}) => {
     return (
-        <div style={{
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            padding: "0.75rem",
-            gap: "0.5rem",
-            minWidth: 0,
-            minHeight: 0,
-        }}>
+        <MythicStack {...props} className={`${styles.root}${className ? ` ${className}` : ""}`} fill gap="sm">
             {children}
-        </div>
+        </MythicStack>
     )
 }

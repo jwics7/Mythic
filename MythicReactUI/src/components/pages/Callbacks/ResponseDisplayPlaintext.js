@@ -1,6 +1,7 @@
+import {useMythicTokens} from '../../../themes/MythicThemeProvider';
 import React, { useEffect } from 'react';
 import AceEditor from 'react-ace';
-import {useTheme} from '@mui/material/styles';
+
 import {snackActions} from "../../utilities/Snackbar";
 import {modeOptions} from "./ResponseDisplayMedia";
 import WrapTextIcon from '@mui/icons-material/WrapText';
@@ -27,6 +28,7 @@ import {markdownPlugins} from "../../utilities/Markdown";
 import {markdownComponents} from "../../utilities/MarkdownComponents";
 import {MythicDialog} from "../../MythicComponents/MythicDialog";
 import {CredentialTableNewCredentialDialog} from "../Search/CredentialTableNewCredentialDialog";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
 
 const MaxRenderSize = 2000000;
 const RenderModes = {
@@ -62,7 +64,7 @@ const getInitialRenderMode = (props) => {
 }
 const ResponseMarkdownDisplay = ({value, wrapText, expand}) => {
   return (
-      <div className={`mythic-response-markdown${wrapText ? " is-wrapped" : " is-unwrapped"}${expand ? " is-expanded" : " is-capped"}`}>
+      <div className={`mythic-response-markdown mythic-max-width-full mythic-font-size-body-small mythic-scroll-region mythic-full-width${wrapText ? " is-wrapped" : " is-unwrapped"}${expand ? " is-expanded" : " is-capped"}`}>
         <ReactMarkdown remarkPlugins={markdownPlugins} components={markdownComponents} skipHtml>
           {value}
         </ReactMarkdown>
@@ -182,11 +184,11 @@ const ResponseTerminalDisplay = ({value, wrapText, expand, theme}) => {
     terminal.write(sanitizeTerminalOutput(value), () => terminal.scrollToBottom());
   }, [scheduleFitTerminal, terminalReady, value]);
   return (
-      <div className="mythic-response-terminal-shell"
+      <div className="mythic-response-terminal-shell mythic-min-width-0 mythic-full-width"
            style={{height: expand ? "100%" : "360px", minHeight: expand ? 0 : "140px"}}>
         <div
             ref={terminalScrollContainerRef}
-            className={"MythicInteractiveTerminal mythic-response-terminal"}
+            className={"MythicInteractiveTerminal mythic-response-terminal mythic-full-width mythic-min-height-0"}
             style={{
               height: "100%",
               overflowX: wrapText ? "hidden" : "auto",
@@ -200,7 +202,7 @@ const ResponseTerminalDisplay = ({value, wrapText, expand, theme}) => {
 }
 
 export const ResponseDisplayPlaintext = (props) =>{
-  const theme = useTheme();
+  const theme = useMythicTokens();
   const me = useReactiveVar(meState);
   const currentContentRef = React.useRef();
   const [plaintextView, setPlaintextView] = React.useState("");
@@ -351,22 +353,22 @@ export const ResponseDisplayPlaintext = (props) =>{
               />
           }
           {props.displayType !== 'console' &&
-              <div className={`mythic-response-render-toolbar${showOptions ? " is-open" : ""}`}>
-                  <button className="mythic-response-render-toolbar-toggle"
+              <div className={`mythic-response-render-toolbar mythic-stack mythic-flex-fixed${showOptions ? " is-open" : ""}`}>
+                  <MythicCluster component="button" gap="xs" justify="start" inline wrap={false} className="mythic-response-render-toolbar-toggle mythic-clickable mythic-inherit-color mythic-full-width"
                           type="button"
                           onClick={onChangeShowOptions}
-                          style={{color: theme.outputTextColor}}>
+                          style={{color: theme.color.tasking.outputText}}>
                       {showOptions ? <UnfoldLessIcon fontSize="small" /> : <UnfoldMoreIcon fontSize="small" />}
-                      <span className="mythic-response-render-toolbar-title">{props?.toolbarTitle || "Output"}</span>
-                      <span className="mythic-response-render-toolbar-mode">{currentRenderModeLabel}</span>
-                  </button>
+                      <span className="mythic-response-render-toolbar-title mythic-font-weight-heavy mythic-line-height-compact mythic-font-size-caption">{props?.toolbarTitle || "Output"}</span>
+                      <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-response-render-toolbar-mode mythic-font-weight-extra-bold mythic-line-height-compact mythic-font-size-xs mythic-border-radius mythic-flex-fixed">{currentRenderModeLabel}</MythicCluster>
+                  </MythicCluster>
                   {showOptions &&
-                      <div className="mythic-response-render-toolbar-controls">
-                          <div className="mythic-response-render-mode-group" role="group" aria-label="Response render mode">
+                      <MythicCluster component="div" gap="sm" align="center" wrap={false} className="mythic-response-render-toolbar-controls">
+                          <MythicCluster component="div" gap="none" inline wrap={false} className="mythic-response-render-mode-group mythic-border-radius mythic-flex-fixed mythic-overflow-hidden" role="group" aria-label="Response render mode">
                               {renderModeOptions.map(({value, label, Icon}) => (
                                   <button
                                       aria-pressed={renderMode === value}
-                                      className={`mythic-response-render-mode-button${renderMode === value ? " is-selected" : ""}`}
+                                      className={`mythic-response-render-mode-button mythic-font-weight-extra-bold mythic-clickable mythic-font-size-caption mythic-gap-xs mythic-justify-center mythic-inline-cluster${renderMode === value ? " is-selected" : ""}`}
                                       key={value}
                                       onClick={() => onChangeRenderMode(value)}
                                       type="button">
@@ -374,52 +376,52 @@ export const ResponseDisplayPlaintext = (props) =>{
                                       <span>{label}</span>
                                   </button>
                               ))}
-                          </div>
+                          </MythicCluster>
                           {toolbarActions.length > 0 &&
-                              <div className="mythic-response-render-action-group">
+                              <MythicCluster component="div" gap="none" inline wrap={false} className="mythic-response-render-action-group mythic-border-radius mythic-flex-fixed mythic-overflow-hidden">
                                   {toolbarActions.map((action, index) => (
                                       <React.Fragment key={action?.key || index}>{action}</React.Fragment>
                                   ))}
-                              </div>
+                              </MythicCluster>
                           }
                           {renderMode === RenderModes.plaintext &&
                               <>
-                                  <div className="mythic-response-render-action-group">
+                                  <MythicCluster component="div" gap="none" inline wrap={false} className="mythic-response-render-action-group mythic-border-radius mythic-flex-fixed mythic-overflow-hidden">
                                       <MythicStyledTooltip title={wrapText ?  "Unwrap Text" : "Wrap Text"} >
                                           <button
                                               aria-label={wrapText ? "Unwrap Text" : "Wrap Text"}
                                               aria-pressed={wrapText}
-                                              className={`mythic-response-render-action-button${wrapText ? " is-selected" : ""}`}
+                                              className={`mythic-response-render-action-button mythic-clickable mythic-justify-center mythic-inline-cluster${wrapText ? " is-selected" : ""}`}
                                               onClick={toggleWrapText}
                                               type="button">
                                               <WrapTextIcon fontSize="small" />
                                           </button>
                                       </MythicStyledTooltip>
                                       <MythicStyledTooltip title={"Auto format JSON"} >
-                                          <button
+                                          <MythicCluster component="button" gap="none" justify="center" inline wrap={false}
                                               aria-label="Auto format JSON"
-                                              className="mythic-response-render-action-button"
+                                              className="mythic-response-render-action-button mythic-clickable"
                                               onClick={formatJSON}
                                               type="button">
                                               <CodeIcon fontSize="small" />
-                                          </button>
+                                          </MythicCluster>
                                       </MythicStyledTooltip>
                                       {showCreateCredentialAction &&
                                           <MythicStyledTooltip title={"Create Credential"} >
-                                              <button
+                                              <MythicCluster component="button" gap="none" justify="center" inline wrap={false}
                                                   aria-label="Create Credential"
-                                                  className="mythic-response-render-action-button"
+                                                  className="mythic-response-render-action-button mythic-clickable"
                                                   onClick={openCreateCredentialDialog}
                                                   type="button">
                                                   <VpnKeyIcon fontSize="small" />
-                                              </button>
+                                              </MythicCluster>
                                           </MythicStyledTooltip>
                                       }
-                                  </div>
-                                  <label className="mythic-response-syntax-group">
+                                  </MythicCluster>
+                                  <MythicCluster component="label" gap="xs" inline wrap={false} className="mythic-response-syntax-group mythic-font-weight-extra-bold mythic-line-height-compact mythic-font-size-caption mythic-border-radius mythic-flex-fixed mythic-overflow-hidden">
                                       <span>Syntax</span>
                                       <select
-                                          className="mythic-response-syntax-select"
+                                          className="mythic-response-syntax-select mythic-clickable mythic-full-height"
                                           value={mode}
                                           onChange={onChangeMode}>
                                           {
@@ -428,11 +430,11 @@ export const ResponseDisplayPlaintext = (props) =>{
                                               ))
                                           }
                                       </select>
-                                  </label>
+                                  </MythicCluster>
                               </>
                           }
                           {props.toolbarNotice}
-                      </div>
+                      </MythicCluster>
                   }
               </div>
           }

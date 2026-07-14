@@ -8,6 +8,7 @@ import {CredentialTableNewCredentialDialog} from '../Search/CredentialTableNewCr
 import {MythicDialog} from '../../MythicComponents/MythicDialog';
 import {MythicStyledTooltip} from '../../MythicComponents/MythicStyledTooltip';
 import {snackActions} from "../../utilities/Snackbar";
+import {MythicStack, MythicCluster} from "../../MythicComponents/MythicLayout";
 
 export const credentialReferenceKeyword = "cred";
 export const credentialReferenceFields = ["credential", "account", "realm", "type", "subtype", "comment", "id", "custom_display", "credential_identity", "metadata"];
@@ -360,7 +361,7 @@ export function CredentialReferencePickerDialog({operation_id, credentialTypes, 
                 </Button>
             </DialogTitle>
             <DialogContent dividers className="mythic-reference-picker-dialog">
-                <Box className="mythic-reference-picker-toolbar">
+                <MythicCluster gap="sm" align="center" wrap={false} className="mythic-reference-picker-toolbar">
                     <TextField
                         size="small"
                         fullWidth
@@ -370,12 +371,12 @@ export function CredentialReferencePickerDialog({operation_id, credentialTypes, 
                         onChange={(event) => setSearch(event.target.value)}
                         placeholder="Search credentials"
                     />
-                    <Chip size="small" variant="outlined" label={loading ? "Loading" : `${credentials.length} shown`} className="mythic-tasking-reference-chip" />
+                    <Chip size="small" variant="outlined" label={loading ? "Loading" : `${credentials.length} shown`} className="mythic-tasking-reference-chip mythic-flex-fixed" />
                     {Array.isArray(credentialTypes) && credentialTypes.length > 0 &&
-                        <Chip size="small" variant="outlined" label={credentialTypes.join(", ")} className="mythic-tasking-reference-chip" />
+                        <Chip size="small" variant="outlined" label={credentialTypes.join(", ")} className="mythic-tasking-reference-chip mythic-flex-fixed" />
                     }
-                </Box>
-                <Box className="mythic-reference-picker-body">
+                </MythicCluster>
+                <Box className="mythic-reference-picker-body mythic-border-radius mythic-overflow-hidden">
                     <CredentialTable
                         credentials={credentials}
                         readOnly={true}
@@ -432,7 +433,7 @@ export function CredentialReferenceFieldDialog({credentialID, partialField="", a
         <>
             <DialogTitle>Select Credential Reference</DialogTitle>
             <DialogContent dividers>
-                <Box className="mythic-tasking-reference-field-list">
+                <MythicStack gap="sm" className="mythic-tasking-reference-field-list mythic-full-width">
                     {visibleOptions.map((option) => {
                         const referenceText = formatCredentialReference(credentialID, option.field);
                         const previewValue = loading && !credential ? "Loading" : getCredentialReferenceFieldValue(credential, option.field);
@@ -441,26 +442,26 @@ export function CredentialReferenceFieldDialog({credentialID, partialField="", a
                             key={option.field || "full"}
                             variant="outlined"
                             fullWidth
-                            className="mythic-tasking-reference-field-row"
+                            className="mythic-tasking-reference-field-row mythic-align-stretch mythic-justify-start"
                             disabled={!credential}
                             onClick={() => onSelect(option.field)}
                         >
-                            <Box className="mythic-tasking-reference-field-row-content">
-                                <Box className="mythic-tasking-reference-field-row-header">
-                                    <Typography component="span" className="mythic-tasking-reference-field-row-label">
+                            <MythicStack gap="xs" className="mythic-tasking-reference-field-row-content mythic-full-width">
+                                <MythicCluster gap="sm" align="start" justify="between" wrap={false} className="mythic-tasking-reference-field-row-header">
+                                    <Typography component="span" className="mythic-tasking-reference-field-row-label mythic-font-size-small mythic-font-weight-extra-bold mythic-min-width-0 mythic-flex-fixed mythic-text-secondary">
                                         {option.label}
                                     </Typography>
-                                    <Typography component="span" className="mythic-tasking-reference-field-row-reference">
+                                    <Typography component="span" className="mythic-tasking-reference-field-row-reference mythic-monospace mythic-font-size-caption mythic-break-anywhere mythic-min-width-0">
                                         {referenceText}
                                     </Typography>
-                                </Box>
-                                <Typography component="span" className="mythic-tasking-reference-field-row-value" title={previewValue}>
+                                </MythicCluster>
+                                <Typography component="span" className="mythic-tasking-reference-field-row-value mythic-monospace mythic-font-size-caption mythic-break-anywhere mythic-line-height-snug mythic-min-width-0 mythic-overflow-hidden mythic-text-secondary" title={previewValue}>
                                     {previewValue}
                                 </Typography>
-                            </Box>
+                            </MythicStack>
                         </Button>
                     )})}
-                </Box>
+                </MythicStack>
                 {credentialUnavailable &&
                     <Typography component="div" color="error">
                         Credential is unavailable or deleted.
@@ -489,7 +490,7 @@ export function CredentialReferenceToken({reference, credential}) {
         <>
             <MythicStyledTooltip title={reference.raw}>
                 <span
-                    className={`mythic-reference-token${credential ? "" : " mythic-reference-token-warning"}`}
+                    className={`mythic-reference-token mythic-clickable mythic-monospace mythic-font-size-small mythic-font-weight-bold mythic-max-width-full mythic-break-anywhere mythic-inline-cluster mythic-border-radius-sm mythic-min-width-0${credential ? "" : " mythic-reference-token-warning"}`}
                     onClick={onClickReference}
                 >
                     {label}

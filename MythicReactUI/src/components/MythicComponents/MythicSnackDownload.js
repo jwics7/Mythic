@@ -1,78 +1,12 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import {FileDownloadLinkWithAuth} from "../utilities/FileDownloadWithAuth";
-
-const PREFIX = 'MythicSnackDownload';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    typography: `${PREFIX}-typography`,
-    actionRoot: `${PREFIX}-actionRoot`,
-    icons: `${PREFIX}-icons`,
-    expand: `${PREFIX}-expand`,
-    expandOpen: `${PREFIX}-expandOpen`,
-    collapse: `${PREFIX}-collapse`,
-    checkIcon: `${PREFIX}-checkIcon`,
-    button: `${PREFIX}-button`
-};
-
-const Root = styled('div')((
-    {
-        theme
-    }
-) => ({
-    [`& .${classes.root}`]: {
-        [theme.breakpoints.up('sm')]: {
-            minWidth: '344px !important',
-        },
-    },
-
-    [`& .${classes.typography}`]: {
-        fontWeight: 'bold',
-    },
-
-    [`& .${classes.actionRoot}`]: {
-        padding: '8px 8px 8px 16px',
-    },
-
-    [`& .${classes.icons}`]: {
-        marginLeft: 'auto',
-        float: "right"
-    },
-
-    [`& .${classes.expand}`]: {
-        padding: '8px 8px',
-        transform: 'rotate(0deg)',
-        transition: theme.transitions.create('transform', {
-            duration: theme.transitions.duration.shortest,
-        }),
-    },
-
-    [`& .${classes.expandOpen}`]: {
-        transform: 'rotate(180deg)',
-    },
-
-    [`& .${classes.collapse}`]: {
-        padding: 16,
-    },
-
-    [`& .${classes.checkIcon}`]: {
-        fontSize: 20,
-        color: theme.palette.text.secondary,
-        paddingRight: 4,
-    },
-
-    [`& .${classes.button}`]: {
-        padding: 0,
-        textTransform: 'none',
-    }
-}));
+import styles from './MythicSnackDownload.module.css';
 
 export const MythicSnackDownload = (props) => {
     return (
-        <Root>
-            <Typography variant="subtitle2" className={classes.typography}>
+        <div className={`${styles.root} mythic-min-width-0`}>
+            <Typography variant="subtitle2" className="mythic-font-weight-bold">
                 {props.title}
             </Typography>
                 <React.Fragment>
@@ -81,6 +15,6 @@ export const MythicSnackDownload = (props) => {
                         Download here
                     </FileDownloadLinkWithAuth>
                 </React.Fragment>
-        </Root>
+        </div>
     );
 };

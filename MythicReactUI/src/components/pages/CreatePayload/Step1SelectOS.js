@@ -5,7 +5,7 @@ import { CreatePayloadNavigationButtons} from './CreatePayloadNavigationButtons'
 import Typography from '@mui/material/Typography';
 import { snackActions } from '../../utilities/Snackbar';
 import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
+
 import {useMythicLazyQuery} from "../../utilities/useMythicLazyQuery";
 import {PayloadSelect} from "../CreateWrapper/Step3SelectPayload";
 import {MythicAgentSVGIcon} from "../../MythicComponents/MythicAgentSVGIcon";
@@ -16,6 +16,8 @@ import {ParseForDisplay} from "../Payloads/DetailedPayloadTable";
 import {getModifiedC2Params} from "./Step4C2Profiles";
 import { Backdrop } from '@mui/material';
 import {MythicLoadingState} from "../../MythicComponents/MythicStateDisplay";
+import {MythicPanel, MythicActionButton, MythicMetadataItem, MythicSectionHeading, MythicSectionDescription, MythicText} from "../../MythicComponents/MythicContent";
+import {MythicStack, MythicCluster, MythicGrid} from "../../MythicComponents/MythicLayout";
 
 
 const GET_Payload_Types = gql`
@@ -526,22 +528,22 @@ export function Step1SelectOS(props){
         payloadConfigRef.current = payload
     }
     return (
-        <div className="mythic-create-flow-shell">
-            <div className="mythic-create-flow-content">
-                <div className="mythic-create-selection-grid">
-                    <section className="mythic-create-section">
-                        <div className="mythic-create-section-header">
+        <MythicStack component="div" gap="md" className="mythic-create-flow-shell mythic-min-height-0 mythic-full-height">
+            <MythicStack component="div" gap="md" className="mythic-create-flow-content mythic-flex-fill mythic-overflow-hidden mythic-min-height-0">
+                <MythicGrid component="div" gap="md" columns="custom" className="mythic-create-selection-grid mythic-flex-fixed mythic-min-width-0">
+                    <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="hidden">
+                        <MythicCluster component="div" gap="md" align="start" justify="between" wrap={false} className="mythic-create-section-header">
                             <div>
-                                <Typography component="div" className="mythic-create-section-title">
+                                <MythicSectionHeading component="div" className="mythic-create-section-title">
                                     Select operating system
-                                </Typography>
-                                <Typography component="div" className="mythic-create-section-description">
+                                </MythicSectionHeading>
+                                <MythicSectionDescription component="div" className="mythic-create-section-description">
                                     Filter payload types and C2 profiles by the target platform.
-                                </Typography>
+                                </MythicSectionDescription>
                             </div>
-                        </div>
+                        </MythicCluster>
                         <Select
-                            className="mythic-create-select"
+                            className="mythic-create-select mythic-full-width"
                             value={os}
                             disabled={!props.first}
                             onChange={onChangeOS}
@@ -552,30 +554,24 @@ export function Step1SelectOS(props){
                                 ))
                             }
                         </Select>
-                        <div className="mythic-create-meta-list">
+                        <MythicStack component="div" gap="sm" className="mythic-create-meta-list">
+                            <MythicMetadataItem label="Compatible payload types">{payloadtypesPerOS[os]?.join(", ")}</MythicMetadataItem>
+                            <MythicMetadataItem label="Compatible C2 profiles">{C2PerOS[os]?.join(", ")}</MythicMetadataItem>
+                        </MythicStack>
+                    </MythicPanel>
+                    <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="hidden">
+                        <MythicCluster component="div" gap="md" align="start" justify="between" wrap={false} className="mythic-create-section-header">
                             <div>
-                                <span className="mythic-create-meta-label">Compatible payload types</span>
-                                <div className="mythic-create-meta-value">{payloadtypesPerOS[os]?.join(", ")}</div>
-                            </div>
-                            <div>
-                                <span className="mythic-create-meta-label">Compatible C2 profiles</span>
-                                <div className="mythic-create-meta-value">{C2PerOS[os]?.join(", ")}</div>
-                            </div>
-                        </div>
-                    </section>
-                    <section className="mythic-create-section">
-                        <div className="mythic-create-section-header">
-                            <div>
-                                <Typography component="div" className="mythic-create-section-title">
+                                <MythicSectionHeading component="div" className="mythic-create-section-title">
                                     Select payload type
-                                </Typography>
-                                <Typography component="div" className="mythic-create-section-description">
+                                </MythicSectionHeading>
+                                <MythicSectionDescription component="div" className="mythic-create-section-description">
                                     Choose the agent family to configure for this build.
-                                </Typography>
+                                </MythicSectionDescription>
                             </div>
-                        </div>
+                        </MythicCluster>
                         <Select
-                            className="mythic-create-select"
+                            className="mythic-create-select mythic-full-width"
                             disabled={!props.first}
                             value={selectedPayloadType}
                             onChange={evt => setSelectedPayloadType(evt.target.value)}
@@ -586,28 +582,19 @@ export function Step1SelectOS(props){
                                 ))
                             }
                         </Select>
-                        <div className="mythic-create-agent-summary">
-                            <div className="mythic-create-agent-icon">
+                        <MythicCluster component="div" gap="md" align="start" wrap={false} className="mythic-create-agent-summary">
+                            <MythicCluster component="div" gap="none" align="center" justify="center" wrap={false} className="mythic-create-agent-icon mythic-border-radius mythic-border">
                                 <MythicAgentSVGIcon payload_type={selectedPayloadType} style={{width: "100%", height: "100%", objectFit: "contain"}} />
-                            </div>
-                            <div className="mythic-create-meta-list">
-                                <div>
-                                    <span className="mythic-create-meta-label">Version</span>
-                                    <div className="mythic-create-meta-value">{payloadtypeData[selectedPayloadType]?.semver || "Unknown"}</div>
-                                </div>
-                                <div>
-                                    <span className="mythic-create-meta-label">Description</span>
-                                    <div className="mythic-create-meta-value">{payloadtypeData[selectedPayloadType]?.note || "No description available."}</div>
-                                </div>
-                                <div>
-                                    <span className="mythic-create-meta-label">C2</span>
-                                    <div className="mythic-create-meta-value">{payloadtypeData[selectedPayloadType]?.payloadtypec2profiles.map(c => c.c2profile.name).join(", ") || "None"}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <section className="mythic-create-section mythic-create-section-fill">
+                            </MythicCluster>
+                            <MythicStack component="div" gap="sm" className="mythic-create-meta-list">
+                                <MythicMetadataItem label="Version">{payloadtypeData[selectedPayloadType]?.semver || "Unknown"}</MythicMetadataItem>
+                                <MythicMetadataItem label="Description">{payloadtypeData[selectedPayloadType]?.note || "No description available."}</MythicMetadataItem>
+                                <MythicMetadataItem label="C2">{payloadtypeData[selectedPayloadType]?.payloadtypec2profiles.map(c => c.c2profile.name).join(", ") || "None"}</MythicMetadataItem>
+                            </MythicStack>
+                        </MythicCluster>
+                    </MythicPanel>
+                </MythicGrid>
+                <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="hidden" fill>
                     {props.first ? (
                         <div style={{display: "flex", flexDirection: "column", flexGrow: 1, minHeight: 0, overflow: "hidden", position: "relative"}}>
                             {openBackdrop &&
@@ -630,9 +617,9 @@ export function Step1SelectOS(props){
                                                   prevData={props.prevData}
                                                   onUpdatePayloadConfig={onUpdatePayloadConfig} />
                     )}
-                </section>
-            </div>
-            <div className="mythic-create-flow-footer">
+                </MythicPanel>
+            </MythicStack>
+            <div className="mythic-create-flow-footer mythic-flex-fixed">
                 <CreatePayloadNavigationButtons
                     first={props.first}
                     last={props.last}
@@ -641,7 +628,7 @@ export function Step1SelectOS(props){
                 />
                 <br/><br/>
             </div>
-        </div>
+        </MythicStack>
     );
 }
 
@@ -650,26 +637,26 @@ export const StartFromExistingPayloadOrStartFresh = (
 ) => {
     return (
         <>
-            <div className="mythic-create-section-header">
+            <MythicCluster component="div" gap="md" align="start" justify="between" wrap={false} className="mythic-create-section-header">
                 <div>
-                    <Typography component="div" className="mythic-create-section-title">
+                    <MythicSectionHeading component="div" className="mythic-create-section-title">
                         Continue from existing payload
-                    </Typography>
-                    <Typography component="div" className="mythic-create-section-description">
+                    </MythicSectionHeading>
+                    <MythicSectionDescription component="div" className="mythic-create-section-description">
                         Select a compatible payload to reuse its configuration, or start with defaults.
-                    </Typography>
+                    </MythicSectionDescription>
                 </div>
-                <div className="mythic-create-section-actions">
-                    <Button
-                            className="mythic-table-row-action mythic-table-row-action-hover-success"
+                <MythicCluster component="div" gap="sm" align="center" className="mythic-create-section-actions mythic-flex-fixed">
+                    <MythicActionButton tone="success"
+
                             size="small"
                             variant="contained"
                             onClick={onStartFresh}
                             startIcon={<AddCircleIcon fontSize="small" />} >
                         Start Fresh
-                    </Button>
-                </div>
-            </div>
+                    </MythicActionButton>
+                </MythicCluster>
+            </MythicCluster>
 
             <div style={{
                 flexGrow: 1,
@@ -808,19 +795,19 @@ export const ConfigureBuildParameters = (
     }
     return (
         <>
-            <div className="mythic-create-section-header">
+            <MythicCluster component="div" gap="md" align="start" justify="between" wrap={false} className="mythic-create-section-header">
                 <div>
-                    <Typography component="div" className="mythic-create-section-title">
+                    <MythicSectionHeading component="div" className="mythic-create-section-title">
                         Configure payload build parameters
-                    </Typography>
-                    <Typography component="div" className="mythic-create-section-description">
+                    </MythicSectionHeading>
+                    <MythicSectionDescription component="div" className="mythic-create-section-description">
                         Review defaults, required fields, and any values changed from the payload type baseline.
-                    </Typography>
+                    </MythicSectionDescription>
                 </div>
                 {buildParameterInstances.length > 0 &&
-                    <div className="mythic-create-section-actions" style={{minWidth: "260px"}}>
+                    <MythicCluster component="div" gap="sm" align="center" className="mythic-create-section-actions mythic-flex-fixed" style={{minWidth: "260px"}}>
                         <Select
-                            className="mythic-create-select"
+                            className="mythic-create-select mythic-full-width"
                             value={selectedBuildParameterInstance}
                             onChange={onChangeBuildParameterInstance}
                         >
@@ -832,21 +819,21 @@ export const ConfigureBuildParameters = (
                                 ))
                             }
                         </Select>
-                    </div>
+                    </MythicCluster>
                 }
-            </div>
-            <div className="mythic-create-builder-split">
-                <section className="mythic-create-section mythic-create-section-scroll">
-                    <Typography component="div" className="mythic-create-section-title" style={{textAlign: "center"}}>
+            </MythicCluster>
+            <MythicGrid component="div" gap="md" columns="custom" className="mythic-create-builder-split mythic-flex-fill mythic-overflow-hidden mythic-min-height-0">
+                <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="auto">
+                    <MythicSectionHeading component="div" className="mythic-create-section-title" align="center">
                         Configuration Summary
-                    </Typography>
+                    </MythicSectionHeading>
                     <ConfigurationSummary buildParameters={payloadTypeParameters} os={os} />
-                </section>
-                <section className="mythic-create-section mythic-create-section-scroll">
+                </MythicPanel>
+                <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="auto">
                     <CreatePayloadBuildParametersTable onChange={onChange} buildParameters={payloadTypeParameters} os={os}
                     payload_type={selectedPayloadType} instance_name={selectedBuildParameterInstance}/>
-                </section>
-            </div>
+                </MythicPanel>
+            </MythicGrid>
         </>
     )
 }
@@ -1006,23 +993,23 @@ export const ConfigurationSummary = ({buildParameters, os, c2_name}) => {
     }, [buildParameters, c2_name, os]);
     return (
         groupedParameters?.map((b) => (
-            <div className="mythic-create-summary-group" key={b.name || "default-configuration-group"} >
+            <MythicStack component="div" gap="xs" className="mythic-create-summary-group" key={b.name || "default-configuration-group"} >
                 {b.name !== '' && b.name !== undefined && b.parameters.length > 0 &&
-                    <div className="mythic-create-summary-group-header">
+                    <div className="mythic-create-summary-group-header mythic-font-weight-extra-bold mythic-font-size-small mythic-line-height-snug mythic-border-radius mythic-border mythic-text-primary">
                         {b.name}
                     </div>
                 }
                 {b?.parameters?.map( (p) => (
-                    <div className="mythic-create-summary-row" key={p.name}>
-                        <Typography component="div" className="mythic-create-summary-name">
+                    <div className="mythic-create-summary-row mythic-divider-bottom" key={p.name}>
+                        <Typography component="div" className="mythic-create-summary-name mythic-font-weight-extra-bold mythic-font-size-small mythic-line-height-snug mythic-text-primary">
                             {p.name}
                         </Typography>
-                        <div className="mythic-create-summary-value">
+                        <MythicText component="div" preset="secondary-copy" lineHeight="normal" className="mythic-create-summary-value">
                             <ParseForDisplay cmd={p} />
-                        </div>
+                        </MythicText>
                     </div>
                 ))}
-            </div>
+            </MythicStack>
         ))
     )
 }

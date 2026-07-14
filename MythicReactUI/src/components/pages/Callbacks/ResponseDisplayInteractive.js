@@ -1,3 +1,4 @@
+import {useMythicTokens} from '../../../themes/MythicThemeProvider';
 import React from 'react';
 import {createTaskingMutation} from './CallbackMutations';
 import {snackActions} from "../../utilities/Snackbar";
@@ -13,8 +14,9 @@ import {Terminal} from '@xterm/xterm';
 import {FitAddon} from '@xterm/addon-fit';
 import '@xterm/xterm/css/xterm.css';
 import WrapTextIcon from '@mui/icons-material/WrapText';
-import {useTheme} from '@mui/material/styles';
+
 import HeightIcon from '@mui/icons-material/Height';
+import {MythicStack, MythicCluster, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
 
 const subResponsesQuery = gql`
 subscription subResponsesQuery($task_id: Int!) {
@@ -93,8 +95,8 @@ export const sanitizeTerminalOutput = (value) => {
 }
 export const getInteractiveTerminalTheme = (theme) => {
     return {
-        background: theme.outputBackgroundColor,
-        foreground: theme.outputTextColor,
+        background: theme.color.tasking.outputBackground,
+        foreground: theme.color.tasking.outputText,
         cursor: theme.palette.info.main,
         selectionBackground: theme.palette.info.main + "55",
     }
@@ -419,7 +421,7 @@ const InteractiveTerminalDisplay = ({
         }
     }, [data, inputMode, scheduleFitTerminal, showTaskStatus, terminalReady, useASNIColor, wrapText]);
     return (
-        <div className={`mythic-interactive-terminal-shell${canSendInput ? " mythic-interactive-terminal-shell-input" : ""}`}>
+        <div className={`mythic-interactive-terminal-shell mythic-relative mythic-full-width mythic-flex-fill mythic-overflow-hidden mythic-min-height-0${canSendInput ? " mythic-interactive-terminal-shell-input" : ""}`}>
             <div
                 ref={terminalScrollContainerRef}
                 className={"MythicInteractiveTerminal"}
@@ -434,7 +436,7 @@ const InteractiveTerminalDisplay = ({
                 <div ref={terminalElementRef} style={{height: "100%", width: "100%"}} />
             </div>
             {data.length === 0 &&
-                <div className="mythic-interactive-terminal-empty-hint" onMouseDown={() => terminalRef.current?.focus()}>
+                <div className="mythic-interactive-terminal-empty-hint mythic-font-size-small" onMouseDown={() => terminalRef.current?.focus()}>
                     No interactive output yet
                 </div>
             }
@@ -533,7 +535,7 @@ const normalizeLineBufferInput = (value) => {
     return value.replaceAll("\r\n", "\n").replaceAll("\r", "\n");
 };
 export const ResponseDisplayInteractive = (props) =>{
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const [backdropOpen, setBackdropOpen] = React.useState(false);
     const pageSize = React.useRef(100);
     const highestFetched = React.useRef(0);
@@ -978,10 +980,10 @@ export const ResponseDisplayInteractive = (props) =>{
           maxHeight: props.expand ? "100%" : "500px",
           flexDirection: "column",
           width: "100%",
-          backgroundColor: theme.outputBackgroundColor + (theme.palette.mode === 'dark' ? "B0" : "E0"),
-          color: theme.outputTextColor,
+          backgroundColor: theme.color.tasking.outputBackground + (theme.palette.mode === 'dark' ? "B0" : "E0"),
+          color: theme.color.tasking.outputText,
       }}>
-          <Backdrop open={backdropOpen} style={{zIndex: 2, position: "absolute",}} invisible={false}>
+          <Backdrop className="mythic-local-backdrop" open={backdropOpen} invisible={false}>
               <div style={{
                   borderRadius: "4px",
                   border: `1px solid ${theme.palette.divider}`,
@@ -998,7 +1000,7 @@ export const ResponseDisplayInteractive = (props) =>{
           {props.searchOutput &&
               <SearchBar onSubmitSearch={onSubmitSearch}/>
           }
-          <div className="mythic-interactive-terminal-frame" ref={props.responseRef} id={`ptytask${props.task.id}`}>
+          <MythicStack component="div" gap="none" className="mythic-interactive-terminal-frame mythic-border-radius mythic-full-width mythic-flex-fill mythic-overflow-hidden mythic-min-height-0" ref={props.responseRef} id={`ptytask${props.task.id}`}>
               {canSendTerminalInput &&
                   <InteractiveTerminalToolbar
                       theme={theme}
@@ -1029,7 +1031,7 @@ export const ResponseDisplayInteractive = (props) =>{
                                               onTerminalInput={handleTerminalData}
                                               onTerminalKeyEvent={handleTerminalKeyEvent}/>
               </div>
-          </div>
+          </MythicStack>
 
           <InteractivePaginationBar totalCount={totalCount} currentPage={currentPage}
                                     onSubmitPageChange={onSubmitPageChange} expand={props.expand}
@@ -1068,22 +1070,22 @@ const InteractiveTerminalToolbar = ({
         closeEnterMenu();
     };
     return (
-        <div className="mythic-interactive-terminal-toolbar">
-            <div className="mythic-interactive-terminal-toolbar-row">
-                <button
+        <MythicStack component="div" gap="xs" align="stretch" className="mythic-interactive-terminal-toolbar mythic-flex-fixed">
+            <MythicCluster component="div" gap="sm" align="center" wrap={false} className="mythic-interactive-terminal-toolbar-row mythic-full-width">
+                <MythicCluster component="button" gap="xs" inline wrap={false}
                     type="button"
-                    className="mythic-interactive-terminal-config-chip"
+                    className="mythic-interactive-terminal-config-chip mythic-font-weight-extra-bold mythic-clickable mythic-font-size-caption mythic-line-height-compact mythic-border-radius mythic-flex-fixed"
                     onClick={toggleInputMode}
-                    style={{color: theme.outputTextColor}}>
+                    style={{color: theme.color.tasking.outputText}}>
                     {inputMode === "raw" ? "Raw key mode" : "Line mode"}
-                </button>
-                <button
+                </MythicCluster>
+                <MythicCluster component="button" gap="xs" inline wrap={false}
                     type="button"
-                    className="mythic-interactive-terminal-config-chip mythic-interactive-terminal-enter-chip"
+                    className="mythic-interactive-terminal-config-chip mythic-font-weight-extra-bold mythic-clickable mythic-font-size-caption mythic-line-height-compact mythic-interactive-terminal-enter-chip mythic-border-radius mythic-flex-fixed"
                     onClick={openEnterMenu}
-                    style={{color: theme.outputTextColor}}>
+                    style={{color: theme.color.tasking.outputText}}>
                     Enter: {selectedEnter.name}
-                </button>
+                </MythicCluster>
                 <Menu
                     anchorEl={enterAnchorEl}
                     open={Boolean(enterAnchorEl)}
@@ -1098,19 +1100,19 @@ const InteractiveTerminalToolbar = ({
                     ))}
                 </Menu>
                 {pendingInputEvents.length > 0 &&
-                    <div className="mythic-interactive-terminal-pending">
+                    <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-interactive-terminal-pending mythic-nowrap mythic-overflow-hidden">
                         <span>Awaiting output</span>
                         {pendingInputEvents.map((event) => (
-                            <span className="mythic-interactive-terminal-pending-chip" key={event.id}>{event.label}</span>
+                            <MythicTruncatedText component="span" className="mythic-interactive-terminal-pending-chip mythic-font-weight-extra-bold mythic-font-size-xs mythic-line-height-compact mythic-border-radius mythic-inline-flex mythic-flex-fixed" key={event.id}>{event.label}</MythicTruncatedText>
                         ))}
-                    </div>
+                    </MythicCluster>
                 }
-                <div className="mythic-interactive-terminal-toolbar-spacer" />
-                <div className="mythic-interactive-terminal-toggle-group" role="group" aria-label="Terminal display options">
+                <div className="mythic-interactive-terminal-toolbar-spacer mythic-min-width-0 mythic-flex-fill" />
+                <MythicCluster component="div" gap="none" inline wrap={false} className="mythic-interactive-terminal-toggle-group mythic-border-radius mythic-flex-fixed mythic-overflow-hidden" role="group" aria-label="Terminal display options">
                     <MythicStyledTooltip title={useASNIColor ?  "Disable ANSI Color" : "Enable ANSI Color"} >
                         <button
                             aria-pressed={useASNIColor}
-                            className={`mythic-interactive-terminal-toggle-button${useASNIColor ? "" : " is-off"}`}
+                            className={`mythic-interactive-terminal-toggle-button mythic-clickable mythic-justify-center mythic-inline-cluster mythic-flex-fixed${useASNIColor ? "" : " is-off"}`}
                             onClick={toggleANSIColor}
                             type="button">
                             <PaletteIcon fontSize="small" />
@@ -1119,7 +1121,7 @@ const InteractiveTerminalToolbar = ({
                     <MythicStyledTooltip title={wrapText ?  "Unwrap Text" : "Wrap Text"} >
                         <button
                             aria-pressed={wrapText}
-                            className={`mythic-interactive-terminal-toggle-button${wrapText ? "" : " is-off"}`}
+                            className={`mythic-interactive-terminal-toggle-button mythic-clickable mythic-justify-center mythic-inline-cluster mythic-flex-fixed${wrapText ? "" : " is-off"}`}
                             onClick={toggleWrapText}
                             type="button">
                             <WrapTextIcon fontSize="small" />
@@ -1128,20 +1130,20 @@ const InteractiveTerminalToolbar = ({
                     <MythicStyledTooltip title={autoScroll ?  "Stop Auto Scroll" : "Auto Scroll"} >
                         <button
                             aria-pressed={autoScroll}
-                            className={`mythic-interactive-terminal-toggle-button${autoScroll ? "" : " is-off"}`}
+                            className={`mythic-interactive-terminal-toggle-button mythic-clickable mythic-justify-center mythic-inline-cluster mythic-flex-fixed${autoScroll ? "" : " is-off"}`}
                             onClick={toggleAutoScroll}
                             type="button">
                             <HeightIcon fontSize="small" />
                         </button>
                     </MythicStyledTooltip>
-                </div>
-            </div>
+                </MythicCluster>
+            </MythicCluster>
             {inputMode === "raw" &&
-                <div className="mythic-interactive-terminal-raw-warning">
+                <div className="mythic-interactive-terminal-raw-warning mythic-font-size-caption mythic-font-weight-bold mythic-line-height-normal mythic-border-radius">
                     Raw key mode sends every keypress as its own task. Wait for the agent to echo before typing ahead.
                 </div>
             }
-        </div>
+        </MythicStack>
     )
 }
 const InteractivePaginationBar = ({totalCount, currentPage, onSubmitPageChange, pageSize, selectAllOutput}) => {

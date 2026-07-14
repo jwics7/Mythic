@@ -1,0 +1,13 @@
+.expand {
+    margin-left: auto;
+    transform: rotate(0deg);
+    transition: transform 120ms ease;
+}
+
+.expandOpen {
+    transform: rotate(180deg);
+}
+
+.avatar {
+    background-color: #f44336;
+}

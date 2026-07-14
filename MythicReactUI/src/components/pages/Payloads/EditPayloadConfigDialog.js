@@ -1,3 +1,4 @@
+import {useMythicTokens} from '../../../themes/MythicThemeProvider';
 import React from 'react';
 import {gql, useMutation, useQuery} from '@apollo/client';
 import { snackActions } from '../../utilities/Snackbar';
@@ -9,7 +10,7 @@ import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-searchbox";
 import Button from '@mui/material/Button';
-import {useTheme} from '@mui/material/styles';
+
 
 const create_payload = gql`
  mutation createPayloadMutation($payload: String!) {
@@ -64,7 +65,7 @@ export function EditPayloadConfigDialog(props) {
 }
 
 export function ViewPayloadConfigJSON(props) {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const [payloadConfig, setPayloadConfig] = React.useState("");
     useQuery(exportPayloadConfigQuery, {
         variables: {uuid: props.uuid},

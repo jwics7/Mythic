@@ -1,0 +1,86 @@
+.drawer {
+    background: var(--mythic-nav-background) !important;
+    background-color: var(--mythic-nav-background-color) !important;
+    box-sizing: border-box;
+    color: var(--mythic-nav-text);
+    flex-shrink: 0;
+    overflow-x: hidden;
+    width: 240px;
+}
+
+.drawer[data-open="false"] {
+    width: 60px;
+}
+
+.drawer :global(.MuiDrawer-paper) {
+    background: var(--mythic-nav-background) !important;
+    background-color: var(--mythic-nav-background-color) !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow-x: hidden;
+    width: 240px;
+}
+
+.drawer[data-open="false"] :global(.MuiDrawer-paper) {
+    width: 60px;
+}
+
+.drawer :global(.MuiList-root) {
+    background-color: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+
+.drawer[data-open="false"] :global(.MuiListItemText-root) {
+    display: none;
+    margin: 0 !important;
+    max-width: 0;
+    min-width: 0;
+    overflow: hidden;
+    width: 0;
+}
+
+.drawer[data-open="false"] :global(.MuiListItem-root) > :global(.MuiSvgIcon-root) {
+    display: none;
+}
+
+.listItem,
+.listSubHeader {
+    background-color: transparent !important;
+    border-radius: var(--mythic-radius);
+    box-sizing: border-box;
+    color: var(--mythic-nav-text);
+    margin: 2px 4px;
+    max-width: calc(100% - 8px);
+    min-height: 34px;
+    padding: 4px 8px;
+    width: auto;
+}
+
+.listItem:hover,
+.listSubHeader:hover {
+    background-color: var(--mythic-nav-hover) !important;
+    color: var(--mythic-nav-text) !important;
+}
+
+.listItem :global(.MuiListItemText-root) {
+    margin-left: 0.35rem;
+    min-width: 0;
+}
+
+.listItem :global(.MuiListItemText-primary) {
+    font-size: 0.78125rem;
+    font-weight: var(--mythic-foundation-typography-weight-medium);
+}
+
+.listItemIcon {
+    background-color: transparent !important;
+    color: var(--mythic-nav-icon);
+    margin-top: 0;
+    min-width: 36px;
+    overflow: visible;
+    padding-bottom: 0;
+    padding-top: 0;
+    width: 36px;
+}

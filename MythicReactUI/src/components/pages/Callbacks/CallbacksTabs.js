@@ -15,6 +15,7 @@ import {
     CallbacksTabsCustomFileBasedBrowserPanel
 } from "./CallbacksTabsCustomFileBasedBrowser";
 import {CallbackBrowserTreeProvider} from "./CallbackBrowserTreeStore";
+import {MythicPanel} from "../../MythicComponents/MythicContent";
 
 export function CallbacksTabs({ onCloseTab, openTabs, onDragTab, onDragEnd, clickedTabId, setClickedTabId, onEditTabDescription, contextMenuOptions, me, newDataForTab, setNewDataForTab}) {
 
@@ -77,7 +78,7 @@ export function CallbacksTabs({ onCloseTab, openTabs, onDragTab, onDragEnd, clic
     return (
         <CallbackBrowserTreeProvider openTabs={openTabs}>
         <div style={{width: "100%", maxWidth: "100%", display: 'flex', flexDirection: 'column', flexGrow: 1, height: "100%" }}>
-            <AppBar color='default' position={"static"} className="no-box-shadow mythic-table-toolbar">
+            <MythicPanel component={AppBar} density="flush" gap="sm" layout="cluster" tone="muted" color='default' position={"static"} className="no-box-shadow mythic-table-toolbar mythic-align-stretch mythic-wrap mythic-full-width mythic-flex-fixed">
                 <DragDropContext onDragEnd={onDragEnd}>
                     <Droppable droppableId="callback-tabs-list" direction={"horizontal"}>
                         {(provided) => (
@@ -195,7 +196,7 @@ export function CallbacksTabs({ onCloseTab, openTabs, onDragTab, onDragEnd, clic
                         )}
                     </Droppable>
                 </DragDropContext>
-            </AppBar>
+            </MythicPanel>
 
             {openTabs.map((tab, index) => {
                 switch (tab.tabType) {

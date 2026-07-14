@@ -6,7 +6,6 @@ import HideSourceIcon from '@mui/icons-material/HideSource';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import {MythicStyledTooltip} from '../../MythicComponents/MythicStyledTooltip';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import { MythicDialog } from '../../MythicComponents/MythicDialog';
@@ -18,23 +17,20 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import DialogContent from '@mui/material/DialogContent';
 import {MythicStatusChip} from '../../MythicComponents/MythicStatusChip';
-
-const buildStepToneClasses = {
-    info: "mythic-table-row-icon-action-info",
-    success: "mythic-table-row-icon-action-success",
-    error: "mythic-table-row-icon-action-danger",
-};
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 function BuildStepIconButton({children, muted = false, onClick, tone = "info"}) {
     return (
-        <IconButton
-            className={`mythic-table-row-icon-action ${buildStepToneClasses[tone] || ""}`}
+        <MythicActionButton iconOnly
+            emphasis="always"
+            tone={tone}
             onClick={onClick}
             size="small"
             style={muted ? {filter: "grayscale(1)", opacity: 0.3} : undefined}
         >
             {children}
-        </IconButton>
+        </MythicActionButton>
     );
 }
 
@@ -132,7 +128,7 @@ export function PayloadsTableRowBuildProgress(props){
     }
     return (
         <>
-            <span className="mythic-table-row-actions" style={props.build_phase === "success" ? {
+            <MythicCluster component="span" gap="xs" align="center" style={props.build_phase === "success" ? {
                 filter: "grayscale(1)",
                 opacity: 0.5} : {}}>
                 {buildProgressData.total_steps > 0 &&
@@ -142,7 +138,7 @@ export function PayloadsTableRowBuildProgress(props){
                         </MythicStyledTooltip>
                     ))
                 }
-            </span>
+            </MythicCluster>
             {openStatusDialog &&
                 <MythicDialog fullWidth={true} maxWidth="lg" open={openStatusDialog}
                               onClose={()=>{setOpenStatusDialog(false);}}

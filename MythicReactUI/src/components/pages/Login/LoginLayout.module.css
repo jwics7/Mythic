@@ -1,0 +1,110 @@
+.root {
+  background-color: var(--mythic-color-application-background);
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--mythic-color-header-surface) 42%, transparent) 0%, transparent 34%);
+  color: var(--mythic-color-text-primary);
+  min-height: 100%;
+  padding: 16px;
+}
+
+.shell {
+  margin: 0 auto;
+  max-width: 28rem;
+}
+
+.panel {
+  background-color: var(--mythic-color-application-raised);
+  background-image: var(--mythic-effect-gradient-subtle);
+  border: 1px solid var(--mythic-effect-table-borderSoft);
+  border-radius: var(--mythic-shape-borderRadius);
+  box-shadow: var(--mythic-effect-shadow-menu);
+}
+
+.logoStage {
+  background-color: var(--mythic-color-header-surface);
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--mythic-color-header-accent) 12%, transparent) 0%, transparent 100%);
+  padding: 22px 20px 18px;
+}
+
+.logoStage::after {
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--mythic-color-header-accent) 58%, transparent), transparent);
+  bottom: 0;
+  content: "";
+  height: 1px;
+  left: 18%;
+  position: absolute;
+  right: 18%;
+}
+
+.logoStage img {
+  display: block;
+  height: auto;
+  max-height: 12.5rem;
+  max-width: min(72%, 13rem);
+  object-fit: contain;
+  width: 100%;
+}
+
+.formBody {
+  padding: 16px 18px 18px;
+}
+
+.formStack {
+  gap: 10px;
+  width: 100%;
+}
+
+.formStack :global(.MuiButton-root) {
+  min-height: 36px;
+}
+
+.formStack :global(.MuiDivider-root) {
+  border-color: var(--mythic-effect-table-borderSoft);
+  color: var(--mythic-color-text-secondary);
+  font-size: var(--mythic-foundation-typography-size-caption);
+  font-weight: var(--mythic-foundation-typography-weight-strong);
+}
+
+.methodNote {
+  align-items: center;
+  background: color-mix(in srgb, var(--mythic-color-status-info) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mythic-color-status-info) 34%, transparent);
+  border-radius: var(--mythic-shape-borderRadius);
+  color: var(--mythic-color-text-secondary);
+  display: flex;
+  font-size: var(--mythic-foundation-typography-size-small);
+  font-weight: var(--mythic-foundation-typography-weight-semibold);
+  gap: 7px;
+  line-height: 1.35;
+  padding: 9px 10px;
+}
+
+.menuPaper {
+  background: var(--mythic-color-application-raised);
+  border: 1px solid var(--mythic-effect-table-borderSoft);
+  border-radius: var(--mythic-shape-borderRadius);
+  box-shadow: var(--mythic-effect-shadow-menu);
+  color: var(--mythic-color-text-primary);
+  margin-top: 6px;
+  min-width: 17rem;
+  overflow: hidden;
+}
+
+@media (max-width: 600px) {
+  .root {
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .logoStage {
+    padding: 17px 16px 15px;
+  }
+
+  .logoStage img {
+    max-width: min(68%, 10.5rem);
+  }
+
+  .formBody {
+    justify-content: flex-start;
+    padding: 14px;
+  }
+}

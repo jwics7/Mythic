@@ -1,5 +1,6 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React, {useEffect} from 'react';
-import {Button, Link, Typography} from '@mui/material';
+import {Link, Typography} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,11 +9,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import {snackActions} from '../../utilities/Snackbar';
 import {MythicSnackDownload} from '../../MythicComponents/MythicSnackDownload';
-import {useTheme} from '@mui/material/styles';
+
 import {MythicConfirmDialog} from '../../MythicComponents/MythicConfirmDialog';
 import {getSkewedNow, toLocalTime} from '../../utilities/Time';
 import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Box from '@mui/material/Box';
@@ -23,7 +23,6 @@ import { ResponseDisplayScreenshotModal } from '../Callbacks/ResponseDisplayScre
 import { MythicDialog, MythicModifyStringDialog } from '../../MythicComponents/MythicDialog';
 import EditIcon from '@mui/icons-material/Edit';
 import { MythicStyledTooltip } from '../../MythicComponents/MythicStyledTooltip';
-import MythicStyledTableCell from '../../MythicComponents/MythicTableCell';
 import {TagsDisplay, ViewEditTags} from '../../MythicComponents/MythicTag';
 import {b64DecodeUnicode} from '../Callbacks/ResponseDisplay';
 import Checkbox from '@mui/material/Checkbox';
@@ -35,6 +34,8 @@ import {faPhotoVideo} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {ImageWithAuth} from "../../utilities/ImageWithAuth";
 import {FileDownloadLinkWithAuth} from "../../utilities/FileDownloadWithAuth";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 export const downloadBulkQuery = gql`
 mutation downloadBulkMutation($files: [String!]!){
@@ -91,14 +92,14 @@ mutation updateHostedFileMutation($c2profile_file_host_id: Int!, $host_url: Stri
 `;
 export const SnackMessage = (props) => {
     return (
-        <React.Fragment>                    
+        <React.Fragment>
             <Typography variant="subtitle2" >
                     Zip Created! This is available at any time via the "Uploads" page.
             </Typography>
             <FileDownloadLinkWithAuth color="textPrimary" href={"/direct/download/" + props.file_id} >
                 Download here
             </FileDownloadLinkWithAuth>
-                
+
         </React.Fragment>
 
     );
@@ -114,7 +115,7 @@ const MythicCallbackGroupsDisplay = ({groups}) => {
         return null
     }
     return (
-        <Typography variant="body2" style={{wordBreak: "break-all"}}>
+        <Typography variant="body2">
             <b>Groups: </b>{groups.join(", ")}
         </Typography>
     )
@@ -211,7 +212,7 @@ export function HostedFileTable(props){
             <HostedFileLocationsTable
                 hostedFiles={hostedFiles}
                 renderFile={(hostedFile) => (
-                    <FileDownloadLinkWithAuth style={{wordBreak: "break-all"}} color="textPrimary" underline="always" href={"/direct/download/" + hostedFile.filemetum?.agent_file_id}>
+                    <FileDownloadLinkWithAuth color="textPrimary" underline="always" href={"/direct/download/" + hostedFile.filemetum?.agent_file_id}>
                         {hostedFile.filemetum?.full_remote_path_text ? b64DecodeUnicode(hostedFile.filemetum.full_remote_path_text) : b64DecodeUnicode(hostedFile.filemetum?.filename_text || "")}
                     </FileDownloadLinkWithAuth>
                 )}
@@ -356,24 +357,24 @@ export function FileMetaDownloadTable(props){
     }, [selected]);
     return (
         <TableContainer className="mythicElement" style={{display: "flex", flexDirection: "column", height: "100%"}} >
-            <span className="mythic-table-bulk-actions">
-                <Button size="small" onClick={onDownloadBulk}
-                        className="mythic-table-row-action mythic-table-row-action-info"
+            <MythicCluster component="span" gap="sm" align="center" className="mythic-table-bulk-actions mythic-divider-bottom mythic-full-width">
+                <MythicActionButton tone="info" emphasis="always" size="small" onClick={onDownloadBulk}
+
                         startIcon={<ArchiveIcon fontSize="small" />}
                         variant="outlined"
                         disabled={disabled}
                 >
                     Zip & Download Selected
-                </Button>
-                <Button size="small" onClick={onDeleteBulk}
-                        className="mythic-table-row-action mythic-table-row-action-hover-danger"
+                </MythicActionButton>
+                <MythicActionButton tone="error" size="small" onClick={onDeleteBulk}
+
                         startIcon={<DeleteIcon fontSize="small" />}
                         variant="outlined"
                         disabled={disabled}
                 >
                     Delete Selected
-                </Button>
-            </span>
+                </MythicActionButton>
+            </MythicCluster>
             <TableContainer className="mythicElement" style={{height: "100%", overflowY: "auto"}}>
                 <Table stickyHeader size="small" style={{"tableLayout": "fixed", "maxWidth": "100%", "overflow": "scroll"}}>
                 <TableHead>
@@ -392,7 +393,7 @@ export function FileMetaDownloadTable(props){
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                
+
                 {files.map( (op) => (
                     <FileMetaDownloadTableRow
                         me={props.me}
@@ -474,7 +475,7 @@ function FileMetaDownloadTableRow(props){
                 {openDelete &&
                     <MythicConfirmDialog onClose={() => {setOpenDelete(false);}} onSubmit={onAcceptDelete} open={openDelete}/>
                 }
-                <MythicStyledTableCell>
+                <TableCell>
                     {props.deleted ? null : (
                         <MythicStyledTooltip title="Toggle to download multiple files at once">
                             <Checkbox checked={props.selected[props.id] === undefined ? false : props.selected[props.id]}
@@ -482,28 +483,28 @@ function FileMetaDownloadTableRow(props){
                                       inputProps={{ 'aria-label': 'controlled' }} />
                         </MythicStyledTooltip>
                     )}
-                    
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+
+                </TableCell>
+                <TableCell>
                     {props.deleted || props.size === 0  ? null : (
-                        <div className="mythic-table-row-actions mythic-table-row-actions-nowrap">
+                        <MythicCluster component="div" gap="xs" align="center" wrap={false}>
                             <MythicStyledTooltip title="Delete file">
-                                <IconButton
-                                    className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger"
+                                <MythicActionButton iconOnly tone="error"
+
                                     size="small"
                                     onClick={()=>{setOpenDelete(true);}}
                                 >
                                     <DeleteIcon fontSize="small" />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                             <MythicStyledTooltip title={"Preview Media"}>
-                                <IconButton
-                                    className="mythic-table-row-icon-action"
+                                <MythicActionButton iconOnly tone="neutral"
+
                                     size="small"
                                     onClick={onPreviewMedia}
                                 >
                                     <FontAwesomeIcon icon={faPhotoVideo} />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                             {openPreviewMediaDialog &&
                                 <MythicDialog fullWidth={true} maxWidth="xl" open={openPreviewMediaDialog}
@@ -514,24 +515,24 @@ function FileMetaDownloadTableRow(props){
                                                   onClose={(e)=>{setOpenPreviewMediaDialog(false);}} />}
                                 />
                             }
-                        </div>
+                        </MythicCluster>
                     )}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <Typography variant="body2" style={{wordBreak: "break-all"}}><b>Host: </b>{props.host}</Typography>
+                </TableCell>
+                <TableCell>
+                    <Typography variant="body2"><b>Host: </b>{props.host}</Typography>
                     <MythicCallbackGroupsDisplay groups={props?.task?.callback.mythictree_groups} />
                     {props.deleted ? (
-                        <Typography variant="body2" style={{wordBreak: "break-all"}}>{props.full_remote_path_text === "" ? props.filename_text : props.full_remote_path_text}</Typography>
+                        <Typography variant="body2">{props.full_remote_path_text === "" ? props.filename_text : props.full_remote_path_text}</Typography>
                         ) : (
-                        <FileDownloadLinkWithAuth style={{wordBreak: "break-all"}} color="textPrimary" underline="always" href={"/direct/download/" + props.agent_file_id}>{props.full_remote_path_text === "" ? props.filename_text : props.full_remote_path_text}</FileDownloadLinkWithAuth>
+                        <FileDownloadLinkWithAuth color="textPrimary" underline="always" href={"/direct/download/" + props.agent_file_id}>{props.full_remote_path_text === "" ? props.filename_text : props.full_remote_path_text}</FileDownloadLinkWithAuth>
                         )
                     }
                     {props.complete ? null : (
-                            <Typography color="secondary" style={{wordBreak: "break-all"}} >{props.chunks_received} / {props.total_chunks} Chunks Received</Typography>
+                            <Typography color="secondary" >{props.chunks_received} / {props.total_chunks} Chunks Received</Typography>
                         )
                     }
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>{props.comment}<IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-info" onClick={(e) => onOpenCloseComment(e, true)} size="small"><EditIcon fontSize="small" /></IconButton>
+                </TableCell>
+                <TableCell>{props.comment}<MythicActionButton iconOnly tone="info" emphasis="always"  onClick={(e) => onOpenCloseComment(e, true)} size="small"><EditIcon fontSize="small" /></MythicActionButton>
                     {editCommentDialogOpen &&
                         <MythicDialog fullWidth={true} maxWidth="md" open={editCommentDialogOpen}
                                       onClose={(e)=>{onOpenCloseComment(e, false);}}
@@ -539,74 +540,74 @@ function FileMetaDownloadTableRow(props){
                         />
                     }
 
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     {getStringSize({cellData: {"plaintext": props.size}})}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     <ViewEditTags target_object={"filemeta_id"} target_object_id={props.id} me={me} />
                     <TagsDisplay tags={props.tags} />
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <IconButton className="mythic-table-row-icon-action" size="small" aria-label="expand row" onClick={expandRowButton}>
+                </TableCell>
+                <TableCell>
+                    <MythicActionButton iconOnly tone="neutral"  size="small" aria-label="expand row" onClick={expandRowButton}>
                             {openDetails ? <KeyboardArrowUpIcon className="mythicElement"/> : <KeyboardArrowDownIcon className="mythicElement"/>}
-                        </IconButton>
-                </MythicStyledTableCell>
+                        </MythicActionButton>
+                </TableCell>
             </TableRow>
                 {openDetails ? (
                     <TableRow>
-                        <MythicStyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
+                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
                             <Collapse in={openDetails}>
                                 <Box margin={1}>
                                 <TableContainer className="mythicElement" elevation={3}>
                                     <Table  size="small" style={{tableLayout:"fixed", "width": "100%", "overflow": "scroll"}}>
                                         <TableHead>
                                             <TableRow>
-                                                <MythicStyledTableCell style={{width: "25rem"}}>Identifiers</MythicStyledTableCell>
-                                                <MythicStyledTableCell >Operator</MythicStyledTableCell>
-                                                <MythicStyledTableCell style={{width: "8rem"}}>Task</MythicStyledTableCell>
-                                                <MythicStyledTableCell>Time</MythicStyledTableCell>
-                                                <MythicStyledTableCell>Command</MythicStyledTableCell>
-                                                <MythicStyledTableCell>Host File</MythicStyledTableCell>
+                                                <TableCell style={{width: "25rem"}}>Identifiers</TableCell>
+                                                <TableCell >Operator</TableCell>
+                                                <TableCell style={{width: "8rem"}}>Task</TableCell>
+                                                <TableCell>Time</TableCell>
+                                                <TableCell>Command</TableCell>
+                                                <TableCell>Host File</TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
                                             <TableRow>
-                                                <MythicStyledTableCell >
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>MD5:  {props.md5}</Typography>
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>SHA1: {props.sha1}</Typography>
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>UUID: {props.agent_file_id}</Typography>
-                                                </MythicStyledTableCell>
-                                                <MythicStyledTableCell ><Typography variant="body2" style={{wordBreak: "break-all"}}>{props.operator.username}</Typography></MythicStyledTableCell>
-                                                <MythicStyledTableCell>
+                                                <TableCell >
+                                                    <Typography variant="body2">MD5:  {props.md5}</Typography>
+                                                    <Typography variant="body2">SHA1: {props.sha1}</Typography>
+                                                    <Typography variant="body2">UUID: {props.agent_file_id}</Typography>
+                                                </TableCell>
+                                                <TableCell ><Typography variant="body2">{props.operator.username}</Typography></TableCell>
+                                                <TableCell>
                                                     {props.task === null ? null : (
                                                         <>
-                                                            <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" href={"/new/callbacks/" + props.task.callback.display_id}>C-{props.task.callback.display_id}</Link><br/>
-                                                            <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" href={"/new/task/" + props.task.display_id}>T-{props.task.display_id}</Link>
-                                                            <Typography variant="body2" style={{wordBreak: "break-all"}}>{props.task.comment}</Typography>
+                                                            <Link color="textPrimary" underline="always" target="_blank" href={"/new/callbacks/" + props.task.callback.display_id}>C-{props.task.callback.display_id}</Link><br/>
+                                                            <Link color="textPrimary" underline="always" target="_blank" href={"/new/task/" + props.task.display_id}>T-{props.task.display_id}</Link>
+                                                            <Typography variant="body2">{props.task.comment}</Typography>
                                                         </>
-                                                        
+
                                                     )}
-                                                    
-                                                </MythicStyledTableCell>
-                                                <MythicStyledTableCell >
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>{toLocalTime(props.timestamp, me.user.view_utc_time)}</Typography>
-                                                </MythicStyledTableCell>
-                                                <MythicStyledTableCell>
+
+                                                </TableCell>
+                                                <TableCell >
+                                                    <Typography variant="body2">{toLocalTime(props.timestamp, me.user.view_utc_time)}</Typography>
+                                                </TableCell>
+                                                <TableCell>
                                                     {props.task === null ? null : (
-                                                        <Typography variant="body2" style={{wordBreak: "break-all"}}>{props.task.command.cmd}</Typography>
+                                                        <Typography variant="body2">{props.task.command.cmd}</Typography>
                                                     )}
-                                                    
-                                                </MythicStyledTableCell>
-                                                <MythicStyledTableCell>
+
+                                                </TableCell>
+                                                <TableCell>
                                                     <MythicStyledTooltip title={"Host Payload Through C2"} >
-                                                        <IconButton
-                                                            className="mythic-table-row-icon-action mythic-table-row-icon-action-info"
+                                                        <MythicActionButton iconOnly tone="info" emphasis="always"
+
                                                             size="small"
                                                             onClick={()=>{setOpenHostDialog(true);}}
                                                         >
                                                             <PublicIcon fontSize="small" />
-                                                        </IconButton>
+                                                        </MythicActionButton>
                                                     </MythicStyledTooltip>
                                                     {openHostDialog &&
                                                         <MythicDialog fullWidth={true} maxWidth="md" open={openHostDialog}
@@ -616,7 +617,7 @@ function FileMetaDownloadTableRow(props){
                                                                                                    onClose={()=>{setOpenHostDialog(false);}} />}
                                                         />
                                                     }
-                                                </MythicStyledTableCell>
+                                                </TableCell>
                                             </TableRow>
                                         </TableBody>
                                     </Table>
@@ -624,7 +625,7 @@ function FileMetaDownloadTableRow(props){
                                 <C2HostedLocationsSummary hostedFiles={props.c2profile_file_hosts} />
                                 </Box>
                             </Collapse>
-                        </MythicStyledTableCell>
+                        </TableCell>
                     </TableRow>
             ) : null }
         </React.Fragment>
@@ -766,24 +767,24 @@ export function FileMetaUploadTable(props){
     }, [selected]);
     return (
         <TableContainer className="mythicElement" style={{display: "flex", flexDirection: "column", height: "100%"}} >
-            <span className="mythic-table-bulk-actions">
-                <Button size="small" onClick={onDownloadBulk}
-                        className="mythic-table-row-action mythic-table-row-action-info"
+            <MythicCluster component="span" gap="sm" align="center" className="mythic-table-bulk-actions mythic-divider-bottom mythic-full-width">
+                <MythicActionButton tone="info" emphasis="always" size="small" onClick={onDownloadBulk}
+
                         startIcon={<ArchiveIcon fontSize="small" />}
                         variant="outlined"
                         disabled={disabled}
                 >
                     Zip & Download Selected
-                </Button>
-                <Button size="small" onClick={onDeleteBulk}
-                        className="mythic-table-row-action mythic-table-row-action-hover-danger"
+                </MythicActionButton>
+                <MythicActionButton tone="error" size="small" onClick={onDeleteBulk}
+
                         startIcon={<DeleteIcon fontSize="small" />}
                         variant="outlined"
                         disabled={disabled}
                 >
                     Delete Selected
-                </Button>
-            </span>
+                </MythicActionButton>
+            </MythicCluster>
             <TableContainer className="mythicElement" style={{height: "100%", overflowY: "auto"}}>
                 <Table stickyHeader size="small"
                        style={{"tableLayout": "fixed", "maxWidth": "100%", "overflow": "scroll"}}>
@@ -795,8 +796,8 @@ export function FileMetaUploadTable(props){
                                           inputProps={{'aria-label': 'controlled'}}/>
                             </TableCell>
                             <TableCell style={{width: "5rem"}}>Actions</TableCell>
-                            <TableCell style={{}}>Source</TableCell>
-                            <TableCell style={{}}>Destination</TableCell>
+                            <TableCell>Source</TableCell>
+                            <TableCell>Destination</TableCell>
                             <TableCell style={{width: "15rem"}}>Comment</TableCell>
                             <TableCell style={{width: "7rem"}}>Size</TableCell>
                             <TableCell style={{width: "15rem"}}>Tags</TableCell>
@@ -823,7 +824,7 @@ export function FileMetaUploadTable(props){
     )
 }
 function FileMetaUploadTableRow(props){
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const [openDelete, setOpenDelete] = React.useState(false);
     const [openDetails, setOpenDetails] = React.useState(false);
     const [editCommentDialogOpen, setEditCommentDialogOpen] = React.useState(false);
@@ -883,7 +884,7 @@ function FileMetaUploadTableRow(props){
         <React.Fragment>
             <TableRow hover onClick={expandRow}>
                 {openDelete && <MythicConfirmDialog onClose={() => {setOpenDelete(false);}} onSubmit={onAcceptDelete} open={openDelete}/>}
-                <MythicStyledTableCell>
+                <TableCell>
                     {props.deleted ? null : (
                         <MythicStyledTooltip title="Toggle to download multiple files at once">
                             <Checkbox checked={props.selected[props.id] === undefined ? false : props.selected[props.id]}
@@ -891,28 +892,28 @@ function FileMetaUploadTableRow(props){
                                       inputProps={{ 'aria-label': 'controlled' }} />
                         </MythicStyledTooltip>
                     )}
-                    
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+
+                </TableCell>
+                <TableCell>
                     {props.deleted ? null : (
-                        <div className="mythic-table-row-actions mythic-table-row-actions-nowrap">
+                        <MythicCluster component="div" gap="xs" align="center" wrap={false}>
                             <MythicStyledTooltip title="Delete file">
-                                <IconButton
-                                    className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger"
+                                <MythicActionButton iconOnly tone="error"
+
                                     size="small"
                                     onClick={()=>{setOpenDelete(true);}}
                                 >
                                     <DeleteIcon fontSize="small" />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                             <MythicStyledTooltip title={"Preview Media"}>
-                                <IconButton
-                                    className="mythic-table-row-icon-action"
+                                <MythicActionButton iconOnly tone="neutral"
+
                                     size="small"
                                     onClick={onPreviewMedia}
                                 >
                                     <FontAwesomeIcon icon={faPhotoVideo} />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                             {openPreviewMediaDialog &&
                                 <MythicDialog fullWidth={true} maxWidth="xl" open={openPreviewMediaDialog}
@@ -924,56 +925,56 @@ function FileMetaUploadTableRow(props){
                                                   onClose={(e)=>{setOpenPreviewMediaDialog(false);}} />}
                                 />
                             }
-                        </div>
+                        </MythicCluster>
                     )}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <FileDownloadLinkWithAuth style={{wordBreak: "break-all"}} color="textPrimary" underline="always" href={"/direct/download/" + props.agent_file_id}>{props.filename_text}</FileDownloadLinkWithAuth>
+                </TableCell>
+                <TableCell>
+                    <FileDownloadLinkWithAuth color="textPrimary" underline="always" href={"/direct/download/" + props.agent_file_id}>{props.filename_text}</FileDownloadLinkWithAuth>
                     {props.complete ? null : (
-                        <Typography color="secondary" style={{wordBreak: "break-all"}} >{props.chunks_received} / {props.total_chunks} Chunks Received</Typography>
+                        <Typography color="secondary" >{props.chunks_received} / {props.total_chunks} Chunks Received</Typography>
                     )
                     }
-                </MythicStyledTableCell>
-                <MythicStyledTableCell  style={{wordBreak: "break-all"}}>
-                    <Typography variant="body2" style={{wordBreak: "break-all"}}>
+                </TableCell>
+                <TableCell>
+                    <Typography variant="body2">
                         {props.host !== "" ? (
                             <><b>Host: </b>{props.host}</>
                         ) : null}
                     </Typography>
                     <MythicCallbackGroupsDisplay groups={props?.task?.callback.mythictree_groups} />
-                    {props.deleted ? (<Typography variant="body2" style={{wordBreak: "break-all"}}>{props.full_remote_path_text}</Typography>) : (
+                    {props.deleted ? (<Typography variant="body2">{props.full_remote_path_text}</Typography>) : (
                         props.complete ? (
-                            <FileDownloadLinkWithAuth style={{wordBreak: "break-all"}} color="textPrimary" underline="always" href={"/direct/download/" +  props.agent_file_id}>{props.full_remote_path_text}</FileDownloadLinkWithAuth>
+                            <FileDownloadLinkWithAuth color="textPrimary" underline="always" href={"/direct/download/" +  props.agent_file_id}>{props.full_remote_path_text}</FileDownloadLinkWithAuth>
                         ) : (
                             <React.Fragment>
-                                <Typography variant="body2" style={{wordBreak: "break-all"}}>{props.full_remote_path_text}</Typography> <Typography color="secondary" style={{wordBreak: "break-all"}} >{props.chunks_received} / {props.total_chunks} Chunks Received</Typography>
+                                <Typography variant="body2">{props.full_remote_path_text}</Typography> <Typography color="secondary" >{props.chunks_received} / {props.total_chunks} Chunks Received</Typography>
                             </React.Fragment>
                         )
                     )}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    {props.comment}<IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-info" onClick={(e) => onOpenCloseComment(e, true)} size="small"><EditIcon fontSize="small" /></IconButton>
-                    <MythicDialog fullWidth={true} maxWidth="md" open={editCommentDialogOpen} 
+                </TableCell>
+                <TableCell>
+                    {props.comment}<MythicActionButton iconOnly tone="info" emphasis="always"  onClick={(e) => onOpenCloseComment(e, true)} size="small"><EditIcon fontSize="small" /></MythicActionButton>
+                    <MythicDialog fullWidth={true} maxWidth="md" open={editCommentDialogOpen}
                         onClose={(e)=>{onOpenCloseComment(e, false)}}
                         innerDialog={<MythicModifyStringDialog title="Edit File Comment" onSubmit={onSubmitUpdatedComment} value={props.comment} onClose={(e)=>{onOpenCloseComment(e, false)}} />}
                     />
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     {getStringSize({cellData: {"plaintext": props.size}})}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     <ViewEditTags target_object={"filemeta_id"} target_object_id={props.id} me={me} />
                     <TagsDisplay tags={props.tags} />
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <IconButton className="mythic-table-row-icon-action" size="small" aria-label="expand row" onClick={expandRowButton}>
+                </TableCell>
+                <TableCell>
+                    <MythicActionButton iconOnly tone="neutral"  size="small" aria-label="expand row" onClick={expandRowButton}>
                             {openDetails ? <KeyboardArrowUpIcon className="mythicElement"/> : <KeyboardArrowDownIcon className="mythicElement"/>}
-                        </IconButton>
-                </MythicStyledTableCell>
+                        </MythicActionButton>
+                </TableCell>
             </TableRow>
                 {openDetails ? (
                     <TableRow>
-                        <MythicStyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
+                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
                             <Collapse in={openDetails}>
                                 <Box margin={1}>
                                 <TableContainer className="mythicElement" elevation={3}>
@@ -990,40 +991,40 @@ function FileMetaUploadTableRow(props){
                                         </TableHead>
                                         <TableBody>
                                             <TableRow>
-                                                <MythicStyledTableCell>
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>MD5: {props.md5}</Typography>
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>SHA1: {props.sha1}</Typography>
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>UUID: {props.agent_file_id}</Typography>
-                                                </MythicStyledTableCell>
-                                                <MythicStyledTableCell><Typography variant="body2" style={{wordBreak: "break-all"}}>{props.operator.username}</Typography></MythicStyledTableCell>
-                                                <MythicStyledTableCell>
+                                                <TableCell>
+                                                    <Typography variant="body2">MD5: {props.md5}</Typography>
+                                                    <Typography variant="body2">SHA1: {props.sha1}</Typography>
+                                                    <Typography variant="body2">UUID: {props.agent_file_id}</Typography>
+                                                </TableCell>
+                                                <TableCell><Typography variant="body2">{props.operator.username}</Typography></TableCell>
+                                                <TableCell>
                                                     {props.task === null ? null : (
                                                         <>
-                                                            <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" href={"/new/callbacks/" + props.task.callback.display_id}>C-{props.task.callback.display_id}</Link><br/>
-                                                            <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" href={"/new/task/" + props.task.display_id}>T-{props.task.display_id}</Link><br/>
-                                                            <Typography variant="body2" style={{wordBreak: "break-all"}}>{props.task.comment}</Typography>
+                                                            <Link color="textPrimary" underline="always" target="_blank" href={"/new/callbacks/" + props.task.callback.display_id}>C-{props.task.callback.display_id}</Link><br/>
+                                                            <Link color="textPrimary" underline="always" target="_blank" href={"/new/task/" + props.task.display_id}>T-{props.task.display_id}</Link><br/>
+                                                            <Typography variant="body2">{props.task.comment}</Typography>
                                                         </>
                                                     )}
-                                                    
-                                                </MythicStyledTableCell>
-                                                <MythicStyledTableCell>
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>{toLocalTime(props.timestamp, me.user.view_utc_time)}</Typography>
-      
-                                                    </MythicStyledTableCell>
-                                                <MythicStyledTableCell>
+
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography variant="body2">{toLocalTime(props.timestamp, me.user.view_utc_time)}</Typography>
+
+                                                    </TableCell>
+                                                <TableCell>
                                                     {props.task === null ? null : (
-                                                        <Typography variant="body2" style={{wordBreak: "break-all"}}>{props.task.command.cmd}</Typography>
+                                                        <Typography variant="body2">{props.task.command.cmd}</Typography>
                                                     )}
-                                                </MythicStyledTableCell>
-                                                <MythicStyledTableCell>
+                                                </TableCell>
+                                                <TableCell>
                                                     <MythicStyledTooltip title={"Host Payload Through C2"} >
-                                                        <IconButton
-                                                            className="mythic-table-row-icon-action mythic-table-row-icon-action-info"
+                                                        <MythicActionButton iconOnly tone="info" emphasis="always"
+
                                                             size="small"
                                                             onClick={()=>{setOpenHostDialog(true);}}
                                                         >
                                                             <PublicIcon fontSize="small" />
-                                                        </IconButton>
+                                                        </MythicActionButton>
                                                     </MythicStyledTooltip>
                                                     {openHostDialog &&
                                                         <MythicDialog fullWidth={true} maxWidth="md" open={openHostDialog}
@@ -1033,7 +1034,7 @@ function FileMetaUploadTableRow(props){
                                                                                                    onClose={()=>{setOpenHostDialog(false);}} />}
                                                         />
                                                     }
-                                                </MythicStyledTableCell>
+                                                </TableCell>
                                             </TableRow>
                                         </TableBody>
                                     </Table>
@@ -1041,7 +1042,7 @@ function FileMetaUploadTableRow(props){
                                     <C2HostedLocationsSummary hostedFiles={props.c2profile_file_hosts} />
                                     {props.copy_of_file &&
                                         <Box margin={1} style={{border: `2px dashed ${theme.palette.info.main}`}}>
-                                            <Typography variant="body2" style={{wordBreak: "break-all", fontWeight: "600", textAlign: "center"}}>
+                                            <Typography variant="body2" style={{fontWeight: "600", textAlign: "center"}}>
                                                 {props.filename_text + " is a copy of the following file: "}
                                             </Typography>
                                             <TableContainer className="mythicElement" elevation={3}>
@@ -1057,46 +1058,46 @@ function FileMetaUploadTableRow(props){
                                                     </TableHead>
                                                     <TableBody>
                                                         <TableRow>
-                                                            <MythicStyledTableCell>
-                                                                <Typography variant="body2" style={{wordBreak: "break-all"}}>MD5: {props.copy_of_file.md5}</Typography>
-                                                                <Typography variant="body2" style={{wordBreak: "break-all"}}>SHA1: {props.copy_of_file.sha1}</Typography>
-                                                                <Typography variant="body2" style={{wordBreak: "break-all"}}>UUID: {props.copy_of_file.agent_file_id}</Typography>
-                                                            </MythicStyledTableCell>
-                                                            <MythicStyledTableCell  style={{wordBreak: "break-all"}}>
-                                                                <Typography variant="body2" style={{wordBreak: "break-all"}}>
+                                                            <TableCell>
+                                                                <Typography variant="body2">MD5: {props.copy_of_file.md5}</Typography>
+                                                                <Typography variant="body2">SHA1: {props.copy_of_file.sha1}</Typography>
+                                                                <Typography variant="body2">UUID: {props.copy_of_file.agent_file_id}</Typography>
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <Typography variant="body2">
                                                                     {props.copy_of_file.host !== "" ? (
                                                                         <><b>Host: </b>{props.copy_of_file.host}</>
                                                                     ) : null}
                                                                 </Typography>
                                                                 <MythicCallbackGroupsDisplay groups={props.copy_of_file?.task?.callback.mythictree_groups} />
-                                                                {props.copy_of_file.deleted ? (<Typography variant="body2" style={{wordBreak: "break-all"}}>{props.copy_of_file.full_remote_path_text}</Typography>) : (
+                                                                {props.copy_of_file.deleted ? (<Typography variant="body2">{props.copy_of_file.full_remote_path_text}</Typography>) : (
                                                                     props.copy_of_file.complete ? (
-                                                                        <FileDownloadLinkWithAuth style={{wordBreak: "break-all"}} color="textPrimary" underline="always" href={"/direct/download/" +  props.copy_of_file.agent_file_id}>{props.copy_of_file.full_remote_path_text}</FileDownloadLinkWithAuth>
+                                                                        <FileDownloadLinkWithAuth color="textPrimary" underline="always" href={"/direct/download/" +  props.copy_of_file.agent_file_id}>{props.copy_of_file.full_remote_path_text}</FileDownloadLinkWithAuth>
                                                                     ) : (
                                                                         <React.Fragment>
-                                                                            <Typography variant="body2" style={{wordBreak: "break-all"}}>{props.copy_of_file.full_remote_path_text}</Typography> <Typography color="secondary" style={{wordBreak: "break-all"}} >{props.copy_of_file.chunks_received} / {props.copy_of_file.total_chunks} Chunks Received</Typography>
+                                                                            <Typography variant="body2">{props.copy_of_file.full_remote_path_text}</Typography> <Typography color="secondary" >{props.copy_of_file.chunks_received} / {props.copy_of_file.total_chunks} Chunks Received</Typography>
                                                                         </React.Fragment>
                                                                     )
                                                                 )}
-                                                            </MythicStyledTableCell>
-                                                            <MythicStyledTableCell>
+                                                            </TableCell>
+                                                            <TableCell>
                                                                 {props.copy_of_file.task === null ? null : (
                                                                     <>
-                                                                        <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" href={"/new/callbacks/" + props.copy_of_file.task.callback.display_id}>C-{props.copy_of_file.task.callback.display_id}</Link><br/>
-                                                                        <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" href={"/new/task/" + props.copy_of_file.task.display_id}>T-{props.copy_of_file.task.display_id}</Link><br/>
-                                                                        <Typography variant="body2" style={{wordBreak: "break-all"}}>{props.copy_of_file.task.comment}</Typography>
+                                                                        <Link color="textPrimary" underline="always" target="_blank" href={"/new/callbacks/" + props.copy_of_file.task.callback.display_id}>C-{props.copy_of_file.task.callback.display_id}</Link><br/>
+                                                                        <Link color="textPrimary" underline="always" target="_blank" href={"/new/task/" + props.copy_of_file.task.display_id}>T-{props.copy_of_file.task.display_id}</Link><br/>
+                                                                        <Typography variant="body2">{props.copy_of_file.task.comment}</Typography>
                                                                     </>
                                                                 )}
 
-                                                            </MythicStyledTableCell>
-                                                            <MythicStyledTableCell>
-                                                                <Typography variant="body2" style={{wordBreak: "break-all"}}>{toLocalTime(props.copy_of_file.timestamp, me.user.view_utc_time)}</Typography>
-                                                            </MythicStyledTableCell>
-                                                            <MythicStyledTableCell>
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <Typography variant="body2">{toLocalTime(props.copy_of_file.timestamp, me.user.view_utc_time)}</Typography>
+                                                            </TableCell>
+                                                            <TableCell>
                                                                 {props.task === null ? null : (
-                                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>{props.copy_of_file.task.command.cmd}</Typography>
+                                                                    <Typography variant="body2">{props.copy_of_file.task.command.cmd}</Typography>
                                                                 )}
-                                                            </MythicStyledTableCell>
+                                                            </TableCell>
                                                         </TableRow>
                                                     </TableBody>
                                                 </Table>
@@ -1105,7 +1106,7 @@ function FileMetaUploadTableRow(props){
                                     }
                                 </Box>
                             </Collapse>
-                        </MythicStyledTableCell>
+                        </TableCell>
                     </TableRow>
             ) : null }
         </React.Fragment>
@@ -1158,7 +1159,7 @@ export function FileMetaScreenshotTable(props){
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                
+
                 {files.map( (op, index) => (
                     <FileMetaScreenshotTableRow
                         key={"file" + op.id}
@@ -1214,55 +1215,55 @@ function FileMetaScreenshotTableRow(props){
         <React.Fragment>
             <TableRow hover onClick={expandRowButton}>
                 {openDelete && <MythicConfirmDialog onClose={() => {setOpenDelete(false);}} onSubmit={onAcceptDelete} open={openDelete}/>}
-                <MythicStyledTableCell>
+                <TableCell>
                     {props.deleted ? null : (
                         <MythicStyledTooltip title="Delete screenshot">
-                            <IconButton
-                                className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger"
+                            <MythicActionButton iconOnly tone="error"
+
                                 size="small"
                                 onClick={()=>{setOpenDelete(true);}}
                             >
                                 <DeleteIcon fontSize="small" />
-                            </IconButton>
+                            </MythicActionButton>
                         </MythicStyledTooltip>
                     )}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell >
+                </TableCell>
+                <TableCell >
                     <ImageWithAuth src={"/screencaptures/" + props.agent_file_id}
                                    style={{width: "270px", cursor: "pointer"}} />
-                    {openScreenshot && 
-                        <MythicDialog fullWidth={true} maxWidth="xl" open={openScreenshot} 
-                            onClose={()=>{setOpenScreenshot(false);}} 
+                    {openScreenshot &&
+                        <MythicDialog fullWidth={true} maxWidth="xl" open={openScreenshot}
+                            onClose={()=>{setOpenScreenshot(false);}}
                             innerDialog={<ResponseDisplayScreenshotModal images={props.imageRefs} startIndex={props.index} onClose={()=>{setOpenScreenshot(false);}} />} />
-                    }       
-                    {props.chunks_received < props.total_chunks ? (<Typography color="secondary" style={{wordBreak: "break-all"}} >{props.chunks_received} / {props.total_chunks} Chunks Received</Typography>) : (null)}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell><Typography variant="body2" style={{wordBreak: "break-all"}}>{props.filename_text}</Typography></MythicStyledTableCell>
-                <MythicStyledTableCell><Typography variant="body2" style={{wordBreak: "break-all"}}>{toLocalTime(props.timestamp, me.user.view_utc_time)}</Typography></MythicStyledTableCell>
-                <MythicStyledTableCell><Typography variant="body2" style={{wordBreak: "break-all"}}>{props.host}</Typography></MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    {props.comment}<IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-info" onClick={() => setEditCommentDialogOpen(true)} size="small"><EditIcon fontSize="small" /></IconButton>
-                    <MythicDialog fullWidth={true} maxWidth="md" open={editCommentDialogOpen} 
-                        onClose={()=>{setEditCommentDialogOpen(false);}} 
+                    }
+                    {props.chunks_received < props.total_chunks ? (<Typography color="secondary" >{props.chunks_received} / {props.total_chunks} Chunks Received</Typography>) : (null)}
+                </TableCell>
+                <TableCell><Typography variant="body2">{props.filename_text}</Typography></TableCell>
+                <TableCell><Typography variant="body2">{toLocalTime(props.timestamp, me.user.view_utc_time)}</Typography></TableCell>
+                <TableCell><Typography variant="body2">{props.host}</Typography></TableCell>
+                <TableCell>
+                    {props.comment}<MythicActionButton iconOnly tone="info" emphasis="always"  onClick={() => setEditCommentDialogOpen(true)} size="small"><EditIcon fontSize="small" /></MythicActionButton>
+                    <MythicDialog fullWidth={true} maxWidth="md" open={editCommentDialogOpen}
+                        onClose={()=>{setEditCommentDialogOpen(false);}}
                         innerDialog={<MythicModifyStringDialog title="Edit File Comment" onSubmit={onSubmitUpdatedComment} value={props.comment} onClose={()=>{setEditCommentDialogOpen(false);}} />}
                     />
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     {getStringSize({cellData: {"plaintext": props.size}})}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     <ViewEditTags target_object={"filemeta_id"} target_object_id={props.id} me={me} />
                     <TagsDisplay tags={props.tags} />
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <IconButton className="mythic-table-row-icon-action" size="small" aria-label="expand row" onClick={() => setOpenDetails(!openDetails)}>
+                </TableCell>
+                <TableCell>
+                    <MythicActionButton iconOnly tone="neutral"  size="small" aria-label="expand row" onClick={() => setOpenDetails(!openDetails)}>
                             {openDetails ? <KeyboardArrowUpIcon className="mythicElement"/> : <KeyboardArrowDownIcon className="mythicElement"/>}
-                        </IconButton>
-                </MythicStyledTableCell>
+                        </MythicActionButton>
+                </TableCell>
             </TableRow>
                 {openDetails ? (
                     <TableRow>
-                        <MythicStyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
+                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
                             <Collapse in={openDetails}>
                                 <Box margin={1}>
                                 <TableContainer className="mythicElement">
@@ -1278,27 +1279,27 @@ function FileMetaScreenshotTableRow(props){
                                         </TableHead>
                                         <TableBody>
                                             <TableRow>
-                                                <MythicStyledTableCell>
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>MD5:  {props.md5}</Typography>
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>SHA1: {props.sha1}</Typography>
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>UUID: {props.agent_file_id}</Typography>
-                                                </MythicStyledTableCell>
-                                                <MythicStyledTableCell><Typography variant="body2" style={{wordBreak: "break-all"}}>{props.operator.username}</Typography></MythicStyledTableCell>
-                                                <MythicStyledTableCell>
+                                                <TableCell>
+                                                    <Typography variant="body2">MD5:  {props.md5}</Typography>
+                                                    <Typography variant="body2">SHA1: {props.sha1}</Typography>
+                                                    <Typography variant="body2">UUID: {props.agent_file_id}</Typography>
+                                                </TableCell>
+                                                <TableCell><Typography variant="body2">{props.operator.username}</Typography></TableCell>
+                                                <TableCell>
                                                     {props.task === null ? null : (
                                                         <>
-                                                            <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" href={"/new/callbacks/" + props.task.callback.display_id}>C-{props.task.callback.display_id}</Link><br/>
-                                                            <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" href={"/new/task/" + props.task.display_id}>T-{props.task.display_id}</Link>
+                                                            <Link color="textPrimary" underline="always" target="_blank" href={"/new/callbacks/" + props.task.callback.display_id}>C-{props.task.callback.display_id}</Link><br/>
+                                                            <Link color="textPrimary" underline="always" target="_blank" href={"/new/task/" + props.task.display_id}>T-{props.task.display_id}</Link>
                                                         </>
                                                     )}
-                                                    
-                                                </MythicStyledTableCell>
-                                                <MythicStyledTableCell>{props.task !== null ? (<Typography variant="body2" style={{wordBreak: "break-all"}}>{props.task.comment}</Typography>) : (null)}</MythicStyledTableCell>
-                                                <MythicStyledTableCell>
+
+                                                </TableCell>
+                                                <TableCell>{props.task !== null ? (<Typography variant="body2">{props.task.comment}</Typography>) : (null)}</TableCell>
+                                                <TableCell>
                                                     {props.task === null ? null : (
-                                                        <Typography variant="body2" style={{wordBreak: "break-all"}}>{props.task.command.cmd}</Typography>
+                                                        <Typography variant="body2">{props.task.command.cmd}</Typography>
                                                     )}
-                                                </MythicStyledTableCell>
+                                                </TableCell>
                                             </TableRow>
                                         </TableBody>
                                     </Table>
@@ -1306,7 +1307,7 @@ function FileMetaScreenshotTableRow(props){
                                 <C2HostedLocationsSummary hostedFiles={props.c2profile_file_hosts} />
                                 </Box>
                             </Collapse>
-                        </MythicStyledTableCell>
+                        </TableCell>
                     </TableRow>
             ) : null }
         </React.Fragment>
@@ -1442,24 +1443,24 @@ export function FileMetaEventingWorkflowsTable(props){
     }, [selected]);
     return (
         <TableContainer className="mythicElement" style={{display: "flex", flexDirection: "column", height: "100%"}} >
-            <span className="mythic-table-bulk-actions">
-                <Button size="small" onClick={onDownloadBulk}
-                        className="mythic-table-row-action mythic-table-row-action-info"
+            <MythicCluster component="span" gap="sm" align="center" className="mythic-table-bulk-actions mythic-divider-bottom mythic-full-width">
+                <MythicActionButton tone="info" emphasis="always" size="small" onClick={onDownloadBulk}
+
                         startIcon={<ArchiveIcon fontSize="small" />}
                         variant="outlined"
                         disabled={disabled}
                 >
                     Zip & Download Selected
-                </Button>
-                <Button size="small" onClick={onDeleteBulk}
-                        className="mythic-table-row-action mythic-table-row-action-hover-danger"
+                </MythicActionButton>
+                <MythicActionButton tone="error" size="small" onClick={onDeleteBulk}
+
                         startIcon={<DeleteIcon fontSize="small" />}
                         variant="outlined"
                         disabled={disabled}
                 >
                     Delete Selected
-                </Button>
-            </span>
+                </MythicActionButton>
+            </MythicCluster>
             <TableContainer className="mythicElement" style={{height: "100%", overflowY: "auto"}}>
                 <Table stickyHeader size="small"
                        style={{"tableLayout": "fixed", "maxWidth": "100%", "overflow": "scroll"}}>
@@ -1542,7 +1543,7 @@ function FileMetaEventingWorkflowsTableRow(props){
         <React.Fragment>
             <TableRow hover onClick={expandRow}>
                 {openDelete && <MythicConfirmDialog onClose={() => {setOpenDelete(false);}} onSubmit={onAcceptDelete} open={openDelete}/>}
-                <MythicStyledTableCell>
+                <TableCell>
                     {props.deleted ? null : (
                         <MythicStyledTooltip title="Toggle to download multiple files at once">
                             <Checkbox checked={props.selected[props.id] === undefined ? false : props.selected[props.id]}
@@ -1551,27 +1552,27 @@ function FileMetaEventingWorkflowsTableRow(props){
                         </MythicStyledTooltip>
                     )}
 
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     {props.deleted ? null : (
-                        <div className="mythic-table-row-actions mythic-table-row-actions-nowrap">
+                        <MythicCluster component="div" gap="xs" align="center" wrap={false}>
                             <MythicStyledTooltip title="Delete file">
-                                <IconButton
-                                    className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger"
+                                <MythicActionButton iconOnly tone="error"
+
                                     size="small"
                                     onClick={()=>{setOpenDelete(true);}}
                                 >
                                     <DeleteIcon fontSize="small" />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                             <MythicStyledTooltip title={"Preview Media"}>
-                                <IconButton
-                                    className="mythic-table-row-icon-action"
+                                <MythicActionButton iconOnly tone="neutral"
+
                                     size="small"
                                     onClick={onPreviewMedia}
                                 >
                                     <FontAwesomeIcon icon={faPhotoVideo} />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                             {openPreviewMediaDialog &&
                                 <MythicDialog fullWidth={true} maxWidth="xl" open={openPreviewMediaDialog}
@@ -1582,31 +1583,31 @@ function FileMetaEventingWorkflowsTableRow(props){
                                                   onClose={(e)=>{setOpenPreviewMediaDialog(false);}} />}
                                 />
                             }
-                        </div>
+                        </MythicCluster>
                     )}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <FileDownloadLinkWithAuth style={{wordBreak: "break-all"}} color="textPrimary" underline="always" href={"/direct/download/" + props.agent_file_id}>{props.filename_text}</FileDownloadLinkWithAuth>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell  style={{wordBreak: "break-all"}}>
-                    <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" href={"/new/eventing?eventgroup=" +  props.eventgroup?.id}>{props.eventgroup?.name}</Link>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
+                    <FileDownloadLinkWithAuth color="textPrimary" underline="always" href={"/direct/download/" + props.agent_file_id}>{props.filename_text}</FileDownloadLinkWithAuth>
+                </TableCell>
+                <TableCell>
+                    <Link color="textPrimary" underline="always" href={"/new/eventing?eventgroup=" +  props.eventgroup?.id}>{props.eventgroup?.name}</Link>
+                </TableCell>
+                <TableCell>
                     {getStringSize({cellData: {"plaintext": props.size}})}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     <ViewEditTags target_object={"filemeta_id"} target_object_id={props.id} me={me} />
                     <TagsDisplay tags={props.tags} />
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <IconButton className="mythic-table-row-icon-action" size="small" aria-label="expand row" onClick={expandRowButton}>
+                </TableCell>
+                <TableCell>
+                    <MythicActionButton iconOnly tone="neutral"  size="small" aria-label="expand row" onClick={expandRowButton}>
                         {openDetails ? <KeyboardArrowUpIcon className="mythicElement"/> : <KeyboardArrowDownIcon className="mythicElement"/>}
-                    </IconButton>
-                </MythicStyledTableCell>
+                    </MythicActionButton>
+                </TableCell>
             </TableRow>
             {openDetails ? (
                 <TableRow>
-                    <MythicStyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
+                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
                         <Collapse in={openDetails}>
                             <Box margin={1}>
                                 <TableContainer className="mythicElement" elevation={3}>
@@ -1621,25 +1622,25 @@ function FileMetaEventingWorkflowsTableRow(props){
                                         </TableHead>
                                         <TableBody>
                                             <TableRow>
-                                                <MythicStyledTableCell>
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>MD5: {props.md5}</Typography>
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>SHA1: {props.sha1}</Typography>
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>UUID: {props.agent_file_id}</Typography>
-                                                </MythicStyledTableCell>
-                                                <MythicStyledTableCell><Typography variant="body2" style={{wordBreak: "break-all"}}>{props.operator.username}</Typography></MythicStyledTableCell>
-                                                <MythicStyledTableCell>
-                                                    <Typography variant="body2" style={{wordBreak: "break-all"}}>{toLocalTime(props.timestamp, me.user.view_utc_time)}</Typography>
+                                                <TableCell>
+                                                    <Typography variant="body2">MD5: {props.md5}</Typography>
+                                                    <Typography variant="body2">SHA1: {props.sha1}</Typography>
+                                                    <Typography variant="body2">UUID: {props.agent_file_id}</Typography>
+                                                </TableCell>
+                                                <TableCell><Typography variant="body2">{props.operator.username}</Typography></TableCell>
+                                                <TableCell>
+                                                    <Typography variant="body2">{toLocalTime(props.timestamp, me.user.view_utc_time)}</Typography>
 
-                                                </MythicStyledTableCell>
-                                                <MythicStyledTableCell>
+                                                </TableCell>
+                                                <TableCell>
                                                     <MythicStyledTooltip title={"Host Payload Through C2"} >
-                                                        <IconButton
-                                                            className="mythic-table-row-icon-action mythic-table-row-icon-action-info"
+                                                        <MythicActionButton iconOnly tone="info" emphasis="always"
+
                                                             size="small"
                                                             onClick={()=>{setOpenHostDialog(true);}}
                                                         >
                                                             <PublicIcon fontSize="small" />
-                                                        </IconButton>
+                                                        </MythicActionButton>
                                                     </MythicStyledTooltip>
                                                     {openHostDialog &&
                                                         <MythicDialog fullWidth={true} maxWidth="md" open={openHostDialog}
@@ -1649,7 +1650,7 @@ function FileMetaEventingWorkflowsTableRow(props){
                                                                                                    onClose={()=>{setOpenHostDialog(false);}} />}
                                                         />
                                                     }
-                                                </MythicStyledTableCell>
+                                                </TableCell>
                                             </TableRow>
                                         </TableBody>
                                     </Table>
@@ -1657,7 +1658,7 @@ function FileMetaEventingWorkflowsTableRow(props){
                                 <C2HostedLocationsSummary hostedFiles={props.c2profile_file_hosts} />
                             </Box>
                         </Collapse>
-                    </MythicStyledTableCell>
+                    </TableCell>
                 </TableRow>
             ) : null }
         </React.Fragment>

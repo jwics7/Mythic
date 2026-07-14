@@ -1,5 +1,5 @@
 import React from 'react';
-import {useTheme} from '@mui/material/styles';
+import {useMythicTokens} from '../../../themes/MythicThemeProvider';
 import {DrawBrowserScriptElementsFlowWithProvider} from "./C2PathDialog";
 import GroupsIcon from '@mui/icons-material/Groups';
 import ComputerIcon from '@mui/icons-material/Computer';
@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faSkullCrossbones} from '@fortawesome/free-solid-svg-icons';
 import {Typography} from '@mui/material';
 import { Button } from '@mui/material';
+import {MythicStack} from "../../MythicComponents/MythicLayout";
 
 const getIcons = (img, nodeStyle) => {
     if(img === undefined){return null}
@@ -48,7 +49,7 @@ const getIcons = (img, nodeStyle) => {
     }
 }
 export const ResponseDisplayGraph = ({graph, task, expand}) =>{
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const [viewAllDataDialog, setViewAllDataDialogOpen] = React.useState(false);
     const dictionaryData = React.useRef(null);
     const [showGraph, setShowGraph] = React.useState(graph.nodes.length < 50);
@@ -78,31 +79,31 @@ export const ResponseDisplayGraph = ({graph, task, expand}) =>{
     if(!showGraph){
         return (
             <>
-                <div className="mythic-graph-empty-state">
-                    <Typography component="div" className="mythic-graph-empty-title">
+                <MythicStack component="div" gap="xs" align="center" className="mythic-graph-empty-state mythic-justify-center mythic-border-radius mythic-border mythic-text-secondary mythic-full-height mythic-full-width">
+                    <Typography component="div" className="mythic-graph-empty-title mythic-text-primary mythic-font-weight-heavy">
                         Large graph hidden
                     </Typography>
-                    <Typography component="div" className="mythic-graph-empty-description">
+                    <Typography component="div" className="mythic-graph-empty-description mythic-text-secondary mythic-font-size-small">
                         {`This response contains ${graph.nodes.length} nodes and ${graph.edges.length} edges.`}
                     </Typography>
-                    <Button className="mythic-graph-empty-action" variant={"contained"} onClick={() => {setShowGraph(!showGraph)}}>
+                    <Button className="mythic-graph-empty-action mythic-border-radius mythic-font-size-small mythic-font-weight-strong" variant={"contained"} onClick={() => {setShowGraph(!showGraph)}}>
                         Show Graph
                     </Button>
-                </div>
+                </MythicStack>
             </>
         )
     }
     if(graph.nodes.length === 0){
         return (
             <>
-                <div className="mythic-graph-empty-state">
-                    <Typography component="div" className="mythic-graph-empty-title">
+                <MythicStack component="div" gap="xs" align="center" className="mythic-graph-empty-state mythic-justify-center mythic-border-radius mythic-border mythic-text-secondary mythic-full-height mythic-full-width">
+                    <Typography component="div" className="mythic-graph-empty-title mythic-text-primary mythic-font-weight-heavy">
                         Empty graph
                     </Typography>
-                    <Typography component="div" className="mythic-graph-empty-description">
+                    <Typography component="div" className="mythic-graph-empty-description mythic-text-secondary mythic-font-size-small">
                         There are no nodes to render for this response.
                     </Typography>
-                </div>
+                </MythicStack>
             </>
         )
     }

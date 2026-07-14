@@ -1,3 +1,4 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React from 'react';
 import Button from '@mui/material/Button';
 import DialogContent from '@mui/material/DialogContent';
@@ -6,7 +7,7 @@ import {gql, useMutation} from '@apollo/client';
 import { snackActions } from '../../utilities/Snackbar';
 import MythicTextField from '../../MythicComponents/MythicTextField';
 import {Typography, Box, Chip} from '@mui/material';
-import {useTheme} from '@mui/material/styles';
+
 import {
   MythicDialogBody,
   MythicDialogButton,
@@ -35,7 +36,7 @@ mutation updateTagType($id: Int!, $name: String!, $description: String!, $color:
 `;
 
 const TagColorPreview = ({mode, color, label}) => {
-  const theme = useTheme();
+  const theme = useMythicTheme();
   const darkMode = mode === "dark";
   const hasValidColor = isValidHexColor(color);
   const textColor = darkMode ? "#ffffff" : "#111827";

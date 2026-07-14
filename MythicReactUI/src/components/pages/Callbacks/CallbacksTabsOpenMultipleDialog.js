@@ -52,7 +52,7 @@ export function CallbacksTabsOpenMultipleDialog({onClose, tabType, onOpenTabs}) 
   return (
     <React.Fragment>
         <DialogTitle id="form-dialog-title">Select Callback to open {tabType} tab</DialogTitle>
-        <DialogContentText style={{textAlign: "center"}}>
+        <DialogContentText align="center">
             <b>Note: </b> Last checkin times are based on when this window opened and won't refresh.
         </DialogContentText>
             <CallbacksTabsSelectTable initialData={initialData}

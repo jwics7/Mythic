@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {Link, IconButton} from '@mui/material';
+import {Link} from '@mui/material';
 import { gql, useMutation} from '@apollo/client';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,11 +7,12 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import MythicStyledTableCell from '../../MythicComponents/MythicTableCell';
 import CleanHandsTwoToneIcon from '@mui/icons-material/CleanHandsTwoTone';
 import AddAlertTwoToneIcon from '@mui/icons-material/AddAlertTwoTone';
 import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
-import {MythicStateChip} from "../../MythicComponents/MythicStateChip";
+import {MythicStatusChip} from "../../MythicComponents/MythicStatusChip";
+import {MythicStack, MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicCodeSurface, MythicActionButton, MythicMetadataValue} from "../../MythicComponents/MythicContent";
 
 const singleLineCellStyle = {
     minWidth: 0,
@@ -121,77 +122,77 @@ function ArtifactTableRow(props){
     return (
         <React.Fragment>
             <TableRow hover>
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-action-row">
+                <TableCell>
+                    <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-search-result-action-row">
                         {props.needs_cleanup && !props.resolved &&
                             <MythicStyledTooltip title={"Mark artifact as cleaned up"}>
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-success" onClick={MarkResolved} size="small">
+                                <MythicActionButton iconOnly tone="success"  onClick={MarkResolved} size="small">
                                     <CleanHandsTwoToneIcon fontSize="small" />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                         }
                         {props.needs_cleanup && props.resolved &&
                             <MythicStyledTooltip title={"Mark artifact as unresolved"}>
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-warning" onClick={MarkUnresolved} size="small">
+                                <MythicActionButton iconOnly tone="warning"  onClick={MarkUnresolved} size="small">
                                     <CleanHandsTwoToneIcon fontSize="small" />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                         }
                         {!props.needs_cleanup &&
                             <MythicStyledTooltip title={"Mark artifact as needs cleanup"} >
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-warning" onClick={MarkNeedsCleanup} size="small">
+                                <MythicActionButton iconOnly tone="warning"  onClick={MarkNeedsCleanup} size="small">
                                     <AddAlertTwoToneIcon fontSize="small" />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                         }
                         <MythicStyledTooltip title={cleanupTooltip}>
                             <span>
-                                <MythicStateChip compact label={cleanupLabel} state={cleanupState} />
+                                <MythicStatusChip size="compact" label={cleanupLabel} status={cleanupState} />
                             </span>
                         </MythicStyledTooltip>
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-value" style={singleLineCellStyle} title={props.base_artifact}>
+                    </MythicCluster>
+                </TableCell>
+                <TableCell>
+                    <MythicMetadataValue component="div" className="mythic-search-result-value" style={singleLineCellStyle} title={props.base_artifact}>
                         {props.base_artifact}
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell >
-                    <div className="mythic-search-result-value" style={singleLineCellStyle} title={props?.task?.command?.cmd}>
+                    </MythicMetadataValue>
+                </TableCell>
+                <TableCell >
+                    <MythicMetadataValue component="div" className="mythic-search-result-value" style={singleLineCellStyle} title={props?.task?.command?.cmd}>
                         {props?.task?.command?.cmd}
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell style={{wordBreak: "break-all"}}>
+                    </MythicMetadataValue>
+                </TableCell>
+                <TableCell>
                     {props.task &&
-                    <div className="mythic-search-result-stack">
-                        <div className="mythic-search-result-link-row">
-                            <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank"
+                    <MythicStack component="div" gap="none" className="mythic-search-result-stack">
+                        <MythicCluster component="div" gap="xs" inline className="mythic-search-result-link-row">
+                            <Link color="textPrimary" underline="always" target="_blank"
                                   href={"/new/callbacks/" + props.task.callback.display_id}>
                                 C-{props.task.callback.display_id}
                             </Link>
-                            <span className="mythic-search-result-secondary">/</span>
-                            <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank"
+                            <MythicMetadataValue component="span" size="caption" tone="secondary" className="mythic-search-result-secondary">/</MythicMetadataValue>
+                            <Link color="textPrimary" underline="always" target="_blank"
                                   href={"/new/task/" + props.task.display_id}>
                                 T-{props.task.display_id}
                             </Link>
-                        </div>
+                        </MythicCluster>
                         {props.task?.callback?.mythictree_groups.length > 0 ? (
-                            <div className="mythic-search-result-secondary">
+                            <MythicMetadataValue component="div" size="caption" tone="secondary" className="mythic-search-result-secondary">
                                 Groups: {props?.task?.callback.mythictree_groups.join(", ")}
-                            </div>
+                            </MythicMetadataValue>
                         ) : null}
-                    </div>
+                    </MythicStack>
                     }
 
-                </MythicStyledTableCell>
-                <MythicStyledTableCell >
-                    <div className="mythic-search-result-value" style={singleLineCellStyle} title={props.host}>
+                </TableCell>
+                <TableCell >
+                    <MythicMetadataValue component="div" className="mythic-search-result-value" style={singleLineCellStyle} title={props.host}>
                         {props.host}
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-code">{props.artifact_text}</div>
-                </MythicStyledTableCell>
+                    </MythicMetadataValue>
+                </TableCell>
+                <TableCell>
+                    <MythicCodeSurface component="div" density="compact" overflow="visible" tone="snippet">{props.artifact_text}</MythicCodeSurface>
+                </TableCell>
               
             </TableRow>
         </React.Fragment>

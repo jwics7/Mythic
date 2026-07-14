@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -10,40 +9,38 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import Divider from '@mui/material/Divider';
+import styles from './MythicTransferList.module.css';
+import {MythicStack} from "./MythicLayout";
+import {MythicActionButton, MythicPanel} from "./MythicContent";
 
-const PREFIX = 'MythicTransferList';
-
-export const classes = {
-    button: `${PREFIX}-button`,
-    divider: `${PREFIX}-divider`
-};
-
-export const StyledDivider = styled(Divider)((
-    {
-        theme
-    }
-) => ({
-    [`&.${classes.divider}`]: {
-        backgroundColor: theme.palette.primary.main,
-        border: `2px solid ${theme.palette.primary.main}`
-    }
-}));
-export const StyledButton = styled(Button)((
-    {
-        theme
-    }
-) => ({
-    [`&.${classes.button}`]: {
-        margin: theme.spacing(0.5, 0),
-    },
-}));
-
-
+export const MythicTransferDivider = ({className = "", ...props}) => (
+    <Divider className={`${styles.divider} ${className}`} {...props} />
+);
+export const MythicTransferButton = ({className = "", ...props}) => (
+    <MythicActionButton className={`${styles.button} ${className}`} {...props} />
+);
+export const MythicTransferLayout = ({children, className = "", ...props}) => (
+    <div {...props} data-mythic-component="transfer-layout" className={`${styles.root} mythic-flex mythic-min-height-0 ${className}`}>
+        {children}
+    </div>
+);
+export const MythicTransferListPane = ({children, className = "", title}) => (
+    <MythicPanel
+        data-mythic-component="transfer-list-pane"
+        density="flush"
+        overflow="hidden"
+        tone="surface"
+        className={`mythic-full-width ${styles.paneSurface} ${className}`}
+    >
+        <div className={`mythic-font-size-small mythic-font-weight-bold mythic-line-height-snug mythic-uppercase mythic-text-primary ${styles.paneHeader}`}>{title}</div>
+        <div className={`mythic-flex-fill mythic-overflow-auto ${styles.paneBody}`}>{children}</div>
+    </MythicPanel>
+);
 const CustomListElement = ({value, onClick, itemKey}) => {
     const displayValue = itemKey ? value[itemKey] : value.value;
     const labelId = `transfer-list-item-${displayValue}-label`;
     return (
-        <ListItem style={{padding:0}} key={displayValue} role="listitem" button onClick={() => onClick(value)}>
+        <ListItem className={styles.item} key={displayValue} role="listitem" button onClick={() => onClick(value)}>
             <ListItemIcon>
                 <Checkbox
                     checked={value.checked}
@@ -59,26 +56,23 @@ const CustomListElement = ({value, onClick, itemKey}) => {
 const CustomList = ({title, items, left, onClick, itemKey}) => {
 
     return (
-        <div className="mythic-transfer-list">
-            <div className="mythic-transfer-list-header">{title}</div>
-            <div className="mythic-transfer-list-body">
-                <List dense component="div" role="list" style={{padding:0, width: "100%"}}>
-                    {items.map((value, index) => (
-                        <div key={index}>
-                            {
-                                left && value.left &&
-                                <CustomListElement itemKey={itemKey} value={value} onClick={onClick}/>
-                            }
-                            {
-                                !left && value.right &&
-                                <CustomListElement itemKey={itemKey} value={value} onClick={onClick} />
-                            }
-                        </div>
+        <MythicTransferListPane title={title}>
+            <List dense component="div" role="list" className={`${styles.list} mythic-full-width`}>
+                {items.map((value, index) => (
+                    <div key={index}>
+                        {
+                            left && value.left &&
+                            <CustomListElement itemKey={itemKey} value={value} onClick={onClick}/>
+                        }
+                        {
+                            !left && value.right &&
+                            <CustomListElement itemKey={itemKey} value={value} onClick={onClick} />
+                        }
+                    </div>
 
-                    ))}
-                </List>
-            </div>
-        </div>
+                ))}
+            </List>
+        </MythicTransferListPane>
     );
 }
 const CustomTransferList = ({leftTitle, rightTitle, initialData, parentLeftData, parentRightData, itemKey}) => {
@@ -141,55 +135,51 @@ const CustomTransferList = ({leftTitle, rightTitle, initialData, parentLeftData,
         setData(initialData);
     }, [initialData]);
     return (
-        <div style={{display: "flex", flexDirection: "row", overflowY: "auto", flexGrow: 1, minHeight: 0}}>
-            <div  style={{paddingLeft: 0, flexGrow: 1,  marginLeft: 0, marginRight: "10px", position: "relative",  overflowY: "auto", display: "flex", flexDirection: "column" }}>
+        <MythicTransferLayout>
+            <div className={`${styles.pane} mythic-relative mythic-flex mythic-flex-column`}>
                 <CustomList title={leftTitle} left={true} items={data} onClick={handleToggle} itemKey={itemKey} />
             </div>
-            <div className="mythic-transfer-controls">
-                <StyledButton
+            <MythicStack component="div" gap="xs" align="center" className="mythic-transfer-controls mythic-justify-center">
+                <MythicTransferButton
                     variant="contained"
                     size="small"
-                    className={classes.button}
                     onClick={handleAllRight}
                     aria-label="move all right"
                 >
                     &gt;&gt;
-                </StyledButton>
-                <StyledButton
+                </MythicTransferButton>
+                <MythicTransferButton
                     variant="contained"
                     size="small"
                     disabled={data.filter( x => x.checked && x.left).length === 0}
-                    className={classes.button}
                     onClick={handleCheckedRight}
                     aria-label="move selected right"
                 >
                     &gt;
-                </StyledButton>
-                <StyledButton
+                </MythicTransferButton>
+                <MythicTransferButton
                     variant="contained"
                     size="small"
                     disabled={data.filter( x => x.checked && x.right).length === 0}
-                    className={classes.button}
                     onClick={handleCheckedLeft}
                     aria-label="move selected left"
                 >
                     &lt;
-                </StyledButton>
-                <StyledButton
+                </MythicTransferButton>
+                <MythicTransferButton
                     variant="contained"
                     size="small"
-                    className={classes.button}
                     onClick={handleAllLeft}
                     aria-label="move all left"
                 >
                     &lt;&lt;
-                </StyledButton>
+                </MythicTransferButton>
 
-            </div>
-            <div style={{marginLeft: "10px", position: "relative", flexGrow: 1, display: "flex", overflowY: "auto", flexDirection: "column" }}>
+            </MythicStack>
+            <div className={`${styles.rightPane} mythic-relative mythic-flex mythic-flex-column`}>
                 <CustomList title={rightTitle} left={false} items={data} onClick={handleToggle} itemKey={itemKey} />
             </div>
-        </div>
+        </MythicTransferLayout>
     )
 }
 export function MythicTransferListDialog(props) {

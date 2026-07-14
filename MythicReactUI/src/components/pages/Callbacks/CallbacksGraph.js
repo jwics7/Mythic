@@ -11,7 +11,7 @@ import {gql, useLazyQuery } from '@apollo/client';
 import {snackActions} from '../../utilities/Snackbar';
 import {TaskParametersDialog} from './TaskParametersDialog';
 import {createTaskingMutation} from './CallbackMutations';
-import {useTheme} from '@mui/material/styles';
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -20,6 +20,7 @@ import {CallbackGraphEdgesContext, CallbacksContext} from './CallbacksTop';
 import {GetMythicSetting} from "../../MythicComponents/MythicSavedUserSetting";
 import {operatorSettingDefaults} from "../../../cache";
 import {useTaskReferenceSubmitter} from './taskingReferences';
+import {MythicStack, MythicCluster, MythicGrid} from "../../MythicComponents/MythicLayout";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 1;
@@ -56,7 +57,7 @@ query loadedLinkCommandsQuery ($callback_id: Int!){
 `;
 
 const GraphViewOptions = ({viewConfig, setViewConfig}) => {
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const [showConfiguration, setShowConfiguration] = React.useState(false);
     const labelComponentOptions = ["display_id", "user", "host", "ip", "domain", "os", "process_name"];
     const [selectedComponentOptions, setSelectedComponentOptions] = React.useState(viewConfig?.label_components || ["display_id", "user"]);
@@ -87,48 +88,48 @@ const GraphViewOptions = ({viewConfig, setViewConfig}) => {
         setViewConfig({...viewConfig, rankDir: viewConfig["rankDir"] === "LR" ? "TB" : "LR"});
     }
     return (
-        <div className="mythic-callback-graph-options">
+        <MythicStack component="div" gap="sm" className="mythic-callback-graph-options">
             <Button
                 size="small"
-                className="mythic-callback-graph-options-toggle"
+                className="mythic-callback-graph-options-toggle mythic-border-radius mythic-font-size-caption mythic-font-weight-extra-bold"
                 onClick={() => setShowConfiguration(!showConfiguration)}
             >
                 {showConfiguration ? "Hide Graph Options" : "Graph Options"}
             </Button>
             {showConfiguration &&
-                <div className="mythic-callback-graph-options-panel">
-                    <div className="mythic-callback-graph-options-actions">
+                <MythicStack component="div" gap="md" className="mythic-callback-graph-options-panel mythic-border-radius mythic-border">
+                    <MythicCluster component="div" gap="sm" align="stretch" className="mythic-callback-graph-options-actions">
                         <Button
                             size="small"
-                            className={`mythic-callback-graph-option-button ${!viewConfig["include_disconnected"] ? "mythic-callback-graph-option-button-active" : ""}`}
+                            className={`mythic-callback-graph-option-button mythic-border-radius mythic-font-size-caption mythic-font-weight-extra-bold ${!viewConfig["include_disconnected"] ? "mythic-callback-graph-option-button-active" : ""}`}
                             onClick={() => toggleViewConfig("include_disconnected")}
                         >
                             {viewConfig["include_disconnected"] ? "All Edges" : "Active Edges"}
                         </Button>
                         <Button
                             size="small"
-                            className={`mythic-callback-graph-option-button ${viewConfig["show_all_nodes"] ? "mythic-callback-graph-option-button-warning" : ""}`}
+                            className={`mythic-callback-graph-option-button mythic-border-radius mythic-font-size-caption mythic-font-weight-extra-bold ${viewConfig["show_all_nodes"] ? "mythic-callback-graph-option-button-warning" : ""}`}
                             onClick={() => toggleViewConfig("show_all_nodes")}
                         >
                             {viewConfig["show_all_nodes"] ? "All Callbacks" : "Connected Callbacks"}
                         </Button>
                         <Button
                             size="small"
-                            className="mythic-callback-graph-option-button"
+                            className="mythic-callback-graph-option-button mythic-border-radius mythic-font-size-caption mythic-font-weight-extra-bold"
                             onClick={toggleRankDirection}
                         >
                             {viewConfig["rankDir"] === "LR" ? "Left to Right" : "Top to Bottom"}
                         </Button>
                         <Button
                             size="small"
-                            className="mythic-callback-graph-option-button"
+                            className="mythic-callback-graph-option-button mythic-border-radius mythic-font-size-caption mythic-font-weight-extra-bold"
                             onClick={() => toggleViewConfig("packet_flow_view")}
                         >
                             {viewConfig["packet_flow_view"] ? "Egress Routes" : "Connection Directions"}
                         </Button>
-                    </div>
-                    <div className="mythic-callback-graph-options-fields">
-                        <FormControl size="small" className="mythic-callback-graph-options-field">
+                    </MythicCluster>
+                    <MythicGrid component="div" gap="md" columns="custom" className="mythic-callback-graph-options-fields mythic-min-width-0">
+                        <FormControl size="small" className="mythic-callback-graph-options-field mythic-min-width-0 mythic-surface">
                             <InputLabel id="callback-graph-group-label">Group By</InputLabel>
                             <Select
                                 labelId="callback-graph-group-label"
@@ -147,7 +148,7 @@ const GraphViewOptions = ({viewConfig, setViewConfig}) => {
                                 ))}
                             </Select>
                         </FormControl>
-                        <FormControl size="small" className="mythic-callback-graph-options-field mythic-callback-graph-options-field-wide">
+                        <FormControl size="small" className="mythic-callback-graph-options-field mythic-min-width-0 mythic-surface mythic-callback-graph-options-field-wide">
                             <InputLabel id="callback-graph-label-components-label">Callback Labels</InputLabel>
                             <Select
                                 labelId="callback-graph-label-components-label"
@@ -170,15 +171,15 @@ const GraphViewOptions = ({viewConfig, setViewConfig}) => {
                                 ))}
                             </Select>
                         </FormControl>
-                    </div>
+                    </MythicGrid>
                     {viewConfig["show_all_nodes"] &&
-                        <div className="mythic-callback-graph-options-warning">
+                        <div className="mythic-callback-graph-options-warning mythic-text-warning mythic-font-size-caption mythic-font-weight-extra-bold mythic-border-radius">
                             Showing all callbacks can be slow in large operations.
                         </div>
                     }
-                </div>
+                </MythicStack>
             }
-        </div>
+        </MythicStack>
     )
 }
 export function CallbacksGraph({onOpenTab}){

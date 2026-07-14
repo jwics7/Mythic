@@ -34,6 +34,7 @@ import {payloadsCallbackAllowed} from "../Payloads/Payloads";
 import Switch from '@mui/material/Switch';
 import {MythicSectionHeader} from "../../MythicComponents/MythicPageHeader";
 import {FileDownloadLinkWithAuth} from "../../utilities/FileDownloadWithAuth";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 const GET_Payload_Details = gql`
 query GetCallbackDetails($callback_id: Int!) {
@@ -160,7 +161,7 @@ query GetCallbackDetails($callback_id: Int!) {
     cwd
     impersonation_context
   }
-  
+
 }
 `;
 const AddLoadedCommand = gql`
@@ -196,7 +197,7 @@ export function DetailedCallbackTable(props){
     const addTotal = React.useRef(0);
     const [removeProgress, setRemoveProgress] = React.useState(0);
     const removeTotal = React.useRef(0);
-    const commandMods = React.useRef({"add": 0, 
+    const commandMods = React.useRef({"add": 0,
                                       "remove": 0,
                                       "commandsToAdd": [],
                                       "commandsToRemove": []})
@@ -262,15 +263,15 @@ export function DetailedCallbackTable(props){
         fetchPolicy: "no-cache",
         variables: {callback_id: props.callback_id},
         onCompleted: data => {
-            const commandState = data.callback_by_pk.loadedcommands.map( (c) => 
-            { 
+            const commandState = data.callback_by_pk.loadedcommands.map( (c) =>
+            {
                 return {cmd: c.command.cmd, mythic: c.command.version, payload: c.version, payload_type: c.command.payloadtype.name}
             }).sort((a,b) => (a.cmd > b.cmd) ? 1: ((b.cmd > a.cmd) ? -1 : 0));
             setCommands(commandState);
             const buildParametersState = data.callback_by_pk.payload.buildparameterinstances.map( (b) =>
             {
-              return {description: b.buildparameter.description, 
-                value: b.value, 
+              return {description: b.buildparameter.description,
+                value: b.value,
                 parameter_type: b.buildparameter.parameter_type,
                 enc_key: b.enc_key_base64,
                 dec_key: b.dec_key_base64
@@ -279,16 +280,16 @@ export function DetailedCallbackTable(props){
             setBuildParameters(buildParametersState);
             const c2Profiles = data.callback_by_pk.c2profileparametersinstances.reduce( (prev, cur) => {
                 if( !(cur.c2profile.name in prev) ){
-                    return {...prev, [cur.c2profile.name]: [{description: cur.c2profileparameter.description, 
-                      value: cur.value, 
-                      enc_key: cur.enc_key_base64, 
+                    return {...prev, [cur.c2profile.name]: [{description: cur.c2profileparameter.description,
+                      value: cur.value,
+                      enc_key: cur.enc_key_base64,
                       dec_key: cur.dec_key_base64,
                       parameter_type: cur.c2profileparameter.parameter_type,
                     }]}
                 }
-                return {...prev, [cur.c2profile.name]: [...prev[cur.c2profile.name], {description: cur.c2profileparameter.description, 
-                  value: cur.value, 
-                  enc_key: cur.enc_key_base64, 
+                return {...prev, [cur.c2profile.name]: [...prev[cur.c2profile.name], {description: cur.c2profileparameter.description,
+                  value: cur.value,
+                  enc_key: cur.enc_key_base64,
                   dec_key: cur.dec_key_base64,
                   parameter_type: cur.c2profileparameter.parameter_type,
                 }]}
@@ -336,10 +337,10 @@ export function DetailedCallbackTable(props){
           <DialogContent dividers={true}>
           <MythicSectionHeader title="Callback Information" sx={{mt: 0}} />
             <ExpandedCallbackSideDetailsTable {...data.callback_by_pk} />
-                
+
             <MythicSectionHeader title="Payload Information" />
             <TableContainer className="mythicElement">
-            <Table size="small" aria-label="details" style={{ "overflowWrap": "break-word"}}>
+            <Table size="small" aria-label="details">
                 <TableHead>
                   <TableRow hover>
                     <TableCell >Payload Info</TableCell>
@@ -384,7 +385,7 @@ export function DetailedCallbackTable(props){
                     <TableRow hover>
                         <TableCell>Download URL</TableCell>
                         <TableCell style={{display: "flex", alignItems: "center"}}>
-                            <FileDownloadLinkWithAuth style={{wordBreak: "break-all"}} color="textPrimary" underline="always" href={"/direct/download/" + data.callback_by_pk.payload.filemetum.agent_file_id}>
+                            <FileDownloadLinkWithAuth color="textPrimary" underline="always" href={"/direct/download/" + data.callback_by_pk.payload.filemetum.agent_file_id}>
                                 {window.location.origin + "/direct/download/" + data.callback_by_pk.payload.filemetum.agent_file_id}
                             </FileDownloadLinkWithAuth>
                             <MythicStyledTooltip title={"Host Payload Through C2"} >
@@ -447,7 +448,7 @@ export function DetailedCallbackTable(props){
               </TableContainer>
               <MythicSectionHeader title="Build Parameters" />
             <TableContainer className="mythicElement">
-            <Table size="small" aria-label="details" style={{ "overflowWrap": "break-word"}}>
+            <Table size="small" aria-label="details">
                 <TableHead>
                   <TableRow>
                     <TableCell style={{width: "50%"}}>Parameter</TableCell>
@@ -478,14 +479,14 @@ export function DetailedCallbackTable(props){
                             </TableCell>
                         </TableRow>
                     ))
-                    
+
                   }
                 </TableBody>
               </Table>
               </TableContainer>
               <MythicSectionHeader title="Build Steps" />
               <TableContainer className="mythicElement">
-              <Table size="small" aria-label="details" style={{ "overflowWrap": "break-word"}}>
+              <Table size="small" aria-label="details">
                 <TableHead>
                   <TableRow>
                     <TableCell style={{width: "30%"}}>Name</TableCell>
@@ -500,13 +501,13 @@ export function DetailedCallbackTable(props){
                             <TableCell>{step.step_name}</TableCell>
                             <TableCell>{step.step_description}</TableCell>
                             <TableCell>
-                              <PayloadsTableRowBuildProcessPerStep key={'buildstepicon' + i} 
-                                payload_build_steps={data.callback_by_pk.payload.payload_build_steps} 
+                              <PayloadsTableRowBuildProcessPerStep key={'buildstepicon' + i}
+                                payload_build_steps={data.callback_by_pk.payload.payload_build_steps}
                                 step_number={step.step_number} />
                             </TableCell>
                         </TableRow>
                     ))
-                    
+
                   }
                 </TableBody>
               </Table>
@@ -515,7 +516,7 @@ export function DetailedCallbackTable(props){
                     <React.Fragment key={"c2frag" + data.callback_by_pk.payload.id + c2.c2_profile}>
                           <MythicSectionHeader title={c2.c2_profile} />
                         <TableContainer className="mythicElement">
-                        <Table size="small" aria-label="details" style={{"overflowWrap": "break-word"}}>
+                        <Table size="small" aria-label="details">
                             <TableHead>
                               <TableRow>
                                 <TableCell style={{width: "50%"}}>Parameter</TableCell>
@@ -551,7 +552,7 @@ export function DetailedCallbackTable(props){
                 }
             />
             <TableContainer className="mythicElement">
-            <Table size="small" aria-label="details" style={{"overflowWrap": "break-word"}}>
+            <Table size="small" aria-label="details">
             <TableHead>
               <TableRow>
                 <TableCell style={{width: "40px"}}>Payload</TableCell>
@@ -573,22 +574,22 @@ export function DetailedCallbackTable(props){
                         <TableCell>{cmd.payload}</TableCell>
                         <TableCell>
                           <MythicStyledTooltip title="Open command documentation">
-                              <IconButton
-                                  className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info"
+                              <MythicActionButton iconOnly tone="info"
+
                                   size="small"
                                   target="_blank"
                                   href={"/docs/agents/" + cmd.payload_type + "/commands/" + cmd.cmd}
                               >
                                   <MenuBookIcon fontSize="small" />
-                              </IconButton>
+                              </MythicActionButton>
                           </MythicStyledTooltip>
                         </TableCell>
                     </TableRow>
                 ))
               }
               {openAddRemoveCommandsDialog &&
-                  <MythicDialog fullWidth={true} maxWidth="md" open={openAddRemoveCommandsDialog} 
-                      onClose={()=>{setOpenAddRemoveCommandsDialog(false);}} 
+                  <MythicDialog fullWidth={true} maxWidth="md" open={openAddRemoveCommandsDialog}
+                      onClose={()=>{setOpenAddRemoveCommandsDialog(false);}}
                       innerDialog={<AddRemoveCallbackCommandsDialog
                           callback_id={props.callback_id}
                         display_id={props.display_id} onClose={()=>{setOpenAddRemoveCommandsDialog(false);}} onSubmit={addRemoveCommandsSubmit} />}
@@ -628,7 +629,7 @@ export function DetailedCallbackTable(props){
                           </Box>
                         </DialogContent>
                     </Dialog>
-                    
+
                   }
             </TableBody>
           </Table>

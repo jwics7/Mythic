@@ -1,0 +1,171 @@
+.previewPair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.modePreview {
+  background: var(--mythic-color-application-background);
+  border: 1px solid var(--mythic-color-application-border);
+  color: var(--mythic-color-text-primary);
+  min-height: 92px;
+  padding: 8px;
+}
+
+.modeLabel {
+  color: var(--mythic-color-text-secondary);
+  letter-spacing: 0.04em;
+  margin-bottom: 5px;
+}
+
+.tableContainer {
+  max-height: 82px;
+}
+
+.tableContainer :global(.MuiTableCell-root) {
+  font-size: 0.64rem;
+  line-height: 1.1;
+  padding: 3px 5px;
+}
+
+.statusRow :global(.MuiButton-root),
+.statusRow :global(.MuiChip-root) {
+  font-size: 0.64rem;
+  min-height: 24px;
+}
+
+.copyPreview, .surfacePreview, .filePreview, .taskPreview {
+  background: var(--mythic-color-application-surface);
+  border: 1px solid var(--mythic-color-application-border);
+  gap: 3px;
+  padding: 7px;
+}
+
+.copyPreview > *,
+.surfacePreview > *,
+.filePreview > * {
+  line-height: 1.2;
+}
+
+.surfacePreview small,
+.subtleCard span {
+  color: var(--mythic-color-text-secondary);
+}
+
+.navigationPreview {
+  background: var(--mythic-effect-gradient-navigation);
+  color: var(--mythic-color-navigation-text);
+  gap: 7px;
+  min-height: 54px;
+  padding: 8px;
+}
+
+.navigationIcon {
+  color: var(--mythic-color-navigation-icon);
+}
+
+.headerPreview {
+  background-color: var(--mythic-color-header-surface);
+  background-image: var(--mythic-effect-gradient-sectionHeader);
+  border-left: 5px solid var(--mythic-color-header-accent);
+  color: var(--mythic-color-header-text);
+  min-height: 54px;
+  padding: 8px;
+}
+
+.subtleCard {
+  background-color: var(--mythic-color-application-raised);
+  background-image: var(--mythic-effect-gradient-subtle);
+  border: 1px solid var(--mythic-color-application-border);
+  min-height: 54px;
+  padding: 8px;
+}
+
+.chatPreview {
+  font-size: 0.64rem;
+}
+
+.chatPreview span,
+.chatPreview code {
+  border: 1px solid var(--mythic-color-application-border);
+  border-radius: var(--mythic-foundation-radius-sm);
+  padding: 3px 5px;
+}
+
+.otherMessage {
+  background: var(--mythic-color-chat-operatorMessage);
+  justify-self: start;
+}
+
+.selfMessage {
+  background: var(--mythic-color-chat-selfMessage);
+  justify-self: end;
+}
+
+.chatPreview code {
+  background: var(--mythic-color-chat-markdownSurface);
+}
+
+.graphGroup {
+  background: var(--mythic-color-graph-group);
+  border: 1px solid var(--mythic-color-application-border);
+  min-height: 55px;
+  padding: 12px;
+  place-items: center;
+}
+
+.graphGroup span {
+  background: var(--mythic-color-application-raised);
+  border: 1px solid var(--mythic-color-application-border);
+  border-radius: var(--mythic-foundation-radius-sm);
+  font-size: 0.65rem;
+  padding: 4px 8px;
+}
+
+.chart {
+  align-items: end;
+  gap: 2px;
+  grid-template-columns: repeat(10, 1fr);
+  height: 58px;
+}
+
+.chart i {
+  border-radius: 2px 2px 0 0;
+  height: 42%;
+}
+
+.chart i:nth-child(2n) { height: 70%; }
+.chart i:nth-child(3n) { height: 90%; }
+.chart i:nth-child(1) { background: var(--mythic-color-chart-series1); }
+.chart i:nth-child(2) { background: var(--mythic-color-chart-series2); }
+.chart i:nth-child(3) { background: var(--mythic-color-chart-series3); }
+.chart i:nth-child(4) { background: var(--mythic-color-chart-series4); }
+.chart i:nth-child(5) { background: var(--mythic-color-chart-series5); }
+.chart i:nth-child(6) { background: var(--mythic-color-chart-series6); }
+.chart i:nth-child(7) { background: var(--mythic-color-chart-series7); }
+.chart i:nth-child(8) { background: var(--mythic-color-chart-series8); }
+.chart i:nth-child(9) { background: var(--mythic-color-chart-series9); }
+.chart i:nth-child(10) { background: var(--mythic-color-chart-series10); }
+
+.prompt { color: var(--mythic-color-tasking-promptText); }
+.taskPreview strong { color: var(--mythic-color-tasking-commandText); }
+.taskPreview div { display: flex; gap: 3px; }
+.taskPreview i { background: var(--mythic-color-tasking-context); border-radius: var(--mythic-foundation-radius-sm); height: 9px; width: 33%; }
+.taskPreview i:nth-child(2) { background: var(--mythic-color-tasking-impersonationContext); }
+.taskPreview i:nth-child(3) { background: var(--mythic-color-tasking-extraContext); }
+
+.outputPreview {
+  background: var(--mythic-color-tasking-outputBackground);
+  border: 1px solid var(--mythic-color-application-border);
+  color: var(--mythic-color-tasking-outputText);
+  margin: 0;
+  min-height: 54px;
+  padding: 8px;
+}
+
+.filePreview span:first-child { color: var(--mythic-color-fileBrowser-folder); }
+.filePreview span:last-child { color: var(--mythic-color-fileBrowser-emptyFolder); }
+
+@media (max-width: 900px) {
+  .previewPair {
+    grid-template-columns: 1fr;
+  }
+}

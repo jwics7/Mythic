@@ -1,5 +1,6 @@
+import TableCell from '@mui/material/TableCell';
 import React from 'react';
-import Button from '@mui/material/Button';
+
 import {C2ProfileBuildDialog} from './C2ProfileBuildDialog';
 import { MythicDialog } from '../../MythicComponents/MythicDialog';
 import WifiIcon from '@mui/icons-material/Wifi';
@@ -24,12 +25,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import RestoreFromTrashOutlinedIcon from '@mui/icons-material/RestoreFromTrashOutlined';
 import {C2ProfileListFilesDialog} from './C2ProfileListFilesDialog';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import IconButton from '@mui/material/IconButton';
 import TuneIcon from '@mui/icons-material/Tune';
 import SaveIcon from '@mui/icons-material/Save';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import TableRow from '@mui/material/TableRow';
-import MythicTableCell from "../../MythicComponents/MythicTableCell";
 import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
 import {MythicAgentSVGIcon} from "../../MythicComponents/MythicAgentSVGIcon";
 import {C2ProfileStatusSummary} from "./InstalledServiceStatus";
@@ -37,6 +36,8 @@ import {
     InstalledServiceIdentity,
     InstalledServiceMetadataSummary
 } from "./InstalledServiceTableComponents";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 
 const toggleDeleteStatus = gql`
@@ -155,18 +156,18 @@ export function C2ProfilesRow({service, showDeleted}) {
     return (
         <>
             <TableRow hover>
-                <MythicTableCell>
+                <TableCell>
                     {service.deleted ? (
-                        <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-success" onClick={()=>{setOpenDeleteDialog(true);}} size="small">
+                        <MythicActionButton iconOnly tone="success" emphasis="always"  onClick={()=>{setOpenDeleteDialog(true);}} size="small">
                             <RestoreFromTrashOutlinedIcon fontSize="small" />
-                        </IconButton>
+                        </MythicActionButton>
                     ) : (
-                        <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" onClick={()=>{setOpenDeleteDialog(true);}} size="small">
+                        <MythicActionButton iconOnly tone="error"  onClick={()=>{setOpenDeleteDialog(true);}} size="small">
                             <DeleteIcon fontSize="small" />
-                        </IconButton>
+                        </MythicActionButton>
                     )}
-                </MythicTableCell>
-                <MythicTableCell>
+                </TableCell>
+                <TableCell>
                     {service.has_logo ? (
                         <>
                             <MythicAgentSVGIcon payload_type={service.name} is_p2p={service.is_p2p} style={{width: "80px", padding: "5px", objectFit: "unset"}} />
@@ -178,16 +179,16 @@ export function C2ProfilesRow({service, showDeleted}) {
                             (<WifiIcon style={{width: "80px", height: "80px", padding: "10px"}}/>)
                     )}
 
-                </MythicTableCell>
-                <MythicTableCell>
+                </TableCell>
+                <TableCell>
                     <InstalledServiceIdentity
                         name={service.name}
                         typeLabel={typeLabel}
                         deleted={service.deleted}
                         status={<C2ProfileStatusSummary service={service} />}
                     />
-                </MythicTableCell>
-                <MythicTableCell>
+                </TableCell>
+                <TableCell>
                     <InstalledServiceMetadataSummary
                         items={[
                             {label: "Author", value: service.author},
@@ -196,22 +197,21 @@ export function C2ProfilesRow({service, showDeleted}) {
                         ]}
                         description={service.description}
                     />
-                </MythicTableCell>
-                <MythicTableCell>
+                </TableCell>
+                <TableCell>
                     {service.container_running ? (
                         service.running ?
                             (
-                                <ButtonGroup className="mythic-split-action-group" ref={dropdownAnchorRef} aria-label="split button" >
-                                    <Button size="small"
-                                            className="mythic-table-row-action mythic-table-row-action-danger"
+                                <ButtonGroup className="mythic-split-action-group mythic-inline-flex mythic-overflow-hidden" ref={dropdownAnchorRef} aria-label="split button" >
+                                    <MythicActionButton tone="error" emphasis="always" size="small"
+
                                             disabled={alreadyRunningStartStop}
                                             onClick={onStartStopProfile}
                                             style={{width: "100%"}}>
                                         {alreadyRunningStartStop ? "Waiting..." : "Stop Profile"}
-                                    </Button>
-                                    <Button
+                                    </MythicActionButton>
+                                    <MythicActionButton iconOnly tone="error" emphasis="always"
                                         size="small"
-                                        className="mythic-table-row-icon-action mythic-table-row-icon-action-danger"
                                         disabled={alreadyRunningStartStop}
                                         aria-controls={dropdownOpen ? 'split-button-menu' : undefined}
                                         aria-expanded={dropdownOpen ? 'true' : undefined}
@@ -220,23 +220,22 @@ export function C2ProfilesRow({service, showDeleted}) {
                                         onClick={handleDropdownToggle}
                                     >
                                         <ArrowDropDownIcon fontSize="small" />
-                                    </Button>
+                                    </MythicActionButton>
                                 </ButtonGroup>
                             )
                             :
                             (
                                 service.is_p2p ? null : (
-                                    <ButtonGroup className="mythic-split-action-group" size="small" ref={dropdownAnchorRef} aria-label="split button"  >
-                                        <Button size="small"
-                                                className="mythic-table-row-action mythic-table-row-action-success"
+                                    <ButtonGroup className="mythic-split-action-group mythic-inline-flex mythic-overflow-hidden" size="small" ref={dropdownAnchorRef} aria-label="split button"  >
+                                        <MythicActionButton tone="success" emphasis="always" size="small"
+
                                                 disabled={alreadyRunningStartStop}
                                                 onClick={onStartStopProfile}
                                                 style={{width: "100%"}}>
                                             {alreadyRunningStartStop ? "Waiting..." : "Start Profile"}
-                                        </Button>
-                                        <Button
+                                        </MythicActionButton>
+                                        <MythicActionButton iconOnly tone="success" emphasis="always"
                                             size="small"
-                                            className="mythic-table-row-icon-action mythic-table-row-icon-action-success"
                                                 disabled={alreadyRunningStartStop}
                                             aria-controls={dropdownOpen ? 'split-button-menu' : undefined}
                                             aria-expanded={dropdownOpen ? 'true' : undefined}
@@ -245,48 +244,48 @@ export function C2ProfilesRow({service, showDeleted}) {
                                             onClick={handleDropdownToggle}
                                         >
                                             <ArrowDropDownIcon fontSize="small" />
-                                        </Button>
+                                        </MythicActionButton>
                                     </ButtonGroup>
                                 )
 
                             )
                     ) : null}
-                    <div className="mythic-table-row-actions" style={{marginTop: "0.4rem"}}>
+                    <MythicCluster component="div" gap="xs" align="center" style={{marginTop: "0.4rem"}}>
                     <MythicStyledTooltip title={"Documentation"}>
-                        <IconButton
-                            className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info"
+                        <MythicActionButton iconOnly tone="info"
+
                             href={"/docs/c2-profiles/" + service.name.toLowerCase()}
                             target="_blank"
                             size="small">
                             <MenuBookIcon fontSize="small" />
-                        </IconButton>
+                        </MythicActionButton>
                     </MythicStyledTooltip>
                     <MythicStyledTooltip title={"Build Parameters"}>
-                        <IconButton
-                            className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info"
+                        <MythicActionButton iconOnly tone="info"
+
                             onClick={()=>{setOpenBuildingDialog(true);}}
                             size="small">
                             <TuneIcon fontSize="small" />
-                        </IconButton>
+                        </MythicActionButton>
                     </MythicStyledTooltip>
                     <MythicStyledTooltip title={"Save/Edit Instances for Building"}>
-                        <IconButton
-                            className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info"
+                        <MythicActionButton iconOnly tone="info"
+
                             onClick={() => {setOpenProfileSavedInstancesDialog(true);}}
                             size="small">
                             <SaveIcon fontSize="small" />
-                        </IconButton>
+                        </MythicActionButton>
                     </MythicStyledTooltip>
                     <MythicStyledTooltip title={service.container_running ? "View Files" : "Unable to view files because container is offline"}>
-                        <IconButton
-                            className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info"
+                        <MythicActionButton iconOnly tone="info"
+
                             disabled={!service.container_running}
                             onClick={()=>{setOpenListFilesDialog(true);}}
                             size="small">
                             <AttachFileIcon fontSize="small" />
-                        </IconButton>
+                        </MythicActionButton>
                     </MythicStyledTooltip>
-                    </div>
+                    </MythicCluster>
 
                     <Popper open={dropdownOpen} anchorEl={dropdownAnchorRef.current} role={undefined} transition disablePortal style={{zIndex: 4}}>
                         {({ TransitionProps, placement }) => (
@@ -296,7 +295,7 @@ export function C2ProfilesRow({service, showDeleted}) {
                                     transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
                                 }}
                             >
-                                <Paper className={"dropdownMenuColored"}>
+                                <Paper className="dropdownMenuColored mythic-border-radius">
                                     <ClickAwayListener onClickAway={handleDropdownClose} mouseEvent={"onMouseDown"}>
                                         <MenuList id="split-button-menu">
                                             <MenuItem key={"dropdownprofile" + service.id + "menu1"} onClick={()=>{setOpenProfileConfigDialog(true);}}>View/Edit Config</MenuItem>
@@ -311,7 +310,7 @@ export function C2ProfilesRow({service, showDeleted}) {
                             </Grow>
                         )}
                     </Popper>
-                </MythicTableCell>
+                </TableCell>
             </TableRow>
                 {openBuildingDialog &&
                     <MythicDialog fullWidth={true} maxWidth="lg" open={openBuildingDialog}

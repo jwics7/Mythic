@@ -269,7 +269,7 @@ const SearchTabArtifactsSearchPanel = (props) => {
                     />
                 }
 
-                <MythicToolbarButton className="mythic-toolbar-button-hover-success" onClick={ () => {setCreateArtifactDialogOpen(true);}} variant="outlined" startIcon={<FingerprintIcon />}>
+                <MythicToolbarButton className="mythic-toolbar-button-hover-success mythic-font-weight-strong mythic-border mythic-border-radius mythic-text-primary" onClick={ () => {setCreateArtifactDialogOpen(true);}} variant="outlined" startIcon={<FingerprintIcon />}>
                     New
                 </MythicToolbarButton>
             </MythicTableToolbarGroup>

@@ -11,10 +11,11 @@ import {MythicPageHeader, MythicPageHeaderChip} from "../../MythicComponents/Myt
 import {MythicTablePagination} from "../../MythicComponents/MythicTablePagination";
 import {MythicSearchField, MythicTableToolbar, MythicTableToolbarGroup, MythicToolbarButton, MythicToolbarSelect} from "../../MythicComponents/MythicTableToolbar";
 import {MythicEmptyState} from "../../MythicComponents/MythicStateDisplay";
+import {MythicStack} from "../../MythicComponents/MythicLayout";
 
 const EventList = ({onUpdateLevel, onUpdateResolution, operationeventlog}) => {
    return (
-    <div className="mythic-column-stack">
+    <MythicStack component="div" gap="sm" className="mythic-column-stack">
         {operationeventlog.length === 0 ? (
             <MythicEmptyState
                 compact
@@ -29,7 +30,7 @@ const EventList = ({onUpdateLevel, onUpdateResolution, operationeventlog}) => {
                 onUpdateResolution={onUpdateResolution}
                 />)
         )}
-    </div>
+    </MythicStack>
    )
 };
 
@@ -97,7 +98,7 @@ export function EventFeedTable(props){
                 </MythicTableToolbarGroup>
             </MythicTableToolbar>
 
-            <TableContainer component="div" className="mythicElement mythic-create-section-fill mythic-create-section-scroll">
+            <TableContainer component="div" className="mythicElement mythic-create-section-fill mythic-create-section-scroll mythic-flex-fill mythic-overflow-auto">
                     <EventList 
                         onUpdateResolution={props.onUpdateResolution}
                         onUpdateLevel={props.onUpdateLevel}

@@ -8,6 +8,7 @@ import RouteIcon from '@mui/icons-material/AltRoute';
 import {b64DecodeUnicode} from './ResponseDisplay';
 import {MythicStyledTooltip} from '../../MythicComponents/MythicStyledTooltip';
 import {snackActions} from '../../utilities/Snackbar';
+import {MythicStack, MythicCluster} from "../../MythicComponents/MythicLayout";
 
 export const linkReferenceKeyword = "link";
 export const linkReferenceKinds = {
@@ -246,9 +247,9 @@ export const getLinkTaskReferenceReviewValue = (reference, context={}) => {
 export function LinkReferenceToken({reference, linkReferences}) {
     return (
         <MythicStyledTooltip title={reference.raw}>
-            <span className="mythic-reference-token mythic-reference-token-link">
+            <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-reference-token mythic-clickable mythic-monospace mythic-font-size-small mythic-font-weight-bold mythic-max-width-full mythic-break-anywhere mythic-reference-token-link mythic-border-radius-sm">
                 {getLinkTaskReferenceReviewValue(reference, {linkReferences})}
-            </span>
+            </MythicCluster>
         </MythicStyledTooltip>
     )
 }
@@ -528,26 +529,26 @@ function LinkInfoEdgeOptionSummary({option, icon}) {
         edgeSummary.description,
     ].filter(Boolean).join(" · ");
     return (
-        <Box className="mythic-link-reference-edge-summary">
-            <Box className="mythic-link-reference-edge-primary">
-                <span className="mythic-link-reference-icon">{icon}</span>
-                <Typography component="span" className="mythic-link-reference-edge-host">
+        <MythicStack gap="sm" className="mythic-link-reference-edge-summary">
+            <MythicCluster gap="sm" className="mythic-link-reference-edge-primary">
+                <span className="mythic-link-reference-icon mythic-text-secondary mythic-inline-flex mythic-flex-fixed">{icon}</span>
+                <Typography component="span" className="mythic-link-reference-edge-host mythic-break-anywhere mythic-font-size-body mythic-font-weight-extra-bold mythic-min-width-0 mythic-text-primary">
                     {edgeSummary.host}
                 </Typography>
-                <Chip size="small" variant="outlined" label={edgeSummary.callbackLabel} className="mythic-link-reference-edge-chip" />
-                <Chip size="small" variant="outlined" label={edgeSummary.userPidLabel} className="mythic-link-reference-edge-chip" />
-                <Chip size="small" variant="outlined" label={edgeSummary.payloadType} className="mythic-link-reference-edge-chip" />
+                <Chip size="small" variant="outlined" label={edgeSummary.callbackLabel} className="mythic-link-reference-edge-chip mythic-text-primary mythic-font-weight-bold mythic-border-radius-sm mythic-font-size-caption" />
+                <Chip size="small" variant="outlined" label={edgeSummary.userPidLabel} className="mythic-link-reference-edge-chip mythic-text-primary mythic-font-weight-bold mythic-border-radius-sm mythic-font-size-caption" />
+                <Chip size="small" variant="outlined" label={edgeSummary.payloadType} className="mythic-link-reference-edge-chip mythic-text-primary mythic-font-weight-bold mythic-border-radius-sm mythic-font-size-caption" />
                 <Chip
                     size="small"
                     variant="outlined"
                     label={edgeSummary.connectionLabel}
-                    className={`mythic-link-reference-edge-chip mythic-link-reference-edge-state-${edgeSummary.connectionActive ? "active" : "inactive"}`}
+                    className={`mythic-link-reference-edge-chip mythic-text-primary mythic-font-weight-bold mythic-border-radius-sm mythic-font-size-caption mythic-link-reference-edge-state-${edgeSummary.connectionActive ? "active" : "inactive"}`}
                 />
-            </Box>
-            <Typography component="span" className="mythic-link-reference-edge-secondary">
+            </MythicCluster>
+            <Typography component="span" className="mythic-link-reference-edge-secondary mythic-break-anywhere mythic-font-size-caption mythic-line-height-snug mythic-min-width-0 mythic-text-secondary">
                 {secondaryDetails}
             </Typography>
-        </Box>
+        </MythicStack>
     )
 }
 
@@ -582,7 +583,7 @@ function LinkReferenceOption({option, host, onSelect}) {
         }
     }
     return (
-        <Box className={`mythic-link-reference-row${option.profiles.length > 0 ? " mythic-link-reference-row-selectable" : ""}`}
+        <Box className={`mythic-link-reference-row mythic-gap-sm mythic-stack mythic-border mythic-border-radius${option.profiles.length > 0 ? " mythic-link-reference-row-selectable mythic-clickable" : ""}`}
              onClick={onSelectFromRow}
              onKeyDown={(event) => {
                  if(event.key === "Enter" || event.key === " "){
@@ -596,21 +597,21 @@ function LinkReferenceOption({option, host, onSelect}) {
                 <LinkInfoEdgeOptionSummary option={option} icon={icon} />
             ) : (
                 <>
-                    <Box className="mythic-link-reference-row-header">
-                        <Typography component="span" className="mythic-link-reference-title">
-                            <span className="mythic-link-reference-icon">{icon}</span>
+                    <MythicCluster gap="none" align="start" justify="between" wrap={false} className="mythic-link-reference-row-header">
+                        <Typography component="span" className="mythic-link-reference-title mythic-gap-sm mythic-font-weight-bold mythic-font-size-body-small mythic-inline-cluster mythic-min-width-0 mythic-flex-fill mythic-text-primary">
+                            <span className="mythic-link-reference-icon mythic-text-secondary mythic-inline-flex mythic-flex-fixed">{icon}</span>
                             {option.title}
                         </Typography>
-                        <Typography component="span" className="mythic-link-reference-subtitle">
+                        <Typography component="span" className="mythic-link-reference-subtitle mythic-break-anywhere mythic-font-size-small mythic-min-width-0 mythic-text-secondary">
                             {option.subtitle}
                         </Typography>
-                    </Box>
-                    <Typography component="span" className="mythic-link-reference-detail" title={option.detail}>
+                    </MythicCluster>
+                    <Typography component="span" className="mythic-link-reference-detail mythic-break-anywhere mythic-font-size-small mythic-line-height-snug mythic-min-width-0 mythic-text-secondary" title={option.detail}>
                         {option.detail}
                     </Typography>
                 </>
             )}
-            <Box className="mythic-link-reference-actions">
+            <MythicCluster gap="sm" align="center" className="mythic-link-reference-actions">
                 {option.profiles.map((profile) => (
                     <Button
                         key={profile.name}
@@ -618,7 +619,7 @@ function LinkReferenceOption({option, host, onSelect}) {
                         variant="outlined"
                         color="inherit"
                         disabled={!hostReady}
-                        className="mythic-link-reference-action-button"
+                        className="mythic-link-reference-action-button mythic-text-primary"
                         startIcon={<LinkIcon fontSize="small" />}
                         onClick={(event) => {
                             event.preventDefault();
@@ -630,11 +631,11 @@ function LinkReferenceOption({option, host, onSelect}) {
                     </Button>
                 ))}
                 {!hostReady &&
-                    <Typography component="span" className="mythic-link-reference-requirement">
+                    <Typography component="span" className="mythic-link-reference-requirement mythic-font-size-caption mythic-text-secondary">
                         Payload host required
                     </Typography>
                 }
-            </Box>
+            </MythicCluster>
         </Box>
     )
 }
@@ -670,19 +671,19 @@ export function LinkReferencePickerDialog({operation_id, callback_id, parameterT
     return (
         <>
             <DialogTitle>{isAgentConnect ? "Select Payload / Callback for Linking" : "Select Existing Edge"}</DialogTitle>
-            <DialogContent dividers className="mythic-reference-picker-dialog mythic-link-reference-picker-dialog">
-                <Box className="mythic-link-reference-picker-header">
+            <MythicStack component={DialogContent} gap="none" dividers className="mythic-reference-picker-dialog mythic-link-reference-picker-dialog mythic-overflow-hidden">
+                <Box className="mythic-link-reference-picker-header mythic-divider-bottom mythic-flex-fixed">
                     {isAgentConnect &&
                         <Tabs
                             value={agentConnectTab}
                             onChange={(event, newValue) => setAgentConnectTab(newValue)}
-                            className="mythic-link-reference-tabs"
+                            className="mythic-link-reference-tabs mythic-divider-bottom"
                         >
                             <Tab value={linkReferenceKinds.callback} label={`Callbacks (${callbackOptions.length})`} />
                             <Tab value={linkReferenceKinds.payload} label={`Payloads (${payloadOptions.length})`} />
                         </Tabs>
                     }
-                    <Box className="mythic-link-reference-search-row">
+                    <MythicCluster gap="sm" align="start" className="mythic-link-reference-search-row">
                         <TextField
                             size="small"
                             fullWidth
@@ -694,11 +695,11 @@ export function LinkReferencePickerDialog({operation_id, callback_id, parameterT
                             placeholder={searchPlaceholder}
                             className="mythic-link-reference-search-field"
                         />
-                        <Chip size="small" variant="outlined" label={loading ? "Loading" : `${visibleOptions.length} shown`} className="mythic-tasking-reference-chip" />
-                    </Box>
+                        <Chip size="small" variant="outlined" label={loading ? "Loading" : `${visibleOptions.length} shown`} className="mythic-tasking-reference-chip mythic-flex-fixed" />
+                    </MythicCluster>
                     {isAgentConnect && agentConnectTab === linkReferenceKinds.payload &&
-                        <Box className="mythic-link-reference-host-row">
-                            <Typography component="span" className="mythic-link-reference-host-label">
+                        <MythicCluster gap="none" className="mythic-link-reference-host-row">
+                            <Typography component="span" className="mythic-link-reference-host-label mythic-font-weight-bold mythic-font-size-small mythic-flex-fill mythic-text-primary">
                                 Connect to the following payload on this host
                             </Typography>
                             <Autocomplete
@@ -717,7 +718,7 @@ export function LinkReferencePickerDialog({operation_id, callback_id, parameterT
                                 )}
                                 className="mythic-link-reference-host-field"
                             />
-                        </Box>
+                        </MythicCluster>
                     }
                 </Box>
                 {loading ? (
@@ -727,16 +728,16 @@ export function LinkReferencePickerDialog({operation_id, callback_id, parameterT
                 ) : error ? (
                     <Typography component="div" color="error">Failed to load link options.</Typography>
                 ) : (
-                    <Box className="mythic-link-reference-results">
+                    <MythicStack gap="sm" scroll className="mythic-link-reference-results mythic-flex-fill">
                         {visibleOptions.map((option) => (
                             <LinkReferenceOption key={option.id} option={option} host={host} onSelect={onSelect} />
                         ))}
                         {visibleOptions.length === 0 &&
                             <Typography component="div">No matching link references.</Typography>
                         }
-                    </Box>
+                    </MythicStack>
                 )}
-            </DialogContent>
+            </MythicStack>
             <DialogActions>
                 <Button onClick={onClose}>Cancel</Button>
             </DialogActions>

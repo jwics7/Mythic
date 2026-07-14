@@ -1,3 +1,4 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React from 'react';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
@@ -5,11 +6,11 @@ import DialogContent from '@mui/material/DialogContent';
 import { MobileStepper } from '@mui/material';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import {useTheme} from '@mui/material/styles';
+
 
 export function ResponseDisplayScreenshotModal({onClose, images, startIndex}) {
     const [zoom, setZoom] = React.useState(false);
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const [activeStep, setActiveStep] = React.useState(startIndex ? startIndex : 0);
     const maxSteps = images?.length || 1;
     const toggleZoom = () => {

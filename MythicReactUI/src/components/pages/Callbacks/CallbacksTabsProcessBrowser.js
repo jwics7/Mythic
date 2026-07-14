@@ -1,8 +1,9 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import {MythicTabPanel, MythicTabLabel} from '../../MythicComponents/MythicTabPanel';
 import React, {useCallback, useEffect} from 'react';
 import {gql, useQuery, useSubscription } from '@apollo/client';
 import { MythicDialog } from '../../MythicComponents/MythicDialog';
-import {useTheme} from '@mui/material/styles';
+
 import RefreshIcon from '@mui/icons-material/Refresh';
 import IconButton from '@mui/material/IconButton';
 import {CallbacksTabsProcessBrowserTable} from './CallbacksTabsProcessBrowserTable';
@@ -26,6 +27,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import {useMythicLazyQuery} from "../../utilities/useMythicLazyQuery";
 import {getDefaultBrowserSelection, useCallbackBrowserTree} from "./CallbackBrowserTreeStore";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
 
 const treeFragment = gql`
 fragment treeObjData on mythictree {
@@ -149,7 +151,7 @@ export function CallbacksTabsProcessBrowserLabel(props){
     )
 }
 export const CallbacksTabsProcessBrowserPanel = ({index, value, tabInfo, me, setNewDataForTab}) =>{
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const fromNow = React.useRef((new Date()));
     const active = index === value;
     const markInactiveChange = useCallback(() => {
@@ -452,7 +454,7 @@ export const CallbacksTabsProcessBrowserPanel = ({index, value, tabInfo, me, set
             <div style={{display: "flex", flexGrow: 1, overflowY: "auto", position: "relative"}}>
 
                 <div style={{width: "100%", display: "flex", flexDirection: "column", flexGrow: 1}}>
-                    <Backdrop open={backdropOpen} style={{zIndex: 2, position: "absolute",}} invisible={false}>
+                    <Backdrop className="mythic-local-backdrop" open={backdropOpen} invisible={false}>
                         <div style={{
                             borderRadius: "4px",
                             border: `1px solid ${theme.palette.divider}`,
@@ -548,16 +550,16 @@ const ProcessBrowserTableTop = ({
         setQuickFilter("");
     }
     return (
-        <div className="mythic-file-browser-tableTop mythic-process-browser-tableTop">
-            <div className="mythic-process-browser-toolbar">
-                <div className="mythic-process-browser-control mythic-process-browser-controlGroup">
-                    <span className="mythic-process-browser-controlLabel">Group</span>
-                    <FormControl size="small" className="mythic-process-browser-selectControl">
+        <div className="mythic-file-browser-tableTop mythic-divider-bottom mythic-process-browser-tableTop">
+            <MythicCluster component="div" gap="sm" className="mythic-process-browser-toolbar mythic-full-width">
+                <MythicCluster component="div" gap="xs" inline wrap={false} className="mythic-process-browser-control mythic-process-browser-controlGroup mythic-border mythic-border-radius">
+                    <span className="mythic-process-browser-controlLabel mythic-font-size-caption mythic-font-weight-strong mythic-text-secondary mythic-flex-fixed">Group</span>
+                    <FormControl size="small" className="mythic-process-browser-selectControl mythic-flex-fill">
                         <Select
                             value={group}
                             onChange={handleGroupChange}
                             displayEmpty
-                            className="mythic-process-browser-select"
+                            className="mythic-process-browser-select mythic-surface mythic-font-size-small"
                         >
                             {Object.keys(groupOptions).sort().map( (opt) => (
                                 <MenuItem value={opt} key={opt}>{opt}</MenuItem>
@@ -566,28 +568,28 @@ const ProcessBrowserTableTop = ({
                     </FormControl>
                     <MythicStyledTooltip title="View callbacks associated with this group">
                         <IconButton
-                            className="mythic-file-browser-iconButton mythic-file-browser-hoverInfo"
+                            className="mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-hoverInfo"
                             onClick={() => {setOpenViewGroupDialog(true);}}
                             size="small">
                             <WidgetsIcon fontSize="small" />
                         </IconButton>
                     </MythicStyledTooltip>
-                </div>
-                <div className="mythic-process-browser-control mythic-process-browser-controlHost">
-                    <span className="mythic-process-browser-controlLabel">Host</span>
-                    <FormControl size="small" className="mythic-process-browser-selectControl">
+                </MythicCluster>
+                <MythicCluster component="div" gap="xs" inline wrap={false} className="mythic-process-browser-control mythic-process-browser-controlHost mythic-border mythic-border-radius">
+                    <span className="mythic-process-browser-controlLabel mythic-font-size-caption mythic-font-weight-strong mythic-text-secondary mythic-flex-fixed">Host</span>
+                    <FormControl size="small" className="mythic-process-browser-selectControl mythic-flex-fill">
                         <Select
                             value={host}
                             onChange={handleChange}
                             displayEmpty
-                            className="mythic-process-browser-select"
+                            className="mythic-process-browser-select mythic-surface mythic-font-size-small"
                         >
                             {Object.keys(hostOptions).sort().map( (opt) => (
                                 <MenuItem value={opt} key={opt}>{opt}</MenuItem>
                             ) )}
                         </Select>
                     </FormControl>
-                </div>
+                </MythicCluster>
                 <TextField
                     className="mythic-process-browser-searchInput"
                     size="small"
@@ -603,7 +605,7 @@ const ProcessBrowserTableTop = ({
                         endAdornment: quickFilter ? (
                             <InputAdornment position="end">
                                 <IconButton
-                                    className="mythic-file-browser-iconButton mythic-file-browser-hoverError"
+                                    className="mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-hoverError"
                                     onClick={onClearQuickFilter}
                                     size="small">
                                     <ClearIcon fontSize="small" />
@@ -612,10 +614,10 @@ const ProcessBrowserTableTop = ({
                         ) : null
                     }}
                 />
-                <div className="mythic-file-browser-toolbarGroup mythic-process-browser-actions">
+                <MythicCluster component="div" gap="none" inline wrap={false} className="mythic-file-browser-toolbarGroup mythic-process-browser-actions mythic-border mythic-border-radius mythic-flex-fixed">
                     <MythicStyledTooltip title="Task current callback to list processes">
                         <IconButton
-                            className="mythic-file-browser-iconButton mythic-file-browser-hoverInfo"
+                            className="mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-hoverInfo"
                             onClick={onLocalListFilesButton}
                             size="small">
                             <RefreshIcon fontSize="small" />
@@ -623,7 +625,7 @@ const ProcessBrowserTableTop = ({
                     </MythicStyledTooltip>
                     <MythicStyledTooltip title={expandOrCollapseAll ? "Collapse all processes" : "Expand all processes"} >
                         <IconButton
-                            className={`mythic-file-browser-iconButton mythic-file-browser-hoverInfo ${expandOrCollapseAll ? "mythic-file-browser-activeSuccess" : ""}`}
+                            className={`mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-hoverInfo ${expandOrCollapseAll ? "mythic-file-browser-activeSuccess" : ""}`}
                             onClick={onLocalExpandOrCollapseAllButton}
                             size="small">
                             <ExpandIcon fontSize="small" />
@@ -631,7 +633,7 @@ const ProcessBrowserTableTop = ({
                     </MythicStyledTooltip>
                     <MythicStyledTooltip title={showDeletedFiles ? 'Hide deleted processes' : 'Show deleted processes'}>
                         <IconButton
-                            className={`mythic-file-browser-iconButton mythic-file-browser-hoverWarning ${showDeletedFiles ? "mythic-file-browser-activeWarning" : ""}`}
+                            className={`mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-hoverWarning ${showDeletedFiles ? "mythic-file-browser-activeWarning" : ""}`}
                             onClick={onLocalToggleShowDeletedFiles}
                             size="small">
                             {showDeletedFiles ? (
@@ -641,7 +643,7 @@ const ProcessBrowserTableTop = ({
                             )}
                         </IconButton>
                     </MythicStyledTooltip>
-                </div>
+                </MythicCluster>
                 {openViewGroupsDialog &&
                     <MythicDialog
                         fullWidth={true}
@@ -654,7 +656,7 @@ const ProcessBrowserTableTop = ({
                         }
                     />
                 }
-            </div>
+            </MythicCluster>
         </div>
     );
 }

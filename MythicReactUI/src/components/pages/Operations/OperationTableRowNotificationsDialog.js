@@ -8,7 +8,7 @@ import {useQuery, gql} from '@apollo/client';
 import {snackActions} from '../../utilities/Snackbar';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {getReadableTextColor, MythicColorSwatchInput} from '../../MythicComponents/MythicColorInput';
 import {
@@ -16,6 +16,7 @@ import {
   MythicDialogGrid,
   MythicDialogSection
 } from '../../MythicComponents/MythicDialogLayout';
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
 
 const GET_OperationData = gql`
 query GetOperations($operation_id: Int!) {
@@ -103,8 +104,8 @@ export function OperationTableRowNotificationsDialog(props) {
                   onChange={onTextChange}
                   name="name"
                 />
-                <FormControlLabel
-                  className="mythic-dialog-switch-row"
+                <MythicCluster component={FormControlLabel} gap="none" align="center" justify="between" wrap={false}
+                  className="mythic-dialog-switch-row mythic-full-width"
                   label="Complete Operation"
                   labelPlacement="start"
                   control={<Switch checked={complete} onChange={onBoolChange} color="warning" />}
@@ -140,8 +141,8 @@ export function OperationTableRowNotificationsDialog(props) {
                   onChange={onTextChange}
                   name="Banner Text"
               />
-              <Box
-                  className="mythic-dialog-preview"
+              <MythicCluster gap="none" align="center" wrap={false}
+                  className="mythic-dialog-preview mythic-border-radius mythic-border"
                   sx={{
                       mt: 1,
                       backgroundColor: bannerColor,
@@ -150,7 +151,7 @@ export function OperationTableRowNotificationsDialog(props) {
                   <Typography sx={{color: getReadableTextColor(bannerColor), fontWeight: 700}}>
                       {bannerText || "Operation Banner"}
                   </Typography>
-              </Box>
+              </MythicCluster>
             </MythicDialogSection>
           </MythicDialogBody>
         </DialogContent>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {IconButton, Typography, Link} from '@mui/material';
+import {Typography, Link} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -14,8 +14,8 @@ import { gql, useMutation } from '@apollo/client';
 import {snackActions} from '../../utilities/Snackbar';
 import EditIcon from '@mui/icons-material/Edit';
 import { MythicStyledTooltip } from '../../MythicComponents/MythicStyledTooltip';
-import MythicStyledTableCell from '../../MythicComponents/MythicTableCell';
 import {TagsDisplay, ViewEditTags} from '../../MythicComponents/MythicTag';
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 const updateFileComment = gql`
 mutation updateCommentMutation($mythictree_id: Int!, $comment: String!){
@@ -54,7 +54,7 @@ export function FileBrowserTable(props){
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                
+
                 {files.map( (op) => (
                     <FileBrowserTableRow
                         key={"file" + op.id}
@@ -86,33 +86,33 @@ function FileBrowserTableRow(props){
         <React.Fragment>
             <TableRow hover>
                 {viewPermissionsDialogOpen && <MythicDialog fullWidth={true} maxWidth="md" open={viewPermissionsDialogOpen}
-                    onClose={()=>{setViewPermissionsDialogOpen(false);}} 
+                    onClose={()=>{setViewPermissionsDialogOpen(false);}}
                     innerDialog={<MythicViewJSONAsTableDialog title="View Permissions Data" leftColumn="Permission" rightColumn="Value" value={props.metadata} onClose={()=>{setViewPermissionsDialogOpen(false);}} />}
                     />
                 }
                 {fileHistoryDialogOpen && <MythicDialog fullWidth={true} maxWidth="md" open={fileHistoryDialogOpen}
-                    onClose={()=>{setFileHistoryDialogOpen(false);}} 
+                    onClose={()=>{setFileHistoryDialogOpen(false);}}
                     innerDialog={<DownloadHistoryDialog title="Download History" value={props.filemeta} onClose={()=>{setFileHistoryDialogOpen(false);}} />}
                 />
                 }
                 {editCommentDialogOpen && <MythicDialog fullWidth={true} maxWidth="md" open={editCommentDialogOpen}
-                    onClose={()=>{setEditCommentDialogOpen(false);}} 
+                    onClose={()=>{setEditCommentDialogOpen(false);}}
                     innerDialog={<MythicModifyStringDialog title="Edit File Browser Comment" onSubmit={onSubmitUpdatedComment} value={props.comment} onClose={()=>{setEditCommentDialogOpen(false);}} />}
                 />
                 }
-                <MythicStyledTableCell>
-                    <Typography variant="body2" style={{wordBreak: "break-all"}}>{props.host}</Typography>
-                    <Typography variant="body2" style={{wordBreak: "break-all", textDecoration: props.deleted ? "strike-through" : ""}}>{props.full_path_text}</Typography>
+                <TableCell>
+                    <Typography variant="body2">{props.host}</Typography>
+                    <Typography variant="body2" style={{textDecoration: props.deleted ? "strike-through" : ""}}>{props.full_path_text}</Typography>
                     {props.callback ? (
                         <>
                             {props.callback?.mythictree_groups.length > 0 ? (
-                                <Typography variant="body2" style={{wordBreak: "break-all"}}>
+                                <Typography variant="body2">
                                     <b>Groups: </b>{props?.callback.mythictree_groups.join(", ")}
                                 </Typography>
                             ) : null}
-                            <Typography variant="body2" style={{wordBreak: "break-all", display: "inline-block", whiteSpace: "pre"}}>
+                            <Typography variant="body2" style={{display: "inline-block", whiteSpace: "pre"}}>
                                 <b>Callback: </b>
-                                <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank"
+                                <Link color="textPrimary" underline="always" target="_blank"
                                       href={"/new/callbacks/" + props.callback.display_id}>
                                     {props.callback.display_id}
                                 </Link>
@@ -121,9 +121,9 @@ function FileBrowserTableRow(props){
                         </>
                         )
                     : null}
-                    <Typography variant="body2" style={{wordBreak: "break-all", display: "inline-block"}}>
+                    <Typography variant="body2" style={{display: "inline-block"}}>
                         <b>Task: </b>
-                        <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank"
+                        <Link color="textPrimary" underline="always" target="_blank"
                                             href={"/new/task/" + props.task?.display_id}>
                             {props.task?.display_id}
                         </Link>
@@ -131,45 +131,45 @@ function FileBrowserTableRow(props){
 
 
 
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <IconButton
-                        className="mythic-table-row-icon-action mythic-table-row-icon-action-info"
+                </TableCell>
+                <TableCell>
+                    <MythicActionButton iconOnly tone="info" emphasis="always"
+
                         onClick={() => setEditCommentDialogOpen(true)}
                         size="small"
                     >
                         <EditIcon fontSize="small" />
-                    </IconButton>
-                    <Typography variant="body2" style={{wordBreak: "break-all", display: "inline-block"}}>{props.comment}</Typography>
-                    </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                    </MythicActionButton>
+                    <Typography variant="body2" style={{display: "inline-block"}}>{props.comment}</Typography>
+                    </TableCell>
+                <TableCell>
                     <ViewEditTags target_object={"mythictree_id"} target_object_id={props.id} me={me} />
                     <TagsDisplay tags={props.tags} />
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     <MythicStyledTooltip title="View permissions data">
-                        <IconButton
-                            className="mythic-table-row-icon-action mythic-table-row-icon-action-info"
+                        <MythicActionButton iconOnly tone="info" emphasis="always"
+
                             size="small"
                             onClick={() => setViewPermissionsDialogOpen(true)}
                         >
                             <PlaylistAddCheckIcon fontSize="small" />
-                        </IconButton>
+                        </MythicActionButton>
                     </MythicStyledTooltip>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     {props.filemeta.length > 0 ? (
                         <MythicStyledTooltip title="View Download History and Download Files">
-                            <IconButton
-                                className="mythic-table-row-icon-action mythic-table-row-icon-action-info"
+                            <MythicActionButton iconOnly tone="info" emphasis="always"
+
                                 size="small"
                                 onClick={() => setFileHistoryDialogOpen(true)}
                             >
                                 <HistoryIcon fontSize="small" />
-                            </IconButton>
+                            </MythicActionButton>
                         </MythicStyledTooltip>
                     ): (null)}
-                </MythicStyledTableCell>
+                </TableCell>
             </TableRow>
         </React.Fragment>
     )

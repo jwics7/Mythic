@@ -1,5 +1,6 @@
+import TableCell from '@mui/material/TableCell';
 import React from 'react';
-import Button from '@mui/material/Button';
+
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -17,15 +18,16 @@ import { updateFileDeleted} from "../Search/FileMetaTable";
 import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
 import {MythicDialog} from "../../MythicComponents/MythicDialog";
 import {PreviewFileMediaDialog} from "../../MythicComponents/PreviewFileMedia";
-import MythicStyledTableCell from "../../MythicComponents/MythicTableCell";
 import {faPhotoVideo} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {IconButton, Typography} from '@mui/material';
+import {Typography} from '@mui/material';
 import {MythicConfirmDialog} from "../../MythicComponents/MythicConfirmDialog";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {MythicTableEmptyState} from "../../MythicComponents/MythicStateDisplay";
 import {FileDownloadLinkWithAuth} from "../../utilities/FileDownloadWithAuth";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 export function EventFileManageDialog({onClose, selectedEventGroup}) {
 
@@ -40,10 +42,10 @@ export function EventFileManageDialog({onClose, selectedEventGroup}) {
     return (
         <React.Fragment>
             <DialogTitle id="form-dialog-title">
-                <div className="mythic-dialog-title-row">
+                <MythicCluster component="div" gap="md" justify="between" className="mythic-dialog-title-row">
                     <span>Add or Remove Files associated with this workflow</span>
-                    <Button
-                        className="mythic-table-row-action mythic-table-row-action-hover-success"
+                    <MythicActionButton tone="success"
+
                         component="label"
                         size="small"
                         startIcon={<CloudUploadIcon fontSize="small" />}
@@ -51,8 +53,8 @@ export function EventFileManageDialog({onClose, selectedEventGroup}) {
                     >
                         New Files
                         <input onChange={onFileChange} type="file" multiple hidden/>
-                    </Button>
-                </div>
+                    </MythicActionButton>
+                </MythicCluster>
             </DialogTitle>
 
             <DialogContent dividers={true} style={{maxHeight: "calc(70vh)"}}>
@@ -79,9 +81,9 @@ export function EventFileManageDialog({onClose, selectedEventGroup}) {
                 </TableContainer>
             </DialogContent>
             <DialogActions>
-                <Button className="mythic-table-row-action" onClick={onClose} variant="contained">
+                <MythicActionButton tone="neutral"  onClick={onClose} variant="contained">
                     Close
-                </Button>
+                </MythicActionButton>
             </DialogActions>
         </React.Fragment>
     );
@@ -111,21 +113,21 @@ function EventFileManageDialogTableRow({eventFile}) {
     }
     return (
         <TableRow >
-            <MythicStyledTableCell style={{display: "flex", alignItems: "baseline"}}>
+            <TableCell style={{display: "flex", alignItems: "baseline"}}>
                 {eventFile.deleted ? null : (
                     <>
                         {openDelete &&
                             <MythicConfirmDialog onClose={() => {setOpenDelete(false);}} onSubmit={onAcceptDelete} open={openDelete}/>
                         }
                         <MythicStyledTooltip title={"Delete file"}>
-                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={()=>{setOpenDelete(true);}}>
+                            <MythicActionButton iconOnly tone="error"  size="small" onClick={()=>{setOpenDelete(true);}}>
                                 <DeleteIcon fontSize="small" />
-                            </IconButton>
+                            </MythicActionButton>
                         </MythicStyledTooltip>
                         <MythicStyledTooltip title={"Preview Media"}>
-                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" size="small" onClick={onPreviewMedia}>
+                            <MythicActionButton iconOnly tone="info"  size="small" onClick={onPreviewMedia}>
                                 <FontAwesomeIcon icon={faPhotoVideo} />
-                            </IconButton>
+                            </MythicActionButton>
                         </MythicStyledTooltip>
                         {openPreviewMediaDialog &&
                             <MythicDialog fullWidth={true} maxWidth="xl" open={openPreviewMediaDialog}
@@ -138,15 +140,15 @@ function EventFileManageDialogTableRow({eventFile}) {
                         }
                     </>
                 )}
-            </MythicStyledTableCell>
-            <MythicStyledTableCell style={{}}>
+            </TableCell>
+            <TableCell>
                 {eventFile.deleted ? (
-                    <Typography variant="body2" style={{wordBreak: "break-all"}}>{b64DecodeUnicode(eventFile.filename_text)}</Typography>
+                    <Typography variant="body2">{b64DecodeUnicode(eventFile.filename_text)}</Typography>
                 ) : (
-                    <FileDownloadLinkWithAuth style={{wordBreak: "break-all"}} color="textPrimary" underline="always" href={"/direct/download/" + eventFile.agent_file_id}>{b64DecodeUnicode(eventFile.filename_text)}</FileDownloadLinkWithAuth>
+                    <FileDownloadLinkWithAuth color="textPrimary" underline="always" href={"/direct/download/" + eventFile.agent_file_id}>{b64DecodeUnicode(eventFile.filename_text)}</FileDownloadLinkWithAuth>
                 )
                 }
-            </MythicStyledTableCell>
+            </TableCell>
         </TableRow>
     )
 }

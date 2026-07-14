@@ -1,0 +1,57 @@
+.root {
+    flex-direction: row;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.pane {
+    flex-grow: 1;
+    margin-left: 0;
+    margin-right: 10px;
+    overflow-y: auto;
+    padding-left: 0;
+}
+
+.rightPane {
+    flex-grow: 1;
+    margin-left: 10px;
+    overflow-y: auto;
+}
+
+.item {
+    padding: 0;
+}
+
+.list {
+    padding: 0;
+}
+
+.button {
+    margin: 4px 0;
+}
+
+.divider {
+    background-color: var(--mythic-palette-primary-main);
+    border: 2px solid var(--mythic-palette-primary-main);
+}
+
+.paneSurface {
+    min-height: 16rem;
+}
+
+.paneHeader {
+    background-color: var(--mythic-color-table-header);
+    border-bottom: 1px solid var(--mythic-color-table-border);
+    padding: 0.45rem 0.6rem;
+}
+
+.paneBody {
+    max-height: 30vh;
+    min-height: 12rem;
+}
+
+.paneSurface :global(.MuiList-root) {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+}

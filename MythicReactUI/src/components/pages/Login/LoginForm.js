@@ -264,7 +264,7 @@ export function LoginForm(props){
                                         transformOrigin: placement.startsWith('bottom') ? 'right top' : 'right bottom',
                                     }}
                                 >
-                                    <AuthMenuPaper className={"dropdownMenuColored"}>
+                                    <AuthMenuPaper className="dropdownMenuColored mythic-border-radius">
                                         <ClickAwayListener onClickAway={handleClose}
                                                            mouseEvent={"onMouseDown"}>
                                             <MenuList id="split-button-menu">

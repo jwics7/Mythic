@@ -1,3 +1,5 @@
+import TableCell from '@mui/material/TableCell';
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React from 'react';
 import {useSubscription, gql } from '@apollo/client';
 import Table from '@mui/material/Table';
@@ -5,7 +7,6 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import MythicTableCell from "../../MythicComponents/MythicTableCell";
 import {PayloadTypeRow} from "./PayloadTypeCard";
 import {C2ProfilesRow} from "./C2ProfilesCard";
 import {TranslationContainerRow} from "./TranslationContainerCard";
@@ -19,7 +20,7 @@ import {CustomBrowserRow} from "./CustomBrowserCard";
 import {MythicPageBody} from "../../MythicComponents/MythicPageBody";
 import {MythicPageHeader, MythicPageHeaderChip} from "../../MythicComponents/MythicPageHeader";
 import {MythicToolbarToggle} from "../../MythicComponents/MythicTableToolbar";
-import {useTheme} from "@mui/material/styles";
+
 
 const SUB_Payload_Types = gql`
  subscription getPayloadTypesSubscription {
@@ -270,7 +271,7 @@ export function PayloadTypesC2Profiles({me}){
                 className={"no-box-shadow"}
                 sx={(theme) => ({
                     backgroundColor: theme.surfaces?.muted || theme.palette.background.paper,
-                    border: `1px solid ${theme.table?.borderSoft || theme.borderColor}`,
+                    border: `1px solid ${theme.table?.borderSoft || theme.color.application.border}`,
                     borderRadius: `${theme.shape.borderRadius}px`,
                     overflow: "hidden",
                 })}
@@ -426,7 +427,7 @@ const ContainersTabBrowsersLabel = (props) => {
 
 
 const ContainersTabPayloadTypesPanel = (props) => {
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const getEmptyServiceListMessage = () => {
         let message = "";
         switch(props.type){
@@ -482,11 +483,11 @@ A few examples are github.com/MythicAgents/bloodhound and github.com/MythicAgent
                     <Table stickyHeader size="small" style={{"maxWidth": "100%", "overflow": "scroll"}}>
                         <TableHead>
                             <TableRow>
-                                <MythicTableCell style={{width: "4rem"}}>Delete</MythicTableCell>
-                                <MythicTableCell style={{width: "90px"}}></MythicTableCell>
-                                <MythicTableCell style={{width: "22%"}}>Service</MythicTableCell>
-                                <MythicTableCell>Metadata</MythicTableCell>
-                                <MythicTableCell style={{width: "13rem"}}>Actions</MythicTableCell>
+                                <TableCell style={{width: "4rem"}}>Delete</TableCell>
+                                <TableCell style={{width: "90px"}}></TableCell>
+                                <TableCell style={{width: "22%"}}>Service</TableCell>
+                                <TableCell>Metadata</TableCell>
+                                <TableCell style={{width: "13rem"}}>Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -502,7 +503,7 @@ A few examples are github.com/MythicAgents/bloodhound and github.com/MythicAgent
     )
 }
 const ContainersTabConsumingServicesPanel = (props) => {
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const getEmptyServiceListMessage = () => {
         let message = "";
         switch(props.type){
@@ -553,10 +554,10 @@ You can extend this auth capability to support your own LDAP, SSO, or otherwise 
                     <Table stickyHeader size="small" style={{"maxWidth": "100%", "overflow": "scroll"}}>
                         <TableHead>
                             <TableRow>
-                                <MythicTableCell style={{width: "3rem"}}></MythicTableCell>
-                                <MythicTableCell style={{width: "24%"}}>Service</MythicTableCell>
-                                <MythicTableCell>Metadata</MythicTableCell>
-                                <MythicTableCell>Actions</MythicTableCell>
+                                <TableCell style={{width: "3rem"}}></TableCell>
+                                <TableCell style={{width: "24%"}}>Service</TableCell>
+                                <TableCell>Metadata</TableCell>
+                                <TableCell>Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -572,7 +573,7 @@ You can extend this auth capability to support your own LDAP, SSO, or otherwise 
     )
 }
 const ContainersTabCustomBrowsersPanel = (props) => {
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const getEmptyServiceListMessage = () => {
         let message = "";
         switch(props.type){
@@ -604,11 +605,11 @@ const ContainersTabCustomBrowsersPanel = (props) => {
                     <Table stickyHeader size="small" style={{"maxWidth": "100%", "overflow": "scroll"}}>
                         <TableHead>
                             <TableRow>
-                                <MythicTableCell style={{width: "4rem"}}>Delete</MythicTableCell>
-                                <MythicTableCell style={{width: "90px"}}></MythicTableCell>
-                                <MythicTableCell style={{width: "22%"}}>Service</MythicTableCell>
-                                <MythicTableCell>Metadata</MythicTableCell>
-                                <MythicTableCell style={{width: "8rem"}}>Actions</MythicTableCell>
+                                <TableCell style={{width: "4rem"}}>Delete</TableCell>
+                                <TableCell style={{width: "90px"}}></TableCell>
+                                <TableCell style={{width: "22%"}}>Service</TableCell>
+                                <TableCell>Metadata</TableCell>
+                                <TableCell style={{width: "8rem"}}>Actions</TableCell>
 
                             </TableRow>
                         </TableHead>

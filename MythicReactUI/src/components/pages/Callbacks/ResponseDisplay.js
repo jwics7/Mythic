@@ -1,3 +1,4 @@
+import {useMythicTokens} from '../../../themes/MythicThemeProvider';
 import React, {useEffect} from 'react';
 import {gql, useLazyQuery, useSubscription} from '@apollo/client';
 import {snackActions} from '../../utilities/Snackbar';
@@ -5,7 +6,7 @@ import {ResponseDisplayPlaintext} from './ResponseDisplayPlaintext';
 import {ResponseDisplayTable} from './ResponseDisplayTable';
 import MythicTextField from '../../MythicComponents/MythicTextField';
 import SearchIcon from '@mui/icons-material/Search';
-import {useTheme} from '@mui/material/styles';
+
 import {Backdrop, CircularProgress, IconButton, Typography} from '@mui/material';
 import {MythicStyledTooltip} from '../../MythicComponents/MythicStyledTooltip';
 import Pagination from '@mui/material/Pagination';
@@ -147,7 +148,7 @@ export const ResponseDisplay = (props) =>{
   )
 }
 const NonInteractiveResponseDisplay = (props) => {
-  const theme = useTheme();
+  const theme = useMythicTokens();
   const [rawResponses, setRawResponses] = React.useState([]);
   const rawResponsesRef = React.useRef([]);
   const [search, setSearch] = React.useState("");
@@ -378,10 +379,10 @@ const NonInteractiveResponseDisplay = (props) => {
 
   return (
       <div style={{display: "flex", flexDirection: "column", height: "100%", width: "100%", position: "relative",
-          backgroundColor: theme.outputBackgroundColor + (theme.palette.mode === 'dark' ? "D0" : "D0"),
-          color: theme.outputTextColor,
+          backgroundColor: theme.color.tasking.outputBackground + (theme.palette.mode === 'dark' ? "D0" : "D0"),
+          color: theme.color.tasking.outputText,
       }}>
-        <Backdrop open={openBackdrop} onClick={()=>{setOpenBackdrop(false);}} style={{zIndex: 2, position: "absolute"}}>
+        <Backdrop className="mythic-local-backdrop" open={openBackdrop} onClick={()=>{setOpenBackdrop(false);}}>
           <CircularProgress color="inherit" disableShrink  />
         </Backdrop>
         {props.searchOutput &&
@@ -488,7 +489,7 @@ export const PaginationBar = ({selectAllOutput, totalCount, onSubmitPageChange, 
 }
 
 export const SearchBar = ({onSubmitSearch}) => {
-  const theme = useTheme();
+  const theme = useMythicTokens();
   const [search, setSearch] = React.useState("");
   const onSubmitLocalSearch = () => {
     onSubmitSearch(search);
@@ -668,7 +669,7 @@ const ResponseDisplayComponent = ({rawResponses, viewBrowserScript, output, comm
 export function ResponseDisplayBrowserScriptComponent({output, browserScriptData, task, expand, displayType, allowPlaintextFallback=true}) {
   const hasBrowserScriptData = browserScriptData && Object.keys(browserScriptData).length > 0;
   return (
-      <div className={`mythic-browser-script-response${expand ? " mythic-browser-script-response-expanded" : ""}`}>
+      <div className={`mythic-browser-script-response mythic-max-width-full mythic-gap-sm mythic-stack mythic-full-width${expand ? " mythic-browser-script-response-expanded mythic-flex-fill mythic-min-height-0" : ""}`}>
         {hasBrowserScriptData ? (
             <>
               {browserScriptData?.plaintext !== undefined &&

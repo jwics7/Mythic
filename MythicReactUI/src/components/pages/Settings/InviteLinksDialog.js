@@ -1,5 +1,6 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React from 'react';
-import Button from '@mui/material/Button';
+
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TableCell from '@mui/material/TableCell';
@@ -19,7 +20,7 @@ import {MythicDialog} from "../../MythicComponents/MythicDialog";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import {useTheme} from '@mui/material/styles';
+
 import EditIcon from '@mui/icons-material/Edit';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -32,6 +33,8 @@ import {
     MythicFormGrid,
     MythicFormNote
 } from "../../MythicComponents/MythicDialogLayout";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 const GetInviteLinks = gql`
 query getOutstandingInviteLinks {
@@ -70,7 +73,7 @@ query getOperations {
 }
 `;
 export function InviteLinksDialog(props) {
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const [inviteLinks, setInviteLinks] = React.useState([]);
     const [getInviteLinks] = useLazyQuery(GetInviteLinks, {fetchPolicy: "no-cache",
         onCompleted: (data) => {
@@ -124,15 +127,15 @@ export function InviteLinksDialog(props) {
   return (
     <React.Fragment>
         <DialogTitle id="form-dialog-title">
-            <div className="mythic-dialog-title-row">
+            <MythicCluster component="div" gap="md" justify="between" className="mythic-dialog-title-row">
                 <span>Manage Outstanding Invite Links</span>
                 <MythicStyledTooltip tooltipStyle={{display: "inline-flex"}}
                                      title={"Generate invite link for somebody to create their own username/password"}>
-                    <Button className="mythic-dialog-title-action" onClick={createInviteLink} size="small" variant="outlined">
+                    <MythicActionButton tone="neutral"  onClick={createInviteLink} size="small" variant="outlined">
                         Generate Invite Link
-                    </Button>
+                    </MythicActionButton>
                 </MythicStyledTooltip>
-            </div>
+            </MythicCluster>
         </DialogTitle>
         {openInviteLinksDialog &&
             <MythicDialog open={openInviteLinksDialog}

@@ -7,13 +7,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import {gql, useQuery} from '@apollo/client';
-import {classes, StyledButton} from '../../MythicComponents/MythicTransferList';
+import {MythicTransferButton, MythicTransferListPane} from '../../MythicComponents/MythicTransferList';
 import {
   MythicDialogButton,
   MythicDialogBody,
   MythicDialogFooter,
   MythicDialogSection
 } from '../../MythicComponents/MythicDialogLayout';
+import {MythicStack} from "../../MythicComponents/MythicLayout";
 
 const getCommandsQuery = gql`
 query getCommandsQuery($uuid: String!) {
@@ -116,9 +117,7 @@ export function AddRemoveCommandsDialog(props) {
       setRight([]);
     };
     const customList = (title, items) => (
-      <div className="mythic-transfer-list">
-          <div className="mythic-transfer-list-header">{title}</div>
-          <div className="mythic-transfer-list-body">
+      <MythicTransferListPane title={title}>
               <List dense component="div" role="list" style={{padding:0, width: "100%", overflow: "auto"}}>
                   {items.map((valueObj) => {
                       const value = valueObj.cmd;
@@ -139,8 +138,7 @@ export function AddRemoveCommandsDialog(props) {
                   })}
                   <ListItem />
               </List>
-          </div>
-      </div>
+      </MythicTransferListPane>
     );
     const setFinalTags = () => {
       // things to add are in the `right` now but weren't for `originalRight`
@@ -166,48 +164,44 @@ export function AddRemoveCommandsDialog(props) {
                 <div  style={{paddingLeft: 0, flexGrow: 1,  marginLeft: 0, marginRight: "10px", position: "relative",  overflowY: "auto", display: "flex", flexDirection: "column", width: "100%" }}>
                   {customList(leftTitle, left)}
                 </div>
-                  <div className="mythic-transfer-controls">
-                    <StyledButton
+                  <MythicStack component="div" gap="xs" align="center" className="mythic-transfer-controls mythic-justify-center">
+                    <MythicTransferButton
                       variant="contained"
                       size="small"
-                      className={classes.button}
                       onClick={handleAllRight}
                       disabled={left.length === 0}
                       aria-label="move all right"
                     >
                       &gt;&gt;
-                    </StyledButton>
-                    <StyledButton
+                    </MythicTransferButton>
+                    <MythicTransferButton
                       variant="contained"
                       size="small"
-                      className={classes.button}
                       onClick={handleCheckedRight}
                       disabled={leftChecked.length === 0}
                       aria-label="move selected right"
                     >
                       &gt;
-                    </StyledButton>
-                    <StyledButton
+                    </MythicTransferButton>
+                    <MythicTransferButton
                       variant="contained"
                       size="small"
-                      className={classes.button}
                       onClick={handleCheckedLeft}
                       disabled={rightChecked.length === 0}
                       aria-label="move selected left"
                     >
                       &lt;
-                    </StyledButton>
-                    <StyledButton
+                    </MythicTransferButton>
+                    <MythicTransferButton
                       variant="contained"
                       size="small"
-                      className={classes.button}
                       onClick={handleAllLeft}
                       disabled={right.length === 0}
                       aria-label="move all left"
                     >
                       &lt;&lt;
-                    </StyledButton>
-                </div>
+                    </MythicTransferButton>
+                </MythicStack>
                 <div  style={{marginLeft: "10px", position: "relative", display: "flex", flexDirection: "column", width: "100%" }}>
                   {customList(rightTitle, right)}
                   </div>

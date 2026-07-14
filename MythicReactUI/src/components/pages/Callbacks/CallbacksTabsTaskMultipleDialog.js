@@ -221,7 +221,7 @@ export function CallbacksTabsTaskMultipleDialog({onClose, callback}) {
   return (
       <React.Fragment>
           <DialogTitle id="form-dialog-title">Task Multiple {callback.payload.payloadtype.name} Callbacks at Once</DialogTitle>
-          <DialogContentText style={{textAlign: "center"}}>
+          <DialogContentText align="center">
               <b>Note: </b> Last checkin times are based on when this window opened and won't refresh.
           </DialogContentText>
           <CallbacksTabsSelectTable

@@ -1,9 +1,10 @@
+import {useMythicTokens} from '../../../themes/MythicThemeProvider';
 import React from 'react';
 import {Typography, Link} from '@mui/material';
 import { Button, IconButton } from '@mui/material';
 import {GetMythicSetting} from "../../MythicComponents/MythicSavedUserSetting";
 import AceEditor from 'react-ace';
-import {useTheme} from '@mui/material/styles';
+
 import {snackActions} from "../../utilities/Snackbar";
 import {mythicFetch} from "../../utilities/MythicConnection";
 // https://github.com/ajaxorg/ace-builds/tree/master/src-min-noconflict
@@ -46,7 +47,6 @@ import DownloadIcon from '@mui/icons-material/Download';
 import {b64DecodeUnicode} from "./ResponseDisplay";
 import {MythicDialog, TableRowSizeCell} from "../../MythicComponents/MythicDialog";
 import {Table, TableContainer, TableHead, TableRow, TableBody, TableCell, Paper} from '@mui/material';
-import MythicStyledTableCell from "../../MythicComponents/MythicTableCell";
 import WarningOutlinedIcon from '@mui/icons-material/WarningOutlined';
 import {TagsDisplay, ViewEditTags} from "../../MythicComponents/MythicTag";
 import {useMythicLazyQuery} from "../../utilities/useMythicLazyQuery";
@@ -64,6 +64,7 @@ import {ImageWithAuth} from "../../utilities/ImageWithAuth";
 import {ResponseDisplayPlaintext} from "./ResponseDisplayPlaintext";
 import {UploadDirectFile} from "../../MythicComponents/MythicFileUpload";
 import SaveIcon from '@mui/icons-material/Save';
+import {MythicStack, MythicCluster} from "../../MythicComponents/MythicLayout";
 
 export const modeOptions = ["csharp", "golang", "html", "json", "markdown", "ruby", "python", "java",
     "javascript", "yaml", "toml", "swift", "sql", "rust", "powershell", "pgsql", "perl", "php", "objectivec",
@@ -136,9 +137,9 @@ export const ResponseDisplayMedia = ({media, expand, task}) =>{
         setValue(newValue);
     }
     return (
-        <div className="mythic-response-media" style={{height: expand ? "100%" : undefined, minHeight: expand ? 0 : "24rem"}}>
+        <MythicStack component="div" gap="none" className="mythic-response-media mythic-full-width" style={{height: expand ? "100%" : undefined, minHeight: expand ? 0 : "24rem"}}>
             <DisplayFileMetaData fileMetaData={fileMetaData} />
-            <AppBar color={'default'} position='static' className={"no-box-shadow mythic-response-media-tabs"}>
+            <AppBar color={'default'} position='static' className={"no-box-shadow mythic-response-media-tabs mythic-flex-fixed"}>
                 <Tabs
                     value={value}
                     onChange={handleChange}
@@ -158,14 +159,14 @@ export const ResponseDisplayMedia = ({media, expand, task}) =>{
                     <Tab className={value === 2 ? "selectedCallback": ""} label={"Hex"}></Tab>
                     <Tab className={value === 3 ? "selectedCallback": ""} label={"Database"}></Tab>
                     <MythicStyledTooltip title={"Download the file"} tooltipStyle={{display: "inline-flex"}}>
-                        <FileDownloadButtonWithAuth style={{}}  size={"small"} href={"/direct/download/" +  media.agent_file_id}
+                        <FileDownloadButtonWithAuth  size={"small"} href={"/direct/download/" +  media.agent_file_id}
                                 download color={"success"}>
                             <DownloadIcon />
                         </FileDownloadButtonWithAuth>
                     </MythicStyledTooltip>
                 </Tabs>
             </AppBar>
-            <div hidden={value !== 0} className="mythic-response-media-panel" style={panelStyle} role='tabpanel' >
+            <div hidden={value !== 0} className="mythic-response-media-panel mythic-min-width-0" style={panelStyle} role='tabpanel' >
                 {value === 0 &&
                     <DisplayMedia agent_file_id={media?.agent_file_id || ""}
                                   task={task} filename={media?.filename || undefined}
@@ -174,7 +175,7 @@ export const ResponseDisplayMedia = ({media, expand, task}) =>{
                                   expand={expand} />
                 }
             </div>
-            <div hidden={value !== 1} className="mythic-response-media-panel" style={panelStyle} role='tabpanel' >
+            <div hidden={value !== 1} className="mythic-response-media-panel mythic-min-width-0" style={panelStyle} role='tabpanel' >
                 {value === 1 &&
                     <DisplayText agent_file_id={media?.agent_file_id || ""}
                                  task={task} filename={media?.filename || undefined}
@@ -183,7 +184,7 @@ export const ResponseDisplayMedia = ({media, expand, task}) =>{
                                  expand={expand} preview />
                 }
             </div>
-            <div hidden={value !== 2} className="mythic-response-media-panel" style={panelStyle} role='tabpanel' >
+            <div hidden={value !== 2} className="mythic-response-media-panel mythic-min-width-0" style={panelStyle} role='tabpanel' >
                 {value === 2 &&
                     <DisplayHex agent_file_id={media?.agent_file_id || ""}
                                 task={task} filename={media?.filename || undefined}
@@ -192,7 +193,7 @@ export const ResponseDisplayMedia = ({media, expand, task}) =>{
                 }
 
             </div>
-            <div hidden={value !== 3} className="mythic-response-media-panel" style={panelStyle} role='tabpanel' >
+            <div hidden={value !== 3} className="mythic-response-media-panel mythic-min-width-0" style={panelStyle} role='tabpanel' >
                 {value === 3 &&
                     <DisplayDatabase agent_file_id={media?.agent_file_id || ""}
                                 task={task} filename={media?.filename || undefined}
@@ -201,7 +202,7 @@ export const ResponseDisplayMedia = ({media, expand, task}) =>{
                 }
 
             </div>
-        </div>
+        </MythicStack>
     )
 }
 export const textExtensionTypes = ["txt", "ps1", "php", "json", "yml", "yaml", "config", "cfg", "go",
@@ -335,7 +336,7 @@ export const DisplayMedia = ({agent_file_id, filename, expand, task, fileMetaDat
                 <Typography variant={"h4"} >
                     {fileData.message}
                 </Typography>
-                <FileDownloadLinkWithAuth style={{wordBreak: "break-all"}} color="textPrimary" underline="always" href={"/direct/download/" + agent_file_id} >
+                <FileDownloadLinkWithAuth color="textPrimary" underline="always" href={"/direct/download/" + agent_file_id} >
                     {"Download here"}
                 </FileDownloadLinkWithAuth>
             </div>
@@ -385,21 +386,21 @@ export const DisplayMedia = ({agent_file_id, filename, expand, task, fileMetaDat
 const MaxRenderSize = 2000000; // 2MB
 const DisplayFileMetaData = ({fileMetaData}) => {
     return (
-        <TableContainer className="mythicElement mythic-response-media-metadata">
+        <TableContainer className="mythicElement mythic-response-media-metadata mythic-flex-fixed">
         <Table style={{marginLeft: "0px", width: "100%", tableLayout: "fixed"}}>
             <TableHead>
                 <TableRow>
-                    <MythicStyledTableCell style={{width: "7rem"}}>Size</MythicStyledTableCell>
-                    <MythicStyledTableCell>Host</MythicStyledTableCell>
-                    <MythicStyledTableCell>File</MythicStyledTableCell>
-                    <MythicStyledTableCell>Path</MythicStyledTableCell>
-                    <MythicStyledTableCell style={{width: "5rem"}}>Task</MythicStyledTableCell>
-                    <MythicStyledTableCell style={{}}>Tags</MythicStyledTableCell>
+                    <TableCell style={{width: "7rem"}}>Size</TableCell>
+                    <TableCell>Host</TableCell>
+                    <TableCell>File</TableCell>
+                    <TableCell>Path</TableCell>
+                    <TableCell style={{width: "5rem"}}>Task</TableCell>
+                    <TableCell>Tags</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 <TableRow>
-                    <MythicStyledTableCell>
+                    <TableCell>
                         <TableRowSizeCell cellData={fileMetaData.size}/>
                         {fileMetaData.complete ? null : (
                             <>
@@ -417,19 +418,19 @@ const DisplayFileMetaData = ({fileMetaData}) => {
                             </>
 
                         )}
-                    </MythicStyledTableCell>
-                    <MythicStyledTableCell style={{wordBreak: "break-all"}}>{fileMetaData.host}</MythicStyledTableCell>
-                    <MythicStyledTableCell style={{wordBreak: "break-all"}}>{fileMetaData.filename}</MythicStyledTableCell>
-                    <MythicStyledTableCell style={{wordBreak: "break-all"}}>{fileMetaData.full_remote_path}</MythicStyledTableCell>
-                    <MythicStyledTableCell><Link style={{wordBreak: "break-all"}}
+                    </TableCell>
+                    <TableCell>{fileMetaData.host}</TableCell>
+                    <TableCell>{fileMetaData.filename}</TableCell>
+                    <TableCell>{fileMetaData.full_remote_path}</TableCell>
+                    <TableCell><Link
                                      color="textPrimary" underline="always"
                                      target="_blank" href={"/new/task/" + fileMetaData.task_display_id}>
                         {fileMetaData.task_display_id}
-                    </Link></MythicStyledTableCell>
-                    <MythicStyledTableCell>
+                    </Link></TableCell>
+                    <TableCell>
                         <ViewEditTags target_object={"filemeta_id"} target_object_id={fileMetaData.id} />
                         <TagsDisplay tags={fileMetaData.tags}/>
-                    </MythicStyledTableCell>
+                    </TableCell>
                 </TableRow>
             </TableBody>
         </Table>
@@ -585,14 +586,14 @@ const DisplayText = ({agent_file_id, expand, filename, editable=false, fileMetaD
     const toolbarActions = editable ? [
         <MythicStyledTooltip title={saveDisabledReason || "Save file"}>
             <span>
-                <button
+                <MythicCluster component="button" gap="none" justify="center" inline wrap={false}
                     aria-label="Save file"
-                    className="mythic-response-render-action-button mythic-response-render-action-button-save"
+                    className="mythic-response-render-action-button mythic-clickable mythic-response-render-action-button-save"
                     disabled={!canSave || saving}
                     onClick={onSave}
                     type="button">
                     <SaveIcon fontSize="small" />
-                </button>
+                </MythicCluster>
             </span>
         </MythicStyledTooltip>
     ] : [];
@@ -623,7 +624,7 @@ const DisplayText = ({agent_file_id, expand, filename, editable=false, fileMetaD
     )
 }
 const DisplayHex = ({agent_file_id, expand, fileMetaData}) => {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const [content, setContent] = React.useState("");
     const [previewFileString] = useMutation(previewFileQuery, {
         onCompleted: (previewData) => {
@@ -695,7 +696,7 @@ const DisplayHex = ({agent_file_id, expand, fileMetaData}) => {
 }
 const MAX_ROWS = 1000;
 const DisplayDatabase = ({agent_file_id, expand, fileMetaData}) => {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const queryCountRef = React.useRef(1);
     const currentContentRef = React.useRef();
     const [selectedTab, setSelectedTab] = React.useState(0);
@@ -844,7 +845,7 @@ const DisplayDatabase = ({agent_file_id, expand, fileMetaData}) => {
     }, [onSubmitQuery]);
     return (
         <div style={{display: "flex", height: "100%", flexDirection: "column", width: "100%", position: "relative"}}>
-            <Backdrop open={loading} onClick={()=>{setLoading(false);}} style={{zIndex: 2, position: "absolute"}}>
+            <Backdrop className="mythic-local-backdrop" open={loading} onClick={()=>{setLoading(false);}}>
                 <CircularProgress color="inherit" disableShrink  />
             </Backdrop>
             <div style={{display: "inline-flex", flexDirection: "row", alignItems: "center", borderBottom: "1px solid grey"}}>

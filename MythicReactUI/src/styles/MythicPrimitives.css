@@ -1,0 +1,311 @@
+/*
+ * Mythic's intentionally small, public primitive-class contract.
+ *
+ * :where() keeps every primitive at zero specificity. Component variants,
+ * feature modules, states, and third-party adapters can therefore override a
+ * primitive without !important or import-order tricks.
+ */
+
+:where(.mythic-border-radius) {
+    border-radius: var(--mythic-foundation-radius-md);
+}
+
+:where(.mythic-border-radius-sm) {
+    border-radius: var(--mythic-foundation-radius-sm);
+}
+
+:where(.mythic-border-radius-lg) {
+    border-radius: var(--mythic-foundation-radius-lg);
+}
+
+:where(.mythic-border-radius-pill) {
+    border-radius: var(--mythic-foundation-radius-pill);
+}
+
+:where(.mythic-border) {
+    border: 1px solid var(--mythic-effect-table-borderSoft);
+}
+
+:where(.mythic-text-primary) {
+    color: var(--mythic-color-text-primary);
+}
+
+:where(.mythic-text-secondary) {
+    color: var(--mythic-color-text-secondary);
+}
+
+:where(.mythic-surface) {
+    background-color: var(--mythic-color-application-surface);
+}
+
+:where(.mythic-surface-muted) {
+    background-color: var(--mythic-color-application-muted);
+}
+
+:where(.mythic-surface-raised) {
+    background-color: var(--mythic-color-application-raised);
+}
+
+:where(.mythic-surface-subtle) {
+    background-color: var(--mythic-effect-surface-subtle);
+}
+
+:where(.mythic-flex) {
+    display: flex;
+}
+
+:where(.mythic-inline-flex) {
+    display: inline-flex;
+}
+
+:where(.mythic-grid) {
+    display: grid;
+}
+
+:where(.mythic-flex-column) {
+    flex-direction: column;
+}
+
+:where(.mythic-align-center) {
+    align-items: center;
+}
+
+:where(.mythic-align-start) {
+    align-items: flex-start;
+}
+
+:where(.mythic-align-stretch) {
+    align-items: stretch;
+}
+
+:where(.mythic-justify-start) {
+    justify-content: flex-start;
+}
+
+:where(.mythic-justify-center) {
+    justify-content: center;
+}
+
+:where(.mythic-justify-end) {
+    justify-content: flex-end;
+}
+
+:where(.mythic-justify-between) {
+    justify-content: space-between;
+}
+
+:where(.mythic-wrap) {
+    flex-wrap: wrap;
+}
+
+:where(.mythic-gap-xs) {
+    gap: var(--mythic-foundation-spacing-xs);
+}
+
+:where(.mythic-gap-sm) {
+    gap: var(--mythic-foundation-spacing-sm);
+}
+
+:where(.mythic-gap-md) {
+    gap: var(--mythic-foundation-spacing-md);
+}
+
+:where(.mythic-min-width-0) {
+    min-width: 0;
+}
+
+:where(.mythic-min-height-0) {
+    min-height: 0;
+}
+
+:where(.mythic-flex-fill) {
+    flex: 1 1 auto;
+}
+
+:where(.mythic-flex-fixed) {
+    flex: 0 0 auto;
+}
+
+:where(.mythic-full-width) {
+    width: 100%;
+}
+
+:where(.mythic-full-height) {
+    height: 100%;
+}
+
+:where(.mythic-overflow-hidden) {
+    overflow: hidden;
+}
+
+:where(.mythic-overflow-auto) {
+    overflow: auto;
+}
+
+:where(.mythic-break-anywhere) {
+    overflow-wrap: anywhere;
+}
+
+:where(.mythic-nowrap) {
+    white-space: nowrap;
+}
+
+:where(.mythic-pre-wrap) {
+    white-space: pre-wrap;
+}
+
+:where(.mythic-max-width-full) {
+    max-width: 100%;
+}
+
+:where(.mythic-block) {
+    display: block;
+}
+
+:where(.mythic-relative) {
+    position: relative;
+}
+
+:where(.mythic-grid-span-full) {
+    grid-column: 1 / -1;
+}
+
+:where(.mythic-clickable) {
+    cursor: pointer;
+}
+
+:where(.mythic-font-size-xs) {
+    font-size: var(--mythic-foundation-typography-size-xs);
+}
+
+:where(.mythic-font-size-caption) {
+    font-size: var(--mythic-foundation-typography-size-caption);
+}
+
+:where(.mythic-font-size-small) {
+    font-size: var(--mythic-foundation-typography-size-small);
+}
+
+:where(.mythic-font-size-body-small) {
+    font-size: var(--mythic-foundation-typography-size-bodySmall);
+}
+
+:where(.mythic-font-size-body) {
+    font-size: var(--mythic-foundation-typography-size-body);
+}
+
+:where(.mythic-font-weight-medium) {
+    font-weight: var(--mythic-foundation-typography-weight-medium);
+}
+
+:where(.mythic-font-weight-semibold) {
+    font-weight: var(--mythic-foundation-typography-weight-semibold);
+}
+
+:where(.mythic-font-weight-bold) {
+    font-weight: var(--mythic-foundation-typography-weight-bold);
+}
+
+:where(.mythic-font-weight-strong) {
+    font-weight: var(--mythic-foundation-typography-weight-strong);
+}
+
+:where(.mythic-font-weight-extra-bold) {
+    font-weight: var(--mythic-foundation-typography-weight-extraBold);
+}
+
+:where(.mythic-font-weight-heavy) {
+    font-weight: var(--mythic-foundation-typography-weight-heavy);
+}
+
+:where(.mythic-line-height-compact) {
+    line-height: 1;
+}
+
+:where(.mythic-line-height-tight) {
+    line-height: 1.2;
+}
+
+:where(.mythic-line-height-snug) {
+    line-height: 1.25;
+}
+
+:where(.mythic-line-height-normal) {
+    line-height: 1.35;
+}
+
+:where(.mythic-monospace) {
+    font-family: var(--mythic-foundation-typography-family-monospace);
+}
+
+:where(.mythic-divider-top) {
+    border-top: 1px solid var(--mythic-effect-table-borderSoft);
+}
+
+:where(.mythic-divider-bottom) {
+    border-bottom: 1px solid var(--mythic-effect-table-borderSoft);
+}
+
+:where(.mythic-inherit-color) {
+    color: inherit;
+}
+
+:where(.mythic-text-info) {
+    color: var(--mythic-color-status-info);
+}
+
+:where(.mythic-text-success) {
+    color: var(--mythic-color-status-success);
+}
+
+:where(.mythic-text-warning) {
+    color: var(--mythic-color-status-warning);
+}
+
+:where(.mythic-text-error) {
+    color: var(--mythic-color-status-error);
+}
+
+:where(.mythic-uppercase) {
+    text-transform: uppercase;
+}
+
+:where(.mythic-letter-spacing-reset) {
+    letter-spacing: 0;
+}
+
+:where(.mythic-stack) {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+:where(.mythic-cluster) {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+:where(.mythic-inline-cluster) {
+    align-items: center;
+    display: inline-flex;
+}
+
+:where(.mythic-fill) {
+    flex: 1 1 auto;
+    min-height: 0;
+    min-width: 0;
+}
+
+:where(.mythic-scroll-region) {
+    min-height: 0;
+    overflow: auto;
+}
+
+:where(.mythic-truncate) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

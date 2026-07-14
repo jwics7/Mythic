@@ -1,9 +1,10 @@
+import {useMythicTheme} from '../../themes/MythicThemeProvider';
 import DialogTitle from '@mui/material/DialogTitle';
-import {useTheme} from '@mui/material/styles';
+
 
 
 export const MythicDraggableDialogTitle = ({children}) => {
-    const theme = useTheme();
+    const theme = useMythicTheme();
     return (
         <DialogTitle id="mythic-draggable-title" style={{
             cursor: 'move',

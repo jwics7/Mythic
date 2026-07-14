@@ -1,14 +1,14 @@
+import TableCell from '@mui/material/TableCell';
 import React from 'react';
 import TableRow from '@mui/material/TableRow';
-import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { MythicDialog } from '../../MythicComponents/MythicDialog';
 import {MythicConfirmDialog} from '../../MythicComponents/MythicConfirmDialog';
 import { MythicStyledTooltip } from '../../MythicComponents/MythicStyledTooltip';
-import MythicStyledTableCell from '../../MythicComponents/MythicTableCell';
 import {NewTagtypesDialog} from './NewTagtypesDialog';
 import EditIcon from '@mui/icons-material/Edit';
 import {TagTypeChip} from "../../MythicComponents/MythicTagChip";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 
 export function TagtypesTableRow(props){
@@ -24,36 +24,36 @@ export function TagtypesTableRow(props){
       
         <React.Fragment>
             <TableRow key={"payload" + props.id} hover>
-                <MythicStyledTableCell>
+                <TableCell>
 
                   <MythicStyledTooltip title={"Delete the tag type and all associated tags"}>
-                    <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={()=>{setOpenDeleteDialog(true);}}><DeleteIcon fontSize="small" /></IconButton>
+                    <MythicActionButton iconOnly tone="error"  size="small" onClick={()=>{setOpenDeleteDialog(true);}}><DeleteIcon fontSize="small" /></MythicActionButton>
                   </MythicStyledTooltip>
                   
                   {openDelete && 
                     <MythicConfirmDialog onClose={() => {setOpenDeleteDialog(false);}} onSubmit={onAcceptDelete} open={openDelete}/>
                   }
                   
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" size="small" onClick={()=>{setOpenUpdateDialog(true);}}>
+                </TableCell>
+                <TableCell>
+                    <MythicActionButton iconOnly tone="info"  size="small" onClick={()=>{setOpenUpdateDialog(true);}}>
                         <EditIcon fontSize="small" />
-                    </IconButton>
+                    </MythicActionButton>
                   {openUpdate && 
                     <MythicDialog fullWidth={true} maxWidth="md" open={openUpdate}
                       onClose={()=>{setOpenUpdateDialog(false);}} 
                       innerDialog={<NewTagtypesDialog onClose={()=>{setOpenUpdateDialog(false);}} onSubmit={props.onUpdateTagtype} currentTag={props}/>}
                   />}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     {props.tags_aggregate.aggregate.count}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                   <TagTypeChip tagtype={props} />
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                   {props.description}
-                </MythicStyledTableCell>
+                </TableCell>
             </TableRow>
         </React.Fragment>
     )

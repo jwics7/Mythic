@@ -1,8 +1,9 @@
+import {useMythicTheme} from '../../themes/MythicThemeProvider';
 import React from "react";
 import Dialog from "@mui/material/Dialog";
 import Paper from "@mui/material/Paper";
 import Draggable from "react-draggable";
-import {useTheme} from "@mui/material/styles";
+
 
 let mythicDialogIdCounter = 0;
 let mythicDialogStack = [];
@@ -30,7 +31,7 @@ const MythicDraggableDialogPaper = React.forwardRef(function MythicDraggableDial
 });
 
 export function MythicDialog(props) {
-  const theme = useTheme();
+  const theme = useMythicTheme();
   const dialogIdRef = React.useRef(null);
   if(dialogIdRef.current === null){
     dialogIdRef.current = mythicDialogIdCounter++;
@@ -101,7 +102,7 @@ export function MythicDialog(props) {
             hideBackdrop={draggedState.hideBackdrop} aria-labelledby="scroll-dialog-title"
             aria-describedby="scroll-dialog-description"
             sx={{
-              ".MuiPaper-root": {borderRadius: "8px", backgroundColor: theme.palette.background.paper, border: `1px solid ${theme.borderColor}`, ...draggedState.paperStyle},
+              ".MuiPaper-root": {borderRadius: "8px", backgroundColor: theme.palette.background.paper, border: `1px solid ${theme.color.application.border}`, ...draggedState.paperStyle},
               ".MuiDialog-container": {...draggedState.containerStyle},
             }}
             onMouseDown={dialogOnClick} onContextMenu={(event) => event.stopPropagation()}>

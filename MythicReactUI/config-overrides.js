@@ -12,6 +12,14 @@ module.exports = function override(config, env) {
         //buffer: require.resolve('buffer'),
         stream: require.resolve('stream-browserify'),
     };
+    // CSS Modules are locally scoped, so their extraction order cannot change
+    // selector precedence. Suppress webpack's cross-chunk ordering noise while
+    // retaining deterministic CSS emitted from each module.
+    config.plugins.forEach((plugin) => {
+        if(plugin?.constructor?.name === 'MiniCssExtractPlugin'){
+            plugin.options.ignoreOrder = true;
+        }
+    });
     /*
     config.plugins.push(
         new webpack.ProvidePlugin({

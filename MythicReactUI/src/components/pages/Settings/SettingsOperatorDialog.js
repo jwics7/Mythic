@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box} from '@mui/material';
-import Button from '@mui/material/Button';
+
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import MythicTextField from '../../MythicComponents/MythicTextField';
@@ -17,6 +17,8 @@ import {
     MythicFormGrid,
     MythicFormNote
 } from "../../MythicComponents/MythicDialogLayout";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 
 export function SettingsOperatorDialog(props) {
@@ -46,15 +48,15 @@ export function SettingsOperatorDialog(props) {
   return (
     <React.Fragment>
         <DialogTitle id="form-dialog-title">
-            <Box className="mythic-dialog-title-row">
+            <MythicCluster gap="md" justify="between" className="mythic-dialog-title-row">
                 <Box component="span">{props.title}</Box>
                 <MythicStyledTooltip tooltipStyle={{display: "inline-flex"}}
                                      title={"Generate invite link for somebody to create their own username/password"}>
-                    <Button className="mythic-dialog-title-action" onClick={createInviteLink} size="small" variant="outlined">
+                    <MythicActionButton tone="neutral"  onClick={createInviteLink} size="small" variant="outlined">
                         Generate Invite Link
-                    </Button>
+                    </MythicActionButton>
                 </MythicStyledTooltip>
-            </Box>
+            </MythicCluster>
             {openInviteLinkDialog &&
                 <MythicDialog open={openInviteLinkDialog}
                               fullWidth={true}

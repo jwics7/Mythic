@@ -1,3 +1,4 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React, {useState} from 'react';
 import DialogContent from '@mui/material/DialogContent';
 import PlayCircleFilledTwoToneIcon from '@mui/icons-material/PlayCircleFilledTwoTone';
@@ -10,9 +11,8 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
+
+
 import {MythicDialog} from "../../MythicComponents/MythicDialog";
 import {getDynamicQueryParamsString} from "../Callbacks/TaskParametersDialogRow";
 import {MythicDialogBody, MythicDialogButton, MythicDialogFooter, MythicDialogSection} from "../../MythicComponents/MythicDialogLayout";
@@ -24,6 +24,8 @@ import {
     ParameterCodeBlock,
     ParameterMetadataItem
 } from "./InstalledServiceParameterDetails";
+import {MythicCluster, MythicGrid} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton, MythicPanel, MythicText} from "../../MythicComponents/MythicContent";
 
 const GET_Payload_Details = gql`
 query GetPayloadDetails($payload_name: String!) {
@@ -71,7 +73,7 @@ export function PayloadTypeCommandDialog({service, payload_name, onClose}) {
         command_name: "",
     });
 
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const { loading, error } = useQuery(GET_Payload_Details, {
         variables: {payload_name: payload_name},
         onCompleted: data => {
@@ -108,7 +110,7 @@ export function PayloadTypeCommandDialog({service, payload_name, onClose}) {
     const activeCommandCount = commands.filter((command) => !command.deleted).length;
     const deletedCommandCount = commands.length - activeCommandCount;
     const adminCommandCount = commands.filter((command) => !command.deleted && command.needs_admin).length;
-  
+
   return (
     <React.Fragment>
         <DialogTitle id="form-dialog-title">{payload_name}'s Commands</DialogTitle>
@@ -118,7 +120,7 @@ export function PayloadTypeCommandDialog({service, payload_name, onClose}) {
                 title="Commands"
                 description={`${activeCommandCount} active command${activeCommandCount === 1 ? "" : "s"} available for this payload type.`}
             >
-            <div className="mythic-status-stack" style={{marginBottom: "0.65rem"}}>
+            <MythicCluster component="div" gap="xs" className="mythic-status-stack" style={{marginBottom: "0.65rem"}}>
                 <MythicStatusChip label={`${activeCommandCount} Active`} status="success" />
                 {adminCommandCount > 0 &&
                     <MythicStatusChip label={`${adminCommandCount} Admin`} status="warning" />
@@ -126,7 +128,7 @@ export function PayloadTypeCommandDialog({service, payload_name, onClose}) {
                 {deletedCommandCount > 0 &&
                     <MythicStatusChip label={`${deletedCommandCount} Deleted`} status="deleted" />
                 }
-            </div>
+            </MythicCluster>
             <TableContainer className="mythicElement" style={{height: "100%"}}>
             <Table size="small" stickyHeader={true} aria-label="details"
                    style={{"tableLayout": "fixed", "overflowWrap": "break-word", overflowY:"auto", width: "100%", height: "100%"}}>
@@ -143,37 +145,37 @@ export function PayloadTypeCommandDialog({service, payload_name, onClose}) {
                         commands.map((param) => (
                             <TableRow key={"command" + param.id} hover style={{backgroundColor: param.deleted? theme.palette.action.disabledBackground : ''}}>
                                 <TableCell>
-                                    <Typography className="mythic-parameter-title" style={{textDecoration: param.deleted ? 'line-through' : ''}}>
+                                    <MythicText component="div" preset="large-title" className="mythic-parameter-title" style={{textDecoration: param.deleted ? 'line-through' : ''}}>
                                         {param.cmd}
-                                    </Typography>
-                                    <div className="mythic-status-stack" style={{marginTop: "0.35rem"}}>
+                                    </MythicText>
+                                    <MythicCluster component="div" gap="xs" className="mythic-status-stack" style={{marginTop: "0.35rem"}}>
                                         {param.needs_admin &&
                                             <MythicStatusChip label="Needs Admin" status="warning" />
                                         }
                                         {param.deleted &&
                                             <MythicStatusChip label="Deleted" status="deleted" />
                                         }
-                                    </div>
+                                    </MythicCluster>
                                 </TableCell>
                                 <TableCell>{param.version}</TableCell>
                                 <TableCell>{param.description}</TableCell>
                                 <TableCell>
-                                    <div className="mythic-table-row-actions mythic-table-row-actions-nowrap">
+                                    <MythicCluster component="div" gap="xs" align="center" wrap={false}>
                                         <MythicStyledTooltip title="Documentation">
-                                            <IconButton
-                                                className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info"
+                                            <MythicActionButton iconOnly tone="info"
+
                                                 href={service.wrapper ? "/docs/wrappers/" + service.name : "/docs/agents/" + service.name}
                                                 target="_blank"
                                                 size="small">
                                                 <MenuBookIcon fontSize="small" />
-                                            </IconButton>
+                                            </MythicActionButton>
                                         </MythicStyledTooltip>
                                         <MythicStyledTooltip title="Scripting parameters">
-                                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" onClick={(e) => onClickOpenScriptDialog(e, param)} size="small">
+                                            <MythicActionButton iconOnly tone="info"  onClick={(e) => onClickOpenScriptDialog(e, param)} size="small">
                                                 <PlayCircleFilledTwoToneIcon fontSize="small" />
-                                            </IconButton>
+                                            </MythicActionButton>
                                         </MythicStyledTooltip>
-                                    </div>
+                                    </MythicCluster>
                                 </TableCell>
                             </TableRow>
                         ))
@@ -287,11 +289,11 @@ export function ScriptingCommandDialog({command_id, command_name, onClose}){
                                     title={`Parameter Group: ${parameterGroupName}`}
                                     description={`${paramGroup.length} parameter${paramGroup.length === 1 ? "" : "s"} in this group.`}
                                 >
-                                    <div className="mythic-parameter-list">
+                                    <MythicGrid component="div" gap="md" columns="custom" className="mythic-parameter-list mythic-min-width-0">
                                         {paramGroup.map((param) => (
                                             <ScriptingParameterCard key={param.id} commandName={command_name} param={param} />
                                         ))}
-                                    </div>
+                                    </MythicGrid>
                                 </MythicDialogSection>
                             );
                         })
@@ -310,22 +312,22 @@ export function ScriptingCommandDialog({command_id, command_name, onClose}){
 const ScriptingParameterCard = ({commandName, param}) => {
     const choices = param.choices || [];
     return (
-        <div className="mythic-parameter-card">
-            <div className="mythic-parameter-card-header">
+        <MythicPanel component="div" density="flush" tone="raised" overflow="visible" radius="md" className="mythic-parameter-card">
+            <MythicCluster component="div" gap="md" align="start" justify="between" wrap={false} className="mythic-parameter-card-header">
                 <div>
-                    <div className="mythic-parameter-title">{param.name}</div>
-                    <div className="mythic-parameter-description">
+                    <MythicText component="div" preset="large-title" className="mythic-parameter-title">{param.name}</MythicText>
+                    <MythicText component="div" preset="secondary-copy" className="mythic-parameter-description">
                         {param.description || "No description provided."}
-                    </div>
+                    </MythicText>
                 </div>
-                <div className="mythic-status-stack">
+                <MythicCluster component="div" gap="xs" className="mythic-status-stack">
                     <MythicStatusChip label={param.type} status="neutral" showIcon={false} />
                     {param.required &&
                         <MythicStatusChip label="Required" status="warning" />
                     }
-                </div>
-            </div>
-            <div className="mythic-metadata-grid">
+                </MythicCluster>
+            </MythicCluster>
+            <MythicGrid component="div" gap="sm" columns="custom" className="mythic-metadata-grid mythic-min-width-0">
                 <ParameterMetadataItem label="Value Type" value={param.type} />
                 <ParameterMetadataItem label="Default Value" value={param.default_value} code />
                 {param.display_name &&
@@ -340,9 +342,9 @@ const ScriptingParameterCard = ({commandName, param}) => {
                 {choices.length > 0 &&
                     <ParameterMetadataItem label="Choices" value={choices.join(", ")} code />
                 }
-            </div>
+            </MythicGrid>
             <ScriptingParameterNotes commandName={commandName} param={param} />
-        </div>
+        </MythicPanel>
     );
 };
 
@@ -353,55 +355,55 @@ const ScriptingParameterNotes = ({commandName, param}) => {
     const supportedBuildParameters = param.supported_agent_build_parameters || {};
     const credentialTypes = param.limit_credentials_by_type || [];
     return (
-        <div className="mythic-parameter-notes">
+        <MythicGrid component="div" gap="sm" columns="custom" className="mythic-parameter-notes">
             {param.choices_are_all_commands &&
-                <div className="mythic-parameter-note"><strong>Command Choice:</strong> Provide any command name.</div>
+                <div className="mythic-parameter-note mythic-font-size-small mythic-border-radius mythic-text-secondary"><strong>Command Choice:</strong> Provide any command name.</div>
             }
             {param.choices_are_loaded_commands &&
-                <div className="mythic-parameter-note"><strong>Loaded Command Choice:</strong> Provide any command name currently loaded into the callback.</div>
+                <div className="mythic-parameter-note mythic-font-size-small mythic-border-radius mythic-text-secondary"><strong>Loaded Command Choice:</strong> Provide any command name currently loaded into the callback.</div>
             }
             {param.dynamic_query_function &&
-                <div className="mythic-parameter-note">
+                <div className="mythic-parameter-note mythic-font-size-small mythic-border-radius mythic-text-secondary">
                     <strong>Dynamic Choices:</strong> Use this mutation to generate the same choices outside the UI.
                     <ParameterCodeBlock>{getDynamicQueryParamsString}</ParameterCodeBlock>
                 </div>
             }
             {param.type === "File" &&
-                <div className="mythic-parameter-note">
+                <div className="mythic-parameter-note mythic-font-size-small mythic-border-radius mythic-text-secondary">
                     <strong>File Value:</strong> Upload the file first, then provide the returned AgentFileID.
                     <ParameterCodeBlock>{exampleUploadFile(commandName, param.name)}</ParameterCodeBlock>
                 </div>
             }
             {param.type === "TypedArray" &&
-                <div className="mythic-parameter-note">
+                <div className="mythic-parameter-note mythic-font-size-small mythic-border-radius mythic-text-secondary">
                     <strong>Typed Array:</strong> Provide nested arrays with a type identifier and value.
                     <ParameterCodeBlock>{`[ ["${typedArrayChoice}", "test"], ["${typedArrayChoice}", "values"] ]`}</ParameterCodeBlock>
                 </div>
             }
             {param.type === "AgentConnect" &&
-                <div className="mythic-parameter-note">
+                <div className="mythic-parameter-note mythic-font-size-small mythic-border-radius mythic-text-secondary">
                     <strong>Agent Connect:</strong> Provide the connection target and C2 profile parameters as a dictionary.
                     <ParameterCodeBlock>{exampleAgentConnect}</ParameterCodeBlock>
                 </div>
             }
             {param.type === "LinkInfo" &&
-                <div className="mythic-parameter-note">
+                <div className="mythic-parameter-note mythic-font-size-small mythic-border-radius mythic-text-secondary">
                     <strong>Link Info:</strong> Provide the existing P2P link information as a dictionary.
                     <ParameterCodeBlock>{exampleAgentConnect}</ParameterCodeBlock>
                 </div>
             }
             {param.type === "PayloadList" &&
                 <>
-                    <div className="mythic-parameter-note">
+                    <div className="mythic-parameter-note mythic-font-size-small mythic-border-radius mythic-text-secondary">
                         <strong>Payload Value:</strong> The submitted value is the selected payload UUID.
                     </div>
                     {supportedAgents.length > 0 &&
-                        <div className="mythic-parameter-note">
+                        <div className="mythic-parameter-note mythic-font-size-small mythic-border-radius mythic-text-secondary">
                             <strong>Supported Agents:</strong> {supportedAgents.join(", ")}
                         </div>
                     }
                     {Object.keys(supportedBuildParameters).length > 0 &&
-                        <div className="mythic-parameter-note">
+                        <div className="mythic-parameter-note mythic-font-size-small mythic-border-radius mythic-text-secondary">
                             <strong>Required Build Parameter Values:</strong>
                             <ParameterCodeBlock>{JSON.stringify(supportedBuildParameters, null, 2)}</ParameterCodeBlock>
                         </div>
@@ -410,17 +412,17 @@ const ScriptingParameterNotes = ({commandName, param}) => {
             }
             {param.type === "CredentialJson" &&
                 <>
-                    <div className="mythic-parameter-note">
+                    <div className="mythic-parameter-note mythic-font-size-small mythic-border-radius mythic-text-secondary">
                         <strong>Credential JSON:</strong> Provide the full credential JSON value.
                         <ParameterCodeBlock>{exampleCredentialJson}</ParameterCodeBlock>
                     </div>
                     {credentialTypes.length > 0 &&
-                        <div className="mythic-parameter-note">
+                        <div className="mythic-parameter-note mythic-font-size-small mythic-border-radius mythic-text-secondary">
                             <strong>Allowed Credential Types:</strong> {formatParameterValue(credentialTypes)}
                         </div>
                     }
                 </>
             }
-        </div>
+        </MythicGrid>
     );
 };

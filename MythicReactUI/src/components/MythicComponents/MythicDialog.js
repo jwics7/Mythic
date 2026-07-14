@@ -1,3 +1,4 @@
+import {useMythicTokens} from '../../themes/MythicThemeProvider';
 import React, {useEffect} from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -15,13 +16,15 @@ import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-searchbox";
-import {useTheme} from '@mui/material/styles';
+
 import WrapTextIcon from '@mui/icons-material/WrapText';
 import {IconButton} from '@mui/material';
 import {MythicStyledTooltip} from "./MythicStyledTooltip";
 import Draggable from 'react-draggable';
 import {MythicDraggableDialogTitle} from "./MythicDraggableDialogTitle";
 import {MythicDialogButton, MythicDialogFooter} from "./MythicDialogLayout";
+import {MythicCluster, MythicStack} from "./MythicLayout";
+import {MythicText} from "./MythicContent";
 
 let mythicDialogIdCounter = 0;
 let mythicDialogStack = [];
@@ -62,7 +65,7 @@ const MythicDraggableDialogPaper = React.forwardRef(function MythicDraggableDial
 // Kept temporarily for route-level compatibility while consumers migrate to the lightweight base module.
 // eslint-disable-next-line no-unused-vars
 function LegacyMythicDialog(props) {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const dialogIdRef = React.useRef(null);
     if(dialogIdRef.current === null){
         dialogIdRef.current = mythicDialogIdCounter++;
@@ -184,7 +187,7 @@ function LegacyMythicDialog(props) {
                 ".MuiPaper-root": {
                     borderRadius: "8px",
                     backgroundColor: theme.palette.background.paper,
-                    border: `1px solid ${theme.borderColor}`,
+                    border: `1px solid ${theme.color.application.border}`,
                     ...draggedState.paperStyle
                 },
                 ".MuiDialog-container": {
@@ -204,7 +207,7 @@ export {MythicDialog} from "./MythicDialogBase";
 export function MythicModifyStringDialog(props) {
   const [comment, setComment] = React.useState("");
   const [wrap, setWrap] = React.useState(props.wrap ? props.wrap : false);
-  const theme = useTheme();
+  const theme = useMythicTokens();
     const onCommitSubmit = () => {
         props.onSubmit(comment);
         if(props.dontCloseOnSubmit){
@@ -323,18 +326,18 @@ const JSONTypeBadge = ({value}) => {
   const label = type === "array" ? `${count} item${count === 1 ? "" : "s"}` :
       type === "object" ? `${count} field${count === 1 ? "" : "s"}` :
       type;
-  return <span className={`mythic-json-type-badge mythic-json-type-${type}`}>{label}</span>
+  return <span className={`mythic-json-type-badge mythic-font-weight-extra-bold mythic-font-size-xs mythic-line-height-compact mythic-nowrap mythic-inline-cluster mythic-border-radius mythic-border mythic-text-secondary mythic-flex-fixed mythic-json-type-${type}`}>{label}</span>
 }
 
 const JSONPrimitiveValue = ({name, value, me}) => {
   const type = getJSONValueType(value);
   if(type === "null" || type === "empty" || value === ""){
-    return <span className="mythic-json-value-empty">None</span>
+    return <span className="mythic-json-value-empty mythic-font-size-small">None</span>
   }
   if(type === "boolean"){
-    return <span className={`mythic-json-value-boolean ${value ? "mythic-json-value-true" : "mythic-json-value-false"}`}>{value ? "True" : "False"}</span>
+    return <span className={`mythic-json-value-boolean mythic-font-weight-extra-bold mythic-font-size-caption mythic-line-height-compact mythic-border-radius mythic-border mythic-inline-flex ${value ? "mythic-json-value-true mythic-text-success" : "mythic-json-value-false mythic-text-warning"}`}>{value ? "True" : "False"}</span>
   }
-  return <span className="mythic-json-value-primitive">{convertValueToContextValue(name, value, me)}</span>
+  return <MythicText component="span" preset="body-copy" className="mythic-json-value-primitive">{convertValueToContextValue(name, value, me)}</MythicText>
 }
 
 const JSONTableCellValue = ({name, value, me, depth}) => {
@@ -360,17 +363,17 @@ const JSONTableValue = ({label, value, me, depth=0, leftColumn="Name", rightColu
   if(type === "object"){
     const entries = Object.entries(value);
     return (
-      <div className={`mythic-json-panel ${depth === 0 ? "mythic-json-panel-root" : ""}`}>
+      <div className={`mythic-json-panel mythic-gap-sm mythic-stack mythic-border-radius mythic-border ${depth === 0 ? "mythic-json-panel-root mythic-surface-muted" : ""}`}>
         {showPanelHeader &&
-          <div className="mythic-json-panel-header">
-            <span className="mythic-json-panel-title">{label}</span>
+          <MythicCluster component="div" gap="sm" justify="between" className="mythic-json-panel-header">
+            <MythicText component="span" preset="item-title" className="mythic-json-panel-title">{label}</MythicText>
             <JSONTypeBadge value={value} />
-          </div>
+          </MythicCluster>
         }
         {entries.length === 0 ? (
-          <div className="mythic-json-empty-state">No fields to display.</div>
+          <div className="mythic-json-empty-state mythic-font-size-small mythic-text-secondary">No fields to display.</div>
         ) : (
-          <TableContainer className="mythicElement mythic-json-table-wrap">
+          <TableContainer className="mythicElement mythic-json-table-wrap mythic-border-radius mythic-border mythic-overflow-auto">
             <Table size="small" stickyHeader={depth === 0} style={{tableLayout: "fixed"}}>
               <TableHead>
                 <TableRow>
@@ -382,14 +385,14 @@ const JSONTableValue = ({label, value, me, depth=0, leftColumn="Name", rightColu
                 {entries.map(([key, entryValue]) => (
                   <TableRow key={`${depth}-${key}`} hover>
                     <TableCell className="mythic-json-key-cell">
-                      <div className="mythic-json-key-stack">
-                        <span className="mythic-json-key">{key}</span>
+                      <MythicStack component="div" gap="xs" className="mythic-json-key-stack">
+                        <span className="mythic-json-key mythic-font-size-small mythic-font-weight-extra-bold mythic-break-anywhere mythic-line-height-snug mythic-text-primary">{key}</span>
                         <JSONTypeBadge value={entryValue} />
-                      </div>
+                      </MythicStack>
                     </TableCell>
-                    <TableCell className="mythic-json-value-cell">
+                    <MythicText component={TableCell} preset="body-copy" className="mythic-json-value-cell">
                       <JSONTableCellValue name={key} value={entryValue} me={me} depth={depth} />
-                    </TableCell>
+                    </MythicText>
                   </TableRow>
                 ))}
               </TableBody>
@@ -402,17 +405,17 @@ const JSONTableValue = ({label, value, me, depth=0, leftColumn="Name", rightColu
   const objectHeaders = getArrayObjectHeaders(value);
   const isObjectArray = value.length > 0 && objectHeaders.length > 0 && value.every((row) => isPlainObject(row));
   return (
-    <div className={`mythic-json-panel ${depth === 0 ? "mythic-json-panel-root" : ""}`}>
+    <div className={`mythic-json-panel mythic-gap-sm mythic-stack mythic-border-radius mythic-border ${depth === 0 ? "mythic-json-panel-root mythic-surface-muted" : ""}`}>
       {showPanelHeader &&
-        <div className="mythic-json-panel-header">
-          <span className="mythic-json-panel-title">{label}</span>
+        <MythicCluster component="div" gap="sm" justify="between" className="mythic-json-panel-header">
+          <MythicText component="span" preset="item-title" className="mythic-json-panel-title">{label}</MythicText>
           <JSONTypeBadge value={value} />
-        </div>
+        </MythicCluster>
       }
       {value.length === 0 ? (
-        <div className="mythic-json-empty-state">No items to display.</div>
+        <div className="mythic-json-empty-state mythic-font-size-small mythic-text-secondary">No items to display.</div>
       ) : isObjectArray ? (
-        <TableContainer className="mythicElement mythic-json-table-wrap">
+        <TableContainer className="mythicElement mythic-json-table-wrap mythic-border-radius mythic-border mythic-overflow-auto">
           <Table size="small" stickyHeader={depth === 0} style={{tableLayout: "fixed", minWidth: `${Math.max(38, objectHeaders.length * 12)}rem`}}>
             <TableHead>
               <TableRow>
@@ -425,11 +428,11 @@ const JSONTableValue = ({label, value, me, depth=0, leftColumn="Name", rightColu
             <TableBody>
               {value.map((row, rowIndex) => (
                 <TableRow key={`array-row-${rowIndex}`} hover>
-                  <TableCell className="mythic-json-index-cell">{rowIndex + 1}</TableCell>
+                  <TableCell className="mythic-json-index-cell mythic-font-weight-extra-bold mythic-font-size-caption mythic-text-secondary">{rowIndex + 1}</TableCell>
                   {objectHeaders.map((header) => (
-                    <TableCell key={`array-row-${rowIndex}-${header}`} className="mythic-json-value-cell">
+                    <MythicText component={TableCell} preset="body-copy" key={`array-row-${rowIndex}-${header}`} className="mythic-json-value-cell">
                       <JSONTableCellValue name={header} value={row[header]} me={me} depth={depth} />
-                    </TableCell>
+                    </MythicText>
                   ))}
                 </TableRow>
               ))}
@@ -437,7 +440,7 @@ const JSONTableValue = ({label, value, me, depth=0, leftColumn="Name", rightColu
           </Table>
         </TableContainer>
       ) : (
-        <TableContainer className="mythicElement mythic-json-table-wrap">
+        <TableContainer className="mythicElement mythic-json-table-wrap mythic-border-radius mythic-border mythic-overflow-auto">
           <Table size="small" stickyHeader={depth === 0} style={{tableLayout: "fixed"}}>
             <TableHead>
               <TableRow>
@@ -448,10 +451,10 @@ const JSONTableValue = ({label, value, me, depth=0, leftColumn="Name", rightColu
             <TableBody>
               {value.map((entryValue, rowIndex) => (
                 <TableRow key={`array-value-row-${rowIndex}`} hover>
-                  <TableCell className="mythic-json-index-cell">{rowIndex + 1}</TableCell>
-                  <TableCell className="mythic-json-value-cell">
+                  <TableCell className="mythic-json-index-cell mythic-font-weight-extra-bold mythic-font-size-caption mythic-text-secondary">{rowIndex + 1}</TableCell>
+                  <MythicText component={TableCell} preset="body-copy" className="mythic-json-value-cell">
                     <JSONTableCellValue name={`${label || "value"} ${rowIndex + 1}`} value={entryValue} me={me} depth={depth} />
-                  </TableCell>
+                  </MythicText>
                 </TableRow>
               ))}
             </TableBody>
@@ -467,20 +470,20 @@ export function MythicViewJSONAsTableDialog(props) {
   const rootLabel = props.title || "JSON Data";
   return (
     <React.Fragment>
-        <MythicDraggableDialogTitle style={{wordBreak: "break-all", maxWidth: "100%"}}>
-          <div className="mythic-json-title-row">
+        <MythicDraggableDialogTitle style={{maxWidth: "100%"}}>
+          <MythicCluster component="div" gap="sm" justify="between" className="mythic-json-title-row mythic-full-width">
             <span>{rootLabel}</span>
             <JSONTypeBadge value={parsedValue} />
-          </div>
+          </MythicCluster>
         </MythicDraggableDialogTitle>
-        <DialogContent dividers={true} className="mythic-dialog-body mythic-json-dialog-body">
+        <MythicStack component={DialogContent} gap="md" dividers={true} className="mythic-dialog-body mythic-json-dialog-body mythic-overflow-auto mythic-full-width">
           <JSONTableValue
             value={parsedValue}
             me={props.me}
             leftColumn={props.leftColumn || "Name"}
             rightColumn={props.rightColumn || "Value"}
           />
-        </DialogContent>
+        </MythicStack>
         <MythicDialogFooter>
           <MythicDialogButton onClick={props.onClose}>
             Close
@@ -520,8 +523,8 @@ export function MythicViewObjectPropertiesAsTableDialog(props) {
                   <TableBody>
                     {comment.map( (element, index) => (
                       <TableRow key={'row' + index}>
-                        <TableCell style={{wordBreak: "break-all"}}>{element.name}</TableCell>
-                        <TableCell style={{wordBreak: "break-all"}}>{convertValueToContextValue(element.name, element.value)}</TableCell>
+                        <TableCell>{element.name}</TableCell>
+                        <TableCell>{convertValueToContextValue(element.name, element.value)}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

@@ -1,10 +1,12 @@
+import MenuItem from '@mui/material/MenuItem';
+import {useMythicTokens} from '../../../themes/MythicThemeProvider';
 import React from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
-import {alpha, useTheme} from '@mui/material/styles';
-import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
+import {alpha} from '@mui/material/styles';
+
 import CodeIcon from '@mui/icons-material/Code';
 import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
@@ -18,7 +20,6 @@ import {
     MythicTableToolbar,
     MythicTableToolbarGroup,
     MythicToolbarButton,
-    MythicToolbarMenuItem,
     MythicToolbarSelect
 } from "../../MythicComponents/MythicTableToolbar";
 import {snackActions} from '../../utilities/Snackbar';
@@ -46,7 +47,7 @@ const outputOptions = ["html", "json"];
 
 const reportPanelSx = (theme) => ({
     backgroundColor: theme.surfaces?.raised || theme.palette.background.paper,
-    border: `1px solid ${theme.table?.borderSoft || theme.borderColor}`,
+    border: `1px solid ${theme.table?.borderSoft || theme.color.application.border}`,
     borderRadius: `${theme.shape.borderRadius}px`,
     boxShadow: theme.palette.mode === "dark" ? "inset 0 1px 0 rgba(255,255,255,0.04)" : "0 1px 2px rgba(15,23,42,0.05)",
     display: "flex",
@@ -61,7 +62,7 @@ const reportPanelSx = (theme) => ({
 const panelHeaderSx = (theme) => ({
     alignItems: {xs: "stretch", md: "center"},
     backgroundImage: theme.gradients?.sectionHeader,
-    border: `1px solid ${theme.table?.borderSoft || theme.borderColor}`,
+    border: `1px solid ${theme.table?.borderSoft || theme.color.application.border}`,
     borderRadius: `${theme.shape.borderRadius}px`,
     display: "flex",
     flexWrap: "wrap",
@@ -80,7 +81,7 @@ const optionGridSx = {
 
 const sectionSx = (theme) => ({
     backgroundColor: theme.palette.mode === "dark" ? alpha(theme.palette.common.white, 0.025) : alpha(theme.palette.common.black, 0.012),
-    border: `1px solid ${theme.table?.borderSoft || theme.borderColor}`,
+    border: `1px solid ${theme.table?.borderSoft || theme.color.application.border}`,
     borderRadius: `${theme.shape.borderRadius}px`,
     display: "flex",
     flexDirection: "column",
@@ -92,7 +93,7 @@ const sectionSx = (theme) => ({
 const optionRowSx = (theme, disabled) => ({
     alignItems: "center",
     backgroundColor: disabled ? alpha(theme.palette.text.disabled, 0.04) : (theme.palette.mode === "dark" ? alpha(theme.palette.common.white, 0.035) : alpha(theme.palette.common.black, 0.018)),
-    border: `1px solid ${disabled ? alpha(theme.palette.text.disabled, 0.12) : (theme.table?.borderSoft || theme.borderColor)}`,
+    border: `1px solid ${disabled ? alpha(theme.palette.text.disabled, 0.12) : (theme.table?.borderSoft || theme.color.application.border)}`,
     borderRadius: `${theme.shape.borderRadius}px`,
     display: "grid",
     gap: 0.75,
@@ -118,7 +119,7 @@ const iconSx = (theme, tone = "info") => {
 };
 
 const ReportOptionRow = ({checked, description, disabled = false, icon, onChange, title, tone}) => {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     return (
         <Box sx={optionRowSx(theme, disabled)}>
             <Box sx={iconSx(theme, tone)}>
@@ -144,7 +145,7 @@ const ReportOptionRow = ({checked, description, disabled = false, icon, onChange
 };
 
 export function ReportingTable(){
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const fromNow = React.useRef((getSkewedNow()).toISOString());
     const [selectedOutputFormat, setSelectedOutputFormat] = React.useState("html");
     const [includeMITREPerTask, setIncludeMITREPerTask] = React.useState(false);
@@ -219,13 +220,13 @@ export function ReportingTable(){
                         onChange={setOutputFormat}
                     >
                         {outputOptions.map((opt) => (
-                            <MythicToolbarMenuItem key={opt} value={opt}>{opt.toUpperCase()}</MythicToolbarMenuItem>
+                            <MenuItem key={opt} value={opt}>{opt.toUpperCase()}</MenuItem>
                         ))}
                     </MythicToolbarSelect>
                 </MythicTableToolbarGroup>
                 <MythicTableToolbarGroup label="Actions">
                     <MythicToolbarButton
-                        className="mythic-toolbar-button-hover-success"
+                        className="mythic-toolbar-button-hover-success mythic-font-weight-strong mythic-border mythic-border-radius mythic-text-primary"
                         disabled={generating}
                         onClick={onGenerateReport}
                         startIcon={<PlayCircleOutlineIcon fontSize="small" />}

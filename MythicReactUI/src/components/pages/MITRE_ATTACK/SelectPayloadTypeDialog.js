@@ -1,5 +1,4 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -9,23 +8,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import {useQuery, gql } from '@apollo/client';
 import LinearProgress from '@mui/material/LinearProgress';
-const PREFIX = 'SelectPayloadTypeDialog';
-
-const classes = {
-  formControl: `${PREFIX}-formControl`
-};
-
-const Root = styled('div')((
-  {
-    theme
-  }
-) => ({
-  [`& .${classes.formControl}`]: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-    width: "97%"
-  }
-}));
+import styles from './SelectPayloadTypeDialog.module.css';
 
 const getPayloadTypes = gql`
 query getAllPayloadTypes{
@@ -67,11 +50,11 @@ export function SelectPayloadTypeDialog(props) {
      return <div>Error!</div>;
     }
   return (
-    <Root>
+    <div>
         <DialogTitle >Select a Payload Type to Filter On</DialogTitle>
         <DialogContent dividers={true}>
             <React.Fragment>
-                <FormControl className={classes.formControl}>
+                <FormControl className={styles.formControl}>
                   <Select
                     labelId="demo-dialog-select-label-profile"
                     id="demo-dialog-select"
@@ -98,7 +81,6 @@ export function SelectPayloadTypeDialog(props) {
             Select
           </Button>
         </DialogActions>
-  </Root>
+    </div>
   );
 }
-

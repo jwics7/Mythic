@@ -1,0 +1,181 @@
+.body,
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  width: 100%;
+}
+
+.bodyCompact {
+  gap: 9px;
+}
+
+.section {
+  background: var(--mythic-color-application-muted);
+  border: 1px solid var(--mythic-effect-table-borderSoft);
+  border-radius: var(--mythic-shape-borderRadius);
+  min-width: 0;
+  padding: 12px;
+}
+
+.sectionHeader {
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.sectionTitle {
+  color: var(--mythic-color-text-primary);
+}
+
+.sectionDescription {
+  color: var(--mythic-color-text-secondary);
+  margin-top: 2px;
+}
+
+.fieldDescription {
+  color: var(--mythic-color-text-secondary);
+  margin-top: 2px;
+}
+
+.sectionActions :global(.MuiButton-root) {
+  background: color-mix(in srgb, var(--mythic-color-text-primary) 6%, transparent);
+  border: 1px solid var(--mythic-effect-table-borderSoft);
+  color: var(--mythic-color-text-primary);
+  font-size: var(--mythic-foundation-typography-size-caption);
+  font-weight: var(--mythic-foundation-typography-weight-strong);
+  min-height: 28px;
+}
+
+.grid,
+.formGrid {
+  align-items: start;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--mythic-dialog-grid-min, 16rem)), 1fr));
+  min-width: 0;
+  width: 100%;
+}
+
+.formGrid {
+  --mythic-dialog-grid-min: var(--mythic-form-grid-min, 16rem);
+  gap: 12px;
+}
+
+.choiceRow {
+  align-items: center;
+  display: grid;
+  gap: 9px;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  width: 100%;
+}
+
+.choiceDivider {
+  color: var(--mythic-color-text-secondary);
+  font-size: var(--mythic-foundation-typography-size-caption);
+  font-weight: var(--mythic-foundation-typography-weight-bold);
+  text-align: center;
+}
+
+.footer {
+  background: var(--mythic-color-application-muted);
+  border-top: 1px solid var(--mythic-effect-table-borderSoft);
+  flex-wrap: wrap;
+  gap: var(--mythic-foundation-spacing-sm);
+  margin: 0;
+  padding: 10px 14px;
+}
+
+.footer > :global(:not(style) ~ :not(style)) {
+  margin-left: 0;
+}
+
+.button {
+  background: color-mix(in srgb, var(--mythic-color-text-primary) 6%, transparent);
+  border: 1px solid var(--mythic-effect-table-borderSoft);
+  color: var(--mythic-color-text-primary);
+  min-height: 34px;
+  min-width: min(100%, 7rem);
+}
+
+.button[data-intent="primary"] {
+  background: var(--mythic-color-status-primary);
+  border-color: var(--mythic-color-status-primary);
+}
+
+.button[data-intent="warning"] {
+  background: color-mix(in srgb, var(--mythic-color-status-warning) 14%, transparent);
+  border-color: color-mix(in srgb, var(--mythic-color-status-warning) 54%, transparent);
+  color: var(--mythic-color-status-warning);
+}
+
+.button[data-intent="destructive"] {
+  background: color-mix(in srgb, var(--mythic-color-status-error) 14%, transparent);
+  border-color: color-mix(in srgb, var(--mythic-color-status-error) 60%, transparent);
+  color: var(--mythic-color-status-error);
+}
+
+.button[data-intent="info"] {
+  background: color-mix(in srgb, var(--mythic-color-status-info) 12%, transparent);
+  border-color: color-mix(in srgb, var(--mythic-color-status-info) 45%, transparent);
+  color: var(--mythic-color-status-info);
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mythic-foundation-spacing-sm);
+  min-width: 0;
+}
+
+.fieldLabel {
+  color: var(--mythic-color-text-primary);
+}
+
+.fieldControl :global(.MuiFormControl-root),
+.fieldControl :global(.MuiTextField-root),
+.form :global(.MuiFormControl-root),
+.form :global(.MuiTextField-root) {
+  margin: 0;
+}
+
+.fieldControl :global(.MuiFormControl-root:has(> .MuiInputLabel-root)),
+.fieldControl :global(.MuiTextField-root:has(> .MuiInputLabel-root)),
+.form :global(.MuiFormControl-root:has(> .MuiInputLabel-root)),
+.form :global(.MuiTextField-root:has(> .MuiInputLabel-root)) {
+  margin-top: 7px;
+}
+
+.fieldControl :global(.MuiInputBase-root),
+.form :global(.MuiInputBase-root) {
+  min-height: 38px;
+}
+
+.formNote {
+  background: color-mix(in srgb, var(--mythic-color-text-primary) 4%, transparent);
+  border: 1px solid var(--mythic-effect-table-borderSoft);
+  border-radius: var(--mythic-shape-borderRadius);
+  color: var(--mythic-color-text-secondary);
+  font-size: var(--mythic-foundation-typography-size-small);
+  line-height: 1.4;
+  padding: 10px 12px;
+}
+
+.switchRow {
+  align-items: center;
+  background: var(--mythic-color-application-surface);
+  border: 1px solid var(--mythic-effect-table-borderSoft);
+  border-radius: var(--mythic-shape-borderRadius);
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  min-width: 0;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .choiceRow {
+    grid-template-columns: 1fr;
+  }
+}

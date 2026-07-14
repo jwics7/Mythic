@@ -1,0 +1,51 @@
+.rowContainer {
+    transition: background-color 120ms ease, color 120ms ease;
+}
+
+.rowContainer:hover {
+    background-color: var(--mythic-palette-action-hover);
+}
+
+.row {
+    min-width: fit-content;
+    padding-right: 8px;
+    user-select: none;
+}
+
+.row[data-deleted="true"] {
+    text-decoration: line-through;
+}
+
+.rowButtonWrapper {
+    align-self: stretch;
+    border-left: 2px dashed color-mix(in srgb, var(--mythic-palette-text-primary) 34%, transparent);
+    flex: 0 0 14px;
+    margin-left: 7px;
+}
+
+.rowLabel {
+    color: var(--mythic-palette-text-primary);
+    font-family: inherit;
+    font-size: 0.8125rem;
+    margin: 0;
+}
+
+.rowLabel[data-muted="true"] {
+    color: var(--mythic-palette-text-secondary);
+}
+
+.icon {
+    height: 16px;
+    margin-left: 3px;
+    margin-right: 5px;
+    vertical-align: middle;
+    width: 16px;
+}
+
+.icon[data-folder="true"] {
+    color: var(--mythic-color-fileBrowser-folder);
+}
+
+.icon[data-empty="true"] {
+    color: var(--mythic-color-fileBrowser-emptyFolder);
+}

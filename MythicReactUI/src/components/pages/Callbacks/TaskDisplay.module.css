@@ -1,0 +1,227 @@
+.paper {
+    background-color: var(--mythic-palette-background-paper);
+    border: 1px solid var(--mythic-color-application-border);
+    border-radius: var(--mythic-shape-borderRadius);
+    box-shadow: none;
+    height: auto;
+    margin-right: 0;
+    margin-top: 4px;
+    transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+    width: 100%;
+}
+
+.paper:hover {
+    background-color: color-mix(in srgb, var(--mythic-palette-background-paper) 75%, transparent);
+    border-color: color-mix(in srgb, var(--mythic-palette-text-primary) 20%, transparent);
+}
+
+.taskHeaderBody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mythic-foundation-spacing-xs);
+    min-width: 0;
+    width: 100%;
+}
+
+.taskMetaRow {
+    align-items: center;
+    color: var(--mythic-palette-text-secondary);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--mythic-foundation-spacing-xs);
+    min-width: 0;
+}
+
+.taskHeaderBodyCompact .taskMetaRow {
+    flex-wrap: nowrap;
+    max-height: 24px;
+    overflow: hidden;
+}
+
+.taskMetaItem {
+    align-items: center;
+    background-color: color-mix(in srgb, var(--mythic-palette-text-primary) 4%, transparent);
+    border: 1px solid color-mix(in srgb, var(--mythic-palette-text-primary) 8%, transparent);
+    border-radius: var(--mythic-foundation-radius-sm);
+    color: var(--mythic-palette-text-secondary);
+    display: inline-flex;
+    font-size: 0.71875rem;
+    font-weight: var(--mythic-foundation-typography-weight-medium);
+    gap: var(--mythic-foundation-spacing-xs);
+    line-height: 1.2;
+    max-width: 18rem;
+    min-height: 22px;
+    min-width: 0;
+    padding: 2px 6px;
+    white-space: nowrap;
+}
+
+.taskMetaItem > span:last-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.taskMetaItem a {
+    color: inherit;
+    font-weight: var(--mythic-foundation-typography-weight-bold);
+}
+
+.taskHeaderBodyCompact .taskMetaItem {
+    flex: 0 0 auto;
+}
+
+.taskMetaIcon {
+    flex-shrink: 0;
+    height: 0.86rem;
+    width: 0.86rem;
+}
+
+.taskHeaderActions {
+    align-items: center;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--mythic-foundation-spacing-xs);
+    min-width: 0;
+}
+
+.taskHeaderBodyCompact .taskHeaderActions {
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+}
+
+.taskIconButton {
+    border: 1px solid color-mix(in srgb, var(--mythic-palette-text-primary) 8%, transparent);
+    border-radius: var(--mythic-foundation-radius-sm);
+    color: var(--mythic-palette-text-secondary);
+    height: 24px;
+    padding: 0;
+    width: 24px;
+}
+
+.taskIconButton svg {
+    font-size: var(--mythic-foundation-typography-size-title);
+}
+
+.taskCommandRow {
+    align-items: flex-start;
+    display: flex;
+    gap: var(--mythic-foundation-spacing-sm);
+    min-width: 0;
+    width: 100%;
+}
+
+.taskHeaderBodyCompact .taskCommandRow {
+    align-items: center;
+}
+
+.taskCommandText {
+    color: var(--mythic-color-tasking-commandText);
+    flex: 1 1 auto;
+    font-size: 0.875rem;
+    line-height: 1.35;
+    min-width: 0;
+}
+
+.taskCommandTextCompact {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    overflow: hidden;
+}
+
+.taskCommandName {
+    color: var(--mythic-color-tasking-commandText);
+}
+
+.taskCommandParams {
+    color: var(--mythic-palette-text-primary);
+}
+
+.taskTags {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    gap: 3px;
+    justify-content: flex-end;
+    margin-left: auto;
+    max-width: 34%;
+    min-width: 0;
+}
+
+.taskTags :global(.MuiChip-root) {
+    float: none !important;
+    height: 16px !important;
+    margin: 0;
+    max-width: 10rem;
+}
+
+.taskTags :global(.MuiChip-label) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.taskHeaderBodyCompact .taskTags {
+    flex-wrap: nowrap;
+    max-height: 20px;
+    overflow: hidden;
+}
+
+.taskChildToggle {
+    color: var(--mythic-palette-text-secondary);
+    height: 24px;
+    margin-top: -2px;
+    padding: 0;
+    width: 24px;
+}
+
+.taskCommentBlock {
+    background-color: color-mix(in srgb, var(--mythic-palette-text-primary) 3%, transparent);
+    border: 1px solid color-mix(in srgb, var(--mythic-palette-text-primary) 8%, transparent);
+    border-radius: var(--mythic-foundation-radius-sm);
+    color: var(--mythic-palette-text-primary);
+    font-size: 0.78125rem;
+    line-height: 1.35;
+    padding: 6px 8px;
+}
+
+.consolePrompt {
+    color: var(--mythic-palette-text-secondary);
+    flex-shrink: 0;
+    font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.8125rem;
+}
+
+.accordionRoot {
+    background-color: unset;
+    box-shadow: none;
+    height: auto;
+    justify-content: flex-start;
+    margin: 0;
+    padding-left: 0;
+    user-select: text;
+    width: 100%;
+    word-break: break-all;
+}
+
+.accordionContent {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: inherit;
+}
+
+.accordionExpandIcon {
+    margin: 0;
+}
+
+.accordionExpanded {
+    margin-right: 0;
+}
+
+.accordionDetails,
+.accordionDetailsRoot {
+    min-width: 0;
+}

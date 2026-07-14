@@ -1,3 +1,4 @@
+import {useMythicTokens} from '../../../themes/MythicThemeProvider';
 import React, {useEffect} from 'react';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
@@ -9,14 +10,14 @@ import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-searchbox";
-import {useTheme} from '@mui/material/styles';
+
 import Typography from '@mui/material/Typography';
 import {getReadableTextColor, isValidHexColor, MythicColorSwatchInput} from '../../MythicComponents/MythicColorInput';
 
 export function CallbacksTableEditDescriptionColorDialog(props) {
   const [comment, setComment] = React.useState("");
   const [color, setColor] = React.useState("");
-  const theme = useTheme();
+  const theme = useMythicTokens();
     const onCommitSubmit = () => {
         const normalizedColor = color?.toLowerCase() || "";
         if(normalizedColor === "" || normalizedColor === "ffffff" || normalizedColor === "#ffffff" ||

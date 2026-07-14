@@ -1,3 +1,4 @@
+import {useMythicTokens} from '../../../themes/MythicThemeProvider';
 import React, {useEffect, useRef} from 'react';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -10,7 +11,7 @@ import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-monokai";
 import "ace-builds/src-noconflict/ext-searchbox";
-import {useTheme} from '@mui/material/styles';
+
 import { gql, useQuery, useLazyQuery } from '@apollo/client';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -31,6 +32,18 @@ import {
     MythicFormNote
 } from "../../MythicComponents/MythicDialogLayout";
 import {MythicEmptyState, MythicLoadingState} from "../../MythicComponents/MythicStateDisplay";
+import {MythicCluster, MythicStack} from "../../MythicComponents/MythicLayout";
+import {MythicPanel} from "../../MythicComponents/MythicContent";
+
+const BrowserScriptPane = ({children, className = "", meta, title}) => (
+    <MythicPanel component="section" density="flush" layout="stack" overflow="hidden" tone="raised" className={`mythic-browser-script-pane mythic-min-height-0 mythic-full-height ${className}`.trim()}>
+        <MythicCluster component="header" gap="none" align="center" justify="between" wrap={false} className="mythic-browser-script-pane-header mythic-divider-bottom mythic-font-size-small mythic-font-weight-extra-bold mythic-letter-spacing-reset mythic-flex-fixed mythic-text-primary mythic-surface-muted">
+            <span>{title}</span>
+            <span>{meta}</span>
+        </MythicCluster>
+        {children}
+    </MythicPanel>
+);
 
 
 const getCommandsAndPayloadTypesQuery = gql`
@@ -87,7 +100,7 @@ const storeSplitSizes = (storageKey, sizes) => {
 }
 
 export function EditScriptDialog(props) {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const [script, setScript] = React.useState("");
     const [selectedPayloadType, setSelectedPayloadType] = React.useState('');
     const [selectedCommand, setSelectedCommand] = React.useState('');
@@ -272,33 +285,33 @@ export function EditScriptDialog(props) {
   return (
     <React.Fragment>
         <DialogTitle>
-            <Box className="mythic-dialog-title-row">
+            <MythicCluster gap="md" justify="between" className="mythic-dialog-title-row">
                 <Box component="span">{props.title ? props.title : "Edit " + props.author + "'s BrowserScript Code"}</Box>
-            </Box>
+            </MythicCluster>
         </DialogTitle>
-        <DialogContent className="mythic-browser-script-dialog-content" dividers={true}>
-            <MythicDialogBody className="mythic-browser-script-dialog-body">
-                <Box className={`mythic-browser-script-target-panel ${targetOpen ? "mythic-browser-script-target-panel-open" : ""}`}>
-                    <Box className="mythic-browser-script-target-summary">
-                        <Box className="mythic-browser-script-target-copy">
-                            <Box component="span" className="mythic-browser-script-target-label">Script Target</Box>
-                            <Box className="mythic-browser-script-target-chips">
+        <MythicStack component={DialogContent} gap="none" className="mythic-browser-script-dialog-content mythic-overflow-hidden" dividers={true}>
+            <MythicDialogBody className="mythic-browser-script-dialog-body mythic-flex-fill mythic-overflow-hidden mythic-min-height-0">
+                <Box className={`mythic-browser-script-target-panel mythic-border-radius mythic-overflow-hidden mythic-border mythic-surface-raised ${targetOpen ? "mythic-browser-script-target-panel-open" : ""}`}>
+                    <MythicCluster gap="md" align="center" justify="between" wrap={false} className="mythic-browser-script-target-summary">
+                        <MythicCluster gap="md" align="center" wrap={false} className="mythic-browser-script-target-copy">
+                            <Box component="span" className="mythic-browser-script-target-label mythic-font-size-caption mythic-font-weight-extra-bold mythic-line-height-compact mythic-flex-fixed mythic-text-secondary">Script Target</Box>
+                            <MythicCluster gap="xs" className="mythic-browser-script-target-chips">
                                 <Chip size="small" label={selectedPayloadTypeOption?.name || (targetLoading ? "Loading payload types" : "No payload type")} />
                                 <Chip size="small" label={selectedCommandOption?.cmd || "No command"} />
-                            </Box>
-                        </Box>
+                            </MythicCluster>
+                        </MythicCluster>
                         <Tooltip title={targetOpen ? "Collapse target settings" : "Edit target settings"}>
                             <IconButton
                                 aria-expanded={targetOpen}
                                 aria-label={targetOpen ? "Collapse target settings" : "Edit target settings"}
-                                className="mythic-browser-script-target-toggle"
+                                className="mythic-browser-script-target-toggle mythic-border mythic-border-radius mythic-text-secondary"
                                 onClick={onToggleTargetOpen}
                                 size="small"
                             >
                                 {targetOpen ? <KeyboardArrowUpIcon fontSize="small" /> : <KeyboardArrowDownIcon fontSize="small" />}
                             </IconButton>
                         </Tooltip>
-                    </Box>
+                    </MythicCluster>
                     <Collapse
                         in={targetOpen}
                         onEntered={resizeEditors}
@@ -306,7 +319,7 @@ export function EditScriptDialog(props) {
                         timeout="auto"
                         unmountOnExit
                     >
-                        <Box className="mythic-browser-script-target-details">
+                        <MythicStack gap="sm" className="mythic-browser-script-target-details mythic-surface-muted">
                             <MythicFormGrid minWidth="16rem">
                                 <MythicFormField label="Payload Type">
                                     <FormControl fullWidth size="small">
@@ -344,11 +357,11 @@ export function EditScriptDialog(props) {
                             <MythicFormNote>
                                 Use Save for Testing to update the script without closing the editor. Select an already executed matching task below, then collapse and re-expand that task if you need it to reload the updated renderer.
                             </MythicFormNote>
-                        </Box>
+                        </MythicStack>
                     </Collapse>
                 </Box>
-                <Split
-                    className="mythic-browser-script-workbench"
+                <MythicStack component={Split} gap="none"
+                    className="mythic-browser-script-workbench mythic-full-width mythic-flex-fill mythic-min-height-0"
                     direction="vertical"
                     gutterSize={8}
                     minSize={[210, 300]}
@@ -356,20 +369,16 @@ export function EditScriptDialog(props) {
                     onDragEnd={onWorkbenchDragEnd}
                     sizes={workbenchSplitSizes}
                 >
-                    <Split
-                        className="mythic-browser-script-top-split"
+                    <MythicCluster component={Split} gap="none" wrap={false} align="stretch"
+                        className="mythic-browser-script-top-split mythic-full-width mythic-min-height-0"
                         gutterSize={8}
                         minSize={[320, 220]}
                         onDrag={resizeEditors}
                         onDragEnd={onTopDragEnd}
                         sizes={topSplitSizes}
                     >
-                        <div className="mythic-browser-script-pane mythic-browser-script-editor-pane">
-                            <div className="mythic-browser-script-pane-header">
-                                <span>Script Code</span>
-                                <span>JavaScript</span>
-                            </div>
-                            <div className="mythic-browser-script-editor-frame">
+                        <BrowserScriptPane className="mythic-browser-script-editor-pane" title="Script Code" meta="JavaScript">
+                            <div className="mythic-browser-script-editor-frame mythic-fill">
                                 <AceEditor
                                     mode="javascript"
                                     theme={theme.palette.mode === 'dark' ? 'monokai' : 'github'}
@@ -388,13 +397,9 @@ export function EditScriptDialog(props) {
                                     }}
                                 />
                             </div>
-                        </div>
-                        <div className="mythic-browser-script-pane mythic-browser-script-console-pane">
-                            <div className="mythic-browser-script-pane-header">
-                                <span>Console Output</span>
-                                <span>console.log</span>
-                            </div>
-                            <div className="mythic-browser-script-editor-frame">
+                        </BrowserScriptPane>
+                        <BrowserScriptPane className="mythic-browser-script-console-pane" title="Console Output" meta="console.log">
+                            <div className="mythic-browser-script-editor-frame mythic-fill">
                                 <AceEditor
                                     mode="javascript"
                                     theme={theme.palette.mode === 'dark' ? 'monokai' : 'github'}
@@ -414,14 +419,10 @@ export function EditScriptDialog(props) {
                                     }}
                                 />
                             </div>
-                        </div>
-                    </Split>
-                    <div className="mythic-browser-script-pane mythic-browser-script-preview-pane">
-                        <div className="mythic-browser-script-pane-header">
-                            <span>Test Preview</span>
-                            <span>{availableTasks.length === 1 ? "1 task" : `${availableTasks.length} tasks`}</span>
-                        </div>
-                        <div className="mythic-browser-script-preview-controls">
+                        </BrowserScriptPane>
+                    </MythicCluster>
+                    <BrowserScriptPane className="mythic-browser-script-preview-pane" title="Test Preview" meta={availableTasks.length === 1 ? "1 task" : `${availableTasks.length} tasks`}>
+                        <div className="mythic-browser-script-preview-controls mythic-divider-bottom mythic-flex-fixed">
                             <FormControl fullWidth size="small">
                                 <InputLabel id="browser-script-test-task-label">Test Script With Task</InputLabel>
                                 <Select
@@ -439,7 +440,7 @@ export function EditScriptDialog(props) {
                                 </Select>
                             </FormControl>
                         </div>
-                        <div className="mythic-browser-script-preview-frame">
+                        <div className="mythic-browser-script-preview-frame mythic-fill mythic-overflow-auto">
                             {tasksLoading ? (
                                 <MythicLoadingState compact title="Loading test tasks" description="Fetching previous tasks for this command." />
                             ) : selectedTask !== "" ? (
@@ -448,10 +449,10 @@ export function EditScriptDialog(props) {
                                 <MythicEmptyState compact title="No matching tasks" description="Run this command at least once to preview this browser script against task output." />
                             )}
                         </div>
-                    </div>
-                </Split>
+                    </BrowserScriptPane>
+                </MythicStack>
             </MythicDialogBody>
-        </DialogContent>
+        </MythicStack>
         <MythicDialogFooter>
           <MythicDialogButton onClick={props.onClose}>
             Close
@@ -465,7 +466,7 @@ export function EditScriptDialog(props) {
               <MythicDialogButton intent="warning" onClick={onRevert}>
                 Revert
               </MythicDialogButton>
-                <MythicDialogButton className="mythic-table-row-action-hover-info" intent="info" disabled={selectedCommand === "" || selectedPayloadType === ""} onClick={onTest}>
+                <MythicDialogButton intent="info" disabled={selectedCommand === "" || selectedPayloadType === ""} onClick={onTest}>
                     Save For Testing
                 </MythicDialogButton>
               <MythicDialogButton disabled={selectedCommand === "" || selectedPayloadType === ""} intent="primary" onClick={onSubmit}>

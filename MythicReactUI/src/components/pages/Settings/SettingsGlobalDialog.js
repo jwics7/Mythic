@@ -1,5 +1,5 @@
 import React from 'react';
-import Box from '@mui/material/Box';
+
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Switch from '@mui/material/Switch';
@@ -16,6 +16,7 @@ import {
     MythicFormGrid,
     MythicFormSwitchRow
 } from "../../MythicComponents/MythicDialogLayout";
+import {MythicPanel} from "../../MythicComponents/MythicContent";
 
 export const GET_GLOBAL_SETTINGS = gql`
 query getGlobalSettings {
@@ -169,9 +170,9 @@ export function SettingsGlobalDialog(props) {
                     title="Default User Preferences"
                     description="Applies only to users created after this setting is saved. Existing user preferences are not overwritten."
                 >
-                    <Box className="mythic-form-code-editor">
+                    <MythicPanel component="div" density="flush" tone="inherit" overflow="hidden" radius="md" className="mythic-form-code-editor">
                         <ResponseDisplayPlaintext plaintext={userPreferencesRef.current} onChangeContent={onChangePreferences} initial_mode={"json"} autoFormat={true} />
-                    </Box>
+                    </MythicPanel>
                 </MythicDialogSection>
             </MythicDialogBody>
         </DialogContent>

@@ -1,3 +1,4 @@
+import MenuItem from '@mui/material/MenuItem';
 import React, { useEffect, useMemo, useContext} from 'react';
 import {MythicDialog} from '../../MythicComponents/MythicDialog';
 import {
@@ -18,7 +19,7 @@ import {
     CallbacksTableSleepCell,
     CallbacksTableIPCell, CallbacksTableTagsCell
 } from './CallbacksTableRow';
-import MythicResizableGrid from '../../MythicComponents/MythicResizableGrid';
+import MythicResizableGrid from '../../MythicComponents/MythicResizableGrid/MythicResizableGrid';
 import {CallbacksTabsHideMultipleDialog, CallbacksTabsSelectMultipleDialog} from "./CallbacksTabsHideMultipleDialog";
 import {CallbacksTabsTaskMultipleDialog} from "./CallbacksTabsTaskMultipleDialog";
 import ip6 from 'ip6';
@@ -28,7 +29,7 @@ import {DetailedCallbackTable} from "./DetailedCallbackTable";
 import {ModifyCallbackMythicTreeGroupsDialog} from "./ModifyCallbackMythicTreeGroupsDialog";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import {getCallbackIdFromClickedTab} from './Callbacks';
-import {Dropdown, DropdownNestedMenuItem, DropdownMenuItem} from "../../MythicComponents/MythicNestedMenus";
+import {Dropdown, DropdownNestedMenuItem} from "../../MythicComponents/MythicNestedMenus";
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import TerminalIcon from '@mui/icons-material/Terminal';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
@@ -64,6 +65,7 @@ import {
     isGridColumnFilterActive
 } from "../../MythicComponents/MythicResizableGrid/GridColumnFilterDialog";
 import {MythicConfirmDialog} from "../../MythicComponents/MythicConfirmDialog";
+import {MythicStack, MythicCluster, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
 
 export const getCustomBrowsersQuery = gql(`
 query getCustomBrowsersQuery{
@@ -405,20 +407,20 @@ function CallbacksTablePreMemo(props){
         return await getCustomBrowsers({}).then(result => {return result.data?.custombrowser});
     }
     const callbackMenuIcon = (icon, intent = "neutral") => (
-        <span className={`mythic-callback-action-menu-icon mythic-callback-action-menu-icon-${intent}`}>
+        <span className={`mythic-callback-action-menu-icon mythic-justify-center mythic-line-height-compact mythic-font-size-small mythic-inline-cluster mythic-border-radius mythic-border mythic-text-secondary mythic-flex-fixed mythic-callback-action-menu-icon-${intent}`}>
             {icon}
         </span>
     );
     const callbackMenuLabel = (primary, secondary) => (
-        <span className="mythic-callback-action-menu-label">
-            <span className="mythic-callback-action-menu-label-primary">{primary}</span>
+        <MythicStack component="span" gap="none" className="mythic-callback-action-menu-label">
+            <span className="mythic-callback-action-menu-label-primary mythic-font-size-small mythic-font-weight-extra-bold mythic-line-height-tight mythic-text-primary">{primary}</span>
             {secondary &&
-                <span className="mythic-callback-action-menu-label-secondary">{secondary}</span>
+                <MythicTruncatedText component="span" className="mythic-callback-action-menu-label-secondary mythic-font-size-caption mythic-font-weight-medium mythic-line-height-snug mythic-text-secondary">{secondary}</MythicTruncatedText>
             }
-        </span>
+        </MythicStack>
     );
     const callbackMenuSection = (label) => ({
-        name: <span className="mythic-callback-action-menu-section-label">{label}</span>,
+        name: <span className="mythic-callback-action-menu-section-label mythic-font-size-xs mythic-font-weight-heavy mythic-line-height-tight mythic-text-secondary">{label}</span>,
         icon: null,
         click: ({event}) => {},
         type: "item",
@@ -624,7 +626,7 @@ function CallbacksTablePreMemo(props){
                         }
                     },
                     {
-                        name: <span className="mythic-callback-action-menu-section-label">Custom Agent Browsers</span>,
+                        name: <span className="mythic-callback-action-menu-section-label mythic-font-size-xs mythic-font-weight-heavy mythic-line-height-tight mythic-text-secondary">Custom Agent Browsers</span>,
                         icon: null, click: ({event}) => {},
                         type: "item",
                         disabled: true,
@@ -809,7 +811,7 @@ function CallbacksTablePreMemo(props){
     const contextMenuOptions = [
         {
             name: 'Filter Column', type: "item",
-            icon: <FontAwesomeIcon icon={faFilter} style={{paddingRight: "5px"}} />,
+            icon: <FontAwesomeIcon icon={faFilter} />,
             click: ({event, columnIndex}) => {
                 if(event){
                     event.stopPropagation();
@@ -1179,30 +1181,30 @@ function CallbacksTablePreMemo(props){
                         menu={
                             callbackDropdownRef.current.options.map((option, index) => (
                                 option.type === 'item' ? (
-                                    <DropdownMenuItem
+                                    <MenuItem
                                         key={"callback-action-" + index}
                                         className={option.className}
                                         disabled={option.disabled}
                                         onClick={(event) => handleMenuItemClick(event, option.click)}
                                     >
                                         {option.icon}{option.name}
-                                    </DropdownMenuItem>
+                                    </MenuItem>
                                 ) : option.type === 'menu' ? (
                                     <DropdownNestedMenuItem
                                         key={"callback-action-" + index}
                                         className={option.className}
-                                        label={<span className="mythic-callback-action-menu-nested-label">{option.icon}{option.name}</span>}
+                                        label={<MythicCluster component="span" gap="none" inline wrap={false} className="mythic-callback-action-menu-nested-label">{option.icon}{option.name}</MythicCluster>}
                                         disabled={option.disabled}
                                         menu={
                                             option.menuItems.map((menuOption, indx) => (
-                                                <DropdownMenuItem
+                                                <MenuItem
                                                     key={"callback-action-" + index + "-" + indx}
                                                     className={menuOption.className}
                                                     disabled={menuOption.disabled}
                                                     onClick={(event) => handleMenuItemClick(event, menuOption.click)}
                                                 >
                                                     {menuOption.icon}{menuOption.name}
-                                                </DropdownMenuItem>
+                                                </MenuItem>
                                             ))
                                         }
                                     />

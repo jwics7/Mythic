@@ -1,0 +1,1488 @@
+/* Shared visual family. Global selectors are scoped here during the final owner migration. */
+
+tspan {
+  font-size: 15px;
+  stroke: none;
+}
+:global(.mythic-navigation-icon) {
+    color: var(--mythic-nav-icon) !important;
+}
+:global(.mythic-navigation-warning-icon) {
+    color: var(--mythic-warning-main) !important;
+}
+:global(.mythic-navigation-muted-text) {
+    color: var(--mythic-nav-muted);
+}
+:global(.mythic-navigation-action-text) {
+    color: var(--mythic-nav-text) !important;
+}
+
+:global(.ace-monokai) :global(.ace_invalid) {
+    color: #F8F8F0;
+    background-color: #52524d;
+}
+:global(.ace_gutter), :global(.ace_scrollbar) {
+    z-index: 0 !important
+}
+:global(.gutter) {
+  background-color: var(--mythic-color-application-border);
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+:global(.gutter):global(.gutter-horizontal) {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+  cursor: col-resize;
+  width: 5px !important;
+}
+
+:global(.gutter):global(.gutter-vertical) {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=');
+  cursor: row-resize;
+  height: 5px !important;
+}
+:global(.groupNode) {
+    border: 1px solid var(--mythic-color-application-border);
+    padding: 5px;
+    border-radius: var(--mythic-foundation-radius-sm);
+    background: var(--mythic-palette-graph-group-rgba) !important;
+}
+:global(.groupEventNode) {
+    border: 1px solid var(--mythic-color-application-border);
+    padding: 2px;
+    border-radius: var(--mythic-foundation-radius-sm);
+    background: var(--mythic-palette-graph-group-rgba) !important;
+}
+:global(.circleImageNode) {
+     height: 50px;
+     display: block;
+     border-radius: 0%;
+}
+:global(.react-flow__edge-path), :global(.react-flow__edge-text), :global(.react-flow__edge-textbg), :global(.react-flow__edge),
+:global(.react-flow__edges) {
+   z-index: -1 !important;
+}
+:global(.context-menu) {
+    background-color: var(--mythic-palette-background-paper);
+    border: 1px solid var(--mythic-color-application-border);
+    border-radius: var(--mythic-foundation-radius-lg);
+    box-shadow: var(--mythic-effect-context-menu-shadow);
+    position: absolute;
+    z-index: 10;
+}
+:global(.context-menu-button) {
+    border: none;
+    display: block;
+    padding: 0.5em;
+    text-align: left;
+    width: 100%;
+    background-color: var(--mythic-palette-background-paper);
+    color: unset;
+}
+:global(.mythic-graph-canvas) :global(.react-flow__controls), :global(.mythic-graph-canvas) :global(.react-flow__minimap), :global(.mythic-task-parameter-control) :global(.MuiInput-root), :global(.mythic-c2-group-node-actions) button,
+:global(.mythic-response-markdown) blockquote, :global(.mythic-process-inspector-tags) :global(.MuiIconButton-root), :global(.mythic-credential-search-jwt-json-block) > pre, :global(.mythic-credential-search-tags) :global(.MuiIconButton-root),
+:global(.mythic-tag-cell) :global(.MuiIconButton-root) {
+    border-radius: var(--mythic-foundation-radius-md);
+}
+:global(.mythic-graph-canvas) :global(.react-flow__controls), :global(.mythic-graph-canvas) :global(.react-flow__minimap), :global(.mythic-process-inspector-tags) :global(.MuiIconButton-root), :global(.mythic-credential-search-detail),
+:global(.mythic-credential-search-metadata-pair), :global(.mythic-credential-search-tags) :global(.MuiIconButton-root), :global(.mythic-tag-cell) :global(.MuiIconButton-root), :global(.mythic-c2-group-node-actions) button,
+:global(.mythic-task-parameter-control) :global(.MuiInput-root) {
+    border: 1px solid var(--mythic-color-table-border-soft);
+}
+:global(.mythic-graph-empty-title):global(.MuiTypography-root), :global(.mythic-c2-path-title-text):global(.MuiTypography-root), :global(.mythic-eventing-editor-title), :global(.mythic-eventing-user-interaction-title),
+:global(.mythic-tasking-parameter-preview-heading) svg, :global(.mythic-tasking-parameter-preview-empty) svg, :global(.mythic-tasking-filter-title-main), :global(.mythic-task-parameters-title-main),
+:global(.mythic-tasking-filter-summary-chip) :global(.MuiChip-icon) {
+    font-size: var(--mythic-foundation-typography-size-title);
+}
+:global(.mythic-c2-agent-node), :global(.mythic-tasking-metadata-row) :global(.mythic-reorder-row-main) {
+    flex-direction: column;
+}
+:global(.mythic-callback-graph-options-toggle):global(.MuiButton-root), :global(.mythic-eventing-step-user-interaction-section) > [data-mythic-component="action-button"], :global(.mythic-eventing-user-input-choice-list) > [data-mythic-component="action-button"] {
+    align-self: flex-start;
+}
+:global(.mythic-tasking-context-row) > span[data-tooltip-id="my-tooltip"], :global(.mythic-c2-agent-node), :global(.mythic-dashboard-tasking-list) [data-mythic-component="task-display"], :global(.mythic-dashboard-tasking-list) :global(.mythic-response-table),
+:global(.mythic-dashboard-tasking-list) :global(.mythic-response-table-grid) {
+    min-width: 0;
+}
+:global(.mythic-callback-graph-option-button):global(.MuiButton-root), :global(.mythic-split-action-group) {
+    box-shadow: none !important;
+}
+:global(.mythic-file-browser-pathInput):global(.MuiInputBase-root), :global(.mythic-process-browser-searchInput) :global(.MuiInputBase-root), :global(.mythic-credential-search-jwt-json-block) > pre, :global(.mythic-c2-path-canvas) :global(.react-flow__controls-button) {
+    background-color: var(--mythic-palette-background-paper);
+}
+:global(.mythic-callback-statusBadgeAlert):hover, :global(.mythic-callback-statusBadgeLock):hover, :global(.mythic-callback-statusBadgeDead):hover, :global(.mythic-process-menu-icon-warning),
+:global(.mythic-eventing-status-chip-cancelled) {
+    color: var(--mythic-palette-warning-main);
+}
+
+:global(.selectedTask) {
+    background-color: var(--mythic-effect-selected-task-bg) !important;
+}
+:global(.mythic-process-browser-tableTop), :global(.mythic-installed-service-definition-row) {
+    padding: 0.5rem 0.6rem;
+}
+:global(.mythic-response-tabs-list) :global(.MuiTabs-flexContainer), :global(.mythic-dashboard-chart-body) {
+    gap: var(--mythic-foundation-spacing-xs);
+}
+:global(.mythic-process-browser-control), :global(.mythic-process-browser-searchInput) :global(.MuiInputBase-root), :global(.mythic-process-inspector-tags), :global(.mythic-toolbar-select),
+:global(.mythic-toolbar-button-hover-success), :global(.mythic-toolbar-toggle) {
+    min-height: 32px;
+}
+:global(.mythic-process-browser-searchInput) :global(.MuiInputBase-root), :global(.mythic-tasking-token-select) :global(.MuiSelect-select), :global(.mythic-eventing-detail-accordion) :global(.MuiAccordionSummary-content), :global(.mythic-credential-search-primary-cell) > span:first-child,
+:global(.mythic-credential-search-kerberos-ticket-header) strong, :global(.mythic-eventing-sidebar-search) :global(.MuiOutlinedInput-root), :global(.mythic-eventing-file-chip-remove) svg {
+    font-size: var(--mythic-foundation-typography-size-small);
+}
+:global(.mythic-reorder-row-disabled) :global(.mythic-reorder-row-title), :global(.mythic-dashboard-chart-canvas) :global(.MuiChartsLegend-root), :global(.mythic-dashboard-kpi-chip-neutral), :global(.mythic-credential-search-primary-cell) > span:nth-child(2),
+:global(.mythic-credential-search-inspector-title) svg, :global(.mythic-credential-search-detail) > span, :global(.mythic-credential-search-metadata-pair) > span, :global(.mythic-credential-search-nested-metadata) span,
+:global(.mythic-c2-path-canvas) :global(.react-flow__controls-button) {
+    color: var(--mythic-palette-text-secondary);
+}
+:global(.mythic-c2-group-node-stat-neutral), :global(.mythic-eventing-workflow-overview-icon-line) svg, :global(.mythic-eventing-instances-time-line) svg, :global(.mythic-eventing-status-chip-skipped),
+:global(.mythic-eventing-status-chip-configured), :global(.mythic-eventing-status-chip-waiting), :global(.mythic-eventing-user-interaction-prompt), :global(.mythic-installed-service-action-chip) :global(.MuiSvgIcon-root),
+:global(.mythic-installed-service-browser-metric) > span:first-child {
+    color: var(--mythic-palette-text-secondary);
+}
+:global(.mythic-create-inline-control) > :global(.MuiFormControl-root), :global(.mythic-credential-search-tag-summary) :global(.mythic-tag-list) {
+    flex: 1 1 auto;
+}
+:global(.mythic-browser-script-response-expanded) > *:only-child, :global(.mythic-eventing-content) > div {
+    min-height: 0;
+}
+:global(.mythic-process-inspector-detail) span, :global(.mythic-interactive-terminal-pending) > span:first-child, :global(.mythic-json-table-wrap) :global(.MuiTableHead-root) :global(.MuiTableCell-root), :global(.mythic-credential-search-primary-cell) > span:first-child,
+:global(.mythic-credential-search-detail) > span, :global(.mythic-credential-search-metadata-pair) > span, :global(.mythic-credential-search-kerberos-principal) strong, :global(.mythic-eventing-header-duration) :global(.MuiTypography-root),
+:global(.mythic-tag-list) :global(.MuiChip-label) {
+    font-weight: var(--mythic-foundation-typography-weight-extraBold);
+}
+:global(.mythic-process-summary-chip-warning), :global(.mythic-eventing-status-chip-awaiting_approval), :global(.mythic-eventing-status-chip-input_needed), :global(.mythic-dashboard-kpi-chip-warning) {
+    background-color: var(--mythic-effect-warning-soft);
+    border-color: var(--mythic-effect-warning-strong);
+    color: var(--mythic-palette-warning-main);
+}
+:global(.mythic-process-indicator-warning), :global(.mythic-tree-groups-statusInactive), :global(.mythic-eventing-step-action-chip-warning) {
+    background-color: var(--mythic-effect-warning-soft);
+    border-color: var(--mythic-effect-warning-strong);
+}
+:global(.mythic-credential-search-detail-emphasis) strong, :global(.mythic-eventing-list-item) :global(.MuiListItemText-primary) {
+    font-size: var(--mythic-foundation-typography-size-bodySmall);
+}
+:global(.mythic-process-inspector-detailWide), :global(.mythic-dashboard-card-wide) {
+    grid-column: span 2;
+}
+:global(.mythic-response-markdown):global(.is-expanded), :global(.mythic-eventing-wizard-editor) > div {
+    height: 100%;
+}
+:global(.mythic-credential-search), :global(.mythic-dashboard-service-kpi), :global(.mythic-dashboard-table-cell-account) {
+    flex-direction: row;
+}
+:global(.mythic-table-toolbar-search) {
+    background-color: var(--mythic-color-application-muted);
+    align-items: stretch;
+    gap: var(--mythic-foundation-spacing-sm);
+    padding: 0.55rem;
+}
+:global(.mythic-credential-search-jwt-json-block) > pre, :global(.mythic-eventing-metadata-accordion) :global(.MuiAccordionDetails-root) {
+    overflow: auto;
+}
+:global(.mythic-credential-search-table), :global(.mythic-dashboard-summary-table), :global(.mythic-dashboard-credentials-table), :global(.mythic-dashboard-tasking-table) {
+    table-layout: fixed;
+}
+:global(.mythic-credential-search-row-selected) :global(.MuiTableCell-root), :global(.mythic-credential-search-row):global(.Mui-selected) :global(.MuiTableCell-root), :global(.mythic-credential-search-row):global(.Mui-selected):hover :global(.MuiTableCell-root), :global(.mythic-credential-search-kerberos-principal),
+:global(.mythic-credential-search-kerberos-technical-item), :global(.mythic-credential-search-kerberos-key), :global(.mythic-callback-action-menu-icon), :global(.mythic-callback-statusBadge),
+:global(.mythic-callback-trigger-summary-icon) {
+    background-color: var(--mythic-effect-control-subtle-bg);
+}
+:global(.mythic-dashboard-tasking-list) [data-mythic-component="task-display"], :global(.mythic-dashboard-tasking-list) :global(.mythic-response-table), :global(.mythic-dashboard-tasking-list) :global(.mythic-response-table-grid), :global(.mythic-eventing-workflow-overview-header-actions) [data-mythic-component="action-button"],
+:global(.mythic-eventing-workflow-button-row) [data-mythic-component="action-button"] {
+    max-width: 100%;
+}
+:global(.mythic-response-markdown) h1, :global(.mythic-response-markdown) h2, :global(.mythic-response-markdown) h3, :global(.mythic-response-markdown) h4,
+:global(.mythic-response-markdown) h5, :global(.mythic-response-markdown) h6, :global(.mythic-eventing-detail-accordion) :global(.MuiAccordionSummary-content) {
+    font-weight: var(--mythic-foundation-typography-weight-heavy);
+}
+:global(.mythic-credential-search-primary-cell) > span:nth-child(2), :global(.mythic-json-table-wrap) :global(.MuiTableHead-root) :global(.MuiTableCell-root), :global(.mythic-credential-search-detail) strong, :global(.mythic-credential-search-metadata-pair) strong,
+:global(.mythic-credential-search-jwt-json-block) > pre {
+    font-size: var(--mythic-foundation-typography-size-caption);
+}
+:global(.mythic-tasking-metadata-row) :global(.mythic-reorder-row-main), :global(.mythic-eventing-step-list-item-editable):global(.mythic-eventing-user-input-field-row) {
+    align-items: flex-start;
+}
+:global(.mythic-tag-cell) :global(.MuiIconButton-root) svg, :global(.mythic-eventing-instances-time-line) svg, :global(.mythic-process-menu-icon) svg, :global(.mythic-process-menu-icon) :global(.svg-inline--fa),
+:global(.mythic-eventing-workflow-overview-icon-line) svg, :global(.mythic-c2-path-summary-chip) svg, :global(.mythic-c2-path-legend-item) svg {
+    font-size: var(--mythic-foundation-typography-size-body);
+}
+:global(.mythic-credential-search-inspector-body), :global(.mythic-task-agent-connect-panel), :global(.mythic-task-agent-connect-parameters), :global(.mythic-eventing-wizard-review-toolbar),
+:global(.mythic-installed-service-detail-section-body), :global(.mythic-browser-script-target-details), :global(.mythic-create-subsection) {
+    padding: 0.65rem;
+}
+:global(.mythic-credential-search-section-body), :global(.mythic-credential-search-metadata-grid), :global(.mythic-eventing-metadata-layout), :global(.mythic-eventing-step-field-grid),
+:global(.mythic-eventing-metadata-field-grid) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+:global(.mythic-credential-search-detail-identity), :global(.mythic-credential-search-metadata-pair-identity), :global(.mythic-eventing-filter-button-active) {
+    border-color: var(--mythic-effect-accent-medium);
+}
+:global(.mythic-credential-search-detail) > span, :global(.mythic-credential-search-metadata-pair) > span, :global(.mythic-credential-search-jwt-json-block) > span, :global(.mythic-credential-search-kerberos-ticket-header) span,
+:global(.mythic-credential-search-kerberos-principal) > span, :global(.mythic-credential-search-kerberos-lifecycle-item) > span, :global(.mythic-credential-search-kerberos-technical-item) > span, :global(.mythic-credential-search-kerberos-key) > span,
+:global(.mythic-eventing-user-interaction-section-label) {
+    line-height: 1.1;
+}
+:global(.mythic-credential-search-detail-value-row) strong, :global(.mythic-response-markdown) > :first-child {
+    margin-top: 0;
+}
+:global(.mythic-credential-search-detail) :global(.mythic-credential-search-inline-chip), :global(.mythic-eventing-action-data-description) {
+    margin-top: 0.28rem;
+}
+:global(.mythic-credential-search-jwt-json-block), :global(.mythic-credential-search-kerberos-ticket), :global(.mythic-eventing-detail-count-active) {
+    border: 1px solid var(--mythic-effect-accent-medium);
+}
+:global(.mythic-credential-search-kerberos-ticket-header) > div, :global(.mythic-browser-script-script-copy), :global(.mythic-dashboard-table-stack), :global(.mythic-eventing-instances-time-cell),
+:global(.mythic-tasking-metadata-row) :global(.mythic-reorder-row-main) {
+    gap: 0.12rem;
+}
+:global(.mythic-credential-search-kerberos-route), :global(.mythic-eventing-choice-row), :global(.mythic-block-list-transfer-grid) {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+}
+:global(.mythic-credential-search-kerberos-route-single), :global(.mythic-eventing-user-interaction-modal-single), :global(.mythic-single-task-card-row) {
+    grid-template-columns: minmax(0, 1fr);
+}
+:global(.mythic-credential-search-kerberos-route-join), :global(.mythic-task-parameter-refresh):global(.MuiIconButton-root), :global(.mythic-task-array-delete):global(.MuiIconButton-root), :global(.mythic-eventing-choice-separator),
+:global(.mythic-eventing-step-list-item-editable) :global(.mythic-eventing-step-row-action), :global(.mythic-eventing-step-list-item-editable) :global(.mythic-eventing-choice-separator), :global(.mythic-installed-service-metadata-label) {
+    align-self: center;
+}
+:global(.mythic-credential-search-secret-row), :global(.mythic-task-parameter-select-row), :global(.mythic-single-task-card-row-removing) {
+    grid-template-columns: minmax(0, 1fr) auto;
+}
+:global(.mythic-credential-search-comment), :global(.mythic-eventing-filter-button) {
+    font-family: inherit;
+}
+:global(.mythic-tag-cell) :global(.MuiIconButton-root), :global(.mythic-tag-list) :global(.MuiChip-root), :global(.mythic-tag-search-tag-cell) :global(.MuiChip-root) {
+    float: none !important;
+}
+:global(.mythic-tag-cell) :global(.MuiIconButton-root) {
+    align-items: center !important;
+    background-color: var(--mythic-effect-control-subtle-bg) !important;
+    color: var(--mythic-palette-text-secondary) !important;
+    display: inline-flex !important;
+    flex: 0 0 auto;
+    height: 22px;
+    justify-content: center !important;
+    padding: 0 !important;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+    width: 22px;
+}
+:global(.mythic-tag-cell) :global(.MuiIconButton-root):hover {
+    background-color: var(--mythic-effect-accent-soft) !important;
+    border-color: var(--mythic-effect-accent-strong);
+    color: var(--mythic-palette-primary-main) !important;
+}
+:global(.mythic-tag-list), :global(.mythic-response-tabs-list) :global(.MuiTabs-flexContainer), :global(.mythic-search-result-inline-nowrap), :global(.mythic-installed-service-metadata-grid) :global(.mythic-installed-service-chip-list),
+:global(.mythic-search-result-action-row) {
+    flex-wrap: nowrap;
+}
+:global(.mythic-tag-list) :global(.MuiChip-root) {
+    flex: 0 0 auto;
+    height: 18px !important;
+    max-width: 5.5rem;
+}
+:global(.mythic-tag-list) :global(.MuiChip-label) {
+    font-size: var(--mythic-foundation-typography-size-xs);
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
+}
+:global(.mythic-tag-list-truncate) :global(.MuiChip-label) {
+    overflow: hidden !important;
+}
+:global(.mythic-process-action-button):global(.MuiIconButton-root):hover, :global(.mythic-process-action-button):global(.MuiIconButton-root)[aria-expanded="true"], :global(.mythic-dashboard-kpi-chip-info) {
+    background-color: var(--mythic-effect-info-soft);
+    border-color: var(--mythic-effect-info-strong);
+    color: var(--mythic-palette-info-main);
+}
+:global(.mythic-process-menu-icon-success), :global(.mythic-c2-path-summary-chip-success), :global(.mythic-c2-path-route-panel-success) :global(.mythic-c2-path-route-icon), :global(.mythic-c2-group-edge-summary-success),
+:global(.mythic-c2-collapsed-edge-chip-success) {
+    color: var(--mythic-palette-success-main);
+}
+:global(.mythic-tree-groups-section) + :global(.mythic-tree-groups-section), :global(.mythic-parameter-notes) {
+    margin-top: 0.65rem;
+}
+:global(.mythic-c2-agent-node), :global(.mythic-table-bulk-actions) [data-mythic-component="action-button"], :global(.mythic-dashboard-card-body-centered) {
+    justify-content: center;
+}
+:global(.mythic-tree-groups-statusActive), :global(.mythic-json-value-true) {
+    background-color: var(--mythic-effect-success-soft);
+    border-color: var(--mythic-effect-success-medium);
+}
+:global(.MuiDialogActions-root) :global(.MuiButton-root), :global(.mythic-dialog-actions) :global(.MuiButton-root), :global(.mythic-installed-service-description) > span, :global(.mythic-installed-service-browser-metric) > span:first-child,
+:global(.mythic-c2-group-node-actions) button {
+    font-weight: var(--mythic-foundation-typography-weight-strong);
+}
+:global(.mythic-response-markdown) p, :global(.mythic-response-markdown):global(.is-wrapped) :global(.mythic-response-markdown-code-block) code, :global(.mythic-dashboard-table-cell-wrap) :global(.MuiTypography-root) {
+    overflow-wrap: anywhere;
+}
+:global(.mythic-tasking-token-select) :global(.MuiSelect-select), :global(.mythic-tasking-parameter-preview-empty) span, :global(.mythic-tasking-parameter-preview-chip) :global(.MuiChip-label), :global(.mythic-dashboard-summary-table) :global(.MuiTableCell-root),
+:global(.mythic-dashboard-summary-table) :global(.MuiTypography-root), :global(.mythic-dashboard-tasking-list) :global(.MuiCollapse-root), :global(.mythic-dashboard-tasking-list) :global(.MuiCollapse-wrapper), :global(.mythic-dashboard-tasking-list) :global(.MuiCollapse-wrapperInner) {
+    overflow: hidden;
+}
+:global(.mythic-tasking-command-input) :global(.MuiOutlinedInput-root), :global(.mythic-tasking-command-input) :global(.MuiOutlinedInput-root):hover, :global(.mythic-dashboard-summary-table) :global(.MuiTableRow-hover):hover :global(.MuiTableCell-root), :global(.mythic-dashboard-kpi-chip-neutral) {
+    background-color: var(--mythic-effect-neutral-subtle-bg);
+}
+:global(.mythic-tasking-action-button-neutral):global(.MuiIconButton-root):hover, :global(.mythic-tasking-parameter-preview-chip):global(.MuiChip-clickable):hover, :global(.mythic-json-type-object), :global(.mythic-json-type-array),
+:global(.mythic-dashboard-table-icon-action):hover, :global(.mythic-dashboard-table-icon-action-info):hover {
+    color: var(--mythic-palette-info-main);
+}
+:global(.mythic-tasking-action-button-neutral):global(.MuiIconButton-root):hover, :global(.mythic-raw-select-row):hover {
+    background-color: var(--mythic-effect-info-soft);
+    border-color: var(--mythic-effect-info-strong);
+}
+:global(.mythic-tasking-action-button-warning):global(.MuiIconButton-root):hover, :global(.mythic-callback-statusBadgeAlert):hover, :global(.mythic-callback-statusBadgeLock):hover, :global(.mythic-callback-statusBadgeDead):hover,
+:global(.mythic-api-token-copy-warning) {
+    background-color: var(--mythic-effect-warning-soft);
+    border-color: var(--mythic-effect-warning-strong);
+}
+:global(.mythic-tasking-parameter-preview-chip):global(.MuiChip-clickable):hover, :global(.mythic-json-type-object), :global(.mythic-json-type-array), :global(.mythic-tasking-parameter-preview-chip-status),
+:global(.mythic-tasking-visibility-count), :global(.mythic-tasking-visibility-chip) {
+    background-color: var(--mythic-effect-info-soft);
+}
+:global(.mythic-tasking-parameter-preview-chip):global(.MuiChip-clickable):hover, :global(.mythic-json-type-object), :global(.mythic-json-type-array), :global(.mythic-eventing-flow-node-running) {
+    border-color: var(--mythic-effect-info-medium);
+}
+:global(.mythic-tasking-parameter-preview-chip-required):global(.MuiChip-root), :global(.mythic-callback-action-menu-icon-warning), :global(.mythic-json-value-false), :global(.mythic-api-token-scope-card-full) {
+    background-color: var(--mythic-effect-warning-subtle);
+    border-color: var(--mythic-effect-warning-medium);
+}
+:global(.mythic-tasking-parameter-preview-chip-required):global(.MuiChip-clickable):hover, :global(.mythic-reference-token-warning) {
+    background-color: var(--mythic-effect-warning-soft);
+    border-color: var(--mythic-effect-warning-strong);
+}
+:global(.mythic-accent-dialog-title):global(.MuiDialogTitle-root) {
+    background-image: var(--mythic-effect-section-header-gradient) !important;
+    border-bottom: 1px solid var(--mythic-color-table-border-soft) !important;
+    color: var(--mythic-color-header-text);
+    cursor: move;
+    padding: 1rem 1.15rem !important;
+}
+:global(.mythic-accent-dialog-title):global(.MuiDialogTitle-root)::before, :global(.mythic-dashboard-edit-toolbar)::before {
+    background-color: var(--mythic-effect-section-header-accent);
+    bottom: 0;
+    box-shadow: 0 0 0 1px var(--mythic-effect-header-border);
+    content: "";
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 6px;
+}
+:global(.mythic-accent-dialog-title-row) {
+    min-height: 42px;
+    padding-left: 0.55rem;
+}
+:global(.mythic-accent-dialog-title-icon) {
+    background-color: var(--mythic-effect-header-soft);
+    border: 1px solid var(--mythic-effect-header-border);
+    height: 32px;
+    width: 32px;
+}
+:global(.mythic-accent-dialog-title-subtitle) {
+    color: var(--mythic-effect-header-secondary);
+    margin-top: 0.15rem;
+}
+:global(.mythic-tasking-filter-clear-button):global(.MuiButton-root):hover {
+    background-color: var(--mythic-effect-warning-soft) !important;
+    border-color: var(--mythic-effect-warning-strong) !important;
+    color: var(--mythic-palette-warning-main) !important;
+}
+:global(.mythic-task-parameters-title-meta), :global(.mythic-eventing-user-interaction-summary-chips), :global(.mythic-ui-settings-title-actions), :global(.mythic-dashboard-perspective-toggle),
+:global(.mythic-eventing-workflow-overview-header-actions) [data-mythic-component="action-button"], :global(.mythic-eventing-flow-node-action), :global(.mythic-eventing-status-chip) {
+    flex: 0 1 auto;
+}
+:global(.mythic-task-parameters-overview), :global(.mythic-dashboard-card-body-empty), :global(.mythic-eventing-metadata-field-grid), :global(.mythic-eventing-metadata-field),
+:global(.mythic-eventing-metadata-editor), :global(.mythic-eventing-step-config-summary), :global(.mythic-eventing-step-config-content), :global(.mythic-eventing-user-interaction-step-summary),
+:global(.mythic-eventing-user-interaction-section) {
+    padding: 0.75rem;
+}
+:global(.mythic-callback-trigger-summary), :global(.mythic-dialog-section), :global(.mythic-parameter-card), :global(.mythic-api-token-resource-card) {
+    padding: 0.75rem;
+}
+:global(.mythic-task-parameters-section-description), :global(.mythic-dialog-section-description), :global(.mythic-create-section-description), :global(.mythic-eventing-sidebar-subtitle),
+:global(.mythic-eventing-wizard-content-subtitle), :global(.mythic-eventing-step-nav-subtitle) {
+    margin-top: 0.12rem;
+}
+:global(.mythic-task-parameters-list), :global(.mythic-c2-edge-profile-row), :global(.mythic-transfer-section) {
+    margin-top: 0.75rem;
+}
+:global(.mythic-c2-agent-node), :global(.mythic-eventing-status-disabled) {
+    position: relative;
+}
+:global(.mythic-task-parameter-control) :global(.MuiInput-root)::before, :global(.mythic-task-parameter-control) :global(.MuiInput-root)::after, :global(.mythic-eventing-detail-accordion)::before, :global(.mythic-eventing-filter-row)::-webkit-scrollbar {
+    display: none;
+}
+:global(.mythic-task-parameter-selected-chip) :global(.MuiChip-label), :global(.mythic-browser-script-target-chips) :global(.MuiChip-label) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+:global(.mythic-task-parameter-empty-inline), :global(.mythic-task-parameter-boolean-row), :global(.mythic-task-parameter-switch-row), :global(.mythic-task-agent-connect-panel),
+:global(.mythic-task-agent-connect-parameters), :global(.mythic-task-file-dropzone), :global(.mythic-eventing-sidebar-search) :global(.MuiOutlinedInput-root) {
+    background-color: var(--mythic-effect-inline-parameter-bg);
+}
+:global(.mythic-task-parameter-field-label), :global(.mythic-task-agent-connect-parameters-title), :global(.mythic-task-credential-menu-comment), :global(.mythic-eventing-workflow-overview-subvalue),
+:global(.mythic-eventing-user-interaction-policy-note), :global(.mythic-installed-service-browser-author) {
+    line-height: 1.3;
+}
+:global(.mythic-task-file-dropzone-icon), :global(.mythic-c2-path-canvas) :global(.react-flow__controls-button):hover, :global(.mythic-c2-group-node-toggle):hover, :global(.mythic-c2-group-node-actions) button:hover,
+:global(.mythic-c2-group-node-stat):hover, :global(.mythic-c2-group-node-member):hover, :global(.mythic-c2-group-edge-summary):hover, :global(.mythic-c2-action-route-profile),
+:global(.mythic-eventing-sidebar-count) {
+    color: var(--mythic-palette-primary-main);
+}
+@media screen and (max-width: 900px) {
+    :global(.mythic-accent-dialog-title-row), :global(.mythic-task-parameters-group-card), :global(.mythic-task-parameter-card), :global(.mythic-task-parameter-field-row),
+:global(.mythic-task-typed-array-entry), :global(.mythic-task-agent-connect-parameter), :global(.mythic-task-choice-custom) {
+        grid-template-columns: 1fr;
+    }
+    :global(.mythic-accent-dialog-title-row) {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+}
+:global(.MythicResizableGrid-root) {
+    background-color: var(--mythic-palette-background-paper);
+    border: 1px solid var(--mythic-color-table-border);
+    box-shadow: var(--mythic-effect-grid-root-shadow);
+    flex: 1 1 auto;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+:global(.MythicResizableGrid-grid) {
+    background-color: var(--mythic-palette-background-paper);
+    outline: none;
+}
+:global(.MythicResizableGrid-headerCellRow) {
+    background-color: var(--mythic-color-table-header);
+    box-shadow: inset 0 -1px 0 var(--mythic-color-table-border);
+    display: flex;
+    flex-direction: row;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+:global(.MythicResizableGrid-headerCell) {
+    align-items: center;
+    background-color: var(--mythic-color-table-header) !important;
+    border-bottom: 1px solid var(--mythic-color-table-border);
+    border-right: 1px solid var(--mythic-color-table-border-soft);
+    box-sizing: border-box;
+    color: var(--mythic-palette-text-primary);
+    cursor: pointer;
+    display: flex;
+    font-size: var(--mythic-foundation-typography-size-small);
+    font-weight: var(--mythic-foundation-typography-weight-bold);
+    justify-content: space-between;
+    letter-spacing: 0;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0 0.45rem 0 0.65rem;
+    position: relative;
+    transition: background-color 120ms ease, color 120ms ease;
+    user-select: none;
+    &:first-of-type {
+        border-left: 0;
+    }
+    &:hover {
+        background-color: var(--mythic-color-table-header-hover-bg);
+    }
+}
+:global(.MythicResizableGrid-headerCellNoSort), :global(.mythic-c2-collapsed-edge-card), :global(.mythic-api-token-scope-card-inherited) {
+    cursor: default;
+}
+:global(.MythicResizableGrid-headerContent) {
+    align-items: center;
+    display: flex;
+    gap: var(--mythic-foundation-spacing-sm);
+    justify-content: space-between;
+    min-width: 0;
+    width: 100%;
+}
+:global(.MythicResizableGrid-headerCell) :global(.MythicResizableGrid-cellInner) {
+    font-size: var(--mythic-foundation-typography-size-small);
+    font-weight: var(--mythic-foundation-typography-weight-bold);
+    line-height: 1.2;
+}
+:global(.MythicResizableGrid-headerLabel) {
+    color: var(--mythic-palette-text-primary);
+    display: block;
+    letter-spacing: 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+:global(.MythicResizableGrid-headerActions) {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: var(--mythic-foundation-spacing-xs);
+    min-width: 0;
+}
+:global(.MythicResizableGrid-headerIndicator) {
+    align-items: center;
+    appearance: none;
+    background-color: var(--mythic-palette-background-paper);
+    border: 1px solid var(--mythic-effect-text-soft);
+    box-shadow: var(--mythic-effect-grid-header-indicator-shadow);
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: var(--mythic-foundation-typography-size-body);
+    font-family: inherit;
+    height: 18px;
+    justify-content: center;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    width: 18px;
+}
+:global(.MythicResizableGrid-headerFilterIcon) {
+    background-color: var(--mythic-effect-adaptive-info-accent-soft);
+    border-color: var(--mythic-effect-adaptive-info-accent-strong);
+    color: var(--mythic-effect-adaptive-info-accent);
+    cursor: pointer;
+}
+:global(.MythicResizableGrid-headerFilterIcon):hover {
+    background-color: var(--mythic-effect-adaptive-info-accent-medium);
+    border-color: var(--mythic-effect-adaptive-info-accent-emphasis);
+}
+:global(.MythicResizableGrid-headerSortIcon) {
+    background-color: var(--mythic-effect-adaptive-primary-accent-soft);
+    border-color: var(--mythic-effect-adaptive-primary-accent-strong);
+    color: var(--mythic-effect-adaptive-primary-accent);
+}
+:global(.MythicResizableGrid-headerResizeHandle) {
+    bottom: 0;
+    cursor: col-resize;
+    position: absolute;
+    right: 0;
+    top: 0;
+    touch-action: none;
+    user-select: none;
+    width: 9px;
+    z-index: 2;
+}
+:global(.MythicResizableGrid-headerResizeHandle)::before {
+    content: "";
+    position: absolute;
+    bottom: 18%;
+    right: 4px;
+    top: 18%;
+    width: 2px;
+    border-radius: var(--mythic-foundation-radius-pill);
+    background-color: var(--mythic-effect-text-medium);
+    opacity: 0.72;
+    pointer-events: none;
+    transition: opacity 120ms ease, background-color 120ms ease;
+}
+:global(.MythicResizableGrid-headerResizeHandle)::after {
+    content: "";
+    inset: 0 -2px;
+    position: absolute;
+}
+:global(.MythicResizableGrid-headerCell):hover :global(.MythicResizableGrid-headerResizeHandle)::before {
+    opacity: 1;
+}
+:global(.MythicResizableGrid-headerResizeHandle):hover, :global(.MythicResizableGrid-headerResizeHandleActive) {
+    background-color: var(--mythic-effect-info-soft);
+}
+:global(.MythicResizableGrid-headerResizeHandle):hover::before, :global(.MythicResizableGrid-headerResizeHandleActive)::before {
+    background-color: var(--mythic-palette-info-main);
+    opacity: 1;
+}
+:global(.MythicResizableGrid-resizeGuide) {
+    background-color: var(--mythic-palette-info-main);
+    box-shadow: 0 0 0 1px var(--mythic-effect-info-medium),
+        0 0 10px var(--mythic-effect-info-strong);
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    transform: translateX(-1px);
+    width: 2px;
+    z-index: 12;
+}
+:global(.MythicResizableGrid-cell) {
+    align-items: center;
+    background-image: none;
+    background-color: var(--mythic-palette-background-paper);
+    border-bottom: 1px solid var(--mythic-color-table-border-soft);
+    border-right: 1px solid var(--mythic-color-table-border-soft);
+    box-sizing: border-box;
+    color: var(--mythic-palette-text-primary);
+    cursor: default !important;
+    display: flex;
+    font-family: var(--mythic-effect-typography-font-family);
+    font-size: var(--mythic-foundation-typography-size-bodySmall);
+    font-variant-numeric: tabular-nums;
+    min-width: 0;
+    padding: 0 0.65rem;
+    position: relative;
+    transition: background-color 120ms ease, background-image 120ms ease, border-color 120ms ease, box-shadow 120ms ease, color 120ms ease;
+}
+:global(.MythicResizableGrid-cell):global(.MythicResizableGridRowHighlight) {
+    background-color: var(--mythic-effect-table-rowStripe);
+}
+:global(.MythicResizableGrid-cell):global(.MythicResizableGrid-hoveredRow) {
+    background-image: linear-gradient(0deg,
+        var(--mythic-effect-accent-subtle),
+        var(--mythic-effect-accent-subtle)) !important;
+    border-bottom-color: var(--mythic-effect-accent-medium);
+}
+:global(.MythicResizableGrid-cell):global(.MythicResizableGrid-contextRow) {
+    background-image: linear-gradient(0deg,
+        var(--mythic-effect-info-soft),
+        var(--mythic-effect-info-soft)) !important;
+    border-bottom-color: var(--mythic-effect-info-strong);
+    box-shadow: inset 0 1px 0 var(--mythic-effect-info-strong);
+}
+:global(.MythicResizableGrid-cell):global(.selectedCallback) {
+    background-image: linear-gradient(0deg,
+        var(--mythic-effect-accent-soft),
+        var(--mythic-effect-accent-soft)) !important;
+    border-bottom-color: var(--mythic-effect-accent-strong);
+    box-shadow: inset 0 1px 0 var(--mythic-effect-accent-strong),
+        inset 0 -1px 0 var(--mythic-effect-accent-strong);
+}
+:global(.MythicResizableGrid-cell):global(.selectedCallbackHierarchy) {
+    background-image: linear-gradient(0deg,
+        var(--mythic-effect-neutral-soft),
+        var(--mythic-effect-neutral-soft)) !important;
+    border-bottom-color: var(--mythic-effect-neutral-strong);
+    box-shadow: inset 0 1px 0 var(--mythic-effect-neutral-strong),
+        inset 0 -1px 0 var(--mythic-effect-neutral-strong);
+}
+:global(.MythicResizableGrid-cell):global(.MythicResizableGrid-rowInteractive) {
+    cursor: pointer !important;
+}
+:global(.MythicResizableGrid-cell):global(.MythicResizableGrid-rowFirstCell)::before {
+    background-color: var(--mythic-effect-accent-emphasis);
+    border-radius: var(--mythic-foundation-radius-pill);
+    bottom: 5px;
+    content: "";
+    left: 3px;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 5px;
+    transition: background-color 120ms ease, opacity 120ms ease, width 120ms ease;
+    width: 3px;
+}
+:global(.MythicResizableGrid-cell):global(.MythicResizableGrid-rowFirstCell):global(.MythicResizableGrid-hoveredRow)::before, :global(.mythic-eventing-detail-chip-label) {
+    opacity: 0.72;
+}
+:global(.MythicResizableGrid-cell):global(.MythicResizableGrid-rowFirstCell):global(.MythicResizableGrid-contextRow)::before, :global(.MythicResizableGrid-cell):global(.MythicResizableGrid-rowFirstCell):global(.mythic-process-filter-match-row)::before {
+    background-color: var(--mythic-palette-info-main);
+    opacity: 1;
+    width: 4px;
+}
+:global(.MythicResizableGrid-cell):global(.MythicResizableGrid-rowFirstCell):global(.selectedCallback)::before {
+    background-color: var(--mythic-palette-primary-main);
+    opacity: 1;
+    width: 4px;
+}
+:global(.MythicResizableGrid-cell):global(.MythicResizableGrid-rowFirstCell):global(.selectedCallbackHierarchy)::before {
+    background-color: var(--mythic-palette-secondary-main);
+    opacity: 1;
+    width: 4px;
+}
+:global(.MythicResizableGrid-cell):global(.MythicResizableGrid-rowLastCell) {
+    border-right-color: var(--mythic-color-table-border);
+}
+:global(.MythicResizableGrid-cellInner) {
+    align-items: center;
+    display: flex;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+:global(.mythic-grid-filter-dialog-title) {
+    background-color: var(--mythic-effect-grid-filter-title-bg);
+    background-image: var(--mythic-effect-section-header-gradient);
+    color: var(--mythic-color-header-text);
+    font-size: 0.98rem !important;
+    font-weight: var(--mythic-foundation-typography-weight-heavy) !important;
+    line-height: 1.2 !important;
+    padding: 0.85rem 1rem !important;
+}
+:global(.mythic-grid-filter-dialog-content) {
+    gap: var(--mythic-foundation-spacing-lg);
+    min-width: min(38rem, calc(100vw - 3rem));
+    padding: 1rem !important;
+}
+:global(.mythic-grid-filter-dialog-fields) {
+    gap: 0.85rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+:global(.mythic-grid-filter-dialog-actions) {
+    padding: 0.7rem 1rem !important;
+}
+@media (max-width: 720px) {
+    :global(.mythic-grid-filter-dialog-content) {
+        min-width: 0;
+    }
+    :global(.mythic-grid-filter-dialog-fields) {
+        grid-template-columns: 1fr;
+    }
+}
+:global(.mythic-callback-action-menu-icon-error), :global(.mythic-callback-cellIconButtonError):global(.MuiIconButton-root), :global(.mythic-eventing-status-chip-error) {
+    background-color: var(--mythic-effect-danger-subtle);
+    border-color: var(--mythic-effect-danger-medium);
+    color: var(--mythic-palette-error-main);
+}
+:global(.mythic-callback-action-menu-item):global(.MuiMenuItem-root):hover :global(.mythic-callback-action-menu-icon-neutral), :global(.mythic-callback-action-menu-item):global(.MuiMenuItem-root)[data-open="true"] :global(.mythic-callback-action-menu-icon-neutral), :global(.mythic-callback-cellIconButtonNeutral):global(.MuiIconButton-root):hover, :global(.mythic-api-token-resource-wildcard-selected) {
+    background-color: var(--mythic-effect-accent-soft);
+    border-color: var(--mythic-effect-accent-strong);
+    color: var(--mythic-palette-primary-main);
+}
+:global(.mythic-callback-cellIconButtonSuccess):global(.MuiIconButton-root), :global(.mythic-eventing-status-chip-success) {
+    background-color: var(--mythic-effect-success-subtle);
+    border-color: var(--mythic-effect-success-medium);
+    color: var(--mythic-palette-success-main);
+}
+:global(.mythic-callback-cellIconButtonSuccess):global(.MuiIconButton-root):hover, :global(.mythic-dashboard-kpi-chip-success) {
+    background-color: var(--mythic-effect-success-soft);
+    border-color: var(--mythic-effect-success-strong);
+    color: var(--mythic-palette-success-main);
+}
+:global(.mythic-callback-cellIconButtonError):global(.MuiIconButton-root):hover, :global(.mythic-c2-path-summary-chip-error), :global(.mythic-dashboard-kpi-chip-danger), :global(.mythic-callback-interactButtonHighIntegrity):global(.MuiIconButton-root),
+:global(.mythic-callback-interactButtonHighIntegrity):global(.MuiIconButton-root):hover, :global(.mythic-callback-menuButtonHighIntegrity):global(.MuiIconButton-root):hover {
+    background-color: var(--mythic-effect-danger-soft);
+}
+:global(.mythic-callback-cellIconButtonError):global(.MuiIconButton-root):hover, :global(.mythic-c2-path-summary-chip-error), :global(.mythic-dashboard-kpi-chip-danger) {
+    border-color: var(--mythic-effect-danger-strong);
+    color: var(--mythic-palette-error-main);
+}
+:global(.mythic-callback-interactButtonHighIntegrity):global(.MuiIconButton-root), :global(.mythic-create-parameter-chip-required) {
+    border-color: var(--mythic-effect-danger-strong);
+}
+:global(.mythic-c2-path-title-subtitle):global(.MuiTypography-root), :global(.mythic-metadata-value), :global(.mythic-metadata-code), :global(.mythic-api-token-scope-name),
+:global(.mythic-dashboard-widget-dialog-subtitle), :global(.mythic-eventing-user-interaction-prompt), :global(.mythic-eventing-user-interaction-permission) {
+    margin-top: 0.18rem;
+}
+:global(.mythic-c2-path-summary-chip-success), :global(.mythic-c2-agent-node-egress-route-active), :global(.mythic-c2-group-edge-summary-success), :global(.mythic-c2-group-node-stat-success),
+:global(.mythic-c2-group-node-member-active), :global(.mythic-eventing-flow-node-success), :global(.mythic-c2-collapsed-edge-chip-success) {
+    border-color: var(--mythic-effect-success-medium);
+}
+:global(.mythic-c2-path-summary-chip-warning), :global(.mythic-c2-group-edge-summary-warning), :global(.mythic-eventing-flow-node-awaiting_approval), :global(.mythic-eventing-flow-node-input_needed),
+:global(.mythic-create-parameter-chip-modified) {
+    border-color: var(--mythic-effect-warning-strong);
+}
+:global(.mythic-c2-edge-profile-icon) svg, :global(.mythic-c2-edge-profile-icon) :global(.svg-inline--fa), :global(.mythic-response-table-cell) :global(.MuiIconButton-root), :global(.mythic-eventing-detail-dialog-content) > :global(.mythic-eventing-detail-section),
+:global(.mythic-eventing-array-row) > :global(.MuiIconButton-root) {
+    flex: 0 0 auto;
+}
+:global(.mythic-c2-path-edge-swatch-ended), :global(.mythic-eventing-status-deleted) {
+    background-color: var(--mythic-palette-error-main);
+}
+:global(.mythic-c2-path-toolbar), :global(.mythic-eventing-step-config-section-body) {
+    padding: 0.7rem;
+}
+:global(.mythic-c2-path-canvas) :global(.react-flow__controls-button), :global(.mythic-create-array-table):global(.MuiTableContainer-root), :global(.mythic-dashboard-kpi-chip-neutral) {
+    border-color: var(--mythic-color-table-border-soft);
+}
+:global(.mythic-c2-agent-node-egress-route-ended), :global(.mythic-eventing-flow-node-error) {
+    border-color: var(--mythic-effect-danger-medium);
+}
+:global(.mythic-c2-group-node-stat-warning), :global(.mythic-c2-collapsed-edge-chip-warning), :global(.mythic-eventing-flow-node-cancelled), :global(.mythic-eventing-status-chip-cancelled) {
+    border-color: var(--mythic-effect-warning-medium);
+}
+:global(.mythic-c2-collapsed-edge-card-actions), :global(.mythic-dashboard-kpi-label), :global(.mythic-api-token-scope-card-description), :global(.mythic-api-token-scope-includes) {
+    margin-top: 0.25rem;
+}
+:global(.mythic-c2-edge-summary-label) + :global(.mythic-c2-edge-summary-main), :global(.mythic-create-parameter-chips) {
+    margin-top: 0.35rem;
+}
+:global(.MythicInteractiveTerminal) {
+    background-color: var(--mythic-color-tasking-outputBackground);
+}
+:global(.MythicInteractiveTerminal) :global(.xterm) {
+    height: 100%;
+    padding: 6px 8px;
+}
+:global(.MythicInteractiveTerminal) :global(.xterm-viewport) {
+    background-color: transparent !important;
+}
+:global(.mythic-response-render-toolbar-toggle), :global(.mythic-response-render-mode-button), :global(.mythic-response-syntax-select), :global(.mythic-eventing-filter-button),
+:global(.mythic-eventing-status-needs_approval), :global(.mythic-eventing-step-nav-item) {
+    background-color: transparent;
+}
+:global(.mythic-response-markdown) h1, :global(.mythic-response-markdown) h2, :global(.mythic-ui-settings-title) {
+    font-size: 1.05rem;
+}
+:global(.Toastify__toast) {
+    word-break: break-all;
+    white-space: pre-wrap !important;
+    display: flex;
+    align-items: center;
+    min-width: 100%;
+    width: 100%;
+}
+:global(.MuiPaper-root) {
+    border: 1px solid var(--mythic-color-application-border);
+    background-color: var(--mythic-palette-background-paper);
+    background-image: unset;
+}
+:global(.no-box-shadow) {
+    box-shadow: unset;
+}
+
+:global(.MuiList-root) {
+    background-color: var(--mythic-palette-background-paper);
+    border: 1px solid var(--mythic-color-application-border);
+    line-height: 28px;
+}
+:global(.dropdownMenuColored) {
+    background-color: var(--mythic-palette-background-paper) !important;
+    border: 1px solid var(--mythic-color-application-border);
+
+    /* color: white; */
+}
+:global(.MuiPaper-root) > :global(.MuiBox-root):first-child {
+    margin: 0;
+    padding: 0 0 0 5px;
+    min-height: 2rem;
+}
+:global(.MuiPaper-root) > :global(.MuiTableContainer-root):global(.mythicElement) {
+    display: flex;
+    flex-grow: 1;
+}
+:global(.MuiTableContainer-root):global(.mythic-fixed-row-table-wrap) {
+    display: block !important;
+}
+:global(.MuiTableContainer-root):global(.mythic-fixed-row-table-wrap) > :global(.MuiTable-root) {
+    height: auto !important;
+}
+:global(.MuiPaper-root) > :global(.MuiBox-root) > * {
+    margin: 0;
+    padding: 0 60px 0 5px;
+    min-height: 2rem;
+}
+:global(.selectedCallback) {
+    background-color: var(--mythic-effect-table-selected);
+}
+:global(.selectedCallbackHierarchy) {
+    background-color: var(--mythic-effect-table-selectedHierarchy);
+}
+
+:global(.roundedBottomCorners) {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+:global(.MuiInputLabel-root), :global(.mythic-eventing-file-chip-remove):global(.MuiIconButton-root), :global(.mythic-eventing-flow-node-meta) :global(.MuiTypography-root), :global(.mythic-eventing-code-block) :global(.ace_gutter) {
+    color:  var(--mythic-palette-text-secondary) !important;
+}
+:global(.MuiOutlinedInput-notchedOutline), :global(.MuiInput-underline), :global(.MuiSelect-outlined), :global(.MuiInputBase-input) {
+    border-color: var(--mythic-color-application-border) !important;
+}
+:global(.Mui-focused), :global(.MuiInput-root)::after {
+    border-color: var(--mythic-palette-primary-main) !important;
+}
+:global(.mythic-table-footer), :global(.mythic-dashboard-kpi-secondary-panel) {
+    padding: 0.55rem 0.65rem;
+}
+:global(.mythic-table-footer) :global(.MuiPagination-root), :global(.mythic-dashboard-table-body), :global(.mythic-eventing-metadata-field-grid) :global(.mythic-eventing-metadata-field), :global(.mythic-eventing-file-chip-remove):global(.MuiIconButton-root),
+:global(.mythic-eventing-code-block), :global(.mythic-raw-select-dialog-content):global(.MuiDialogContent-root) {
+    padding: 0;
+}
+:global(.mythic-table-total) {
+    padding-left: 0;
+}
+:global(.mythic-table-toolbar) {
+    height: auto;
+    max-height: none;
+    min-height: fit-content;
+    overflow: visible;
+    padding: 0.5rem;
+}
+:global(.mythic-table-toolbar-group) {
+    align-content: center;
+    flex: 0 1 auto;
+    min-width: min(100%, 9rem);
+}
+:global(.mythic-table-toolbar-search) :global(.mythic-table-toolbar-group) {
+    gap: var(--mythic-foundation-spacing-xs);
+}
+:global(.mythic-table-toolbar-group-label) {
+    flex: 0 0 100%;
+    padding-left: 0.1rem;
+}
+:global(.mythic-table-toolbar-group-grow) {
+    flex: 1 1 20rem;
+    min-width: min(100%, 16rem);
+}
+:global(.mythic-table-toolbar-group) :global(.MuiFormControl-root), :global(.mythic-table-toolbar-group) [data-mythic-control="text-field"] {
+    margin: 0;
+    min-width: 0;
+}
+:global(.mythic-toolbar-select) {
+    min-width: min(100%, 10rem);
+}
+:global(.mythic-table-toolbar-search) :global(.mythic-toolbar-select), :global(.mythic-table-toolbar-search) [data-mythic-control="text-field"] :global(.MuiInputBase-root) {
+    background-color: var(--mythic-palette-background-paper);
+}
+:global(.mythic-toolbar-button-hover-success) {
+    background-color: var(--mythic-effect-control-soft-bg) !important;
+    border: 1px solid var(--mythic-color-table-border-soft) !important;
+    box-shadow: none !important;
+    color: var(--mythic-palette-text-primary) !important;
+    text-transform: none;
+}
+:global(.mythic-toolbar-button-hover-success):hover {
+    background-color: var(--mythic-effect-success-soft) !important;
+    border-color: var(--mythic-effect-success-strong) !important;
+    color: var(--mythic-palette-success-main) !important;
+}
+:global(.mythic-toolbar-toggle) {
+    background-color: var(--mythic-effect-item-muted-bg) !important;
+    border: 1px solid var(--mythic-color-table-border-soft) !important;
+    color: var(--mythic-palette-text-secondary) !important;
+    text-transform: none;
+}
+:global(.mythic-toolbar-toggle):global(.Mui-selected) {
+    background-color: var(--mythic-effect-accent-subtle) !important;
+    border-color: var(--mythic-effect-toolbar-toggle-selected-bg) !important;
+    color: var(--mythic-palette-primary-main) !important;
+}
+:global(.mythic-toolbar-toggle):hover, :global(.mythic-toolbar-toggle):global(.Mui-selected):hover {
+    background-color: var(--mythic-effect-accent-soft) !important;
+    border-color: var(--mythic-effect-accent-strong) !important;
+    color: var(--mythic-palette-primary-main) !important;
+}
+:global(.mythic-toolbar-icon-button) {
+    color: var(--mythic-palette-text-secondary) !important;
+    margin-right: 2px;
+}
+:global(.mythic-toolbar-icon-button):hover {
+    background-color: var(--mythic-effect-accent-subtle) !important;
+    color: var(--mythic-palette-primary-main) !important;
+}
+:global(.MuiDialogActions-root), :global(.MuiDialogActions-root) :global(.MuiButton-root), :global(.mythic-dialog-actions) :global(.MuiButton-root), :global(.mythic-eventing-step-list-item-editable) :global(.mythic-eventing-choice-row) {
+    align-items: center;
+}
+:global(.mythic-ui-settings-title-copy) {
+    flex: 1 1 22rem;
+    gap: 0.15rem;
+}
+:global(.mythic-ui-settings-title-button):global(.MuiButton-root) {
+    min-height: 31px;
+    min-width: auto;
+    padding: 0.35rem 0.65rem;
+}
+:global(.mythic-dashboard-icon-button-hover-info):hover {
+    background-color: var(--mythic-effect-info-soft) !important;
+    border-color: var(--mythic-effect-info-strong) !important;
+    color: var(--mythic-palette-info-main) !important;
+}
+:global(.mythic-eventing-list-item) :global(.MuiListItemText-primary), :global(.mythic-dashboard-summary-table) :global(.MuiTableCell-root) {
+    line-height: 1.25;
+}
+:global(.mythic-dialog-title-select) {
+    background-color: var(--mythic-effect-control-soft-bg);
+    min-width: 11rem;
+}
+:global(.mythic-dialog-section-header), :global(.mythic-eventing-task-helper-filter) {
+    margin-bottom: 0.65rem;
+}
+:global(.mythic-reorder-list) {
+    max-height: 100%;
+    padding: 0.1rem;
+}
+:global(.mythic-reorder-row) {
+    box-shadow: none;
+    min-height: 44px;
+    padding: 0.45rem 0.55rem;
+    transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+:global(.mythic-reorder-row):hover, :global(.mythic-api-token-scope-card):hover {
+    background-color: var(--mythic-effect-table-rowHover);
+    border-color: var(--mythic-color-table-border);
+}
+:global(.mythic-reorder-row-dragging) {
+    background-color: var(--mythic-effect-accent-soft);
+    border-color: var(--mythic-effect-accent-strong);
+    box-shadow: var(--mythic-effect-reorder-row-dragging-shadow);
+}
+:global(.mythic-reorder-row-disabled), :global(.mythic-eventing-metadata-card), :global(.mythic-eventing-step-nav), :global(.mythic-eventing-step-config-card),
+:global(.mythic-eventing-wizard-review-card), :global(.mythic-eventing-wizard-empty), :global(.mythic-eventing-detail-count-empty) {
+    background-color: var(--mythic-effect-row-disabled-bg);
+}
+:global(.mythic-reorder-drag-handle) {
+    background-color: var(--mythic-effect-reorder-drag-handle-bg);
+    cursor: grab;
+    flex: 0 0 30px;
+    height: 30px;
+    width: 30px;
+}
+:global(.mythic-reorder-drag-handle):active {
+    cursor: grabbing;
+}
+:global(.mythic-reorder-select) :global(.MuiSelect-select) {
+    min-height: 30px;
+    padding-bottom: 0.25rem;
+    padding-top: 0.25rem;
+}
+:global(.mythic-metadata-grid) {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+    margin-top: 0.65rem;
+}
+:global(.mythic-metadata-item) {
+    background-color: var(--mythic-effect-item-muted-bg);
+    padding: 0.5rem 0.55rem;
+}
+:global(.mythic-parameter-note) strong, :global(.mythic-browser-script-target-chips) :global(.MuiChip-root), :global(.mythic-eventing-filter-button):hover, :global(.mythic-eventing-step-nav-item):hover,
+:global(.mythic-eventing-user-interaction-prompt), :global(.mythic-eventing-detail-accordion) :global(.MuiAccordionSummary-content) {
+    color: var(--mythic-palette-text-primary);
+}
+:global(.mythic-code-block) {
+    background-color: var(--mythic-effect-code-block-bg);
+    line-height: 1.45;
+    margin: 0.45rem 0 0;
+    padding: 0.55rem 0.65rem;
+    white-space: pre;
+}
+:global(.mythic-json-index-cell), :global(.mythic-tasking-reference-field-row-reference), :global(.mythic-tasking-reference-review-raw) {
+    text-align: right;
+}
+:global(.MuiDialogActions-root) {
+    background-color: var(--mythic-color-application-muted);
+    border-top: 1px solid var(--mythic-color-table-border-soft);
+    flex-wrap: wrap;
+    gap: var(--mythic-foundation-spacing-sm);
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0.65rem 0.9rem;
+}
+:global(.mythic-dialog-actions) {
+    margin: 0;
+    padding: 0.65rem 0.9rem;
+}
+:global(.MuiDialogActions-root) > :not(style) ~ :not(style) {
+    margin-left: 0;
+}
+:global(.MuiDialogActions-root) :global(.MuiButton-root), :global(.mythic-dialog-actions) :global(.MuiButton-root) {
+    background-color: var(--mythic-effect-control-soft-bg) !important;
+    border: 1px solid var(--mythic-color-table-border-soft) !important;
+    border-radius: var(--mythic-foundation-radius-md);
+    box-shadow: none !important;
+    color: var(--mythic-palette-text-primary) !important;
+    font-size: var(--mythic-foundation-typography-size-small);
+    justify-content: center;
+    letter-spacing: 0;
+    line-height: 1.2;
+    min-height: 34px;
+    min-width: min(100%, 7rem);
+    padding: 0.35rem 0.85rem;
+    text-transform: none;
+    white-space: nowrap;
+}
+:global(.MuiDialogActions-root) :global(.MuiButton-root):hover, :global(.mythic-dialog-actions) :global(.MuiButton-root):hover, :global(.mythic-dashboard-icon-button):hover {
+    background-color: var(--mythic-effect-action-hover-bg) !important;
+    border-color: var(--mythic-color-table-border) !important;
+}
+:global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-colorSuccess), :global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-containedSuccess), :global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-outlinedSuccess), :global(.MuiDialogActions-root) :global(.mythic-dialog-button-primary),
+:global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-colorSuccess), :global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-containedSuccess), :global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-outlinedSuccess), :global(.mythic-dialog-actions) :global(.mythic-dialog-button-primary) {
+    background-color: var(--mythic-palette-primary-main) !important;
+    border-color: var(--mythic-palette-primary-main) !important;
+    color: var(--mythic-palette-primary-contrast-text) !important;
+}
+:global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-colorSuccess):hover, :global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-containedSuccess):hover, :global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-outlinedSuccess):hover, :global(.MuiDialogActions-root) :global(.mythic-dialog-button-primary):hover,
+:global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-colorSuccess):hover, :global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-containedSuccess):hover, :global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-outlinedSuccess):hover, :global(.mythic-dialog-actions) :global(.mythic-dialog-button-primary):hover,
+:global(.mythic-dashboard-primary-button):hover {
+    background-color: var(--mythic-effect-primary-action-hover) !important;
+    border-color: var(--mythic-effect-primary-action-hover) !important;
+}
+:global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-colorWarning), :global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-containedWarning), :global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-outlinedWarning), :global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-colorWarning),
+:global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-containedWarning), :global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-outlinedWarning), :global(.mythic-dialog-actions) :global(.mythic-dialog-button-warning) {
+    background-color: var(--mythic-effect-warning-soft) !important;
+    border-color: var(--mythic-effect-warning-strong) !important;
+    color: var(--mythic-palette-warning-main) !important;
+}
+:global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-colorError), :global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-containedError), :global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-outlinedError), :global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-colorError),
+:global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-containedError), :global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-outlinedError), :global(.mythic-dialog-actions) :global(.mythic-dialog-button-destructive) {
+    background-color: var(--mythic-effect-danger-soft) !important;
+    border-color: var(--mythic-effect-danger-emphasis) !important;
+    color: var(--mythic-palette-error-main) !important;
+}
+:global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-colorInfo), :global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-containedInfo), :global(.MuiDialogActions-root) :global(.MuiButton-root):global(.MuiButton-outlinedInfo), :global(.MuiDialogActions-root) :global(.mythic-dialog-button-info),
+:global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-colorInfo), :global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-containedInfo), :global(.mythic-dialog-actions) :global(.MuiButton-root):global(.MuiButton-outlinedInfo), :global(.mythic-dialog-actions) :global(.mythic-dialog-button-info) {
+    background-color: var(--mythic-effect-info-subtle) !important;
+    border-color: var(--mythic-effect-info-medium) !important;
+    color: var(--mythic-palette-info-main) !important;
+}
+:global(.MuiDialogActions-root) :global(.MuiButton-root):global(.Mui-disabled), :global(.mythic-dialog-actions) :global(.MuiButton-root):global(.Mui-disabled) {
+    background-color: var(--mythic-effect-action-disabled-bg) !important;
+    border-color: var(--mythic-color-table-border-soft) !important;
+    color: var(--mythic-palette-text-disabled) !important;
+}
+:global(.mythic-raw-select-list) {
+    max-height: min(55vh, 28rem);
+    overflow-y: auto;
+    padding: 0.6rem;
+}
+:global(.mythic-raw-select-row) {
+    background-color: var(--mythic-effect-raw-select-row-bg);
+    min-height: 42px;
+    padding: 0.45rem 0.55rem 0.45rem 0.75rem;
+    transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+:global(.mythic-raw-select-row):focus-visible {
+    border-color: var(--mythic-palette-info-main);
+    box-shadow: 0 0 0 2px var(--mythic-effect-info-medium);
+    outline: none;
+}
+:global(.mythic-raw-select-value):global(.MuiTypography-root) {
+    font-variant-numeric: tabular-nums;
+}
+:global(.mythic-raw-select-action):global(.MuiButton-root) {
+    min-height: 28px;
+    min-width: 5rem;
+    padding: 0.25rem 0.65rem;
+}
+:global(.mythic-raw-select-empty) {
+    min-height: 8rem;
+    padding: 1rem;
+    text-align: center;
+}
+:global(.mythic-form-field-description), :global(.mythic-eventing-wizard-toolbar-subtitle), :global(.mythic-eventing-step-shell-subtitle) {
+    margin-top: 0.1rem;
+}
+:global(.mythic-form-field-control) :global(.MuiInputBase-root), :global(.mythic-form) :global(.MuiInputBase-root) {
+    min-height: 38px;
+}
+:global(.mythic-tag-editor-frame) :global(.ace_editor) {
+    background-color: var(--mythic-palette-background-paper) !important;
+}
+:global(.mythic-tag-data-split) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+:global(.mythic-tag-data-preview-frame) {
+    max-height: 30rem;
+    min-height: 10rem;
+    padding: 0.55rem;
+}
+:global(.mythic-tag-data-preview-frame-full) {
+    max-height: min(48vh, 34rem);
+}
+:global(.mythic-tag-readonly-value) {
+    min-height: 34px;
+    padding: 0.45rem 0.6rem;
+}
+:global(.mythic-tag-data-preview-row) {
+    background-color: var(--mythic-effect-inline-parameter-bg);
+    grid-template-columns: minmax(7rem, 0.35fr) minmax(0, 1fr);
+    padding: 0.45rem 0.55rem;
+}
+:global(.mythic-tag-data-preview-value) pre {
+    margin: 0;
+    white-space: pre-wrap;
+}
+:global(.mythic-tag-data-preview-empty) {
+    min-height: 9rem;
+    text-align: center;
+}
+@media (max-width: 900px) {
+    :global(.mythic-tag-data-split), :global(.mythic-eventing-step-field-grid), :global(.mythic-eventing-action-data-card), :global(.mythic-eventing-trigger-parameter-list) :global(.mythic-create-parameter-card) {
+        grid-template-columns: 1fr;
+    }
+}
+:global(.mythic-api-token-resource-subtitle), :global(.mythic-eventing-wizard-subtitle), :global(.mythic-eventing-editor-subtitle) {
+    margin-top: 0.15rem;
+}
+:global(.mythic-browser-script-preview-frame), :global(.mythic-eventing-step-nav-list) {
+    padding: 0.55rem;
+}
+:global(.mythic-response-tabs-list), :global(.mythic-response-action-menu) :global(.MuiMenuItem-root):global(.mythic-response-action-menu-item), :global(.MuiTabs-root) {
+    min-height: 34px;
+}
+:global(.mythic-response-tabs-panel), :global(.mythic-table-bulk-actions) {
+    padding: 0.5rem;
+}
+:global(.mythic-response-table-cell), :global(.mythic-dashboard-card-table) :global(.MuiTableCell-root) {
+    vertical-align: middle;
+}
+:global(.mythic-create-summary-row):last-child, :global(.mythic-eventing-detail-section-collapsed) :global(.mythic-eventing-detail-section-header) {
+    border-bottom: 0;
+}
+:global(.mythic-dashboard-custom), :global(.mythic-eventing-list-scroll), :global(.mythic-eventing-step-nav-list), :global(.mythic-eventing-task-helper-table) {
+    overflow-y: auto;
+}
+:global(.mythic-dashboard-icon-button) {
+    background-color: var(--mythic-effect-control-soft-bg) !important;
+    border: 1px solid var(--mythic-color-table-border-soft) !important;
+    box-shadow: none !important;
+    color: var(--mythic-palette-text-primary) !important;
+    height: 30px;
+    padding: 0;
+    width: 30px;
+}
+:global(.mythic-dashboard-icon-button-hover-danger):hover {
+    color: var(--mythic-palette-error-main) !important;
+}
+:global(.mythic-dashboard-icon-button):global(.Mui-disabled), :global(.mythic-dashboard-table-action):global(.Mui-disabled) {
+    background-color: var(--mythic-effect-action-disabled-bg) !important;
+    border-color: var(--mythic-color-table-border-soft) !important;
+    color: var(--mythic-palette-text-disabled) !important;
+}
+:global(.mythic-dashboard-primary-button), :global(.mythic-dashboard-table-action) {
+    background-color: var(--mythic-effect-control-soft-bg) !important;
+    border: 1px solid var(--mythic-color-table-border-soft) !important;
+    box-shadow: none !important;
+    color: var(--mythic-palette-text-primary) !important;
+    min-height: 30px;
+    text-transform: none;
+}
+:global(.mythic-dashboard-table-action-hover-danger):hover, :global(.mythic-dashboard-edit-toolbar) :global(.MuiButton-root):global(.mythic-dashboard-table-action-hover-danger):hover {
+    background-color: var(--mythic-effect-danger-soft) !important;
+    border-color: var(--mythic-effect-danger-strong) !important;
+    color: var(--mythic-palette-error-main) !important;
+}
+:global(.mythic-dashboard-table-cell-account), :global(.mythic-dashboard-screenshot-row), :global(.mythic-dashboard-screenshot-nav-cell), :global(.mythic-dashboard-screenshot-preview-cell),
+:global(.mythic-eventing-sidebar), :global(.mythic-eventing-content), :global(.mythic-eventing-list-item) {
+    display: flex !important;
+}
+:global(.mythic-form-code-editor) {
+    min-height: 16rem;
+}
+:global(.mythic-table-bulk-actions) [data-mythic-component="action-button"] {
+    flex: 1 1 13rem;
+    margin: 0 !important;
+}
+:global(.mythic-search-result-stack), :global(.mythic-installed-service-detail-list-item), :global(.mythic-service-status-detail) {
+    gap: 0.22rem;
+}
+:global(.mythic-search-result-code-compact), :global(.mythic-tag-search-code) {
+    max-height: 7.5rem;
+}
+:global(.mythic-tag-search-tag-cell) :global(.MuiChip-root) {
+    flex: 0 1 auto;
+    height: 20px !important;
+    max-width: 100%;
+}
+:global(.mythic-tag-search-tag-cell) :global(.MuiChip-label) {
+    font-size: var(--mythic-foundation-typography-size-caption);
+    font-weight: var(--mythic-foundation-typography-weight-extraBold);
+    overflow: hidden !important;
+    padding-left: 0.45rem;
+    padding-right: 0.45rem;
+}
+:global(.mythic-tag-search-element-card) {
+    background-color: var(--mythic-effect-inline-parameter-bg);
+    padding: 0.48rem 0.55rem;
+}
+:global(.mythic-tag-search-element-type) {
+    background-color: var(--mythic-effect-accent-soft);
+    border: 1px solid var(--mythic-effect-accent-medium);
+    padding: 0.16rem 0.45rem;
+}
+:global(.mythic-tag-search-details-grid) {
+    gap: 0.4rem 0.65rem;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+}
+:global(.mythic-tag-search-detail), :global(.mythic-installed-service-definition-main) {
+    gap: 0.15rem;
+}
+:global(.mythic-tag-search-inline-code) {
+    display: inline-block;
+    padding: 0.24rem 0.42rem;
+}
+:global(.mythic-tag-search-callback-summary) {
+    background-color: var(--mythic-effect-code-snippet-bg);
+    display: inline-block;
+    padding: 0.28rem 0.45rem;
+}
+:global(.mythic-eventing-workflow-button-row) [data-mythic-component="action-button"] {
+    flex: 0 1 auto;
+    gap: var(--mythic-foundation-spacing-xs);
+    justify-content: flex-start;
+    line-height: 1.2;
+    min-width: auto;
+    padding-left: 0.55rem;
+    padding-right: 0.65rem;
+    text-align: left;
+    white-space: normal;
+}
+:global(.mythic-eventing-status-runnable), :global(.mythic-service-status-detail-success) :global(.mythic-service-status-mini-dot) {
+    background-color: var(--mythic-palette-success-main);
+}
+:global(.mythic-eventing-trigger-parameter-list) :global(.mythic-create-parameter-card) {
+    grid-template-columns: minmax(14rem, 0.36fr) minmax(0, 1fr);
+}
+:global(.mythic-eventing-file-chip-remove):global(.MuiIconButton-root):hover, :global(.mythic-menu-item-hover-danger):hover, :global(.mythic-menu-item-hover-danger):global(.Mui-focusVisible) {
+    background-color: var(--mythic-effect-danger-subtle) !important;
+    color: var(--mythic-palette-error-main) !important;
+}
+:global(.mythic-eventing-step-nav-item), :global(.mythic-eventing-user-interaction-step-option), :global(.mythic-eventing-detail-section-toggle) {
+    text-align: left;
+}
+:global(.mythic-eventing-workflow-overview-header-actions) [data-mythic-component="action-button"], :global(.mythic-eventing-flow-node-title) {
+    white-space: normal;
+}
+:global(.mythic-eventing-workflow-overview-header-actions) [data-mythic-component="action-button"] {
+    min-width: 6.5rem;
+}
+:global(.mythic-split-action-group) :global(.MuiButton-root), :global(.mythic-split-action-group) :global(.MuiIconButton-root) {
+    border-radius: 0 !important;
+    height: 30px;
+    margin-left: -1px;
+}
+:global(.mythic-split-action-group) :global(.MuiButton-root):first-of-type, :global(.mythic-split-action-group) :global(.MuiIconButton-root):first-of-type {
+    border-bottom-left-radius: var(--mythic-shape-borderRadius) !important;
+    border-top-left-radius: var(--mythic-shape-borderRadius) !important;
+    margin-left: 0;
+}
+:global(.mythic-split-action-group) :global(.MuiButton-root):last-of-type, :global(.mythic-split-action-group) :global(.MuiIconButton-root):last-of-type {
+    border-bottom-right-radius: var(--mythic-shape-borderRadius) !important;
+    border-top-right-radius: var(--mythic-shape-borderRadius) !important;
+}
+:global(.mythic-split-action-group) [data-mythic-component="action-button"][data-icon-only="false"] {
+    min-width: 7.5rem;
+}
+:global(.mythic-split-action-group) [data-mythic-component="action-button"] {
+    width: 34px;
+}
+:global(.mythic-split-action-group) [data-mythic-component="action-button"][data-tone="success"] {
+    background-color: var(--mythic-effect-success-subtle) !important;
+    border-color: var(--mythic-effect-success-medium) !important;
+}
+:global(.mythic-split-action-group) [data-mythic-component="action-button"][data-tone="success"]:hover {
+    background-color: var(--mythic-effect-success-soft) !important;
+    border-color: var(--mythic-effect-success-strong) !important;
+}
+:global(.mythic-split-action-group) [data-mythic-component="action-button"][data-tone="error"] {
+    background-color: var(--mythic-effect-danger-subtle) !important;
+    border-color: var(--mythic-effect-danger-medium) !important;
+}
+:global(.mythic-split-action-group) [data-mythic-component="action-button"][data-tone="error"]:hover {
+    background-color: var(--mythic-effect-danger-soft) !important;
+    border-color: var(--mythic-effect-danger-strong) !important;
+}
+:global(.MuiIconButton-root):global(.mythic-response-action-button) :global(.MuiSvgIcon-root), :global(.MuiIconButton-root):global(.mythic-response-action-button) :global(.svg-inline--fa), :global(.mythic-response-action-menu) :global(.MuiMenuItem-root):global(.mythic-response-action-menu-item) :global(.MuiSvgIcon-root), :global(.mythic-response-action-menu) :global(.MuiMenuItem-root):global(.mythic-response-action-menu-item) :global(.svg-inline--fa),
+:global(.mythic-menu-item-hover-info) :global(.MuiSvgIcon-root), :global(.mythic-menu-item-hover-success) :global(.MuiSvgIcon-root), :global(.mythic-menu-item-hover-warning) :global(.MuiSvgIcon-root), :global(.mythic-menu-item-hover-danger) :global(.MuiSvgIcon-root) {
+    color: inherit !important;
+}
+:global(.mythic-menu-item-hover-info):hover, :global(.mythic-menu-item-hover-info):global(.Mui-focusVisible) {
+    background-color: var(--mythic-effect-info-soft) !important;
+    color: var(--mythic-palette-info-main) !important;
+}
+:global(.mythic-menu-item-hover-success):hover, :global(.mythic-menu-item-hover-success):global(.Mui-focusVisible) {
+    background-color: var(--mythic-effect-success-soft) !important;
+    color: var(--mythic-palette-success-main) !important;
+}
+:global(.mythic-menu-item-hover-warning):hover, :global(.mythic-menu-item-hover-warning):global(.Mui-focusVisible) {
+    background-color: var(--mythic-effect-warning-soft) !important;
+    color: var(--mythic-palette-warning-main) !important;
+}
+:global(.mythic-dialog-switch-row) {
+    margin: 0;
+}
+:global(.mythic-dialog-preview) {
+    min-height: 38px;
+    padding: 0 0.75rem;
+}
+:global(.mythic-dialog-table-wrap) {
+    max-height: min(45vh, 28rem);
+}
+:global(.mythic-block-list-dialog-content) {
+    min-height: min(70vh, 42rem);
+}
+:global(.mythic-block-list-loading) {
+    min-height: 8rem;
+}
+:global(.mythic-block-list-payload-tabs) {
+    margin-bottom: 0.75rem;
+    min-height: 38px;
+}
+:global(.mythic-block-list-payload-tabs) :global(.MuiTab-root) {
+    min-height: 38px;
+    padding: 0.35rem 0.7rem;
+}
+:global(.mythic-block-list-payload-tab-count) {
+    background-color: var(--mythic-effect-control-soft-bg);
+    min-width: 1.4rem;
+    padding: 0.18rem 0.38rem;
+}
+:global(.mythic-transfer-controls) {
+    padding: 0 0.5rem;
+}
+:global(.mythic-transfer-controls) :global(.MuiButton-root) {
+    background-color: var(--mythic-effect-control-soft-bg) !important;
+    border: 1px solid var(--mythic-color-table-border-soft) !important;
+    border-radius: var(--mythic-foundation-radius-md);
+    box-shadow: none !important;
+    color: var(--mythic-palette-text-primary) !important;
+    min-height: 30px;
+    min-width: 34px;
+    padding: 0.25rem 0.45rem;
+}
+:global(.mythic-transfer-controls) :global(.MuiButton-root):hover {
+    background-color: var(--mythic-effect-action-hover-bg) !important;
+}
+@media screen and (max-width: 700px) {
+    :global(.mythic-block-list-transfer-grid) {
+        grid-template-columns: 1fr;
+    }
+    :global(.mythic-block-list-transfer-grid) :global(.mythic-transfer-controls) {
+        flex-direction: row;
+    }
+}
+:global(.MuiTab-root) {
+    min-width: unset !important;
+    max-width: unset;
+    white-space: unset !important;
+}
+:global(.MuiTabs-scrollButtons) {
+    width: unset;
+}
+:global(.MuiTabs-flexContainer) {
+    flex-wrap: wrap;
+}
+:global(.MuiTabs-scrollButtons):global(.Mui-disabled) {
+  opacity: 0.3;
+}
+:global(.ace_editor){
+    background-color: var(--mythic-effect-output-editor-bg);
+}
+:global(.ace_gutter) {
+    /* background: transparent !important; */
+    background-color: var(--mythic-effect-output-editor-bg) !important;
+    color: var(--mythic-color-tasking-outputText) !important;
+}
+:global(.ace_editor) :global(.ace_text-layer) {
+    color: var(--mythic-color-tasking-outputText);
+}
+:global(.mythic-reference-picker-dialog) {
+    min-height: 520px;
+}
+:global(.mythic-reference-picker-toolbar) {
+    margin-bottom: 8px;
+}
+:global(.mythic-reference-picker-body) {
+    border: 1px solid var(--mythic-color-application-border);
+    height: min(560px, calc(100vh - 280px));
+    min-height: 360px;
+}
+:global(.mythic-reference-picker-body) > :global(.mythic-credential-search) {
+    height: 100%;
+    width: 100%;
+}
+:global(.mythic-reference-display) {
+    display: inline;
+}
+:global(.mythic-reference-token) {
+    background-color: var(--mythic-effect-info-soft);
+    border: 1px solid var(--mythic-effect-info-medium);
+    line-height: 1.4;
+    margin: 0 2px;
+    padding: 0 5px;
+    vertical-align: baseline;
+}

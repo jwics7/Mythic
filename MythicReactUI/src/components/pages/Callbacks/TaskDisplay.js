@@ -1,5 +1,6 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React, {useEffect, useLayoutEffect, useRef} from 'react';
-import { alpha, styled } from '@mui/material/styles';
+import styles from './TaskDisplay.module.css';
 import {IconButton, Link} from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -9,7 +10,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
-import {useTheme} from '@mui/material/styles';
+
 import {gql, useSubscription } from '@apollo/client';
 import {TaskDisplayContainer, TaskDisplayContainerConsole} from './TaskDisplayContainer';
 import {TagsDisplay} from '../../MythicComponents/MythicTag';
@@ -35,280 +36,37 @@ import {TaskReferenceDisplay} from './taskingReferences';
 import {mergeTasksByID} from "./CallbackTaskingStreamUtils";
 
 
-const PREFIX = 'TaskDisplay';
-const ACCORDION_PREFIX = 'TaskDisplayAccordion';
 export const classes = {
-  root: `${PREFIX}-root`,
-  heading: `${PREFIX}-heading`,
-  secondaryHeading: `${PREFIX}-secondaryHeading`,
-  taskAndTimeDisplay: `${PREFIX}-taskAndTimeDisplay`,
-  secondaryHeadingExpanded: `${PREFIX}-secondaryHeadingExpanded`,
-  icon: `${PREFIX}-icon`,
-  details: `${PREFIX}-details`,
-  column: `${PREFIX}-column`,
-  taskHeaderBody: `${PREFIX}-taskHeaderBody`,
-  taskMetaRow: `${PREFIX}-taskMetaRow`,
-  taskMetaItem: `${PREFIX}-taskMetaItem`,
-  taskMetaIcon: `${PREFIX}-taskMetaIcon`,
-  taskHeaderBodyCompact: `${PREFIX}-taskHeaderBodyCompact`,
-  taskHeaderActions: `${PREFIX}-taskHeaderActions`,
-  taskIconButton: `${PREFIX}-taskIconButton`,
-  taskCommandRow: `${PREFIX}-taskCommandRow`,
-  taskCommandText: `${PREFIX}-taskCommandText`,
-  taskCommandTextCompact: `${PREFIX}-taskCommandTextCompact`,
-  taskCommandName: `${PREFIX}-taskCommandName`,
-  taskCommandParams: `${PREFIX}-taskCommandParams`,
-  taskTags: `${PREFIX}-taskTags`,
-  taskChildToggle: `${PREFIX}-taskChildToggle`,
-  taskCommentBlock: `${PREFIX}-taskCommentBlock`,
-  consolePrompt: `${PREFIX}-consolePrompt`
+  root: styles.paper,
+  taskHeaderBody: styles.taskHeaderBody,
+  taskMetaRow: styles.taskMetaRow,
+  taskMetaItem: styles.taskMetaItem,
+  taskMetaIcon: `${styles.taskMetaIcon} mythic-font-size-body-small`,
+  taskHeaderBodyCompact: `${styles.taskHeaderBodyCompact} mythic-gap-xs`,
+  taskHeaderActions: styles.taskHeaderActions,
+  taskIconButton: styles.taskIconButton,
+  taskCommandRow: styles.taskCommandRow,
+  taskCommandText: styles.taskCommandText,
+  taskCommandTextCompact: styles.taskCommandTextCompact,
+  taskCommandName: `${styles.taskCommandName} mythic-font-weight-extra-bold`,
+  taskCommandParams: `${styles.taskCommandParams} mythic-break-anywhere`,
+  taskTags: styles.taskTags,
+  taskChildToggle: styles.taskChildToggle,
+  taskCommentBlock: styles.taskCommentBlock,
+  consolePrompt: `${styles.consolePrompt} mythic-font-weight-extra-bold`,
 };
 export const accordionClasses = {
-  root: `${ACCORDION_PREFIX}-root`,
-  content: `${ACCORDION_PREFIX}-content`,
-  expandIcon: `${ACCORDION_PREFIX}-expandIcon`,
-  expanded: `${ACCORDION_PREFIX}-expanded`,
-  details: `${ACCORDION_PREFIX}-details`,
-  detailsRoot: `${ACCORDION_PREFIX}Details-root`
-}
+  root: styles.accordionRoot,
+  content: styles.accordionContent,
+  expandIcon: styles.accordionExpandIcon,
+  expanded: styles.accordionExpanded,
+  details: styles.accordionDetails,
+  detailsRoot: styles.accordionDetailsRoot,
+};
 
-export const StyledPaper = styled(Paper)((
-  {
-    theme
-  }
-) => ({
-  [`&.${classes.root}`]: {
-    marginTop: "4px",
-    marginRight: "0px",
-    height: "auto",
-    width: "100%",
-    boxShadow: "unset",
-    backgroundColor: theme.palette.background.paper,
-    border: `1px solid ${theme.borderColor}`,
-    borderRadius: theme.shape.borderRadius,
-    transition: "background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease",
-    "&:hover": {
-      borderColor: theme.palette.mode === "dark" ? alpha(theme.palette.common.white, 0.22) : alpha(theme.palette.common.black, 0.18),
-      backgroundColor:  alpha(theme.palette.background.paper, 0.75),
-    },
-  },
-
-  [`& .${classes.heading}`]: {
-    fontSize: theme.typography.pxToRem(15),
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    display: "-webkit-box",
-    WebkitLineClamp: "2",
-    WebkitBoxOrient: "vertical",
-    cursor: "default",
-    wordBreak: "break-all",
-    //color: theme.taskPromptTextColor,
-  },
-  [`& .${classes.secondaryHeading}`]: {
-    fontSize: theme.typography.pxToRem(15),
-    //color: theme.taskPromptTextColor,
-    overflow: "auto",
-    display: "block",
-    textOverflow: "ellipsis",
-    wordBreak: "break-all",
-    maxWidth: "100%",
-  },
-  [`& .${classes.taskAndTimeDisplay}`]: {
-    fontSize: theme.typography.pxToRem(12),
-    color: theme.taskPromptTextColor,
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    maxWidth: "100%",
-    whiteSpace: "nowrap",
-    display: "inline-block",
-    cursor: "default",
-    wordBreak: "break-all",
-  },
-  [`& .${classes.secondaryHeadingExpanded}`]: {
-    fontSize: theme.typography.pxToRem(15),
-    //color: theme.taskPromptTextColor,
-    display: "block",
-    overflow: "auto",
-    maxWidth: "100%",
-    wordBreak: "break-all",
-  },
-  [`& .${classes.icon}`]: {
-    verticalAlign: 'middle',
-    height: 20,
-    width: 20,
-  },
-  [`& .${classes.details}`]: {
-    alignItems: 'center',
-    marginRight: 0
-  },
-  [`& .${classes.column}`]: {
-    padding: "0 5px 0 0",
-    display: "inline-block",
-    margin: 0,
-    height: "auto",
-  },
-  [`& .${classes.taskHeaderBody}`]: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 5,
-    minWidth: 0,
-    width: "100%",
-  },
-  [`& .${classes.taskHeaderBodyCompact}`]: {
-    gap: 4,
-  },
-  [`& .${classes.taskMetaRow}`]: {
-    alignItems: "center",
-    color: theme.palette.text.secondary,
-    display: "flex",
-    flexWrap: "wrap",
-    gap: 5,
-    minWidth: 0,
-  },
-  [`& .${classes.taskHeaderBodyCompact} .${classes.taskMetaRow}`]: {
-    flexWrap: "nowrap",
-    maxHeight: 24,
-    overflow: "hidden",
-  },
-  [`& .${classes.taskMetaItem}`]: {
-    alignItems: "center",
-    backgroundColor: theme.palette.mode === "dark" ? alpha(theme.palette.common.white, 0.05) : alpha(theme.palette.common.black, 0.035),
-    border: `1px solid ${theme.palette.mode === "dark" ? alpha(theme.palette.common.white, 0.08) : alpha(theme.palette.common.black, 0.07)}`,
-    borderRadius: 5,
-    color: theme.palette.text.secondary,
-    display: "inline-flex",
-    fontSize: theme.typography.pxToRem(11.5),
-    fontWeight: 600,
-    gap: 4,
-    lineHeight: 1.2,
-    maxWidth: "18rem",
-    minHeight: 22,
-    minWidth: 0,
-    padding: "2px 6px",
-    whiteSpace: "nowrap",
-    "& > span:last-child": {
-      minWidth: 0,
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    },
-    "& a": {
-      color: "inherit",
-      fontWeight: 700,
-    },
-  },
-  [`& .${classes.taskHeaderBodyCompact} .${classes.taskMetaItem}`]: {
-    flex: "0 0 auto",
-  },
-  [`& .${classes.taskMetaIcon}`]: {
-    flexShrink: 0,
-    fontSize: "0.86rem",
-    height: "0.86rem",
-    width: "0.86rem",
-  },
-  [`& .${classes.taskHeaderActions}`]: {
-    alignItems: "center",
-    display: "inline-flex",
-    flexWrap: "wrap",
-    gap: 4,
-    minWidth: 0,
-  },
-  [`& .${classes.taskHeaderBodyCompact} .${classes.taskHeaderActions}`]: {
-    flex: "0 0 auto",
-    flexWrap: "nowrap",
-  },
-  [`& .${classes.taskIconButton}`]: {
-    border: `1px solid ${theme.palette.mode === "dark" ? alpha(theme.palette.common.white, 0.08) : alpha(theme.palette.common.black, 0.08)}`,
-    borderRadius: 5,
-    color: theme.palette.text.secondary,
-    height: 24,
-    padding: 0,
-    width: 24,
-    "& svg": {
-      fontSize: "1rem",
-    },
-  },
-  [`& .${classes.taskCommandRow}`]: {
-    alignItems: "flex-start",
-    display: "flex",
-    gap: 6,
-    minWidth: 0,
-    width: "100%",
-  },
-  [`& .${classes.taskHeaderBodyCompact} .${classes.taskCommandRow}`]: {
-    alignItems: "center",
-  },
-  [`& .${classes.taskCommandText}`]: {
-    color: theme.taskPromptCommandTextColor,
-    flex: "1 1 auto",
-    fontSize: theme.typography.pxToRem(14),
-    lineHeight: 1.35,
-    minWidth: 0,
-  },
-  [`& .${classes.taskCommandTextCompact}`]: {
-    display: "-webkit-box",
-    overflow: "hidden",
-    WebkitBoxOrient: "vertical",
-    WebkitLineClamp: "2",
-  },
-  [`& .${classes.taskCommandName}`]: {
-    color: theme.taskPromptCommandTextColor,
-    fontWeight: 800,
-  },
-  [`& .${classes.taskCommandParams}`]: {
-    color: theme.palette.text.primary,
-    overflowWrap: "anywhere",
-  },
-  [`& .${classes.taskTags}`]: {
-    alignItems: "center",
-    display: "inline-flex",
-    flex: "0 1 auto",
-    flexWrap: "wrap",
-    gap: 3,
-    justifyContent: "flex-end",
-    marginLeft: "auto",
-    maxWidth: "34%",
-    minWidth: 0,
-    "& .MuiChip-root": {
-      float: "none !important",
-      height: "16px !important",
-      margin: 0,
-      maxWidth: "10rem",
-    },
-    "& .MuiChip-label": {
-      minWidth: 0,
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-    },
-  },
-  [`& .${classes.taskHeaderBodyCompact} .${classes.taskTags}`]: {
-    flexWrap: "nowrap",
-    maxHeight: 20,
-    overflow: "hidden",
-  },
-  [`& .${classes.taskChildToggle}`]: {
-    color: theme.palette.text.secondary,
-    height: 24,
-    marginTop: -2,
-    padding: 0,
-    width: 24,
-  },
-  [`& .${classes.taskCommentBlock}`]: {
-    backgroundColor: theme.palette.mode === "dark" ? alpha(theme.palette.common.white, 0.045) : alpha(theme.palette.common.black, 0.025),
-    border: `1px solid ${theme.palette.mode === "dark" ? alpha(theme.palette.common.white, 0.08) : alpha(theme.palette.common.black, 0.07)}`,
-    borderRadius: 5,
-    color: theme.palette.text.primary,
-    fontSize: theme.typography.pxToRem(12.5),
-    lineHeight: 1.35,
-    padding: "6px 8px",
-  },
-  [`& .${classes.consolePrompt}`]: {
-    color: theme.palette.text.secondary,
-    flexShrink: 0,
-    fontFamily: 'Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-    fontSize: theme.typography.pxToRem(13),
-    fontWeight: 800,
-  }
-}));
+export const StyledPaper = ({className = "", ...props}) => (
+  <Paper data-mythic-component="task-display" className={`${styles.paper} ${className}`} {...props} />
+);
 
 const getSubTaskingQuery = gql`
 ${taskingDataFragment}
@@ -347,37 +105,9 @@ const useTaskChildren = ({taskID, taskChildrenStore, active}) => {
   return taskChildrenStore ? externalChildren : localChildren;
 };
 
-export const StyledAccordionSummary = styled(AccordionSummary)((
-    {
-      theme
-    }
-) => ({
-  [`&.${accordionClasses.root}`]: {
-    margin: 0,
-    paddingLeft: 0,
-    //paddingRight: 0,
-    height: "auto",
-    width: "100%",
-    wordBreak: "break-all",
-    userSelect: "text",
-    boxShadow: "unset",
-    backgroundColor: "unset",
-    justifyContent: "flex-start",
-  },
-  [`& .${accordionClasses.content}`]: {
-    margin: 0,
-    height: "100%",
-    padding: 0,
-    width: "inherit",
-  },
-  [`& .${accordionClasses.expandIcon}`]: {
-    margin: 0,
-  },
-  [`& .${accordionClasses.expanded}`]: {
-    marginRight: 0,
-  },
-}));
-
+export const StyledAccordionSummary = (props) => (
+  <AccordionSummary data-mythic-slot="task-summary" {...props} />
+);
 
 function TaskDisplayPreMemo({task, me, filterOptions, newlyIssuedTasks, collapseAllRequest, taskChildrenStore, active=true}){
   return (
@@ -979,7 +709,7 @@ const TaskRowFlat = ({task, filterOptions, me, onSelectTask, showOnSelectTask, s
 }
 const TaskLabel = ({task, dropdownOpen, toggleTaskDropdown, me, newlyIssuedTasks, displayChildren, toggleDisplayChildren, hasChildren, active=true}) => {
   const [fromNow] = React.useState(getSkewedNow());
-  const theme = useTheme();
+  const theme = useMythicTheme();
   const prevResponseMaxId = useRef(0);
   useEffect( () => {
     //console.log("in use effect", prevResponseCount.current, props.task.responses);
@@ -1058,7 +788,7 @@ export const getLabelText = (task, graphView) => {
   return (task?.command?.cmd || task.command_name) + " " + task.display_params;
 }
 export const TaskLabelFlat = ({task, me, showOnSelectTask, onSelectTask, graphView, displayChildren, toggleDisplayChildren, hasChildren}) => {
-  const theme = useTheme();
+  const theme = useMythicTheme();
 
   useLayoutEffect( () => {
     if(task.operator.username === (me?.user?.username || "")){
@@ -1196,7 +926,7 @@ const TaskRowConsole = ({task, filterOptions, me, newlyIssuedTasks, indentLevel,
   // marginLeft: (indentLevel * 10) + "px"
   return (
       shouldDisplay ? (
-          <div style={{}}>
+          <div>
             <TaskLabelConsole me={me} task={task} newlyIssuedTasks={newlyIssuedTasks} active={active} />
             {
               taskingData.map( (tsk) => (
@@ -1289,7 +1019,7 @@ export const ColoredTaskLabelConsole = ({task, theme, me, taskDivID, onClick, di
 	);
 }
 const TaskLabelConsole = ({task, me, active=true}) => {
-  const theme = useTheme();
+  const theme = useMythicTheme();
   useLayoutEffect( () => {
     if(task.operator.username === (me?.user?.username || "")){
       scrollContent();

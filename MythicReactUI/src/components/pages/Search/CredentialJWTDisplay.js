@@ -6,6 +6,7 @@ import {
     getNestedMetadataObject,
     isPlainObject,
 } from './CredentialDisplayComponents';
+import {MythicCluster, MythicGrid} from "../../MythicComponents/MythicLayout";
 
 export const credentialJWTMetadataKeys = new Set(["jwt"]);
 export const credentialJWTIdentityKeys = new Set(["jwt"]);
@@ -112,10 +113,10 @@ const prettyJWTJSON = (value) => {
 
 function JWTJSONBlock({title, value}){
     return (
-        <div className="mythic-credential-search-jwt-json-block">
-            <span>{title}</span>
+        <MythicGrid component="div" gap="xs" columns="custom" className="mythic-credential-search-jwt-json-block mythic-grid-span-full mythic-min-width-0 mythic-border-radius">
+            <span className="mythic-font-size-xs mythic-font-weight-heavy">{title}</span>
             <pre>{prettyJWTJSON(value)}</pre>
-        </div>
+        </MythicGrid>
     )
 }
 
@@ -133,20 +134,20 @@ export function CredentialJWTDisplay({credential, metadata, identity, validityCh
         <>
             {showSummary &&
                 <CredentialInspectorSection title="JWT Metadata" tone="metadata">
-                    <div className="mythic-credential-search-chip-list mythic-credential-search-section-chips">
+                    <MythicCluster component="div" gap="xs" className="mythic-credential-search-chip-list mythic-credential-search-section-chips mythic-grid-span-full">
                         {summaryEntries.map(([key, value]) => (
-                            <Chip key={key} size="small" variant="outlined" label={`${key}: ${compactMetadataValue(value)}`} className="mythic-credential-search-mini-chip" />
+                            <Chip key={key} size="small" variant="outlined" label={`${key}: ${compactMetadataValue(value)}`} className="mythic-credential-search-mini-chip mythic-max-width-full" />
                         ))}
                         {validityChips.map((chip) => (
-                            <Chip key={chip.label} size="small" color={chip.color} variant="outlined" label={chip.label} className="mythic-credential-search-mini-chip" />
+                            <Chip key={chip.label} size="small" color={chip.color} variant="outlined" label={chip.label} className="mythic-credential-search-mini-chip mythic-max-width-full" />
                         ))}
-                    </div>
+                    </MythicCluster>
                     {warningValues.length > 0 &&
-                        <div className="mythic-credential-search-warning-list">
+                        <MythicCluster component="div" gap="xs" align="stretch" className="mythic-credential-search-warning-list mythic-grid-span-full">
                             {warningValues.map((warning, index) => (
-                                <Chip key={`warning-${index}`} size="small" color="warning" variant="outlined" label={compactMetadataValue(warning)} className="mythic-credential-search-warning-chip" />
+                                <Chip key={`warning-${index}`} size="small" color="warning" variant="outlined" label={compactMetadataValue(warning)} className="mythic-credential-search-warning-chip mythic-max-width-full" />
                             ))}
-                        </div>
+                        </MythicCluster>
                     }
                 </CredentialInspectorSection>
             }

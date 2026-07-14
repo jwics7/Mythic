@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {IconButton, Link} from '@mui/material';
+import {Link} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -18,8 +18,9 @@ import {TaskTokenDialog} from '../Callbacks/TaskTokenDialog';
 import {TokenDescriptionDialog} from './TokenDescriptionDialog';
 import {TokenUserDialog} from './TokenUserDialog';
 import { MythicStyledTooltip } from '../../MythicComponents/MythicStyledTooltip';
-import MythicStyledTableCell from '../../MythicComponents/MythicTableCell';
-import {MythicStateChip} from "../../MythicComponents/MythicStateChip";
+import {MythicStatusChip} from "../../MythicComponents/MythicStatusChip";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicCodeSurface, MythicActionButton, MythicMetadataValue, MythicText} from "../../MythicComponents/MythicContent";
 
 const updateCredentialDeleted = gql`
 mutation updateCredentialDeletedMutation($token_id: Int!, $deleted: Boolean!){
@@ -141,77 +142,77 @@ function TokenTableRow(props){
                     <MythicConfirmDialog onClose={() => {setOpenDeleteDialog(false);}} onSubmit={onAcceptDelete} open={openDeleteDialog} acceptText={props.deleted ? "Restore" : "Hide" }/>
                 }
                 
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-action-row">
+                <TableCell>
+                    <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-search-result-action-row">
                         {props.deleted ? (
                             <MythicStyledTooltip title="Restore Token for use in Tasking">
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-success" size="small" onClick={()=>{setOpenDeleteDialog(true);}}><VisibilityOffIcon fontSize="small" /></IconButton>
+                                <MythicActionButton iconOnly tone="success"  size="small" onClick={()=>{setOpenDeleteDialog(true);}}><VisibilityOffIcon fontSize="small" /></MythicActionButton>
                             </MythicStyledTooltip>
                         ) : (
                             <MythicStyledTooltip title="Hide Token so it can't be used in Tasking">
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-warning" size="small" onClick={()=>{setOpenDeleteDialog(true);}}><VisibilityIcon fontSize="small" /></IconButton>
+                                <MythicActionButton iconOnly tone="warning"  size="small" onClick={()=>{setOpenDeleteDialog(true);}}><VisibilityIcon fontSize="small" /></MythicActionButton>
                             </MythicStyledTooltip>
                         )}
-                        <MythicStateChip compact label={props.deleted ? "Hidden" : "Available"} state={props.deleted ? "disabled" : "active"} />
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-action-row">
-                        <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" onClick={() => setEditUserDialog(true)} size="small"><EditIcon fontSize="small" /></IconButton>
-                        <span className="mythic-search-result-primary">{props.user}</span>
-                    </div>
+                        <MythicStatusChip size="compact" label={props.deleted ? "Hidden" : "Available"} status={props.deleted ? "disabled" : "active"} />
+                    </MythicCluster>
+                </TableCell>
+                <TableCell>
+                    <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-search-result-action-row">
+                        <MythicActionButton iconOnly tone="info"  onClick={() => setEditUserDialog(true)} size="small"><EditIcon fontSize="small" /></MythicActionButton>
+                        <MythicText component="span" preset="value" className="mythic-search-result-primary">{props.user}</MythicText>
+                    </MythicCluster>
 
                     {editUserDialog &&  <MythicDialog fullWidth={true} maxWidth="md" open={editUserDialog}
                             onClose={()=>{setEditUserDialog(false);}} 
                             innerDialog={<TokenUserDialog token_id={props.id} onClose={()=>{setEditUserDialog(false);}} onUpdateUser={props.onUpdateUser}/> }
                         />
                     }
-                </MythicStyledTableCell>
-                <MythicStyledTableCell >
-                    <div className="mythic-search-result-action-row">
+                </TableCell>
+                <TableCell >
+                    <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-search-result-action-row">
                         <MythicStyledTooltip title="View Token Information">
-                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" size="small" onClick={()=>{setViewTokenDialog(true);}}><ConfirmationNumberIcon fontSize="small" /></IconButton>
+                            <MythicActionButton iconOnly tone="info"  size="small" onClick={()=>{setViewTokenDialog(true);}}><ConfirmationNumberIcon fontSize="small" /></MythicActionButton>
                         </MythicStyledTooltip>
-                        <span className="mythic-search-result-code">{props.token_id}</span>
-                    </div>
+                        <MythicCodeSurface component="span" density="compact" overflow="visible" tone="snippet">{props.token_id}</MythicCodeSurface>
+                    </MythicCluster>
                     {viewTokenDialog && <MythicDialog fullWidth={true} maxWidth="md" open={viewTokenDialog}
                         onClose={()=>{setViewTokenDialog(false);}} 
                         innerDialog={<TaskTokenDialog token_id={props.id} onClose={()=>{setViewTokenDialog(false);}} />}
                     />}
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-action-row">
-                        <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" onClick={() => setEditDescriptionDialog(true)} size="small"><EditIcon fontSize="small" /></IconButton>
-                        <span className="mythic-search-result-secondary">{props.description || "No description"}</span>
-                    </div>
+                </TableCell>
+                <TableCell>
+                    <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-search-result-action-row">
+                        <MythicActionButton iconOnly tone="info"  onClick={() => setEditDescriptionDialog(true)} size="small"><EditIcon fontSize="small" /></MythicActionButton>
+                        <MythicMetadataValue component="span" size="caption" tone="secondary" className="mythic-search-result-secondary">{props.description || "No description"}</MythicMetadataValue>
+                    </MythicCluster>
 
                     {editDescriptionDialog && <MythicDialog fullWidth={true} maxWidth="md" open={editDescriptionDialog}
                             onClose={()=>{setEditDescriptionDialog(false);}}  
                             innerDialog={<TokenDescriptionDialog token_id={props.id} onClose={()=>{setEditDescriptionDialog(false);}} onUpdateDescription={props.onUpdateDescription}/> }
                         />
                     }
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-link-row">
-                        <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank"
+                </TableCell>
+                <TableCell>
+                    <MythicCluster component="div" gap="xs" inline className="mythic-search-result-link-row">
+                        <Link color="textPrimary" underline="always" target="_blank"
                             href={"/new/task/" + props.task.display_id}>
                                 T-{props.task.display_id}
                         </Link>
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-link-row">
+                    </MythicCluster>
+                </TableCell>
+                <TableCell>
+                    <MythicCluster component="div" gap="xs" inline className="mythic-search-result-link-row">
                         {props.callbacktokens?.length > 0 ? props.callbacktokens.map( (cbt) => (
-                            <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" key={"callbacklink" + cbt.callback.display_id + "row" + props.id}
+                            <Link color="textPrimary" underline="always" target="_blank" key={"callbacklink" + cbt.callback.display_id + "row" + props.id}
                                 href={"/new/callbacks/" + cbt.callback.display_id}>
                                     C-{cbt.callback.display_id}
                             </Link>
-                        )) : <span className="mythic-search-result-secondary">No callbacks</span>}
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-primary">{props.host}</div>
-                </MythicStyledTableCell>
+                        )) : <MythicMetadataValue component="span" size="caption" tone="secondary" className="mythic-search-result-secondary">No callbacks</MythicMetadataValue>}
+                    </MythicCluster>
+                </TableCell>
+                <TableCell>
+                    <MythicText component="div" preset="value" className="mythic-search-result-primary">{props.host}</MythicText>
+                </TableCell>
             </TableRow>
         </React.Fragment>
     )

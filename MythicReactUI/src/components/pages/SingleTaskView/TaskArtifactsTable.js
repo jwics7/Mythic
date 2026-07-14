@@ -1,11 +1,12 @@
+import TableCell from '@mui/material/TableCell';
 import React, { useEffect } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import MythicStyledTableCell from '../../MythicComponents/MythicTableCell';
 import {MythicPageHeaderChip, MythicSectionHeader} from "../../MythicComponents/MythicPageHeader";
+import {SingleTaskMetadataSection} from "./SingleTaskLayout";
 
 export function TaskArtifactsTable(props){
    const [artifacts, setArtifacts] = React.useState([]);
@@ -23,35 +24,35 @@ export function TaskArtifactsTable(props){
    }
    const artifactCountLabel = artifacts.length === 1 ? "1 artifact" : `${artifacts.length} artifacts`;
   return (
-    <div className="mythic-single-task-metadata-section">
+    <SingleTaskMetadataSection>
         <MythicSectionHeader
             dense
             title="Artifact Tasks"
             subtitle="Artifacts created while these tasks executed."
             actions={<MythicPageHeaderChip label={artifactCountLabel} />}
         />
-        <TableContainer className="mythicElement mythic-single-task-table-wrap">
+        <TableContainer className="mythicElement mythic-single-task-table-wrap mythic-surface-raised mythic-overflow-auto">
           <Table className="mythic-single-task-table" size="small">
                 <TableHead>
                     <TableRow>
-                        <MythicStyledTableCell style={{width: "6rem"}}>Task ID</MythicStyledTableCell>
-                        <MythicStyledTableCell style={{width: "12rem"}}>Artifact Type</MythicStyledTableCell>
-                        <MythicStyledTableCell style={{width: "12rem"}}>Host</MythicStyledTableCell>
-                        <MythicStyledTableCell>Artifact</MythicStyledTableCell>
+                        <TableCell style={{width: "6rem"}}>Task ID</TableCell>
+                        <TableCell style={{width: "12rem"}}>Artifact Type</TableCell>
+                        <TableCell style={{width: "12rem"}}>Host</TableCell>
+                        <TableCell>Artifact</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                   {artifacts.map( (artifact) => (
                     <TableRow key={"artifact" + artifact.id} hover>
-                      <MythicStyledTableCell>{artifact.display_id}</MythicStyledTableCell>
-                      <MythicStyledTableCell>{artifact.base_artifact}</MythicStyledTableCell>
-                      <MythicStyledTableCell className="mythic-single-task-cell-break">{artifact.host}</MythicStyledTableCell>
-                      <MythicStyledTableCell className="mythic-single-task-cell-break">{artifact.artifact_text}</MythicStyledTableCell>
+                      <TableCell>{artifact.display_id}</TableCell>
+                      <TableCell>{artifact.base_artifact}</TableCell>
+                      <TableCell className="mythic-single-task-cell-break mythic-break-anywhere mythic-pre-wrap">{artifact.host}</TableCell>
+                      <TableCell className="mythic-single-task-cell-break mythic-break-anywhere mythic-pre-wrap">{artifact.artifact_text}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
             </Table>
           </TableContainer>
-    </div>
+    </SingleTaskMetadataSection>
   );
 }

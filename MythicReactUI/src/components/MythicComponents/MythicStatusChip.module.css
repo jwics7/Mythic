@@ -1,0 +1,73 @@
+.root {
+    --mythic-status-color: var(--mythic-color-status-secondary);
+    --mythic-status-background: var(--mythic-effect-neutral-soft);
+    --mythic-status-border: var(--mythic-effect-neutral-strong);
+
+    background: var(--mythic-status-background);
+    border-color: var(--mythic-status-border);
+    color: var(--mythic-status-color);
+    height: 1.5rem;
+    text-decoration: none;
+    text-transform: none;
+}
+
+.root[data-size="medium"] {
+    height: 1.75rem;
+}
+
+.root[data-size="compact"] {
+    font-size: var(--mythic-foundation-typography-size-xs);
+    height: 1.25rem;
+}
+
+.root[data-variant="outlined"] {
+    background: transparent;
+}
+
+.root[data-tone="success"] {
+    --mythic-status-color: var(--mythic-color-status-success);
+    --mythic-status-background: var(--mythic-effect-success-soft);
+    --mythic-status-border: var(--mythic-effect-success-strong);
+}
+
+.root[data-tone="error"] {
+    --mythic-status-color: var(--mythic-color-status-error);
+    --mythic-status-background: var(--mythic-effect-danger-soft);
+    --mythic-status-border: var(--mythic-effect-danger-strong);
+}
+
+.root[data-tone="warning"] {
+    --mythic-status-color: var(--mythic-color-status-warning);
+    --mythic-status-background: var(--mythic-effect-warning-soft);
+    --mythic-status-border: var(--mythic-effect-warning-strong);
+}
+
+.root[data-tone="info"] {
+    --mythic-status-color: var(--mythic-color-status-info);
+    --mythic-status-background: var(--mythic-effect-info-soft);
+    --mythic-status-border: var(--mythic-effect-info-strong);
+}
+
+.root :global(.MuiChip-label) {
+    min-width: 0;
+    overflow: hidden;
+    padding-inline: var(--mythic-foundation-spacing-sm);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.root :global(.MuiChip-icon) {
+    color: var(--mythic-status-color);
+    font-size: var(--mythic-foundation-typography-size-body);
+    margin-left: 0.375rem;
+    margin-right: -0.125rem;
+}
+
+.root[data-size="medium"] :global(.MuiChip-icon) {
+    font-size: 1.05rem;
+}
+
+.root:global(.MuiChip-clickable):hover {
+    background: var(--mythic-status-border);
+    border-color: var(--mythic-status-color);
+}

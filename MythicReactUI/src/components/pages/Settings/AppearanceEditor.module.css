@@ -1,0 +1,164 @@
+.root {
+  padding-block: 12px;
+}
+
+.header {
+  align-items: end;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 34%);
+  margin-bottom: 20px;
+}
+
+.editorLayout {
+  align-items: start;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 34%);
+}
+
+.previewPanel {
+  background: var(--mythic-color-application-surface);
+  border: 1px solid var(--mythic-color-application-border);
+  padding: 12px;
+  position: sticky;
+  top: 8px;
+}
+
+.previewPanel > :global(.MuiTypography-overline-root) {
+  color: var(--mythic-color-text-secondary);
+  line-height: 1.2;
+}
+
+.previewPanel > :global(.MuiTypography-h6) {
+  line-height: 1.2;
+}
+
+.previewPanel > :nth-child(4) {
+  margin-top: 8px;
+}
+
+.previewUsage {
+  margin-top: 4px;
+}
+
+.group {
+  margin-bottom: 24px;
+}
+
+.groupHeader {
+  margin-bottom: 8px;
+}
+
+.groupHeader > * {
+  display: block;
+}
+
+.fieldList {
+  background: var(--mythic-color-application-surface);
+  border: 1px solid var(--mythic-color-application-border);
+}
+
+.field {
+  border-top: 1px solid var(--mythic-color-application-border);
+  gap: 16px;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(240px, 1fr);
+  padding: 12px;
+}
+
+.field[data-selected="true"] {
+  background: var(--mythic-color-application-muted);
+  box-shadow: inset 3px 0 var(--mythic-color-status-primary);
+}
+
+.field:first-child {
+  border-top: 0;
+}
+
+.fieldDescription > * {
+  display: block;
+}
+
+.usedBy {
+  margin-top: 4px;
+}
+
+.tokenPath {
+  color: var(--mythic-color-text-disabled);
+  margin-top: 6px;
+}
+
+.modeControls {
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.modeControlHeader {
+  min-height: 28px;
+}
+
+.modeControlHeader :global(.MuiIconButton-root) {
+  height: 24px;
+  width: 24px;
+}
+
+.scalarControl {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.imageControl {
+  background: var(--mythic-color-application-surface);
+  border-top: 1px solid var(--mythic-color-application-border);
+}
+
+.imageControl:first-child {
+  border-top: 0;
+}
+
+.imageControl[data-selected="true"] {
+  background: var(--mythic-color-application-muted);
+  box-shadow: inset 3px 0 var(--mythic-color-status-primary);
+}
+
+.imageActions {
+  padding: 8px;
+}
+
+.imageLabel {
+  flex-grow: 1;
+  text-transform: capitalize;
+}
+
+.imagePreview {
+  background-position: center;
+  background-size: cover;
+  border-top: 1px solid var(--mythic-color-application-border);
+  height: 120px;
+}
+
+.noResults {
+  padding: 24px;
+  text-align: center;
+}
+
+@media (max-width: 1100px) {
+  .editorLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .previewPanel {
+    grid-row: 1;
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .header,
+  .editorLayout,
+  .field,
+  .scalarControl {
+    grid-template-columns: 1fr;
+  }
+
+  .field > :last-child {
+    grid-column: auto;
+  }
+}

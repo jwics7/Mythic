@@ -1,5 +1,7 @@
 import React from 'react';
 import {MythicStatusChip} from "../../MythicComponents/MythicStatusChip";
+import {MythicCluster, MythicGrid} from "../../MythicComponents/MythicLayout";
+import {MythicPanel, MythicText} from "../../MythicComponents/MythicContent";
 
 export const formatParameterValue = (value, emptyValue = "Not set") => {
     if (value === undefined || value === null || value === "") {
@@ -19,9 +21,9 @@ export const formatParameterValue = (value, emptyValue = "Not set") => {
 
 export function ParameterMetadataItem({label, value, code = false, emptyValue = "Not set"}) {
     return (
-        <div className="mythic-metadata-item">
-            <span className="mythic-metadata-label">{label}</span>
-            <span className={code ? "mythic-metadata-code" : "mythic-metadata-value"}>
+        <div className="mythic-metadata-item mythic-min-width-0 mythic-border mythic-border-radius">
+            <span className="mythic-metadata-label mythic-block mythic-font-size-xs mythic-font-weight-extra-bold mythic-line-height-tight mythic-uppercase mythic-text-secondary">{label}</span>
+            <span className={code ? "mythic-metadata-code mythic-monospace mythic-block mythic-font-size-small mythic-line-height-normal mythic-break-anywhere mythic-pre-wrap mythic-min-width-0 mythic-text-primary" : "mythic-metadata-value mythic-block mythic-font-size-small mythic-line-height-normal mythic-break-anywhere mythic-pre-wrap mythic-min-width-0 mythic-text-primary"}>
                 {formatParameterValue(value, emptyValue)}
             </span>
         </div>
@@ -30,7 +32,7 @@ export function ParameterMetadataItem({label, value, code = false, emptyValue = 
 
 export function ParameterCodeBlock({children}) {
     return (
-        <code className="mythic-code-block">
+        <code className="mythic-code-block mythic-block mythic-monospace mythic-font-size-small mythic-border mythic-border-radius mythic-text-primary mythic-overflow-auto">
             {formatParameterValue(children)}
         </code>
     );
@@ -39,24 +41,24 @@ export function ParameterCodeBlock({children}) {
 export function BuildParameterList({parameters}) {
     if (parameters.length === 0) {
         return (
-            <div className="mythic-parameter-card">
-                <div className="mythic-parameter-title">No build parameters</div>
-                <div className="mythic-parameter-description">This service does not define build-time parameters.</div>
-            </div>
+            <MythicPanel component="div" density="flush" tone="raised" overflow="visible" radius="md" className="mythic-parameter-card">
+                <MythicText component="div" preset="large-title" className="mythic-parameter-title">No build parameters</MythicText>
+                <MythicText component="div" preset="secondary-copy" className="mythic-parameter-description">This service does not define build-time parameters.</MythicText>
+            </MythicPanel>
         );
     }
     return (
-        <div className="mythic-parameter-list">
+        <MythicGrid component="div" gap="md" columns="custom" className="mythic-parameter-list mythic-min-width-0">
             {parameters.map((param) => (
-                <div className="mythic-parameter-card" key={"buildprop" + param.id}>
-                    <div className="mythic-parameter-card-header">
+                <MythicPanel component="div" density="flush" tone="raised" overflow="visible" radius="md" className="mythic-parameter-card" key={"buildprop" + param.id}>
+                    <MythicCluster component="div" gap="md" align="start" justify="between" wrap={false} className="mythic-parameter-card-header">
                         <div>
-                            <div className="mythic-parameter-title">{param.name}</div>
-                            <div className="mythic-parameter-description">
+                            <MythicText component="div" preset="large-title" className="mythic-parameter-title">{param.name}</MythicText>
+                            <MythicText component="div" preset="secondary-copy" className="mythic-parameter-description">
                                 {param.description || "No description provided."}
-                            </div>
+                            </MythicText>
                         </div>
-                        <div className="mythic-status-stack">
+                        <MythicCluster component="div" gap="xs" className="mythic-status-stack">
                             <MythicStatusChip label={param.parameter_type} status="neutral" showIcon={false} />
                             {param.required &&
                                 <MythicStatusChip label="Required" status="warning" />
@@ -64,9 +66,9 @@ export function BuildParameterList({parameters}) {
                             {param.randomize &&
                                 <MythicStatusChip label="Randomized" status="info" />
                             }
-                        </div>
-                    </div>
-                    <div className="mythic-metadata-grid">
+                        </MythicCluster>
+                    </MythicCluster>
+                    <MythicGrid component="div" gap="sm" columns="custom" className="mythic-metadata-grid mythic-min-width-0">
                         <ParameterMetadataItem label="Scripting / Building Name" value={param.name} code />
                         <ParameterMetadataItem label="Default Value" value={param.default_value} code />
                         <ParameterMetadataItem label="Required" value={param.required} />
@@ -77,9 +79,9 @@ export function BuildParameterList({parameters}) {
                         {param.randomize &&
                             <ParameterMetadataItem label="Format String" value={param.format_string} code />
                         }
-                    </div>
-                </div>
+                    </MythicGrid>
+                </MythicPanel>
             ))}
-        </div>
+        </MythicGrid>
     );
 }

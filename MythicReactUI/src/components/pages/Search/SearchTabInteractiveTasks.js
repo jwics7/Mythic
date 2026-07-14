@@ -1,7 +1,8 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import {Link} from '@mui/material';
 import React from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {useTheme} from '@mui/material/styles';
+
 import { gql, useQuery } from '@apollo/client';
 import {ColoredTaskLabel, StyledPaper, classes, StyledAccordionSummary, accordionClasses} from '../Callbacks/TaskDisplay';
 import {formatInteractiveTerminalEntries} from '../Callbacks/ResponseDisplayInteractive';
@@ -24,7 +25,7 @@ query subResponsesQuery($task_id: Int!, $task_processing_time: timestamp!, $resp
   }
 }`;
 export const TaskDisplayInteractiveSearch = ({me, task}) => {
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const [taskDisplayID, setTaskDisplayID] = React.useState("");
     const responsesSurrounding = 5;
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
@@ -70,11 +71,11 @@ export const TaskDisplayInteractiveSearch = ({me, task}) => {
                                       expanded={dropdownOpen}
                     />
                 </StyledAccordionSummary>
-                    <span style={{backgroundColor: theme.tableHeader, position: "relative",
+                    <span style={{backgroundColor: theme.color.table.header, position: "relative",
                         width: "100%", left: "25%"}}>
                         Output is an approximation in time surrounding when the task was issued. Full task:
                         <MythicStyledTooltip title={"View Parent Task in separate page"} >
-                            <Link style={{wordBreak: "break-all"}} color={"textPrimary"} underline={"always"} target={"_blank"}
+                            <Link color={"textPrimary"} underline={"always"} target={"_blank"}
                                   href={"/new/task/" + taskDisplayID}>{taskDisplayID}</Link>
                           </MythicStyledTooltip>
                     </span>

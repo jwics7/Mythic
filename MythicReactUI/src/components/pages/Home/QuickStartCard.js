@@ -1,5 +1,4 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -8,44 +7,9 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import { red } from '@mui/material/colors';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from '@mui/material';
-
-const PREFIX = 'QuickStartCard';
-
-const classes = {
-  root: `${PREFIX}-root`,
-  expand: `${PREFIX}-expand`,
-  expandOpen: `${PREFIX}-expandOpen`,
-  avatar: `${PREFIX}-avatar`
-};
-
-const StyledCard = styled(Card)((
-  {
-    theme
-  }
-) => ({
-  [`&.${classes.root}`]: {
-    width: `100%`,
-  },
-
-  [`& .${classes.expand}`]: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-
-  [`& .${classes.expandOpen}`]: {
-    transform: 'rotate(180deg)',
-  },
-
-  [`& .${classes.avatar}`]: {
-    backgroundColor: red[500],
-  }
-}));
+import styles from './QuickStartCard.module.css';
 
 export function QuickStartCard() {
 
@@ -55,10 +19,10 @@ export function QuickStartCard() {
   };
 
   return (
-    <StyledCard className={classes.root} elevation={5}>
+    <Card className="mythic-full-width" elevation={5}>
       <CardHeader
         avatar={
-          <Avatar className={classes.avatar}>
+          <Avatar className={styles.avatar}>
             
           </Avatar>
         }
@@ -68,8 +32,8 @@ export function QuickStartCard() {
       />
       <CardActions styl={{padding: 0, margin: 0}}>
         <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
+          className={clsx(styles.expand, {
+            [styles.expandOpen]: expanded,
           })}
           onClick={handleExpandClick}
           aria-expanded={expanded}
@@ -82,7 +46,7 @@ export function QuickStartCard() {
         <CardContent style={{margin: 0, paddingTop: 0}}>
           <ol>
             <li>
-              Create a payload at <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" href={"/new/createpayload"}>Create -> Create Payload</Link>
+              Create a payload at <Link color="textPrimary" underline="always" target="_blank" href={"/new/createpayload"}>Create -> Create Payload</Link>
               <ul>
                 <li>Select Desired OS</li>
                 <li>Select Payload Type and Supply Build Parameters</li>
@@ -93,16 +57,16 @@ export function QuickStartCard() {
                 <li>Build Your Payload</li>
               </ul>
             </li>
-            <li>Download Your Payload at <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" href={"/new/payloads"}>Operational Data -> Payloads</Link></li>
+            <li>Download Your Payload at <Link color="textPrimary" underline="always" target="_blank" href={"/new/payloads"}>Operational Data -> Payloads</Link></li>
             <li>Run Your payload
               <ul>
-                <li>For More Information About Your Agent, Check Out The <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" href={"/docs/agents"}>Internal Documentation</Link></li>
+                <li>For More Information About Your Agent, Check Out The <Link color="textPrimary" underline="always" target="_blank" href={"/docs/agents"}>Internal Documentation</Link></li>
               </ul>
             </li>
-            <li>Interact With Your Agent At <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" href={"/new/callbacks"}>Active Callbacks</Link></li>
+            <li>Interact With Your Agent At <Link color="textPrimary" underline="always" target="_blank" href={"/new/callbacks"}>Active Callbacks</Link></li>
           </ol>
         </CardContent>
       </Collapse>
-    </StyledCard>
+    </Card>
   );
 }

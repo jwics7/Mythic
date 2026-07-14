@@ -19,6 +19,7 @@ import {
     MythicDialogSection,
     MythicFormField
 } from "../../MythicComponents/MythicDialogLayout";
+import {MythicCluster, MythicStack, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
 
 const getP2PProfilesAndCallbacks = gql`
 query getP2PProfilesAndCallbacks{
@@ -37,19 +38,19 @@ query getP2PProfilesAndCallbacks{
 }
 `;
 const CallbackSummary = ({callback, label}) => (
-    <Box className="mythic-c2-edge-callback-summary">
+    <MythicStack gap="none" align="start" className="mythic-c2-edge-callback-summary mythic-justify-center mythic-border-radius mythic-border mythic-surface">
         {label &&
-            <Typography component="div" className="mythic-c2-edge-summary-label">
+            <Typography component="div" className="mythic-c2-edge-summary-label mythic-text-secondary mythic-font-size-xs mythic-font-weight-heavy mythic-line-height-compact">
                 {label}
             </Typography>
         }
-        <Box className="mythic-c2-edge-summary-main">
-            <span className="mythic-c2-edge-callback-id">#{callback?.display_id}</span>
-            <span className="mythic-c2-edge-summary-description">
+        <MythicCluster gap="xs" className="mythic-c2-edge-summary-main">
+            <span className="mythic-c2-edge-callback-id mythic-font-weight-heavy mythic-font-size-body-small mythic-text-primary">#{callback?.display_id}</span>
+            <MythicTruncatedText component="span" className="mythic-c2-edge-summary-description mythic-font-size-small mythic-text-secondary">
                 {callback?.description || "No description"}
-            </span>
-        </Box>
-    </Box>
+            </MythicTruncatedText>
+        </MythicCluster>
+    </MythicStack>
 );
 const getDestinationOptions = (profiles, sourceId) => {
     const destinations = new Map();
@@ -121,7 +122,7 @@ export function ManuallyAddEdgeDialog(props) {
     if (loading) {
      return (
         <>
-            <DialogTitle className="mythic-accent-dialog-title">Add P2P Edge</DialogTitle>
+            <DialogTitle className="mythic-accent-dialog-title mythic-relative">Add P2P Edge</DialogTitle>
             <DialogContent dividers={true}>
                 <LinearProgress />
             </DialogContent>
@@ -132,7 +133,7 @@ export function ManuallyAddEdgeDialog(props) {
      console.error(error);
      return (
         <>
-            <DialogTitle className="mythic-accent-dialog-title">Add P2P Edge</DialogTitle>
+            <DialogTitle className="mythic-accent-dialog-title mythic-relative">Add P2P Edge</DialogTitle>
             <DialogContent dividers={true}>
                 <MythicDialogBody>
                     <MythicDialogSection title="Unable to load edge options" description={error.message} />
@@ -146,17 +147,17 @@ export function ManuallyAddEdgeDialog(props) {
     }
   return (
     <>
-        <DialogTitle className="mythic-accent-dialog-title">
-            <div className="mythic-dialog-title-row">
+        <DialogTitle className="mythic-accent-dialog-title mythic-relative">
+            <MythicCluster component="div" gap="md" justify="between" className="mythic-dialog-title-row">
                 <div>
-                    <Typography component="div" className="mythic-c2-action-title-text">
+                    <Typography component="div" className="mythic-c2-action-title-text mythic-font-weight-heavy mythic-line-height-tight">
                         Add P2P Edge
                     </Typography>
-                    <Typography component="div" className="mythic-c2-action-title-subtitle">
+                    <Typography component="div" className="mythic-c2-action-title-subtitle mythic-font-size-small mythic-line-height-normal">
                         Create a manual route from callback {props.source.display_id} through a peer-to-peer C2 profile.
                     </Typography>
                 </div>
-            </div>
+            </MythicCluster>
         </DialogTitle>
         <DialogContent dividers={true}>
             <MythicDialogBody>

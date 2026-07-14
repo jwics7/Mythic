@@ -1,3 +1,4 @@
+import MenuItem from '@mui/material/MenuItem';
 import React, {} from 'react';
 import {
     EventingStatusChip,
@@ -13,7 +14,6 @@ import AccessAlarmTwoToneIcon from '@mui/icons-material/AccessAlarmTwoTone';
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
 import ReplayIcon from '@mui/icons-material/Replay';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import IconButton from '@mui/material/IconButton';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Moment from 'react-moment';
 import moment from 'moment';
@@ -24,7 +24,7 @@ import IosShareIcon from '@mui/icons-material/IosShare';
 import RuleTwoToneIcon from '@mui/icons-material/RuleTwoTone';
 import {copyStringToClipboard} from "../../utilities/Clipboard";
 import {ipCompare} from "../Callbacks/CallbacksTable";
-import MythicResizableGrid from "../../MythicComponents/MythicResizableGrid";
+import MythicResizableGrid from "../../MythicComponents/MythicResizableGrid/MythicResizableGrid";
 import {CallbacksTableStringCell} from "../Callbacks/CallbacksTableRow";
 import {GetComputedFontSize} from "../../MythicComponents/MythicSavedUserSetting";
 import {
@@ -33,7 +33,9 @@ import {
     gridValuePassesFilter,
     isGridColumnFilterActive
 } from "../../MythicComponents/MythicResizableGrid/GridColumnFilterDialog";
-import {Dropdown, DropdownMenuItem} from "../../MythicComponents/MythicNestedMenus";
+import {Dropdown} from "../../MythicComponents/MythicNestedMenus";
+import {MythicStack, MythicCluster, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 const cancelEventGroupInstanceMutation = gql(`
 mutation cancelEventGroupInstanceMutation($eventgroupinstance_id: Int!){
@@ -91,17 +93,17 @@ export const adjustOutput = (e, newTime) => {
 }
 
 const EventingGridCell = ({children, className = "", rowData}) => (
-    <div className={`mythic-eventing-instance-cell ${className}`.trim()} data-selected={rowData?.selected ? "true" : undefined}>
+    <div className={`mythic-eventing-instance-cell mythic-flex mythic-min-width-0 mythic-full-width mythic-align-center ${className}`.trim()} data-selected={rowData?.selected ? "true" : undefined}>
         {children}
     </div>
 );
 const eventingInstanceMenuIconStyle = {fontSize: "1rem", marginRight: "8px"};
 const EventingInstanceIdCell = ({onOpenMenu, rowData}) => (
-    <EventingGridCell className="mythic-eventing-instance-id-cell" rowData={rowData}>
-        <span className="mythic-eventing-instance-id">{rowData.id}</span>
-        <IconButton
+    <EventingGridCell className="mythic-eventing-instance-id-cell mythic-justify-between mythic-gap-xs" rowData={rowData}>
+        <MythicTruncatedText component="span" className="mythic-eventing-instance-id mythic-font-weight-heavy mythic-text-primary">{rowData.id}</MythicTruncatedText>
+        <MythicActionButton iconOnly tone="info"
             aria-haspopup="menu"
-            className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info mythic-eventing-instance-id-menu-button"
+            className="mythic-eventing-instance-id-menu-button mythic-flex-fixed"
             onClick={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
@@ -110,7 +112,7 @@ const EventingInstanceIdCell = ({onOpenMenu, rowData}) => (
             size="small"
         >
             <ArrowDropDownIcon fontSize="small" />
-        </IconButton>
+        </MythicActionButton>
     </EventingGridCell>
 );
 
@@ -434,12 +436,12 @@ function EventGroupInstancesTableMaterialReactTablePreMemo({eventgroups, me, set
                         return <CallbacksTableStringCell rowData={selectedRow} cellData={row.trigger} />
                     case "Time":
                         return (
-                            <EventingGridCell className="mythic-eventing-instances-time-cell" rowData={selectedRow}>
-                                <div className="mythic-eventing-instances-time-line">
+                            <MythicStack component={EventingGridCell} gap="none" align="start" className="mythic-eventing-instances-time-cell mythic-justify-center mythic-full-width mythic-overflow-hidden" rowData={selectedRow}>
+                                <MythicCluster component="div" gap="sm" align="center" wrap={false} className="mythic-eventing-instances-time-line mythic-line-height-snug mythic-truncate">
                                     <CalendarMonthTwoToneIcon fontSize="small" />
                                     {toLocalTime(row?.created_at, me?.user?.view_utc_time)}
-                                </div>
-                                <div className="mythic-eventing-instances-time-line mythic-eventing-instances-time-secondary">
+                                </MythicCluster>
+                                <MythicCluster component="div" gap="sm" align="center" wrap={false} className="mythic-eventing-instances-time-line mythic-line-height-snug mythic-eventing-instances-time-secondary mythic-font-size-small mythic-truncate mythic-text-secondary">
                                     <AccessAlarmTwoToneIcon fontSize="small" />
                                     {row.end_timestamp === null &&
                                         <Moment filter={(newTime) => adjustOutput(row, newTime)} interval={1000}
@@ -460,8 +462,8 @@ function EventGroupInstancesTableMaterialReactTablePreMemo({eventgroups, me, set
                                             {row.created_at + "Z"}
                                         </Moment>
                                     }
-                                </div>
-                            </EventingGridCell>
+                                </MythicCluster>
+                            </MythicStack>
                         )
                     case "Operator":
                         return <CallbacksTableStringCell rowData={selectedRow} cellData={row?.operator?.username} />
@@ -507,7 +509,7 @@ function EventGroupInstancesTableMaterialReactTablePreMemo({eventgroups, me, set
         return getInstanceMenuOptions(rowDataStatic);
     }
     return (
-        <div className="mythic-eventing-instances-grid">
+        <MythicCluster component="div" gap="none" wrap={false} align="stretch" className="mythic-eventing-instances-grid mythic-relative mythic-fill mythic-full-width mythic-overflow-hidden mythic-full-height">
             <MythicResizableGrid
                 name={"eventing_instances_table"}
                 callbackTableGridRef={callbackTableGridRef}
@@ -546,14 +548,14 @@ function EventGroupInstancesTableMaterialReactTablePreMemo({eventgroups, me, set
                         minWidth={250}
                         menu={
                             instanceDropdownRef.current.options.map((option, index) => (
-                                <DropdownMenuItem
+                                <MenuItem
                                     key={"eventing-instance-action-" + index}
                                     className={option.className}
                                     disabled={option.disabled}
                                     onClick={(event) => handleInstanceMenuItemClick(event, option.click)}
                                 >
                                     {option.icon}{option.name}
-                                </DropdownMenuItem>
+                                </MenuItem>
                             ))
                         }
                     />
@@ -609,7 +611,7 @@ function EventGroupInstancesTableMaterialReactTablePreMemo({eventgroups, me, set
                                   />}
                 />
             }
-        </div>
+        </MythicCluster>
 
     )
 }

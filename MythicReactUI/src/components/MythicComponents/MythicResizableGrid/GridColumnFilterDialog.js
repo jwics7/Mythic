@@ -1,5 +1,5 @@
 import React from 'react';
-import Box from '@mui/material/Box';
+
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
+import {MythicStack, MythicCluster, MythicGrid} from "../MythicLayout";
 
 const DEFAULT_FILTER = {
     include: [],
@@ -117,16 +118,16 @@ export function GridColumnFilterDialog({filterValue, onClose, onSubmit, selected
         }
     };
     return (
-        <div className="mythic-grid-filter-dialog">
-            <DialogTitle className="mythic-grid-filter-dialog-title">
+        <div className="mythic-grid-filter-dialog mythic-text-primary mythic-surface-raised">
+            <DialogTitle className="mythic-grid-filter-dialog-title mythic-divider-bottom">
                 Filter {columnName}
             </DialogTitle>
-            <DialogContent className="mythic-grid-filter-dialog-content">
-                <Typography className="mythic-grid-filter-dialog-copy" component="div">
+            <MythicStack component={DialogContent} gap="none" className="mythic-grid-filter-dialog-content">
+                <Typography className="mythic-grid-filter-dialog-copy mythic-font-size-small mythic-font-weight-semibold mythic-line-height-normal mythic-text-secondary" component="div">
                     Add one term per line, or separate terms with commas. Include terms decide what can stay visible; exclude terms remove matching rows.
                 </Typography>
-                <Box className="mythic-grid-filter-dialog-mode-row">
-                    <Typography className="mythic-grid-filter-dialog-label" component="div">
+                <MythicCluster gap="md" align="center" justify="between" wrap={false} className="mythic-grid-filter-dialog-mode-row">
+                    <Typography className="mythic-grid-filter-dialog-label mythic-font-size-small mythic-font-weight-extra-bold mythic-text-primary" component="div">
                         Include matching
                     </Typography>
                     <ToggleButtonGroup
@@ -138,8 +139,8 @@ export function GridColumnFilterDialog({filterValue, onClose, onSubmit, selected
                         <ToggleButton value="any">Any</ToggleButton>
                         <ToggleButton value="all">All</ToggleButton>
                     </ToggleButtonGroup>
-                </Box>
-                <div className="mythic-grid-filter-dialog-fields">
+                </MythicCluster>
+                <MythicGrid component="div" gap="none" columns="custom" className="mythic-grid-filter-dialog-fields">
                     <TextField
                         fullWidth
                         label="Include rows matching"
@@ -158,7 +159,7 @@ export function GridColumnFilterDialog({filterValue, onClose, onSubmit, selected
                         placeholder={"debug\ntest"}
                         value={excludeText}
                     />
-                </div>
+                </MythicGrid>
                 <FormControlLabel
                     control={
                         <Switch
@@ -169,8 +170,8 @@ export function GridColumnFilterDialog({filterValue, onClose, onSubmit, selected
                     }
                     label="Case sensitive"
                 />
-            </DialogContent>
-            <DialogActions className="mythic-grid-filter-dialog-actions">
+            </MythicStack>
+            <DialogActions className="mythic-grid-filter-dialog-actions mythic-divider-top">
                 <Button onClick={handleClear}>Clear</Button>
                 <Button onClick={onClose}>Cancel</Button>
                 <Button onClick={handleSubmit} variant="contained">Apply Filter</Button>

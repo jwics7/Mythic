@@ -1,17 +1,16 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import ToggleButton from '@mui/material/ToggleButton';
 import Tooltip from '@mui/material/Tooltip';
 import SearchIcon from '@mui/icons-material/Search';
 import MythicTextField from './MythicTextField';
+import {MythicActionButton} from "./MythicContent";
 
 export const MythicTableToolbar = ({children, className = "", style = {}, variant}) => {
     return (
-        <Box className={`mythic-table-toolbar ${variant ? `mythic-table-toolbar-${variant}` : ""} ${className}`.trim()} style={style}>
+        <Box className={`mythic-table-toolbar mythic-gap-sm mythic-flex mythic-border-radius mythic-border mythic-full-width mythic-surface-muted mythic-wrap mythic-flex-fixed ${variant ? `mythic-flex mythic-border-radius mythic-border mythic-full-width mythic-surface-muted mythic-wrap mythic-flex-fixed mythic-table-toolbar-${variant}` : ""} ${className}`.trim()} style={style}>
             {children}
         </Box>
     );
@@ -19,9 +18,9 @@ export const MythicTableToolbar = ({children, className = "", style = {}, varian
 
 export const MythicTableToolbarGroup = ({children, grow = false, label, className = "", style = {}}) => {
     return (
-        <Box className={`mythic-table-toolbar-group ${grow ? "mythic-table-toolbar-group-grow" : ""} ${className}`.trim()} style={style}>
+        <Box className={`mythic-table-toolbar-group mythic-gap-sm mythic-max-width-full mythic-flex mythic-align-center mythic-wrap ${grow ? "mythic-table-toolbar-group-grow" : ""} ${className}`.trim()} style={style}>
             {label &&
-                <span className="mythic-table-toolbar-group-label">{label}</span>
+                <span className="mythic-table-toolbar-group-label mythic-font-size-xs mythic-font-weight-extra-bold mythic-line-height-compact mythic-text-secondary">{label}</span>
             }
             {children}
         </Box>
@@ -31,7 +30,7 @@ export const MythicTableToolbarGroup = ({children, grow = false, label, classNam
 export const MythicToolbarSelect = ({children, className = "", style = {}, ...props}) => {
     return (
         <Select
-            className={`mythic-toolbar-select ${className}`.trim()}
+            className={`mythic-toolbar-select mythic-full-width ${className}`.trim()}
             size="small"
             style={style}
             {...props}
@@ -40,8 +39,6 @@ export const MythicToolbarSelect = ({children, className = "", style = {}, ...pr
         </Select>
     );
 };
-
-export const MythicToolbarMenuItem = MenuItem;
 
 export const MythicSearchField = ({
     value,
@@ -75,7 +72,7 @@ export const MythicSearchField = ({
                         <Tooltip title="Search">
                             <span>
                                 <IconButton
-                                    className="mythic-toolbar-icon-button"
+                                    className="mythic-toolbar-icon-button mythic-text-secondary"
                                     disabled={disabled}
                                     onClick={onSearch}
                                     size="small"
@@ -93,11 +90,11 @@ export const MythicSearchField = ({
     );
 };
 
-export const MythicToolbarButton = ({children, className = "", ...props}) => {
+export const MythicToolbarButton = ({children, className = "", tone = "neutral", ...props}) => {
     return (
-        <Button className={`mythic-toolbar-button ${className}`.trim()} size="small" {...props}>
+        <MythicActionButton className={`mythic-toolbar-button mythic-nowrap ${className}`.trim()} tone={tone} size="small" {...props}>
             {children}
-        </Button>
+        </MythicActionButton>
     );
 };
 
@@ -115,7 +112,7 @@ export const MythicToolbarToggle = ({
 }) => {
     return (
         <ToggleButton
-            className={`mythic-toolbar-toggle ${className}`.trim()}
+            className={`mythic-toolbar-toggle mythic-gap-xs mythic-nowrap mythic-border mythic-border-radius mythic-text-secondary ${className}`.trim()}
             value={value}
             selected={checked}
             onClick={onClick}

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Chip, IconButton, Link, Typography} from '@mui/material';
+import {Chip, Link, Typography} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -39,6 +39,8 @@ import {
     credentialJWTIdentityKeys,
     credentialJWTMetadataKeys,
 } from './CredentialJWTDisplay';
+import {MythicCluster, MythicStack, MythicGrid, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton, MythicPanel} from "../../MythicComponents/MythicContent";
 
 export {compactMetadataValue, getCredentialValidityChips, parseCredentialMetadata} from './CredentialDisplayComponents';
 
@@ -221,17 +223,17 @@ export function CredentialTable(props){
     const selectedCredential = credentials.find((credential) => credential.id === selectedCredentialID) || null;
 
     return (
-        <Split
+        <MythicCluster component={Split} gap="none" wrap={false} align="stretch"
             direction="horizontal"
-            className="mythic-credential-search"
+            className="mythic-credential-search mythic-fill mythic-overflow-hidden mythic-full-height"
             sizes={credentialSearchSplitSizes}
             minSize={[420, 360]}
             gutterSize={8}
             snapOffset={0}
             onDragEnd={onCredentialSearchSplitDragEnd}>
-            <div className="mythic-credential-search-results">
-                <TableContainer className="mythic-credential-search-table-wrap">
-                    <Table stickyHeader size="small" className="mythic-credential-search-table">
+            <MythicPanel component="div" density="flush" tone="muted" overflow="hidden" radius="md" className="mythic-credential-search-results mythic-min-height-0 mythic-full-height">
+                <TableContainer className="mythic-credential-search-table-wrap mythic-full-height mythic-overflow-auto">
+                    <Table stickyHeader size="small" className="mythic-credential-search-table mythic-full-width">
                         <TableHead>
                             <TableRow>
                                 <TableCell style={{width: "5rem"}}>ID</TableCell>
@@ -258,14 +260,14 @@ export function CredentialTable(props){
                         </TableBody>
                     </Table>
                 </TableContainer>
-            </div>
+            </MythicPanel>
             <CredentialInspector
                 credential={selectedCredential}
                 me={props.me}
                 onEditCredential={onEditCredential}
                 readOnly={props.readOnly}
             />
-        </Split>
+        </MythicCluster>
     )
 }
 
@@ -285,46 +287,46 @@ export function CredentialSearchRow({credential, selected, onSelect}){
         <TableRow
             hover
             selected={selected}
-            className={`mythic-credential-search-row ${selected ? "mythic-credential-search-row-selected" : ""}`}
+            className={`mythic-credential-search-row mythic-clickable ${selected ? "mythic-credential-search-row-selected" : ""}`}
             onClick={onSelect}>
-            <TableCell>
-                <div className="mythic-credential-search-id-cell">
-                    <span className="mythic-credential-search-id">#{credential.id}</span>
+            <TableCell className="mythic-overflow-hidden">
+                <MythicCluster component="div" gap="xs" className="mythic-credential-search-id-cell">
+                    <span className="mythic-credential-search-id mythic-font-size-small mythic-monospace mythic-font-weight-heavy mythic-text-primary">#{credential.id}</span>
                     {credential.deleted &&
-                        <Chip size="small" color="warning" variant="outlined" label="deleted" className="mythic-credential-search-mini-chip" />
+                        <Chip size="small" color="warning" variant="outlined" label="deleted" className="mythic-credential-search-mini-chip mythic-max-width-full" />
                     }
-                </div>
+                </MythicCluster>
             </TableCell>
-            <TableCell>
-                <div className="mythic-credential-search-primary-cell">
-                    <span title={primaryLabel}>{primaryLabel}</span>
-                    <span title={secondaryLabel}>{secondaryLabel}</span>
-                    <span className="mythic-credential-search-row-flags">
-                        {hasComment && <Chip size="small" variant="outlined" label="comment" className="mythic-credential-search-mini-chip" />}
-                        {hasMetadata && <Chip size="small" variant="outlined" label="metadata" className="mythic-credential-search-mini-chip mythic-credential-search-metadata-chip" />}
-                        {hasIdentity && <Chip size="small" variant="outlined" label="identity" className="mythic-credential-search-mini-chip mythic-credential-search-identity-chip" />}
-                    </span>
-                </div>
+            <TableCell className="mythic-overflow-hidden">
+                <MythicGrid component="div" gap="none" columns="custom" className="mythic-credential-search-primary-cell mythic-min-width-0">
+                    <MythicTruncatedText component="span" className="mythic-text-primary mythic-font-weight-extra-bold" title={primaryLabel}>{primaryLabel}</MythicTruncatedText>
+                    <MythicTruncatedText component="span" className="mythic-text-secondary" title={secondaryLabel}>{secondaryLabel}</MythicTruncatedText>
+                    <MythicCluster component="span" gap="xs" align="center" className="mythic-credential-search-row-flags">
+                        {hasComment && <Chip size="small" variant="outlined" label="comment" className="mythic-credential-search-mini-chip mythic-max-width-full" />}
+                        {hasMetadata && <Chip size="small" variant="outlined" label="metadata" className="mythic-credential-search-mini-chip mythic-max-width-full mythic-credential-search-metadata-chip" />}
+                        {hasIdentity && <Chip size="small" variant="outlined" label="identity" className="mythic-credential-search-mini-chip mythic-max-width-full mythic-credential-search-identity-chip" />}
+                    </MythicCluster>
+                </MythicGrid>
             </TableCell>
-            <TableCell>
-                <Chip size="small" variant="outlined" label={credential.type || "unknown"} className="mythic-credential-search-type-chip" />
+            <TableCell className="mythic-overflow-hidden">
+                <Chip size="small" variant="outlined" label={credential.type || "unknown"} className="mythic-credential-search-type-chip mythic-max-width-full" />
                 {credential.subtype !== "" &&
-                    <Chip size="small" variant="outlined" label={credential.subtype} className="mythic-credential-search-type-chip" />
+                    <Chip size="small" variant="outlined" label={credential.subtype} className="mythic-credential-search-type-chip mythic-max-width-full" />
                 }
             </TableCell>
-            <TableCell>
-                <div className="mythic-credential-search-chip-list">
+            <TableCell className="mythic-overflow-hidden">
+                <MythicCluster component="div" gap="xs" className="mythic-credential-search-chip-list">
                     {validityChips.length > 0 ? (
                         validityChips.slice(0, 2).map((chip) => (
-                            <Chip key={chip.label} size="small" color={chip.color} variant="outlined" label={chip.label} className="mythic-credential-search-mini-chip" />
+                            <Chip key={chip.label} size="small" color={chip.color} variant="outlined" label={chip.label} className="mythic-credential-search-mini-chip mythic-max-width-full" />
                         ))
                     ) : (
-                        <span className="mythic-credential-search-muted">-</span>
+                        <span className="mythic-credential-search-muted mythic-font-size-caption mythic-text-secondary">-</span>
                     )}
-                </div>
+                </MythicCluster>
             </TableCell>
-            <TableCell>
-                <span className="mythic-credential-search-source" title={sourceLabel}>{sourceLabel}</span>
+            <TableCell className="mythic-overflow-hidden">
+                <MythicTruncatedText component="span" className="mythic-credential-search-source mythic-font-size-caption mythic-block mythic-text-secondary" title={sourceLabel}>{sourceLabel}</MythicTruncatedText>
             </TableCell>
         </TableRow>
     )
@@ -369,10 +371,10 @@ export function CredentialInspector(props){
 
     if(credential === null){
         return (
-            <aside className="mythic-credential-search-inspector mythic-credential-search-inspector-empty">
+            <MythicStack component="aside" gap="sm" align="center" className="mythic-credential-search-inspector mythic-credential-search-inspector-empty mythic-justify-center mythic-border mythic-overflow-hidden mythic-min-height-0 mythic-full-height mythic-border-radius mythic-surface-muted mythic-text-secondary">
                 <VpnKeyIcon fontSize="small" />
                 <Typography variant="body2">No credential selected</Typography>
-            </aside>
+            </MythicStack>
         )
     }
 
@@ -425,7 +427,7 @@ export function CredentialInspector(props){
     }
 
     return (
-        <aside className="mythic-credential-search-inspector">
+        <MythicStack component="aside" gap="none" className="mythic-credential-search-inspector mythic-border mythic-overflow-hidden mythic-min-height-0 mythic-full-height mythic-border-radius mythic-surface-muted">
             {openDeleteDialog &&
                 <MythicConfirmDialog onClose={() => {setOpenDeleteDialog(false);}} onSubmit={onAcceptDelete} open={openDeleteDialog} acceptText={credential.deleted ? "Restore" : "Remove" }/>
             }
@@ -435,36 +437,36 @@ export function CredentialInspector(props){
                     innerDialog={<CredentialTableNewCredentialDialog title="Edit Credential" submitText="Update" initialValues={credential} onSubmit={onSubmitUpdatedCredential} onClose={()=>{setEditCredentialDialogOpen(false);}} />}
                 />
             }
-            <div className="mythic-credential-search-inspector-header">
-                <div className="mythic-credential-search-inspector-title">
+            <MythicCluster component="div" gap="md" align="start" justify="between" wrap={false} className="mythic-credential-search-inspector-header mythic-divider-bottom">
+                <MythicCluster component="div" gap="xs" fill className="mythic-credential-search-inspector-title mythic-font-weight-heavy mythic-font-size-body mythic-text-primary">
                     <VpnKeyIcon fontSize="small" />
-                    <span title={`Credential ${credential.id}`}>Credential {credential.id}</span>
-                    <Chip size="small" variant="outlined" label={"type: " + credential.type} className="mythic-credential-search-mini-chip" />
+                    <MythicTruncatedText component="span"  title={`Credential ${credential.id}`}>Credential {credential.id}</MythicTruncatedText>
+                    <Chip size="small" variant="outlined" label={"type: " + credential.type} className="mythic-credential-search-mini-chip mythic-max-width-full" />
                     {credential.subtype !== "" &&
-                        <Chip size="small" variant="outlined" label={"subtype: " + credential.subtype} className="mythic-credential-search-mini-chip" />
+                        <Chip size="small" variant="outlined" label={"subtype: " + credential.subtype} className="mythic-credential-search-mini-chip mythic-max-width-full" />
                     }
                     {credential.deleted &&
-                        <Chip size="small" color="warning" variant="outlined" label="deleted" className="mythic-credential-search-mini-chip" />
+                        <Chip size="small" color="warning" variant="outlined" label="deleted" className="mythic-credential-search-mini-chip mythic-max-width-full" />
                     }
-                </div>
+                </MythicCluster>
                 {!props.readOnly &&
-                <div className="mythic-credential-search-inspector-actions">
-                    <Button className="mythic-table-row-action" size="small" variant="outlined"
+                <MythicCluster component="div" gap="xs" align="center" justify="end" className="mythic-credential-search-inspector-actions mythic-flex-fixed">
+                    <MythicActionButton tone="neutral"  size="small" variant="outlined"
                         startIcon={<EditIcon fontSize="small" />}
-                        onClick={() => setEditCredentialDialogOpen(true)} >Edit</Button>
+                        onClick={() => setEditCredentialDialogOpen(true)} >Edit</MythicActionButton>
                     {credential.deleted ? (
                         <MythicStyledTooltip title="Restore Credential for use in Tasking">
-                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-success" size="small" onClick={()=>{setOpenDeleteDialog(true);}}><RestoreFromTrashIcon fontSize="small" /></IconButton>
+                            <MythicActionButton iconOnly tone="success" emphasis="always"  size="small" onClick={()=>{setOpenDeleteDialog(true);}}><RestoreFromTrashIcon fontSize="small" /></MythicActionButton>
                         </MythicStyledTooltip>
                     ) : (
                         <MythicStyledTooltip title="Delete Credential so it can't be used in Tasking">
-                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={()=>{setOpenDeleteDialog(true);}}><DeleteIcon fontSize="small" /></IconButton>
+                            <MythicActionButton iconOnly tone="error"  size="small" onClick={()=>{setOpenDeleteDialog(true);}}><DeleteIcon fontSize="small" /></MythicActionButton>
                         </MythicStyledTooltip>
                     )}
-                </div>
+                </MythicCluster>
                 }
-            </div>
-            <div className="mythic-credential-search-inspector-body">
+            </MythicCluster>
+            <MythicStack component="div" gap="sm" scroll className="mythic-credential-search-inspector-body mythic-flex-fill">
                 <CredentialInspectorSection title="Credential Fields">
                     <CredentialDetail label="Account" value={credential.account} emphasis />
                     <CredentialDetail
@@ -473,9 +475,9 @@ export function CredentialInspector(props){
                         code
                         action={
                             <MythicStyledTooltip title={"Copy credential ID for tasking"}>
-                                <IconButton className="mythic-credential-search-field-action mythic-table-row-icon-action mythic-table-row-icon-action-info" onClick={() => onCopyToClipboard(String(credential.id))} size="small">
+                                <MythicActionButton iconOnly tone="info" emphasis="always" className="mythic-credential-search-field-action mythic-flex-fixed" onClick={() => onCopyToClipboard(String(credential.id))} size="small">
                                     <FontAwesomeIcon icon={faCopy}/>
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                         }
                     />
@@ -500,11 +502,11 @@ export function CredentialInspector(props){
                             <Chip key={chip.label} size="small" color={chip.color} variant="outlined" label={chip.label} />
                         ))}
                         {warningValues.length > 0 &&
-                            <div className="mythic-credential-search-warning-list">
+                            <MythicCluster component="div" gap="xs" align="stretch" className="mythic-credential-search-warning-list mythic-grid-span-full">
                                 {warningValues.map((warning, index) => (
-                                    <Chip key={`warning-${index}`} size="small" color="warning" variant="outlined" label={compactMetadataValue(warning)} className="mythic-credential-search-warning-chip" />
+                                    <Chip key={`warning-${index}`} size="small" color="warning" variant="outlined" label={compactMetadataValue(warning)} className="mythic-credential-search-warning-chip mythic-max-width-full" />
                                 ))}
-                            </div>
+                            </MythicCluster>
                         }
                     </CredentialInspectorSection>
                 }
@@ -514,16 +516,16 @@ export function CredentialInspector(props){
                         tone="metadata"
                         actions={
                             <MythicStyledTooltip title={"Copy metadata JSON"}>
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-info" onClick={() => onCopyToClipboard(JSON.stringify(pureMetadata, null, 2))} size="small">
+                                <MythicActionButton iconOnly tone="info" emphasis="always"  onClick={() => onCopyToClipboard(JSON.stringify(pureMetadata, null, 2))} size="small">
                                     <FontAwesomeIcon icon={faCopy}/>
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                         }>
-                        <div className="mythic-credential-search-metadata-grid mythic-credential-search-metadata-grid-metadata">
+                        <MythicGrid component="div" gap="xs" columns="custom" className="mythic-credential-search-metadata-grid mythic-grid-span-full mythic-credential-search-metadata-grid-metadata mythic-min-width-0">
                             {pureMetadataEntries.map(([key, value]) => (
                                 <CredentialMetadataPair key={key} name={key} value={value}  />
                             ))}
-                        </div>
+                        </MythicGrid>
                     </CredentialInspectorSection>
                 }
                 {pureIdentityEntries.length > 0 &&
@@ -532,16 +534,16 @@ export function CredentialInspector(props){
                         tone="identity"
                         actions={
                             <MythicStyledTooltip title={"Copy identity JSON"}>
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-info" onClick={() => onCopyToClipboard(JSON.stringify(pureIdentity, null, 2))} size="small">
+                                <MythicActionButton iconOnly tone="info" emphasis="always"  onClick={() => onCopyToClipboard(JSON.stringify(pureIdentity, null, 2))} size="small">
                                     <FontAwesomeIcon icon={faCopy}/>
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                         }>
-                        <div className="mythic-credential-search-metadata-grid mythic-credential-search-metadata-grid-identity">
+                        <MythicGrid component="div" gap="xs" columns="custom" className="mythic-credential-search-metadata-grid mythic-grid-span-full mythic-credential-search-metadata-grid-identity mythic-min-width-0">
                             {pureIdentityEntries.map(([key, value]) => (
                                 <CredentialMetadataPair key={key} name={key} value={value} tone="identity" />
                             ))}
-                        </div>
+                        </MythicGrid>
                     </CredentialInspectorSection>
                 }
 
@@ -567,32 +569,32 @@ export function CredentialInspector(props){
                     )}
                 </CredentialInspectorSection>
                 <CredentialInspectorSection title="Credential">
-                    <div className="mythic-credential-search-secret-row">
-                        <div className="mythic-credential-search-secret mythic-credential-search-secret-emphasis" title={credential.credential_text || ""}>
+                    <MythicGrid component="div" gap="xs" columns="custom" className="mythic-credential-search-secret-row mythic-align-start mythic-grid-span-full mythic-min-width-0">
+                        <MythicPanel component="div" density="flush" tone="surface" overflow="auto" radius="md" className="mythic-credential-search-secret mythic-monospace mythic-font-size-caption mythic-line-height-normal mythic-pre-wrap mythic-credential-search-secret-emphasis mythic-font-size-body-small mythic-font-weight-strong mythic-text-primary" title={credential.credential_text || ""}>
                             {credential.credential_text || "-"}
-                        </div>
+                        </MythicPanel>
                         <MythicStyledTooltip title={"Copy credential value"}>
-                            <IconButton className="mythic-credential-search-secret-copy mythic-table-row-icon-action mythic-table-row-icon-action-info" onClick={() => onCopyToClipboard(credential.credential_text || "")} size="small">
+                            <MythicActionButton iconOnly tone="info" emphasis="always" className="mythic-credential-search-secret-copy mythic-flex-fixed" onClick={() => onCopyToClipboard(credential.credential_text || "")} size="small">
                                 <FontAwesomeIcon icon={faCopy}/>
-                            </IconButton>
+                            </MythicActionButton>
                         </MythicStyledTooltip>
-                    </div>
+                    </MythicGrid>
                 </CredentialInspectorSection>
                 <CredentialInspectorSection title="Comment">
-                    <div className="mythic-credential-search-comment">
+                    <MythicPanel component="div" density="flush" tone="surface" overflow="auto" radius="md" className="mythic-credential-search-comment mythic-text-secondary mythic-grid-span-full mythic-font-size-caption mythic-line-height-normal mythic-pre-wrap mythic-text-primary">
                         {(credential.comment || "").trim().length > 0 ? credential.comment : "No comment."}
-                    </div>
+                    </MythicPanel>
                 </CredentialInspectorSection>
                 <CredentialInspectorSection title="Tags">
-                    <div className="mythic-credential-search-tags">
+                    <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-credential-search-tags mythic-grid-span-full mythic-border mythic-surface mythic-overflow-hidden mythic-border-radius">
                         <ViewEditTags
                             target_object={"credential_id"}
                             target_object_id={credential?.id || 0}
                             me={props.me}/>
                         <TagsDisplay tags={credential.tags || []}/>
-                    </div>
+                    </MythicCluster>
                 </CredentialInspectorSection>
-            </div>
-        </aside>
+            </MythicStack>
+        </MythicStack>
     )
 }

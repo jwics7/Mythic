@@ -1,0 +1,11 @@
+.row[data-state="hover"] {
+  background-color: var(--mythic-effect-table-rowHover);
+}
+
+.row[data-state="selected"] {
+  background-color: var(--mythic-effect-table-selected);
+}
+
+.row[data-state="selected-hierarchy"] {
+  background-color: var(--mythic-effect-table-selectedHierarchy);
+}

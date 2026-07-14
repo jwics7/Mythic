@@ -32,6 +32,7 @@ import {
     linkReferenceLookupVariablesKey,
     parseLinkReferences,
 } from './taskingReferencesLink';
+import {MythicStack, MythicCluster} from "../../MythicComponents/MythicLayout";
 
 const genericAliasReferenceRegex = /(^|[^A-Za-z0-9_-])@([A-Za-z][A-Za-z0-9_-]*)/g;
 const reservedTaskReferenceKeywords = new Set(["cred", "link"]);
@@ -132,7 +133,7 @@ const taskReferenceProviders = [
         },
         renderToken: (reference) => (
             <MythicStyledTooltip title={reference.raw}>
-                <span className="mythic-reference-token mythic-reference-token-keyword">{reference.raw}</span>
+                <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-reference-token mythic-clickable mythic-monospace mythic-font-size-small mythic-font-weight-bold mythic-max-width-full mythic-break-anywhere mythic-reference-token-keyword mythic-border-radius-sm">{reference.raw}</MythicCluster>
             </MythicStyledTooltip>
         ),
     },
@@ -375,41 +376,41 @@ function TaskReferenceConfirmationDialog({variables, references, taskReferenceCo
         <>
             <DialogTitle>Review Task References</DialogTitle>
             <DialogContent dividers>
-                <Box className="mythic-tasking-reference-review-context">
-                    <Typography component="div" className="mythic-tasking-reference-review-command">
+                <MythicStack gap="sm" className="mythic-tasking-reference-review-context">
+                    <Typography component="div" className="mythic-tasking-reference-review-command mythic-font-size-small mythic-font-weight-extra-bold mythic-text-secondary">
                         {variables?.command || "Task"} parameters
                     </Typography>
-                    <Box component="pre" className="mythic-tasking-reference-review-preview">
+                    <Box component="pre" className="mythic-tasking-reference-review-preview mythic-font-size-small mythic-monospace mythic-pre-wrap mythic-border-radius mythic-overflow-auto">
                         <TaskReferenceInlinePreview text={previewParams} taskReferenceContext={referenceContext} />
                     </Box>
-                </Box>
-                <Box className="mythic-tasking-reference-review-list">
+                </MythicStack>
+                <MythicStack gap="sm" className="mythic-tasking-reference-review-list">
                     {references.map((reference, index) => {
                         const resolvedValue = loadingCredentials && isCredentialReference(reference) && !referenceContext.credentialsByID[Number(reference.selector)] ?
                             "Loading" :
                             getTaskReferenceReviewValue(reference, referenceContext);
                         return (
-                            <Box key={`${reference.raw}-${index}`} className="mythic-tasking-reference-review-row">
-                                <Box className="mythic-tasking-reference-review-row-header">
+                            <MythicStack gap="sm" align="stretch" key={`${reference.raw}-${index}`} className="mythic-tasking-reference-review-row mythic-border-radius">
+                                <MythicCluster gap="sm" align="center" justify="between" wrap={false} className="mythic-tasking-reference-review-row-header">
                                     <TaskReferenceToken reference={reference} context={referenceContext} />
-                                    <Box className="mythic-tasking-reference-review-row-meta">
-                                        <Typography component="span" className="mythic-tasking-reference-review-label">
+                                    <MythicStack gap="none" className="mythic-tasking-reference-review-row-meta">
+                                        <Typography component="span" className="mythic-tasking-reference-review-label mythic-font-size-small mythic-font-weight-extra-bold mythic-text-secondary">
                                             {getTaskReferenceReviewLabel(reference)}
                                         </Typography>
-                                        <Typography component="span" className="mythic-tasking-reference-review-raw">
+                                        <Typography component="span" className="mythic-tasking-reference-review-raw mythic-monospace mythic-font-size-caption mythic-break-anywhere mythic-min-width-0 mythic-text-secondary">
                                             {reference.raw}
                                         </Typography>
-                                    </Box>
-                                </Box>
-                                <Typography component="span" className="mythic-tasking-reference-review-value" title={resolvedValue}>
+                                    </MythicStack>
+                                </MythicCluster>
+                                <Typography component="span" className="mythic-tasking-reference-review-value mythic-monospace mythic-break-anywhere mythic-font-size-caption mythic-line-height-normal mythic-pre-wrap mythic-min-width-0 mythic-overflow-hidden mythic-text-secondary" title={resolvedValue}>
                                     {resolvedValue}
                                 </Typography>
-                            </Box>
+                            </MythicStack>
                         )
                     })}
-                </Box>
+                </MythicStack>
                 {showUnavailableMessage &&
-                    <Typography component="div" color="error" className="mythic-tasking-reference-review-raw">
+                    <Typography component="div" color="error" className="mythic-tasking-reference-review-raw mythic-monospace mythic-font-size-caption mythic-break-anywhere mythic-min-width-0 mythic-text-secondary">
                         One or more credential references are unavailable or deleted.
                     </Typography>
                 }
@@ -428,5 +429,5 @@ export function TaskReferenceToken({reference, context}) {
     if(provider){
         return provider.renderToken(reference, context || {credentialsByID: {}});
     }
-    return <span className="mythic-reference-token mythic-reference-token-warning">{reference.raw}</span>;
+    return <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-reference-token mythic-clickable mythic-monospace mythic-font-size-small mythic-font-weight-bold mythic-max-width-full mythic-break-anywhere mythic-reference-token-warning mythic-border-radius-sm">{reference.raw}</MythicCluster>;
 }

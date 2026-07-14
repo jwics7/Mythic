@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
-import {Link, IconButton} from '@mui/material';
+import {Link} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import MythicStyledTableCell from '../../MythicComponents/MythicTableCell';
 import {TagsDisplay} from '../../MythicComponents/MythicTag';
 import {MythicDialog, MythicViewJSONAsTableDialog} from "../../MythicComponents/MythicDialog";
 import {MythicConfirmDialog} from '../../MythicComponents/MythicConfirmDialog';
@@ -23,6 +22,8 @@ import {DetailedPayloadTable} from "../Payloads/DetailedPayloadTable";
 import InfoIconOutline from '@mui/icons-material/InfoOutlined';
 import {getReadableTextColor, isValidHexColor} from "../../MythicComponents/MythicColorInput";
 import {FileDownloadLinkWithAuth} from "../../utilities/FileDownloadWithAuth";
+import {MythicStack, MythicCluster, MythicGrid, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
+import {MythicCodeSurface, MythicActionButton, MythicMetadataValue, MythicMetadataLabel} from "../../MythicComponents/MythicContent";
 
 const singleLineCellStyle = {
     minWidth: 0,
@@ -100,26 +101,26 @@ function TagTableRow(props){
     return (
         <React.Fragment>
             <TableRow hover>
-                <MythicStyledTableCell>
+                <TableCell>
                     <MythicStyledTooltip title="Remove tag">
-                        <IconButton
-                            className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger"
+                        <MythicActionButton iconOnly tone="error"
+
                             size="small"
                             onClick={()=>{setOpenDeleteDialog(true);}}
                         >
                             <DeleteIcon fontSize="small" />
-                        </IconButton>
+                        </MythicActionButton>
                     </MythicStyledTooltip>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-tag-search-tag-cell"><TagsDisplay expand={true} tags={[props]} /></div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-value" style={singleLineCellStyle} title={props.source}>
+                </TableCell>
+                <TableCell>
+                    <MythicCluster component="div" gap="none" align="center" wrap={false} className="mythic-tag-search-tag-cell mythic-overflow-hidden"><TagsDisplay expand={true} tags={[props]} /></MythicCluster>
+                </TableCell>
+                <TableCell>
+                    <MythicMetadataValue component="div" className="mythic-search-result-value" style={singleLineCellStyle} title={props.source}>
                         {props.source}
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell><TagTableRowElement {...props} /></MythicStyledTableCell>
+                    </MythicMetadataValue>
+                </TableCell>
+                <TableCell><TagTableRowElement {...props} /></TableCell>
             </TableRow>
             {openDeleteDialog &&
                 <MythicConfirmDialog onClose={() => {setOpenDeleteDialog(false);}}
@@ -131,29 +132,29 @@ function TagTableRow(props){
 }
 
 const TagElementPanel = ({type, summary, actions, children}) => (
-    <div className="mythic-tag-search-element-card">
-        <div className="mythic-tag-search-element-header">
-            <div className="mythic-search-result-action-row">
-                <span className="mythic-tag-search-element-type">{type}</span>
+    <MythicStack component="div" gap="sm" className="mythic-tag-search-element-card mythic-border mythic-border-radius">
+        <MythicCluster component="div" gap="sm" align="center" justify="between" wrap={false} className="mythic-tag-search-element-header">
+            <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-search-result-action-row">
+                <span className="mythic-tag-search-element-type mythic-nowrap mythic-font-size-caption mythic-font-weight-strong mythic-line-height-snug mythic-text-primary mythic-border-radius mythic-inline-flex">{type}</span>
                 {summary}
-            </div>
-            {actions ? <div className="mythic-search-result-action-row">{actions}</div> : null}
-        </div>
-        <div className="mythic-tag-search-details-grid">
+            </MythicCluster>
+            {actions ? <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-search-result-action-row">{actions}</MythicCluster> : null}
+        </MythicCluster>
+        <MythicGrid component="div" gap="none" columns="custom" className="mythic-tag-search-details-grid mythic-min-width-0">
             {children}
-        </div>
-    </div>
+        </MythicGrid>
+    </MythicStack>
 );
 
 const TagDetailItem = ({label, children, wide=false, code=false, title}) => (
-    <div className={wide ? "mythic-tag-search-detail mythic-tag-search-detail-wide" : "mythic-tag-search-detail"}>
-        <div className="mythic-search-result-label">{label}</div>
+    <div className={wide ? "mythic-tag-search-detail mythic-tag-search-detail-wide mythic-grid-span-full mythic-stack" : "mythic-tag-search-detail mythic-stack"}>
+        <MythicMetadataLabel component="div" size="xs" className="mythic-search-result-label">{label}</MythicMetadataLabel>
         {code ? (
-            <pre className="mythic-search-result-code mythic-tag-search-code">{children}</pre>
+            <MythicCodeSurface className="mythic-tag-search-code" density="compact" size="caption" tone="snippet">{children}</MythicCodeSurface>
         ) : (
-            <div className="mythic-search-result-value" title={title}>
-                {children || <span className="mythic-search-result-secondary">None</span>}
-            </div>
+            <MythicMetadataValue component="div" className="mythic-search-result-value" title={title}>
+                {children || <MythicMetadataValue component="span" size="caption" tone="secondary" className="mythic-search-result-secondary">None</MythicMetadataValue>}
+            </MythicMetadataValue>
         )}
     </div>
 );
@@ -169,10 +170,10 @@ const CallbackSummary = ({callback, includeDescription=false}) => {
         color: getReadableTextColor(safeColor),
     } : {};
     return (
-        <span className="mythic-tag-search-callback-summary" style={callbackStyle}>
+        <MythicTruncatedText component="span" className="mythic-tag-search-callback-summary mythic-line-height-normal mythic-font-size-small mythic-max-width-full mythic-border mythic-border-radius" style={callbackStyle}>
             {callback.user}{callback.integrity_level > 2 ? "*" : ""}@{callback.host}
             {includeDescription && callback.description ? ` - ${callback.description}` : ""}
-        </span>
+        </MythicTruncatedText>
     );
 };
 
@@ -186,24 +187,24 @@ function TagTableRowElement(props){
                 <TagElementPanel
                     type="Task"
                     summary={
-                        <div className="mythic-search-result-link-row">
+                        <MythicCluster component="div" gap="xs" inline className="mythic-search-result-link-row">
                             <Link href={"/new/task/" + props.task.display_id} color="textPrimary" target={"_blank"}>
                                 T-{props.task.display_id}
                             </Link>
-                            <span className="mythic-search-result-secondary">/</span>
+                            <MythicMetadataValue component="span" size="caption" tone="secondary" className="mythic-search-result-secondary">/</MythicMetadataValue>
                             <Link href={"/new/callbacks/" + props.task.callback.display_id} color="textPrimary" target={"_blank"}>
                                 C-{props.task.callback.display_id}
                             </Link>
-                        </div>
+                        </MythicCluster>
                     }
                 >
                     <TagDetailItem label="Callback" wide>
                         <CallbackSummary callback={props.task.callback} includeDescription />
                     </TagDetailItem>
                     <TagDetailItem label="Command" wide>
-                        <span className="mythic-search-result-code mythic-tag-search-inline-code">
+                        <MythicCodeSurface className="mythic-tag-search-inline-code" component="span" density="inline" overflow="visible" tone="snippet">
                             {props.task.command_name} {props.task.display_params}
-                        </span>
+                        </MythicCodeSurface>
                     </TagDetailItem>
                     <TagDetailItem label="Comment" wide>{props.task.comment}</TagDetailItem>
                     <TagDetailItem label="Tag Data" wide code>{formatTagData(props.data)}</TagDetailItem>
@@ -228,13 +229,13 @@ function TagTableRowElement(props){
                         type={treeType}
                         actions={
                             <MythicStyledTooltip title="View metadata">
-                                <IconButton
-                                    className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info"
+                                <MythicActionButton iconOnly tone="info"
+
                                     size="small"
                                     onClick={() => setViewPermissionsDialogOpen(true)}
                                 >
                                     <PlaylistAddCheckIcon fontSize="small" />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                         }
                     >
@@ -267,13 +268,13 @@ function TagTableRowElement(props){
                         type={fileKind}
                         actions={
                             <MythicStyledTooltip title={"Host Payload Through C2"} >
-                                <IconButton
-                                    className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info"
+                                <MythicActionButton iconOnly tone="info"
+
                                     size="small"
                                     onClick={()=>{setOpenHostDialog(true);}}
                                 >
                                     <PublicIcon fontSize="small" />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                         }
                     >
@@ -283,10 +284,10 @@ function TagTableRowElement(props){
                             </FileDownloadLinkWithAuth>
                         </TagDetailItem>
                         <TagDetailItem label="Hash" wide>
-                            <div className="mythic-search-result-stack">
+                            <MythicStack component="div" gap="none" className="mythic-search-result-stack">
                                 <span>MD5: {props.filemetum.md5}</span>
                                 <span>SHA1: {props.filemetum.sha1}</span>
-                            </div>
+                            </MythicStack>
                         </TagDetailItem>
                         <TagDetailItem label="Comment" wide>{props.filemetum.comment}</TagDetailItem>
                         <TagDetailItem label="Full Remote Path" wide code>
@@ -315,16 +316,16 @@ function TagTableRowElement(props){
             return (
                 <TagElementPanel
                     type="Payload"
-                    summary={props.payload.payloadtype?.name ? <span className="mythic-search-result-secondary">{props.payload.payloadtype.name}</span> : null}
+                    summary={props.payload.payloadtype?.name ? <MythicMetadataValue component="span" size="caption" tone="secondary" className="mythic-search-result-secondary">{props.payload.payloadtype.name}</MythicMetadataValue> : null}
                     actions={
                         <MythicStyledTooltip title="View payload details">
-                            <IconButton
-                                className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info"
+                            <MythicActionButton iconOnly tone="info"
+
                                 onClick={()=>setOpenDetailedView(true)}
                                 size="small"
                             >
                                 <InfoIconOutline fontSize="small" />
-                            </IconButton>
+                            </MythicActionButton>
                         </MythicStyledTooltip>
                     }
                 >

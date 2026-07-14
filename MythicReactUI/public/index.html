@@ -22,6 +22,15 @@
     -->
     <title>Mythic</title>
     <script>
+      try {
+        var savedMythicMode = window.localStorage.getItem("theme");
+        var initialMythicMode = savedMythicMode === "light" ? "light" : "dark";
+        document.documentElement.setAttribute("data-mythic-color-scheme", initialMythicMode);
+      } catch (error) {
+        document.documentElement.setAttribute("data-mythic-color-scheme", "dark");
+      }
+    </script>
+    <script>
       (function () {
         var resizeObserverLoopErrors = [
           "ResizeObserver loop limit exceeded",

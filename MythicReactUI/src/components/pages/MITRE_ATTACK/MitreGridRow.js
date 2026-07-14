@@ -1,12 +1,13 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React from 'react';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
 import { MythicDialog } from '../../MythicComponents/MythicDialog';
 import { MitreMapDisplayDialog } from './MitreMapDisplayDialog';
-import {useTheme} from "@mui/material/styles";
+
 
 export function MitreGridRow({row, showCountGrouping}){
-  const theme = useTheme();
+  const theme = useMythicTheme();
   const [buttonColor, setButtonColor] = React.useState({});
   const [openDisplay, setOpenDisplay] = React.useState(false);
   React.useEffect( () => {

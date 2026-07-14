@@ -1,8 +1,8 @@
 import React from 'react';
-import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { useReactiveVar } from '@apollo/client';
 import { meState } from '../../../cache';
+import {MythicActionButton, MythicPanel} from "../../MythicComponents/MythicContent";
 
 /*
     Takes in props for Boolean of first/last
@@ -13,49 +13,49 @@ export function CreatePayloadNavigationButtons(props){
   const me = useReactiveVar(meState);
   const disabledButtons = (me?.user?.current_operation_id || 0) <= 0;
     return (
-      
-        <div className="mythic-table-toolbar mythic-create-flow-footer">
-            <Button
-                className="mythic-table-row-action"
+
+        <MythicPanel component="div" density="flush" gap="sm" layout="cluster" tone="muted" className="mythic-table-toolbar mythic-create-flow-footer mythic-align-stretch mythic-wrap mythic-full-width mythic-flex-fixed">
+            <MythicActionButton tone="neutral"
+
                 disabled={props.first}
                 variant="contained"
                 onClick={props.canceled}
               >
                 Back
-              </Button>
-              <Button
-                  className={`mythic-table-row-action ${props.last ? "mythic-table-row-action-hover-success" : "mythic-table-row-action-hover-info"}`}
+              </MythicActionButton>
+              <MythicActionButton
+                  tone={props.last ? "success" : "info"}
                   variant="contained"
                   onClick={props.finished}
                   disabled={disabledButtons}
               >
                 {props.last ? props.showExtraOptions ? 'Create Payload Again' : 'Create Payload' : 'Next'}
-              </Button>
+              </MythicActionButton>
 
               {props.last && props.showExtraOptions &&
               <React.Fragment>
-                  <Button
-                  className="mythic-table-row-action mythic-table-row-action-hover-warning"
+                  <MythicActionButton tone="warning"
+
                   variant="contained"
                   onClick={props.startOver}
                   >
                     Start Over
-                  </Button>
+                  </MythicActionButton>
                 {props.showExtraOptions &&
-                    <Button
-                        className="mythic-table-row-action mythic-table-row-action-hover-info"
+                    <MythicActionButton tone="info"
+
                         variant="contained"
                         component={Link}
                         to={"/new/createwrapper"}
                     >
                       Go To Create Wrapper
-                    </Button>
+                    </MythicActionButton>
                 }
 
 
               </React.Fragment>
-                
+
               }
-        </div>
+        </MythicPanel>
     );
-} 
+}

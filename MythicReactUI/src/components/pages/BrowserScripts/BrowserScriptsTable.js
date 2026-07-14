@@ -1,3 +1,5 @@
+import TableCell from '@mui/material/TableCell';
+import MenuItem from '@mui/material/MenuItem';
 import React  from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,11 +16,9 @@ import {
     MythicTableToolbar,
     MythicTableToolbarGroup,
     MythicToolbarButton,
-    MythicToolbarMenuItem,
     MythicToolbarSelect
 } from "../../MythicComponents/MythicTableToolbar";
 import {MythicTableEmptyState} from "../../MythicComponents/MythicStateDisplay";
-import MythicStyledTableCell from "../../MythicComponents/MythicTableCell";
 
 
 export function BrowserScriptsTable(props){
@@ -95,24 +95,24 @@ export function BrowserScriptsTable(props){
                         value={statusFilter}
                         onChange={(event) => setStatusFilter(event.target.value)}
                     >
-                        <MythicToolbarMenuItem value="all">All scripts</MythicToolbarMenuItem>
-                        <MythicToolbarMenuItem value="active">Active</MythicToolbarMenuItem>
-                        <MythicToolbarMenuItem value="disabled">Disabled</MythicToolbarMenuItem>
-                        <MythicToolbarMenuItem value="modified">User modified</MythicToolbarMenuItem>
-                        <MythicToolbarMenuItem value="default">Container default</MythicToolbarMenuItem>
+                        <MenuItem value="all">All scripts</MenuItem>
+                        <MenuItem value="active">Active</MenuItem>
+                        <MenuItem value="disabled">Disabled</MenuItem>
+                        <MenuItem value="modified">User modified</MenuItem>
+                        <MenuItem value="default">Container default</MenuItem>
                     </MythicToolbarSelect>
                 </MythicTableToolbarGroup>
             </MythicTableToolbar>
             <TableContainer className="mythicElement" style={{flexGrow: 1, minHeight: 0, overflow: "auto"}}>
-            <Table className="mythic-browser-scripts-table" stickyHeader={true} size="small">
+            <Table className="mythic-browser-scripts-table mythic-max-width-full mythic-full-width" stickyHeader={true} size="small">
                 <TableHead>
                     <TableRow>
-                        <MythicStyledTableCell style={{width: "24rem"}}>Script</MythicStyledTableCell>
-                        <MythicStyledTableCell style={{width: "10rem"}}>Author</MythicStyledTableCell>
-                        <MythicStyledTableCell style={{width: "9.5rem"}}>Active</MythicStyledTableCell>
-                        <MythicStyledTableCell style={{width: "12rem"}}>Source</MythicStyledTableCell>
-                        <MythicStyledTableCell style={{width: "4rem", textAlign: "center"}}>Actions</MythicStyledTableCell>
-                        <MythicStyledTableCell className="mythic-browser-script-spacer-cell" />
+                        <TableCell style={{width: "24rem"}}>Script</TableCell>
+                        <TableCell style={{width: "10rem"}}>Author</TableCell>
+                        <TableCell style={{width: "9.5rem"}}>Active</TableCell>
+                        <TableCell style={{width: "12rem"}}>Source</TableCell>
+                        <TableCell style={{width: "4rem", textAlign: "center"}}>Actions</TableCell>
+                        <TableCell className="mythic-browser-script-spacer-cell mythic-min-width-0" />
                     </TableRow>
                 </TableHead>
                 <TableBody>

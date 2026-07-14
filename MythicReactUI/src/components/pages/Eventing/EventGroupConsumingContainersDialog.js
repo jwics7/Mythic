@@ -1,5 +1,6 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React from 'react';
-import Button from '@mui/material/Button';
+
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -10,10 +11,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import MythicStyledTableCell from "../../MythicComponents/MythicTableCell";
 import {Typography} from '@mui/material';
-import {useTheme} from '@mui/material/styles';
+
 import {MythicTableEmptyState} from "../../MythicComponents/MythicStateDisplay";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 export function EventGroupConsumingContainersDialog({onClose, selectedEventGroup}) {
 
@@ -52,16 +53,16 @@ export function EventGroupConsumingContainersDialog({onClose, selectedEventGroup
                 </TableContainer>
             </DialogContent>
             <DialogActions>
-                <Button className="mythic-table-row-action" onClick={onClose} variant="contained">
+                <MythicActionButton tone="neutral"  onClick={onClose} variant="contained">
                     Close
-                </Button>
+                </MythicActionButton>
             </DialogActions>
         </React.Fragment>
     );
 }
 
 function EventGroupConsumingContainersDialogTableRow({container}) {
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const [subscriptions, setSubscriptions] = React.useState([]);
     React.useEffect( () => {
         if(container.consuming_container){
@@ -79,22 +80,22 @@ function EventGroupConsumingContainersDialogTableRow({container}) {
     }, [container?.consuming_container?.subscriptions])
     return (
         <TableRow >
-            <MythicStyledTableCell >{container.consuming_container_name}</MythicStyledTableCell>
-            <MythicStyledTableCell>
+            <TableCell >{container.consuming_container_name}</TableCell>
+            <TableCell>
                 <Typography variant="body2" component="p" color={container?.consuming_container?.container_running ? theme.palette.success.main : theme.palette.error.main} >
                     <b>{container?.consuming_container ? container?.consuming_container?.container_running ? "Online" : "Offline" : "Doesn't Exist"}</b>
                 </Typography>
-            </MythicStyledTableCell>
-            <MythicStyledTableCell>
+            </TableCell>
+            <TableCell>
                 {container.function_names.join(", ")}
-            </MythicStyledTableCell>
-            <MythicStyledTableCell>
+            </TableCell>
+            <TableCell>
                 {subscriptions.map(s => (
                     <Typography key={s.name}>
                         <b>{s.name}</b> - {s.description}
                     </Typography>
                 ))}
-            </MythicStyledTableCell>
+            </TableCell>
         </TableRow>
     )
 }

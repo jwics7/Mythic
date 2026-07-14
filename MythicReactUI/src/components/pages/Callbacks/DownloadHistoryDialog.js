@@ -38,7 +38,7 @@ export function DownloadHistoryDialog(props){
             <Table size="small" style={{"tableLayout": "fixed", "maxWidth": "calc(100vw)", "overflow": "scroll"}}>
                   <TableHead>
                       <TableRow>
-                          <TableCell style={{}}></TableCell>
+                          <TableCell></TableCell>
                           <TableCell style={{width: "15rem"}}>Time</TableCell>
                           <TableCell style={{width: "7rem"}}>Task</TableCell>
                           <TableCell style={{width: "7rem"}}>Callback</TableCell>
@@ -58,9 +58,9 @@ export function DownloadHistoryDialog(props){
                                     </MythicStyledTooltip>
 
                                     {hist.deleted ? (
-                                        <Typography variant="body2" style={{wordBreak: "break-all"}}>{hist.full_remote_path_text === "" ? hist.filename_text : hist.full_remote_path_text}</Typography>
+                                        <Typography variant="body2">{hist.full_remote_path_text === "" ? hist.filename_text : hist.full_remote_path_text}</Typography>
                                     ) : (
-                                        <FileDownloadLinkWithAuth style={{wordBreak: "break-all"}} color="textPrimary" underline="always" href={"/direct/download/" + hist.agent_file_id}>{hist.full_remote_path_text === "" ? hist.filename_text : hist.full_remote_path_text}</FileDownloadLinkWithAuth>
+                                        <FileDownloadLinkWithAuth color="textPrimary" underline="always" href={"/direct/download/" + hist.agent_file_id}>{hist.full_remote_path_text === "" ? hist.filename_text : hist.full_remote_path_text}</FileDownloadLinkWithAuth>
                                     )
                                     }
                                 </div>
@@ -70,7 +70,7 @@ export function DownloadHistoryDialog(props){
                         <TableCell>{hist.timestamp}</TableCell>
                         <TableCell>
                             {hist.task &&
-                                <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank"
+                                <Link color="textPrimary" underline="always" target="_blank"
                                       href={"/new/task/" + hist.task.display_id}>
                                     T-{hist.task.display_id}
                                 </Link>
@@ -79,7 +79,7 @@ export function DownloadHistoryDialog(props){
                         </TableCell>
                           <TableCell>
                               {hist.task &&
-                                  <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank"
+                                  <Link color="textPrimary" underline="always" target="_blank"
                                         href={"/new/callbacks/" + hist.task.callback.display_id}>
                                       C-{hist.task.callback.display_id}
                                   </Link>

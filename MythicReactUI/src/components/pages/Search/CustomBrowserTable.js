@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {IconButton, Link} from '@mui/material';
+import {Link} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,9 +11,10 @@ import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import { gql, useMutation } from '@apollo/client';
 import {snackActions} from '../../utilities/Snackbar';
 import EditIcon from '@mui/icons-material/Edit';
-import MythicStyledTableCell from '../../MythicComponents/MythicTableCell';
 import {TagsDisplay, ViewEditTags} from '../../MythicComponents/MythicTag';
 import { MythicStyledTooltip } from '../../MythicComponents/MythicStyledTooltip';
+import {MythicStack, MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicCodeSurface, MythicActionButton, MythicMetadataItem, MythicMetadataLabel, MythicMetadataValue, MythicText} from "../../MythicComponents/MythicContent";
 
 const singleLineCellStyle = {
     minWidth: 0,
@@ -104,106 +105,103 @@ function CustomBrowserTableRow(props){
         <React.Fragment>
             <TableRow hover>
                 {viewPermissionsDialogOpen && <MythicDialog fullWidth={true} maxWidth="md" open={viewPermissionsDialogOpen}
-                    onClose={()=>{setViewPermissionsDialogOpen(false);}} 
+                    onClose={()=>{setViewPermissionsDialogOpen(false);}}
                     innerDialog={<MythicViewJSONAsTableDialog title="View Metadata" leftColumn="Name" rightColumn="Value" value={props.metadata} onClose={()=>{setViewPermissionsDialogOpen(false);}} />}
                     />
                 }
                 {editCommentDialogOpen && <MythicDialog fullWidth={true} maxWidth="md" open={editCommentDialogOpen}
-                    onClose={()=>{setEditCommentDialogOpen(false);}} 
+                    onClose={()=>{setEditCommentDialogOpen(false);}}
                     innerDialog={<MythicModifyStringDialog title="Edit Browser Comment" onSubmit={onSubmitUpdatedComment} value={props.comment} onClose={()=>{setEditCommentDialogOpen(false);}} />}
                 />
                 }
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-stack mythic-search-result-stack-spacious">
-                        <div className="mythic-search-result-action-row">
+                <TableCell>
+                    <MythicStack component="div" gap="sm" className="mythic-search-result-stack mythic-search-result-stack-spacious">
+                        <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-search-result-action-row">
                             <MythicStyledTooltip title="View metadata">
-                                <IconButton
-                                    className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info"
+                                <MythicActionButton iconOnly tone="info"
+
                                     size="small"
                                     onClick={() => setViewPermissionsDialogOpen(true)}
                                 >
                                     <PlaylistAddCheckIcon fontSize="small" />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
-                            <span
+                            <MythicText component="span" preset="value"
                                 className="mythic-search-result-primary"
                                 style={{...singleLineCellStyle, textDecoration: props.deleted ? "line-through" : ""}}
                                 title={props.name_text || props.full_path_text}
                             >
                                 {props.name_text || props.full_path_text}
-                            </span>
-                        </div>
-                        <div className="mythic-search-result-inline">
-                            <span className="mythic-search-result-label">Host</span>
-                            <span className="mythic-search-result-value" style={singleLineCellStyle} title={props.host}>{props.host}</span>
-                        </div>
+                            </MythicText>
+                        </MythicCluster>
+                        <MythicMetadataItem className="mythic-search-result-inline" density="compact" layout="inline" label="Host">{props.host}</MythicMetadataItem>
                         {props.full_path_text && props.full_path_text !== props.name_text ? (
-                            <div className="mythic-search-result-code mythic-search-result-code-compact" title={props.full_path_text}>
+                            <MythicCodeSurface className="mythic-search-result-code-compact" component="div" density="compact" overflow="hidden" tone="snippet" title={props.full_path_text}>
                                 {props.full_path_text}
-                            </div>
+                            </MythicCodeSurface>
                         ) : null}
                         {props.callback ? (
-                            <div className="mythic-search-result-link-row">
-                                <span className="mythic-search-result-label">Callback</span>
+                            <MythicCluster component="div" gap="xs" inline className="mythic-search-result-link-row">
+                                <MythicMetadataLabel component="span" size="xs" className="mythic-search-result-label">Callback</MythicMetadataLabel>
                                 <Link color="textPrimary" underline="always" target="_blank"
                                       href={"/new/callbacks/" + props.callback.display_id}>
                                     C-{props.callback.display_id}
                                 </Link>
                                 {props.task ? (
                                     <React.Fragment>
-                                        <span className="mythic-search-result-secondary">/</span>
-                                        <span className="mythic-search-result-label">Task</span>
+                                        <MythicMetadataValue component="span" size="caption" tone="secondary" className="mythic-search-result-secondary">/</MythicMetadataValue>
+                                        <MythicMetadataLabel component="span" size="xs" className="mythic-search-result-label">Task</MythicMetadataLabel>
                                         <Link color="textPrimary" underline="always" target="_blank"
                                               href={"/new/task/" + props.task.display_id}>
                                             T-{props.task.display_id}
                                         </Link>
                                     </React.Fragment>
                                 ) : null}
-                            </div>
+                            </MythicCluster>
                         ) : null}
                         {props.callback?.mythictree_groups?.length > 0 ? (
-                            <div className="mythic-search-result-secondary">
+                            <MythicMetadataValue component="div" size="caption" tone="secondary" className="mythic-search-result-secondary">
                                 Groups: {props.callback.mythictree_groups.join(", ")}
-                            </div>
+                            </MythicMetadataValue>
                         ) : null}
-                    </div>
+                    </MythicStack>
 
-                </MythicStyledTableCell>
+                </TableCell>
                 {props.columns.map((column, index) => (
-                    <MythicStyledTableCell key={index}>
-                        <div
+                    <TableCell key={index}>
+                        <MythicMetadataValue component="div"
                             className="mythic-search-result-value"
                             style={singleLineCellStyle}
                             title={formatMetadataValue(props.metadata?.[column.key])}
                         >
-                            {formatMetadataValue(props.metadata?.[column.key]) || <span className="mythic-search-result-secondary">None</span>}
-                        </div>
-                    </MythicStyledTableCell>
+                            {formatMetadataValue(props.metadata?.[column.key]) || <MythicMetadataValue component="span" size="caption" tone="secondary" className="mythic-search-result-secondary">None</MythicMetadataValue>}
+                        </MythicMetadataValue>
+                    </TableCell>
                 ))}
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-action-row">
+                <TableCell>
+                    <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-search-result-action-row">
                         <MythicStyledTooltip title="Edit comment">
-                            <IconButton
-                                className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info"
+                            <MythicActionButton iconOnly tone="info"
+
                                 onClick={() => setEditCommentDialogOpen(true)}
                                 size="small"
                             >
                                 <EditIcon fontSize="small" />
-                            </IconButton>
+                            </MythicActionButton>
                         </MythicStyledTooltip>
-                        <span className="mythic-search-result-secondary" style={singleLineCellStyle} title={props.comment}>
+                        <MythicMetadataValue component="span" size="caption" tone="secondary" className="mythic-search-result-secondary" style={singleLineCellStyle} title={props.comment}>
                             {props.comment || "No comment"}
-                        </span>
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-tag-cell">
+                        </MythicMetadataValue>
+                    </MythicCluster>
+                </TableCell>
+                <TableCell>
+                    <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-tag-cell mythic-overflow-hidden">
                         <ViewEditTags target_object={"mythictree_id"} target_object_id={props.id} me={me} />
-                        <div className="mythic-tag-list mythic-tag-list-truncate">
+                        <MythicCluster component="div" gap="xs" align="center" wrap={false} fill className="mythic-tag-list mythic-tag-list-truncate mythic-overflow-hidden">
                             <TagsDisplay tags={props.tags} />
-                        </div>
-                    </div>
-                </MythicStyledTableCell>
+                        </MythicCluster>
+                    </MythicCluster>
+                </TableCell>
 
             </TableRow>
         </React.Fragment>

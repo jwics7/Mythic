@@ -4,7 +4,7 @@ import {gql, useQuery, useSubscription, useMutation, useLazyQuery, useReactiveVa
 import Typography from '@mui/material/Typography';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import Button from '@mui/material/Button';
+
 import {Link} from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import {FileDownloadLinkWithAuth} from "../../utilities/FileDownloadWithAuth";
@@ -19,7 +19,7 @@ import {ReactFlow,
     useUpdateNodeInternals
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import {useTheme} from '@mui/material/styles';
+import {useMythicTokens} from '../../../themes/MythicThemeProvider';
 import TimelapseIcon from '@mui/icons-material/Timelapse';
 import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -34,14 +34,12 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import MythicStyledTableCell from "../../MythicComponents/MythicTableCell";
 import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
 import {b64DecodeUnicode} from "../Callbacks/ResponseDisplay";
 import {APITokenRow} from "../Settings/SettingsOperatorAPITokenRow";
 import {MythicAgentSVGIcon} from "../../MythicComponents/MythicAgentSVGIcon";
 import {DetailedPayloadTable} from "../Payloads/DetailedPayloadTable";
 import InfoIconOutline from '@mui/icons-material/InfoOutlined';
-import IconButton from '@mui/material/IconButton';
 import {snackActions} from "../../utilities/Snackbar";
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-json';
@@ -64,6 +62,8 @@ import {MythicEmptyState, MythicErrorState, MythicLoadingState} from "../../Myth
 import {MythicClientSideTablePagination, useMythicClientPagination} from "../../MythicComponents/MythicTablePagination";
 import TextField from '@mui/material/TextField';
 import {meState} from "../../../cache";
+import {MythicCluster, MythicStack, MythicGrid, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton, MythicPanel, MythicText} from "../../MythicComponents/MythicContent";
 
 
 const getEventSteps = gql`
@@ -390,7 +390,7 @@ export const GetStatusSymbol = ({data}) => {
     }
 }
 const GetTimeDuration = ({data, customStyle}) => {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     if(!data){
         return (
             <Typography style={{
@@ -483,18 +483,18 @@ const getEventingStatusClass = (status) => hasEventingStatus(status) ? getStatus
 export const EventingStatusChip = ({data}) => {
     const hasStatus = hasEventingStatus(data?.status);
     return (
-        <span className={`mythic-eventing-status-chip mythic-eventing-status-chip-${getEventingStatusClass(data?.status)}`.trim()}>
+        <span className={`mythic-eventing-status-chip mythic-max-width-full mythic-font-weight-heavy mythic-line-height-compact mythic-font-size-xs mythic-inline-cluster mythic-border-radius mythic-border mythic-min-width-0 mythic-text-secondary mythic-eventing-status-chip-${getEventingStatusClass(data?.status)}`.trim()}>
             {hasStatus ? <GetStatusSymbol data={data}/> : <PanoramaFishEyeIcon/>}
-            <span>{hasStatus ? getStatusLabel(data?.status) : "Configured"}</span>
+            <MythicTruncatedText component="span" >{hasStatus ? getStatusLabel(data?.status) : "Configured"}</MythicTruncatedText>
         </span>
     )
 }
 const EventingDetailChip = ({label, value}) => (
     value === undefined || value === null || value === "" ? null :
-        <span className="mythic-eventing-detail-chip">
-            <span className="mythic-eventing-detail-chip-label">{label}</span>
-            <span className="mythic-eventing-detail-chip-value">{value}</span>
-        </span>
+        <MythicCluster component="span" gap="xs" inline wrap={false} className="mythic-eventing-detail-chip mythic-line-height-compact mythic-font-size-caption mythic-font-weight-extra-bold mythic-border-radius">
+            <span className="mythic-eventing-detail-chip-label mythic-inherit-color">{label}</span>
+            <MythicTruncatedText component="span" className="mythic-eventing-detail-chip-value mythic-inherit-color">{value}</MythicTruncatedText>
+        </MythicCluster>
 )
 const stringifyEventingValue = (value) => {
     if(value === undefined || value === null || value === ""){
@@ -510,7 +510,7 @@ const stringifyEventingValue = (value) => {
     }
 }
 const EventingCodeBlock = ({value, emptyText="No data"}) => {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const displayValue = stringifyEventingValue(value);
     const formattedValue = React.useMemo(() => {
         if(displayValue === ""){
@@ -524,7 +524,7 @@ const EventingCodeBlock = ({value, emptyText="No data"}) => {
     }, [displayValue]);
     const lineCount = Math.max(3, Math.min(18, formattedValue.split("\n").length));
     return (
-        <div className={`mythic-eventing-code-block ${displayValue === "" ? "mythic-eventing-code-block-empty" : ""}`.trim()}>
+        <div className={`mythic-eventing-code-block mythic-overflow-auto mythic-text-primary ${displayValue === "" ? "mythic-eventing-code-block-empty mythic-font-size-caption mythic-font-weight-bold mythic-flex mythic-text-secondary mythic-align-center" : ""}`.trim()}>
             {displayValue === "" ? (
                 emptyText
             ) : (
@@ -758,8 +758,8 @@ export const EventStepUserInteractionDialog = ({onClose, onResolved, selectedEve
                 <DialogContent dividers={true} className="mythic-eventing-user-interaction-dialog-content">
                     <MythicLoadingState compact title="Loading interaction request" description="Fetching waiting step details." minHeight={180} />
                 </DialogContent>
-                <DialogActions className="mythic-eventing-detail-dialog-actions">
-                    <Button className="mythic-table-row-action" onClick={onClose} variant="outlined">Close</Button>
+                <DialogActions className="mythic-eventing-detail-dialog-actions mythic-gap-sm mythic-divider-top mythic-surface">
+                    <MythicActionButton tone="neutral"  onClick={onClose} variant="outlined">Close</MythicActionButton>
                 </DialogActions>
             </>
         )
@@ -771,8 +771,8 @@ export const EventStepUserInteractionDialog = ({onClose, onResolved, selectedEve
                 <DialogContent dividers={true} className="mythic-eventing-user-interaction-dialog-content">
                     <MythicEmptyState compact title="Nothing waiting" description="This workflow instance no longer has a step waiting for user interaction." minHeight={180} />
                 </DialogContent>
-                <DialogActions className="mythic-eventing-detail-dialog-actions">
-                    <Button className="mythic-table-row-action" onClick={onClose} variant="outlined">Close</Button>
+                <DialogActions className="mythic-eventing-detail-dialog-actions mythic-gap-sm mythic-divider-top mythic-surface">
+                    <MythicActionButton tone="neutral"  onClick={onClose} variant="outlined">Close</MythicActionButton>
                 </DialogActions>
             </>
         )
@@ -853,69 +853,69 @@ export const EventStepUserInteractionDialog = ({onClose, onResolved, selectedEve
                 statusData={activeStep}
             />
             <DialogContent dividers={true} className="mythic-eventing-user-interaction-dialog-content">
-                <div className={`mythic-eventing-user-interaction-modal ${waitingSteps.length === 1 ? "mythic-eventing-user-interaction-modal-single" : ""}`.trim()}>
+                <div className={`mythic-eventing-user-interaction-modal mythic-min-width-0 mythic-grid ${waitingSteps.length === 1 ? "mythic-eventing-user-interaction-modal-single" : ""}`.trim()}>
                     {waitingSteps.length > 1 &&
-                        <div className="mythic-eventing-user-interaction-step-picker">
-                            <div className="mythic-eventing-user-interaction-section-label">Waiting steps</div>
+                        <MythicStack component="div" gap="sm" className="mythic-eventing-user-interaction-step-picker">
+                            <div className="mythic-eventing-user-interaction-section-label mythic-font-weight-heavy mythic-letter-spacing-reset mythic-font-size-xs mythic-uppercase mythic-text-secondary">Waiting steps</div>
                             {waitingSteps.map((step) => (
                                 <button
-                                    className={`mythic-eventing-user-interaction-step-option ${`${step.id}` === `${activeStep.id}` ? "mythic-eventing-user-interaction-step-option-active" : ""}`.trim()}
+                                    className={`mythic-eventing-user-interaction-step-option mythic-clickable mythic-gap-xs mythic-stack mythic-border-radius mythic-border mythic-text-primary mythic-surface ${`${step.id}` === `${activeStep.id}` ? "mythic-eventing-user-interaction-step-option-active" : ""}`.trim()}
                                     key={`user-interaction-step-${step.id}`}
                                     onClick={() => setSelectedStepId(step.id)}
                                     type="button"
                                 >
-                                    <span className="mythic-eventing-user-interaction-step-name">{getUserInteractionStepName(step)}</span>
-                                    <span className="mythic-eventing-user-interaction-step-meta">{getStatusLabel(step.status)}{getUserInteractionStepAction(step) ? ` - ${getUserInteractionStepAction(step)}` : ""}</span>
+                                    <MythicTruncatedText component="span" className="mythic-eventing-user-interaction-step-name mythic-font-size-small mythic-font-weight-heavy mythic-line-height-tight">{getUserInteractionStepName(step)}</MythicTruncatedText>
+                                    <MythicTruncatedText component="span" className="mythic-eventing-user-interaction-step-meta mythic-font-size-xs mythic-font-weight-bold mythic-line-height-tight mythic-text-secondary">{getStatusLabel(step.status)}{getUserInteractionStepAction(step) ? ` - ${getUserInteractionStepAction(step)}` : ""}</MythicTruncatedText>
                                 </button>
                             ))}
-                        </div>
+                        </MythicStack>
                     }
-                    <div className="mythic-eventing-user-interaction-workspace">
-                        <div className="mythic-eventing-user-interaction-step-summary">
+                    <MythicStack component="div" gap="md" className="mythic-eventing-user-interaction-workspace">
+                        <MythicCluster component="div" gap="md" align="start" justify="between" wrap={false} className="mythic-eventing-user-interaction-step-summary mythic-border-radius mythic-border mythic-surface">
                             <div>
-                                <div className="mythic-eventing-user-interaction-section-label">Step</div>
-                                <div className="mythic-eventing-user-interaction-title">{stepName}</div>
+                                <div className="mythic-eventing-user-interaction-section-label mythic-font-weight-heavy mythic-letter-spacing-reset mythic-font-size-xs mythic-uppercase mythic-text-secondary">Step</div>
+                                <div className="mythic-eventing-user-interaction-title mythic-font-weight-heavy mythic-break-anywhere mythic-line-height-tight mythic-text-primary">{stepName}</div>
                             </div>
-                            <div className="mythic-eventing-user-interaction-summary-chips">
+                            <MythicCluster component="div" gap="xs" justify="end" className="mythic-eventing-user-interaction-summary-chips">
                                 <EventingStatusChip data={activeStep} />
                                 {stepAction &&
-                                    <span className="mythic-eventing-flow-node-action">{stepAction}</span>
+                                    <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-eventing-flow-node-action mythic-truncate mythic-nowrap mythic-max-width-full mythic-font-size-xs mythic-font-weight-strong mythic-line-height-compact mythic-text-info mythic-border-radius mythic-border mythic-overflow-hidden">{stepAction}</MythicCluster>
                                 }
-                            </div>
-                        </div>
+                            </MythicCluster>
+                        </MythicCluster>
                         {approvalRequired &&
-                            <div className="mythic-eventing-user-interaction-section">
-                                <div className="mythic-eventing-user-interaction-section-title">Approval</div>
-                                <div className="mythic-eventing-user-interaction-prompt">{approvalPrompt}</div>
+                            <MythicPanel component="div" density="flush" tone="surface" overflow="visible" radius="md" className="mythic-eventing-user-interaction-section">
+                                <MythicText component="div" preset="compact-title" className="mythic-eventing-user-interaction-section-title">Approval</MythicText>
+                                <div className="mythic-eventing-user-interaction-prompt mythic-font-size-small mythic-break-anywhere mythic-font-weight-semibold mythic-pre-wrap mythic-line-height-normal">{approvalPrompt}</div>
                                 {runOperator?.account_type === "bot" &&
-                                    <div className="mythic-eventing-user-interaction-policy-note">
+                                    <div className="mythic-eventing-user-interaction-policy-note mythic-font-weight-bold mythic-font-size-caption mythic-text-secondary">
                                         {botApprovalApprover === "lead" ? "Requires operation lead approval." : "Operators and the operation lead can approve because this workflow is running as bot."}
                                     </div>
                                 }
-                            </div>
+                            </MythicPanel>
                         }
                         {inputRequired &&
-                            <div className="mythic-eventing-user-interaction-section">
-                                <div className="mythic-eventing-user-interaction-section-title">Inputs</div>
-                                <div className="mythic-eventing-user-interaction-prompt">{inputPrompt}</div>
+                            <MythicPanel component="div" density="flush" tone="surface" overflow="visible" radius="md" className="mythic-eventing-user-interaction-section">
+                                <MythicText component="div" preset="compact-title" className="mythic-eventing-user-interaction-section-title">Inputs</MythicText>
+                                <div className="mythic-eventing-user-interaction-prompt mythic-font-size-small mythic-break-anywhere mythic-font-weight-semibold mythic-pre-wrap mythic-line-height-normal">{inputPrompt}</div>
                                 {inputFields.length > 0 &&
-                                    <div className="mythic-eventing-user-interaction-inputs">
+                                    <MythicStack component="div" gap="none" className="mythic-eventing-user-interaction-inputs">
                                         {inputFields.map((field, index) => {
                                             const fieldType = field?.type;
                                             const choiceOptions = fieldType === "ChooseOne" ? getUserInteractionChoiceOptions(field) : [];
                                             return (
-                                                <div className="mythic-eventing-user-interaction-input-row" key={`${activeStep.id}-${field.name || index}`}>
-                                                    <div className="mythic-eventing-user-interaction-input-copy">
-                                                        <div className="mythic-eventing-user-interaction-input-name">
+                                                <MythicGrid component="div" gap="md" columns="custom" className="mythic-eventing-user-interaction-input-row mythic-align-start mythic-min-width-0" key={`${activeStep.id}-${field.name || index}`}>
+                                                    <MythicStack component="div" gap="xs" className="mythic-eventing-user-interaction-input-copy">
+                                                        <MythicText component="div" preset="compact-title" breakAnywhere className="mythic-eventing-user-interaction-input-name">
                                                             {field.name || "Input"}
                                                             {field.required &&
-                                                                <span className="mythic-eventing-user-interaction-required">required</span>
+                                                                <span className="mythic-eventing-user-interaction-required mythic-text-warning mythic-line-height-compact mythic-font-weight-extra-bold mythic-border-radius mythic-inline-flex">required</span>
                                                             }
-                                                        </div>
-                                                        <div className="mythic-eventing-user-interaction-input-description">
+                                                        </MythicText>
+                                                        <div className="mythic-eventing-user-interaction-input-description mythic-break-anywhere mythic-font-weight-semibold mythic-font-size-xs mythic-line-height-snug mythic-text-secondary">
                                                             {field.description || field.type || "string"}
                                                         </div>
-                                                    </div>
+                                                    </MythicStack>
                                                     {fieldType === "ChooseOne" ? (
                                                         <TextField
                                                             disabled={choiceOptions.length === 0}
@@ -947,15 +947,15 @@ export const EventStepUserInteractionDialog = ({onClose, onResolved, selectedEve
                                                             fullWidth
                                                         />
                                                     )}
-                                                </div>
+                                                </MythicGrid>
                                             )
                                         })}
-                                    </div>
+                                    </MythicStack>
                                 }
-                            </div>
+                            </MythicPanel>
                         }
-                        <div className="mythic-eventing-user-interaction-section">
-                            <div className="mythic-eventing-user-interaction-section-title">Comment</div>
+                        <MythicPanel component="div" density="flush" tone="surface" overflow="visible" radius="md" className="mythic-eventing-user-interaction-section">
+                            <MythicText component="div" preset="compact-title" className="mythic-eventing-user-interaction-section-title">Comment</MythicText>
                             <TextField
                                 size="small"
                                 placeholder="Optional note for this response"
@@ -963,7 +963,7 @@ export const EventStepUserInteractionDialog = ({onClose, onResolved, selectedEve
                                 onChange={(event) => setComment(event.target.value)}
                                 fullWidth
                             />
-                            <div className="mythic-eventing-user-interaction-permission">
+                            <div className="mythic-eventing-user-interaction-permission mythic-font-size-small mythic-break-anywhere mythic-font-weight-semibold mythic-line-height-normal mythic-text-secondary">
                                 {!currentUserCanRespondToInteraction ? (
                                     "Spectators cannot respond to user interaction steps."
                                 ) : !runOperator ? (
@@ -980,34 +980,34 @@ export const EventStepUserInteractionDialog = ({onClose, onResolved, selectedEve
                                     ) : `Only ${runOperator?.username || "the run operator"} can respond.`
                                 )}
                             </div>
-                        </div>
-                    </div>
+                        </MythicPanel>
+                    </MythicStack>
                 </div>
             </DialogContent>
-            <DialogActions className="mythic-eventing-detail-dialog-actions">
+            <DialogActions className="mythic-eventing-detail-dialog-actions mythic-gap-sm mythic-divider-top mythic-surface">
                 {approvalRequired &&
-                    <Button
-                        className="mythic-table-row-action mythic-table-row-action-hover-warning"
+                    <MythicActionButton tone="warning"
+
                         disabled={!canRespond}
                         onClick={() => submitResponse(false)}
                         size="small"
                         variant="outlined"
                     >
                         Deny
-                    </Button>
+                    </MythicActionButton>
                 }
-                <Button className="mythic-table-row-action" onClick={onClose} size="small" variant="outlined">
+                <MythicActionButton tone="neutral"  onClick={onClose} size="small" variant="outlined">
                     Close
-                </Button>
-                <Button
-                    className="mythic-table-row-action mythic-table-row-action-hover-success"
+                </MythicActionButton>
+                <MythicActionButton tone="success"
+
                     disabled={!canRespond}
                     onClick={() => submitResponse(true)}
                     size="small"
                     variant="outlined"
                 >
                     {approvalRequired ? (inputRequired ? "Approve and Submit" : "Approve") : "Submit Input"}
-                </Button>
+                </MythicActionButton>
             </DialogActions>
         </>
     )
@@ -1023,40 +1023,40 @@ const EventingDetailSection = ({title, subtitle, count, actions, children, class
         }
     }
     return (
-        <div className={`mythic-eventing-detail-section ${collapsible ? "mythic-eventing-detail-section-collapsible" : ""} ${isExpanded ? "mythic-eventing-detail-section-expanded" : "mythic-eventing-detail-section-collapsed"} ${className}`.trim()}>
-            <div className="mythic-eventing-detail-section-header">
+        <div className={`mythic-eventing-detail-section mythic-border-radius mythic-border mythic-min-width-0 mythic-overflow-hidden mythic-surface ${collapsible ? "mythic-eventing-detail-section-collapsible" : ""} ${isExpanded ? "mythic-eventing-detail-section-expanded" : "mythic-eventing-detail-section-collapsed"} ${className}`.trim()}>
+            <MythicCluster component="div" gap="md" align="center" justify="between" wrap={false} className="mythic-eventing-detail-section-header mythic-divider-bottom">
                 {collapsible ? (
-                    <button
+                    <MythicCluster component="button" gap="sm" align="center" wrap={false} fill
                         aria-expanded={isExpanded}
-                        className="mythic-eventing-detail-section-toggle"
+                        className="mythic-eventing-detail-section-toggle mythic-clickable mythic-text-primary"
                         onClick={toggleExpanded}
                         type="button"
                     >
-                        <ExpandMoreIcon className="mythic-eventing-detail-section-toggle-icon" fontSize="small" />
-                        <span className="mythic-eventing-detail-section-title-stack">
-                            <span className="mythic-eventing-detail-section-title">{title}</span>
+                        <ExpandMoreIcon className="mythic-eventing-detail-section-toggle-icon mythic-text-secondary mythic-flex-fixed" fontSize="small" />
+                        <MythicStack component="span" gap="none" className="mythic-eventing-detail-section-title-stack">
+                            <MythicText component="span" preset="title" className="mythic-eventing-detail-section-title">{title}</MythicText>
                             {subtitle &&
-                                <span className="mythic-eventing-detail-section-subtitle">{subtitle}</span>
+                                <span className="mythic-eventing-detail-section-subtitle mythic-font-weight-medium mythic-font-size-caption mythic-text-secondary">{subtitle}</span>
                             }
-                        </span>
-                    </button>
+                        </MythicStack>
+                    </MythicCluster>
                 ) : (
-                    <div className="mythic-eventing-detail-section-title-stack">
-                        <div className="mythic-eventing-detail-section-title">{title}</div>
+                    <MythicStack component="div" gap="none" className="mythic-eventing-detail-section-title-stack">
+                        <MythicText component="div" preset="title" className="mythic-eventing-detail-section-title">{title}</MythicText>
                         {subtitle &&
-                            <div className="mythic-eventing-detail-section-subtitle">{subtitle}</div>
+                            <div className="mythic-eventing-detail-section-subtitle mythic-font-weight-medium mythic-font-size-caption mythic-text-secondary">{subtitle}</div>
                         }
-                    </div>
+                    </MythicStack>
                 )}
-                <div className="mythic-eventing-detail-section-actions">
+                <MythicCluster component="div" gap="sm" align="center" justify="end" wrap={false} className="mythic-eventing-detail-section-actions mythic-flex-fixed">
                     {hasCount &&
-                        <span className={`mythic-eventing-detail-count ${hasPositiveCount ? "mythic-eventing-detail-count-active" : "mythic-eventing-detail-count-empty"}`}>{count}</span>
+                        <span className={`mythic-eventing-detail-count mythic-font-weight-heavy mythic-justify-center mythic-line-height-compact mythic-font-size-caption mythic-inline-cluster mythic-border-radius ${hasPositiveCount ? "mythic-eventing-detail-count-active mythic-text-primary" : "mythic-eventing-detail-count-empty mythic-font-weight-strong mythic-border mythic-text-secondary"}`}>{count}</span>
                     }
                     {actions}
-                </div>
-            </div>
+                </MythicCluster>
+            </MythicCluster>
             {isExpanded &&
-                <div className="mythic-eventing-detail-section-body">
+                <div className="mythic-eventing-detail-section-body mythic-min-width-0">
                     {children}
                 </div>
             }
@@ -1064,34 +1064,46 @@ const EventingDetailSection = ({title, subtitle, count, actions, children, class
     )
 }
 const EventingSectionEmpty = ({title, description}) => (
-    <div className="mythic-eventing-section-empty">
+    <div className="mythic-eventing-section-empty mythic-border-radius mythic-overflow-hidden">
         <MythicEmptyState compact title={title} description={description} minHeight={118} />
     </div>
 )
+const EventingMetadataPanel = ({children, title}) => (
+    <MythicPanel component="div" density="flush" tone="inherit" overflow="hidden" radius="md" className="mythic-eventing-metadata-panel">
+        <div className="mythic-eventing-metadata-panel-title mythic-font-weight-heavy mythic-font-size-xs mythic-divider-bottom mythic-line-height-tight mythic-text-secondary">{title}</div>
+        {children}
+    </MythicPanel>
+)
+const EventingDetailAccordion = ({children, className = "", ...props}) => (
+    <Accordion
+        {...props}
+        className={`mythic-eventing-detail-accordion mythic-overflow-hidden mythic-surface mythic-border mythic-border-radius ${className}`.trim()}
+    >
+        {children}
+    </Accordion>
+)
 const EventingMetadataPair = ({label, original, instance, originalLabel="Configured", instanceLabel="Runtime"}) => (
-    <div className="mythic-eventing-metadata-pair">
-        <div className="mythic-eventing-metadata-pair-title">{label}</div>
-        <div className="mythic-eventing-metadata-pair-grid">
-            <div className="mythic-eventing-metadata-panel">
-                <div className="mythic-eventing-metadata-panel-title">{originalLabel}</div>
+    <div className="mythic-eventing-metadata-pair mythic-min-width-0">
+        <MythicText component="div" preset="label" className="mythic-eventing-metadata-pair-title">{label}</MythicText>
+        <MythicGrid component="div" gap="sm" columns="custom" className="mythic-eventing-metadata-pair-grid mythic-min-width-0">
+            <EventingMetadataPanel title={originalLabel}>
                 <EventingCodeBlock value={original} />
-            </div>
-            <div className="mythic-eventing-metadata-panel">
-                <div className="mythic-eventing-metadata-panel-title">{instanceLabel}</div>
+            </EventingMetadataPanel>
+            <EventingMetadataPanel title={instanceLabel}>
                 <EventingCodeBlock value={instance} />
-            </div>
-        </div>
+            </EventingMetadataPanel>
+        </MythicGrid>
     </div>
 )
 const EventingHeaderTitle = ({statusData, title}) => (
-    <span className="mythic-eventing-header-title">
+    <MythicCluster component="span" gap="sm" inline className="mythic-eventing-header-title mythic-inherit-color">
         {statusData && <EventingStatusChip data={statusData}/>}
-        <span>{title}</span>
-    </span>
+        <MythicTruncatedText component="span" >{title}</MythicTruncatedText>
+    </MythicCluster>
 )
 const EventingHeaderDuration = ({data}) => (
-    <div className="mythic-eventing-header-duration">
-        <span className="mythic-eventing-header-duration-label">Duration</span>
+    <div className="mythic-eventing-header-duration mythic-inherit-color mythic-line-height-tight mythic-gap-xs mythic-flex-column mythic-inline-flex">
+        <span className="mythic-eventing-header-duration-label mythic-inherit-color mythic-font-weight-heavy mythic-font-size-xs">Duration</span>
         <GetTimeDuration data={data} customStyle={{fontSize: "unset", marginLeft: 0}}/>
     </div>
 )
@@ -1111,13 +1123,13 @@ const EventingDialogState = ({description, onClose, title, type = "loading"}) =>
     return (
         <>
             <EventingDialogTitle title={title} />
-            <DialogContent dividers={true} className="mythic-eventing-detail-dialog-content mythic-eventing-detail-dialog-content-state">
+            <MythicStack component={DialogContent} gap="md" align="stretch" dividers={true} className="mythic-eventing-detail-dialog-content mythic-eventing-detail-dialog-content-state mythic-justify-center mythic-overflow-auto">
                 <StateComponent compact title={title} description={description} minHeight={190} />
-            </DialogContent>
-            <DialogActions className="mythic-eventing-detail-dialog-actions">
-                <Button className="mythic-table-row-action" onClick={onClose} variant="outlined">
+            </MythicStack>
+            <DialogActions className="mythic-eventing-detail-dialog-actions mythic-gap-sm mythic-divider-top mythic-surface">
+                <MythicActionButton tone="neutral"  onClick={onClose} variant="outlined">
                     Close
-                </Button>
+                </MythicActionButton>
             </DialogActions>
         </>
     )
@@ -1129,18 +1141,18 @@ function EventNode({data}) {
     return (
         <>
             <Handle type={"source"} position={sourcePosition}/>
-            <div className={`mythic-eventing-flow-node mythic-eventing-flow-node-${getEventingStatusClass(data?.status)}`.trim()}>
-                <Typography className="mythic-eventing-flow-node-title" title={data.name}>{data.name}</Typography>
-                <div className="mythic-eventing-flow-node-main">
+            <div className={`mythic-eventing-flow-node mythic-justify-start mythic-stack mythic-border-radius mythic-border mythic-full-width mythic-overflow-hidden mythic-full-height mythic-text-primary mythic-surface mythic-eventing-flow-node-${getEventingStatusClass(data?.status)}`.trim()}>
+                <Typography className="mythic-eventing-flow-node-title mythic-truncate mythic-break-anywhere mythic-overflow-hidden mythic-text-primary" title={data.name}>{data.name}</Typography>
+                <MythicCluster component="div" gap="none" justify="start" className="mythic-eventing-flow-node-main">
                     <EventingStatusChip data={data}/>
                     {data.action &&
-                        <span className="mythic-eventing-flow-node-action" title={data.action}>{data.action}</span>
+                        <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-eventing-flow-node-action mythic-truncate mythic-nowrap mythic-max-width-full mythic-font-size-xs mythic-font-weight-strong mythic-line-height-compact mythic-text-info mythic-border-radius mythic-border mythic-overflow-hidden" title={data.action}>{data.action}</MythicCluster>
                     }
-                </div>
+                </MythicCluster>
                 {data.status &&
-                    <div className="mythic-eventing-flow-node-meta">
+                    <MythicCluster component="div" gap="sm" justify="between" className="mythic-eventing-flow-node-meta mythic-text-secondary">
                         <GetTimeDuration data={data} customStyle={{float: "none", fontSize: "unset"}} />
-                    </div>
+                    </MythicCluster>
                 }
             </div>
             <Handle type={"target"} position={targetPosition}/>
@@ -1173,7 +1185,7 @@ export const EventStepRenderFlowWithProvider = (props) => {
 }
 
 function EventStepRender({selectedEventGroup, useSuppliedData}) {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const [steps, setSteps] = React.useState([]);
     const [nodes, setNodes] = React.useState([]);
     const [edges, setEdges] = React.useState([]);
@@ -1325,7 +1337,7 @@ function EventStepRender({selectedEventGroup, useSuppliedData}) {
                 }
                 tmpEdge.markerEnd.type = "arrowclosed"
                 tmpEdge.labelBgStyle = {
-                    fill: theme.tableHover,
+                    fill: theme.color.table.hover,
                     fillOpacity: 0.6,
                 }
                 tmpEdge.labelStyle = {
@@ -1375,7 +1387,7 @@ function EventStepRender({selectedEventGroup, useSuppliedData}) {
         })();
     }, [graphData]);
     return (
-        <div className="mythic-eventing-flow-canvas mythic-graph-canvas" ref={viewportRef} style={{position: "relative"}}>
+        <div className="mythic-eventing-flow-canvas mythic-relative mythic-graph-canvas mythic-full-width mythic-min-height-0 mythic-full-height" ref={viewportRef} style={{position: "relative"}}>
             <ReactFlow
                 fitView
                 onlyRenderVisibleElements={false}
@@ -1392,20 +1404,20 @@ function EventStepRender({selectedEventGroup, useSuppliedData}) {
                 onNodeContextMenu={onNodeContextMenu}
             >
                 {selectedEventGroup.id > 0 &&
-                    <div className="mythic-eventing-flow-badge">Event group {selectedEventGroup.id}</div>
+                    <MythicCluster component="div" gap="none" inline wrap={false} className="mythic-eventing-flow-badge mythic-line-height-compact mythic-font-size-caption mythic-font-weight-extra-bold mythic-border-radius mythic-border mythic-text-secondary mythic-surface">Event group {selectedEventGroup.id}</MythicCluster>
                 }
                 <Controls showInteractive={false} className="mythic-graph-controls-muted-hover">
                 </Controls>
             </ReactFlow>
             {openContextMenu && typeof document !== "undefined" && createPortal(
-                <div style={{...contextMenuCoord, position: "fixed"}} className="context-menu mythic-graph-context-menu">
+                <MythicStack component="div" gap="xs" style={{...contextMenuCoord, position: "fixed"}} className="context-menu mythic-graph-context-menu">
                     {contextMenu.map( (m) => (
-                        <Button key={m.title} className="context-menu-button mythic-graph-context-menu-button mythic-table-row-action mythic-table-row-action-hover-info" variant="outlined" onClick={() => {
+                        <MythicActionButton tone="info" key={m.title} className="context-menu-button mythic-graph-context-menu-button" variant="outlined" onClick={() => {
                             m.onClick(contextMenuNode.current);
                             setOpenContextMenu(false);
-                        }}>{m.title}</Button>
+                        }}>{m.title}</MythicActionButton>
                     ))}
-                </div>,
+                </MythicStack>,
                 document.body
             )}
             {openEventStepDetails &&
@@ -1432,7 +1444,7 @@ export const EventStepInstanceRenderFlowWithProvider = (props) => {
 }
 
 function EventStepInstanceRender({selectedEventGroupInstance}) {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const [steps, setSteps] = React.useState([]);
     const [nodes, setNodes] = React.useState([]);
     const [edges, setEdges] = React.useState([]);
@@ -1498,7 +1510,7 @@ function EventStepInstanceRender({selectedEventGroupInstance}) {
     const contextMenu = React.useMemo(() => {return [
         {
             title: 'Respond to approval / input',
-            className: 'mythic-table-row-action-hover-success',
+            tone: 'success',
             shouldShow: function(node) {
                 return eventStepNeedsUserInteraction(node);
             },
@@ -1642,7 +1654,7 @@ function EventStepInstanceRender({selectedEventGroupInstance}) {
                 }
                 tmpEdge.markerEnd.type = "arrowclosed"
                 tmpEdge.labelBgStyle = {
-                    fill: theme.tableHover,
+                    fill: theme.color.table.hover,
                     fillOpacity: 0.6,
                 }
                 tmpEdge.labelStyle = {
@@ -1695,7 +1707,7 @@ function EventStepInstanceRender({selectedEventGroupInstance}) {
         })();
     }, [graphData]);
     return (
-        <div className="mythic-eventing-flow-canvas mythic-graph-canvas" ref={viewportRef} style={{position: "relative"}}>
+        <div className="mythic-eventing-flow-canvas mythic-relative mythic-graph-canvas mythic-full-width mythic-min-height-0 mythic-full-height" ref={viewportRef} style={{position: "relative"}}>
             <ReactFlow
                 fitView
                 onlyRenderVisibleElements={false}
@@ -1711,19 +1723,19 @@ function EventStepInstanceRender({selectedEventGroupInstance}) {
                 onPaneClick={onPaneClick}
                 onNodeContextMenu={onNodeContextMenu}
             >
-                <div className="mythic-eventing-flow-badge">Instance {selectedEventGroupInstance}</div>
+                <MythicCluster component="div" gap="none" inline wrap={false} className="mythic-eventing-flow-badge mythic-line-height-compact mythic-font-size-caption mythic-font-weight-extra-bold mythic-border-radius mythic-border mythic-text-secondary mythic-surface">Instance {selectedEventGroupInstance}</MythicCluster>
                 <Controls showInteractive={false} className="mythic-graph-controls-muted-hover">
                 </Controls>
             </ReactFlow>
             {openContextMenu && typeof document !== "undefined" && createPortal(
-                <div style={{...contextMenuCoord, position: "fixed"}} className="context-menu mythic-graph-context-menu">
+                <MythicStack component="div" gap="xs" style={{...contextMenuCoord, position: "fixed"}} className="context-menu mythic-graph-context-menu">
                     {contextMenu.filter((m) => !m.shouldShow || m.shouldShow(contextMenuNode.current)).map( (m) => (
-                        <Button key={m.title} className={`context-menu-button mythic-graph-context-menu-button mythic-table-row-action ${m.className || "mythic-table-row-action-hover-info"}`.trim()} variant="outlined" onClick={() => {
+                        <MythicActionButton key={m.title} className="context-menu-button mythic-graph-context-menu-button" tone={m.tone || "info"} variant="outlined" onClick={() => {
                             m.onClick(contextMenuNode.current);
                             setOpenContextMenu(false);
-                        }}>{m.title}</Button>
+                        }}>{m.title}</MythicActionButton>
                     ))}
-                </div>,
+                </MythicStack>,
                 document.body
             )}
             {openEventStepInstanceDetails &&
@@ -1773,13 +1785,13 @@ export function EventStepRenderDialog({selectedEventGroup, onClose, useSuppliedD
                 title={selectedEventGroup.name}
                 subtitle={selectedEventGroup.description}
             />
-            <DialogContent dividers={true} className="mythic-eventing-render-dialog-content">
+            <DialogContent dividers={true} className="mythic-eventing-render-dialog-content mythic-overflow-hidden">
                 <EventStepRenderFlowWithProvider selectedEventGroup={selectedEventGroup} useSuppliedData={useSuppliedData}/>
             </DialogContent>
-            <DialogActions className="mythic-eventing-detail-dialog-actions">
-                <Button className="mythic-table-row-action" onClick={onClose} variant="outlined">
+            <DialogActions className="mythic-eventing-detail-dialog-actions mythic-gap-sm mythic-divider-top mythic-surface">
+                <MythicActionButton tone="neutral"  onClick={onClose} variant="outlined">
                     Close
-                </Button>
+                </MythicActionButton>
             </DialogActions>
         </>
     )
@@ -1792,20 +1804,20 @@ export function EventStepInstanceRenderDialog({selectedEventGroup, selectedEvent
                 subtitle={selectedEventGroup.description}
                 meta={<EventingDetailChip label="Instance" value={selectedEventGroupInstance} />}
             />
-            <DialogContent dividers={true} className="mythic-eventing-render-dialog-content">
+            <DialogContent dividers={true} className="mythic-eventing-render-dialog-content mythic-overflow-hidden">
                 <EventStepInstanceRenderFlowWithProvider selectedEventGroupInstance={selectedEventGroupInstance}/>
             </DialogContent>
-            <DialogActions className="mythic-eventing-detail-dialog-actions">
-                <Button className="mythic-table-row-action" onClick={onClose} variant="outlined">
+            <DialogActions className="mythic-eventing-detail-dialog-actions mythic-gap-sm mythic-divider-top mythic-surface">
+                <MythicActionButton tone="neutral"  onClick={onClose} variant="outlined">
                     Close
-                </Button>
+                </MythicActionButton>
             </DialogActions>
         </>
 
     )
 }
 function EventStepInstanceDetailDialog({selectedEventStepInstance, onClose}) {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const [data, setData] = React.useState({});
     const [deletePayload] = useMutation(payloadsDelete, {
         onCompleted: (completedData) => {
@@ -1866,13 +1878,13 @@ function EventStepInstanceDetailDialog({selectedEventStepInstance, onClose}) {
                 subtitle={stepDefinition.description}
                 title={stepDefinition.name}
             />
-            <DialogContent dividers={true} className="mythic-eventing-detail-dialog-content">
+            <MythicStack component={DialogContent} gap="md" dividers={true} className="mythic-eventing-detail-dialog-content mythic-overflow-auto">
                 <EventingDetailSection
                     title="Metadata"
                     subtitle="Compare configured step values with the values captured during this execution."
                 >
-                    <Accordion
-                        className="mythic-eventing-detail-accordion mythic-eventing-metadata-accordion"
+                    <EventingDetailAccordion
+                        className="mythic-eventing-metadata-accordion"
                         TransitionProps={{ unmountOnExit: true }}
                         defaultExpanded={false}
                         onChange={() => {setExpandStepTable(!expandStepTable)}} expanded={expandStepTable}
@@ -1881,15 +1893,15 @@ function EventStepInstanceDetailDialog({selectedEventStepInstance, onClose}) {
                             Original and runtime metadata
                         </AccordionSummary>
                         <AccordionDetails>
-                            <div className="mythic-eventing-metadata-comparison">
+                            <MythicStack component="div" gap="md" className="mythic-eventing-metadata-comparison">
                                 <EventingMetadataPair label="Environment" original={stepDefinition.environment} instance={stepInstance.environment} />
                                 <EventingMetadataPair label="Inputs" original={stepDefinition.inputs} instance={stepInstance.inputs} />
                                 <EventingMetadataPair label="Outputs" original={stepDefinition.outputs} instance={stepInstance.outputs} />
                                 <EventingMetadataPair label="Action data" original={stepDefinition.action_data} instance={stepInstance.action_data} />
                                 <EventingMetadataPair label="User interaction" original={stepDefinition.user_interaction} instance={stepInstance.user_interaction_response} originalLabel="Configured" instanceLabel="Response" />
-                            </div>
+                            </MythicStack>
                         </AccordionDetails>
-                    </Accordion>
+                    </EventingDetailAccordion>
                 </EventingDetailSection>
                 <EventingDetailSection
                     collapsible
@@ -1905,7 +1917,7 @@ function EventStepInstanceDetailDialog({selectedEventStepInstance, onClose}) {
                     ) : (
                         <>
                             {hasStdout && (
-                                <Accordion className="mythic-eventing-detail-accordion" TransitionProps={{unmountOnExit: true}} defaultExpanded={false}
+                                <EventingDetailAccordion TransitionProps={{unmountOnExit: true}} defaultExpanded={false}
                                            onChange={() => {
                                                setExpandStdout(!expandStdout)
                                            }} expanded={expandStdout}
@@ -1934,10 +1946,10 @@ function EventStepInstanceDetailDialog({selectedEventStepInstance, onClose}) {
                                                 useWorker: false
                                             }}/>
                                     </AccordionDetails>
-                                </Accordion>
+                                </EventingDetailAccordion>
                             )}
                             {hasStderr && (
-                                <Accordion className="mythic-eventing-detail-accordion" TransitionProps={{ unmountOnExit: true }} defaultExpanded={false}
+                                <EventingDetailAccordion TransitionProps={{ unmountOnExit: true }} defaultExpanded={false}
                                            onChange={() => {setExpandStderr(!expandStderr)}} expanded={expandStderr}
                                 >
                                     <AccordionSummary
@@ -1964,7 +1976,7 @@ function EventStepInstanceDetailDialog({selectedEventStepInstance, onClose}) {
                                                 useWorker: false
                                             }}/>
                                     </AccordionDetails>
-                                </Accordion>
+                                </EventingDetailAccordion>
                             )}
                         </>
                     )}
@@ -1974,11 +1986,11 @@ function EventStepInstanceDetailDialog({selectedEventStepInstance, onClose}) {
                 <EventDetailsPayloadsTable payloads={stepInstance.payloads} deletePayload={deletePayload} />
                 <EventDetailsTaskTable tasks={stepInstance.tasks} />
                 <EventDetailsAPITokensTable tokens={stepInstance.apitokens} />
-            </DialogContent>
-            <DialogActions className="mythic-eventing-detail-dialog-actions">
-                <Button className="mythic-table-row-action" onClick={onClose} variant="outlined">
+            </MythicStack>
+            <DialogActions className="mythic-eventing-detail-dialog-actions mythic-gap-sm mythic-divider-top mythic-surface">
+                <MythicActionButton tone="neutral"  onClick={onClose} variant="outlined">
                     Close
-                </Button>
+                </MythicActionButton>
             </DialogActions>
         </>
     )
@@ -2037,25 +2049,25 @@ function EventGroupInstanceDetailDialog({selectedEventGroupInstance, onClose}) {
                 subtitle={groupInstance.eventgroup?.description}
                 title={groupInstance.eventgroup?.name}
             />
-            <DialogContent dividers={true} className="mythic-eventing-detail-dialog-content">
+            <MythicStack component={DialogContent} gap="md" dividers={true} className="mythic-eventing-detail-dialog-content mythic-overflow-auto">
                 <EventingDetailSection
                     title="Instance metadata"
                     subtitle="Runtime values captured for this workflow instance."
                 >
-                    <div className="mythic-eventing-metadata-comparison mythic-eventing-metadata-comparison-single">
+                    <MythicStack component="div" gap="md" className="mythic-eventing-metadata-comparison mythic-eventing-metadata-comparison-single">
                         <EventingMetadataPair label="Environment" original={groupInstance.environment} instance={groupInstance.trigger_metadata} originalLabel="Environment" instanceLabel="Trigger metadata" />
-                    </div>
+                    </MythicStack>
                 </EventingDetailSection>
                 <EventDetailsCallbacksTable callbacks={data?.callback} includeContext />
                 <EventDetailsFilesTable files={data?.filemeta} />
                 <EventDetailsPayloadsTable payloads={data.payload} deletePayload={deletePayload} />
                 <EventDetailsTaskTable tasks={data.task} />
                 <EventDetailsAPITokensTable tokens={data?.apitokens} />
-            </DialogContent>
-            <DialogActions className="mythic-eventing-detail-dialog-actions">
-                <Button className="mythic-table-row-action" onClick={onClose} variant="outlined">
+            </MythicStack>
+            <DialogActions className="mythic-eventing-detail-dialog-actions mythic-gap-sm mythic-divider-top mythic-surface">
+                <MythicActionButton tone="neutral"  onClick={onClose} variant="outlined">
                     Close
-                </Button>
+                </MythicActionButton>
             </DialogActions>
         </>
     )
@@ -2089,39 +2101,34 @@ function EventStepDetailDialog({selectedEventStep, onClose}) {
                 subtitle={stepDefinition.description}
                 title={stepDefinition.name}
             />
-            <DialogContent dividers={true} className="mythic-eventing-detail-dialog-content">
+            <MythicStack component={DialogContent} gap="md" dividers={true} className="mythic-eventing-detail-dialog-content mythic-overflow-auto">
                 <EventingDetailSection
                     title="Configured metadata"
                     subtitle="Values defined by this workflow step before any runtime substitutions occur."
                 >
-                    <div className="mythic-eventing-metadata-static-grid">
-                        <div className="mythic-eventing-metadata-panel">
-                            <div className="mythic-eventing-metadata-panel-title">Environment</div>
+                    <MythicGrid component="div" gap="sm" columns="custom" className="mythic-eventing-metadata-static-grid mythic-min-width-0">
+                        <EventingMetadataPanel title="Environment">
                             <EventingCodeBlock value={stepDefinition.environment} />
-                        </div>
-                        <div className="mythic-eventing-metadata-panel">
-                            <div className="mythic-eventing-metadata-panel-title">Inputs</div>
+                        </EventingMetadataPanel>
+                        <EventingMetadataPanel title="Inputs">
                             <EventingCodeBlock value={stepDefinition.inputs} />
-                        </div>
-                        <div className="mythic-eventing-metadata-panel">
-                            <div className="mythic-eventing-metadata-panel-title">Outputs</div>
+                        </EventingMetadataPanel>
+                        <EventingMetadataPanel title="Outputs">
                             <EventingCodeBlock value={stepDefinition.outputs} />
-                        </div>
-                        <div className="mythic-eventing-metadata-panel">
-                            <div className="mythic-eventing-metadata-panel-title">Action data</div>
+                        </EventingMetadataPanel>
+                        <EventingMetadataPanel title="Action data">
                             <EventingCodeBlock value={stepDefinition.action_data} />
-                        </div>
-                        <div className="mythic-eventing-metadata-panel">
-                            <div className="mythic-eventing-metadata-panel-title">User interaction</div>
+                        </EventingMetadataPanel>
+                        <EventingMetadataPanel title="User interaction">
                             <EventingCodeBlock value={stepDefinition.user_interaction} />
-                        </div>
-                    </div>
+                        </EventingMetadataPanel>
+                    </MythicGrid>
                 </EventingDetailSection>
-            </DialogContent>
-            <DialogActions className="mythic-eventing-detail-dialog-actions">
-                <Button className="mythic-table-row-action" onClick={onClose} variant="outlined">
+            </MythicStack>
+            <DialogActions className="mythic-eventing-detail-dialog-actions mythic-gap-sm mythic-divider-top mythic-surface">
+                <MythicActionButton tone="neutral"  onClick={onClose} variant="outlined">
                     Close
-                </Button>
+                </MythicActionButton>
             </DialogActions>
         </>
     )
@@ -2142,33 +2149,33 @@ function EventDetailsCallbacksTable({callbacks, includeContext = false}){
                 />
             ) : (
                 <>
-                    <TableContainer className="mythicElement mythic-eventing-detail-table-wrap mythic-fixed-row-table-wrap">
+                    <TableContainer className="mythicElement mythic-eventing-detail-table-wrap mythic-fixed-row-table-wrap mythic-overflow-auto">
                         <Table style={{height: "auto"}}>
                             <TableHead>
                                 <TableRow>
-                                    <MythicStyledTableCell>Callback</MythicStyledTableCell>
+                                    <TableCell>Callback</TableCell>
                                     {includeContext &&
-                                        <MythicStyledTableCell>
+                                        <TableCell>
                                             Context
-                                        </MythicStyledTableCell>
+                                        </TableCell>
                                     }
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {pagination.pageData.map(trackedData => (
                                     <TableRow key={"callbacks" + trackedData.id} hover>
-                                        <MythicStyledTableCell>
+                                        <TableCell>
                                             <Link className="mythic-eventing-resource-link" color="textPrimary" underline="always" target="_blank"
                                                   href={"/new/callbacks/" + trackedData.display_id}>{trackedData.display_id}</Link>
-                                        </MythicStyledTableCell>
+                                        </TableCell>
                                         {includeContext &&
-                                            <MythicStyledTableCell>
-                                                <span className="mythic-eventing-resource-secondary">
+                                            <TableCell>
+                                                <span className="mythic-eventing-resource-secondary mythic-font-size-small mythic-font-weight-semibold mythic-line-height-normal mythic-text-secondary">
                                                     {trackedData.user || "unknown"} @ {trackedData.host || "unknown"}
                                                     {trackedData.pid ? ` (${trackedData.pid})` : ""}
                                                     {trackedData.process_name ? ` - ${trackedData.process_name}` : ""}
                                                 </span>
-                                            </MythicStyledTableCell>
+                                            </TableCell>
                                         }
                                     </TableRow>
                                 ))}
@@ -2194,7 +2201,7 @@ function EventDetailsAPITokensTable({tokens}){
                 />
             ) : (
                 <>
-                    <TableContainer className="mythicElement mythic-eventing-detail-table-wrap mythic-fixed-row-table-wrap">
+                    <TableContainer className="mythicElement mythic-eventing-detail-table-wrap mythic-fixed-row-table-wrap mythic-overflow-auto">
                         <Table style={{height: "auto"}}>
                             <TableHead>
                                 <TableRow>
@@ -2286,11 +2293,11 @@ function EventDetailsPayloadsTable({payloads, deletePayload}){
                 count={payloadCount}
                 actions={
                     payloadCount > 0 &&
-                    <Button className="mythic-table-row-action mythic-table-row-action-hover-info" size="small" onClick={onDownloadBulkPayloads}
+                    <MythicActionButton tone="info"  size="small" onClick={onDownloadBulkPayloads}
                             variant="outlined" startIcon={<ArchiveIcon fontSize="small" />}
                     >
                         Zip and download
-                    </Button>
+                    </MythicActionButton>
                 }
             >
                 {payloadCount === 0 ? (
@@ -2300,43 +2307,43 @@ function EventDetailsPayloadsTable({payloads, deletePayload}){
                     />
                 ) : (
                     <>
-                    <TableContainer className="mythicElement mythic-eventing-detail-table-wrap mythic-fixed-row-table-wrap">
+                    <TableContainer className="mythicElement mythic-eventing-detail-table-wrap mythic-fixed-row-table-wrap mythic-overflow-auto">
                         <Table style={{height: "auto"}}>
                             <TableHead>
                                 <TableRow>
-                                    <MythicStyledTableCell style={{width: "2rem"}}></MythicStyledTableCell>
-                                    <MythicStyledTableCell style={{width: "60px"}}>Type</MythicStyledTableCell>
-                                    <MythicStyledTableCell>Filename</MythicStyledTableCell>
-                                    <MythicStyledTableCell style={{width: "3rem"}}>Status</MythicStyledTableCell>
-                                    <MythicStyledTableCell style={{width: "3rem"}}></MythicStyledTableCell>
+                                    <TableCell style={{width: "2rem"}}></TableCell>
+                                    <TableCell style={{width: "60px"}}>Type</TableCell>
+                                    <TableCell>Filename</TableCell>
+                                    <TableCell style={{width: "3rem"}}>Status</TableCell>
+                                    <TableCell style={{width: "3rem"}}></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {pagination.pageData.map(trackedData => (
                                     <TableRow key={"payloads" + trackedData.id} hover>
-                                        <MythicStyledTableCell style={{width: "2rem"}}>
+                                        <TableCell style={{width: "2rem"}}>
                                             {!trackedData.deleted &&
                                                 <MythicStyledTooltip title={"Delete the payload from disk and mark as deleted. No new callbacks can be generated from this payload"}>
-                                                    <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" disableFocusRipple={true}
-                                                                disableRipple={true} onClick={()=>{onDeletePayload(trackedData)}}><DeleteIcon fontSize="small" /></IconButton>
+                                                    <MythicActionButton iconOnly tone="error"  size="small" disableFocusRipple={true}
+                                                                disableRipple={true} onClick={()=>{onDeletePayload(trackedData)}}><DeleteIcon fontSize="small" /></MythicActionButton>
                                                 </MythicStyledTooltip>
                                             }
-                                        </MythicStyledTableCell>
-                                        <MythicStyledTableCell style={{width: "60px"}}>
+                                        </TableCell>
+                                        <TableCell style={{width: "60px"}}>
                                             <MythicStyledTooltip title={trackedData.payloadtype.name}>
                                                 <MythicAgentSVGIcon payload_type={trackedData.payloadtype.name} style={{height: "40px"}}/>
                                             </MythicStyledTooltip>
-                                        </MythicStyledTableCell>
-                                        <MythicStyledTableCell>{b64DecodeUnicode(trackedData.filemetum.filename_text)}</MythicStyledTableCell>
-                                        <MythicStyledTableCell style={{width: "3rem"}}>
+                                        </TableCell>
+                                        <TableCell>{b64DecodeUnicode(trackedData.filemetum.filename_text)}</TableCell>
+                                        <TableCell style={{width: "3rem"}}>
                                             <PayloadsTableRowBuildStatus {...trackedData} />
-                                        </MythicStyledTableCell>
-                                        <MythicStyledTableCell style={{width: "3rem"}}>
-                                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" disableFocusRipple={true}
+                                        </TableCell>
+                                        <TableCell style={{width: "3rem"}}>
+                                            <MythicActionButton iconOnly tone="info"  disableFocusRipple={true}
                                                         disableRipple={true} size="small" onClick={() => onViewDetailedData(trackedData)}>
                                                 <InfoIconOutline fontSize="small" />
-                                            </IconButton>
-                                        </MythicStyledTableCell>
+                                            </MythicActionButton>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -2362,40 +2369,40 @@ function EventDetailsTaskTable({tasks}){
                 />
             ) : (
                 <>
-                    <TableContainer className="mythicElement mythic-eventing-detail-table-wrap mythic-fixed-row-table-wrap">
+                    <TableContainer className="mythicElement mythic-eventing-detail-table-wrap mythic-fixed-row-table-wrap mythic-overflow-auto">
                         <Table style={{height: "auto"}}>
                             <TableHead>
                                 <TableRow>
-                                    <MythicStyledTableCell style={{width: "4rem"}}>Type</MythicStyledTableCell>
-                                    <MythicStyledTableCell>Callback</MythicStyledTableCell>
-                                    <MythicStyledTableCell>Task</MythicStyledTableCell>
-                                    <MythicStyledTableCell>Command</MythicStyledTableCell>
-                                    <MythicStyledTableCell>Operator</MythicStyledTableCell>
+                                    <TableCell style={{width: "4rem"}}>Type</TableCell>
+                                    <TableCell>Callback</TableCell>
+                                    <TableCell>Task</TableCell>
+                                    <TableCell>Command</TableCell>
+                                    <TableCell>Operator</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {pagination.pageData.map(trackedData => (
                                     <TableRow key={"tasks" + trackedData.id} hover>
-                                        <MythicStyledTableCell style={{width: "4rem"}}>
+                                        <TableCell style={{width: "4rem"}}>
                                             {trackedData.callback?.payload?.payloadtype?.name &&
                                                 <MythicAgentSVGIcon payload_type={trackedData.callback.payload.payloadtype.name}
                                                                     style={{height: "40px"}} />
                                             }
-                                        </MythicStyledTableCell>
-                                        <MythicStyledTableCell>
+                                        </TableCell>
+                                        <TableCell>
                                             <Link className="mythic-eventing-resource-link" color="textPrimary" underline="always" target="_blank"
                                                   href={"/new/callbacks/" + trackedData.callback.display_id}>{trackedData.callback.display_id}</Link>
-                                        </MythicStyledTableCell>
-                                        <MythicStyledTableCell>
+                                        </TableCell>
+                                        <TableCell>
                                             <Link className="mythic-eventing-resource-link" color={"textPrimary"} underline={"always"} target={"_blank"}
                                                   href={"/new/task/" + trackedData.display_id}>{trackedData.display_id}</Link>
-                                        </MythicStyledTableCell>
-                                        <MythicStyledTableCell>
-                                            <span className="mythic-eventing-resource-command">{trackedData.command_name}</span> {trackedData.display_params}
-                                        </MythicStyledTableCell>
-                                        <MythicStyledTableCell>
+                                        </TableCell>
+                                        <TableCell>
+                                            <span className="mythic-eventing-resource-command mythic-font-weight-heavy mythic-text-primary">{trackedData.command_name}</span> {trackedData.display_params}
+                                        </TableCell>
+                                        <TableCell>
                                             {trackedData.operator.username}
-                                        </MythicStyledTableCell>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -2444,11 +2451,11 @@ function EventDetailsFilesTable({files}){
             count={fileCount}
             actions={
                 fileCount > 0 &&
-                <Button className="mythic-table-row-action mythic-table-row-action-hover-info" size="small" onClick={onDownloadBulkPayloads}
+                <MythicActionButton tone="info"  size="small" onClick={onDownloadBulkPayloads}
                         variant="outlined" startIcon={<ArchiveIcon fontSize="small" />}
                 >
                     Zip and download
-                </Button>
+                </MythicActionButton>
             }
         >
             {fileCount === 0 ? (
@@ -2458,21 +2465,21 @@ function EventDetailsFilesTable({files}){
                 />
             ) : (
                 <>
-                    <TableContainer className="mythicElement mythic-eventing-detail-table-wrap mythic-fixed-row-table-wrap">
+                    <TableContainer className="mythicElement mythic-eventing-detail-table-wrap mythic-fixed-row-table-wrap mythic-overflow-auto">
                         <Table style={{height: "auto"}}>
                             <TableHead>
                                 <TableRow>
-                                    <MythicStyledTableCell>File name</MythicStyledTableCell>
-                                    <MythicStyledTableCell>Comment</MythicStyledTableCell>
-                                    <MythicStyledTableCell>Size</MythicStyledTableCell>
+                                    <TableCell>File name</TableCell>
+                                    <TableCell>Comment</TableCell>
+                                    <TableCell>Size</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {pagination.pageData.map(trackedData => (
                                     <TableRow key={"filemeta" + trackedData.id} hover>
-                                        <MythicStyledTableCell>
+                                        <TableCell>
                                             {trackedData.deleted ? (
-                                                <Typography variant="body2" style={{wordBreak: "break-all"}}>
+                                                <Typography variant="body2">
                                                     {b64DecodeUnicode(trackedData.full_remote_path_text) === "" ?
                                                         b64DecodeUnicode(trackedData.filename_text) :
                                                         b64DecodeUnicode(trackedData.full_remote_path_text)}
@@ -2485,13 +2492,13 @@ function EventDetailsFilesTable({files}){
                                                 </FileDownloadLinkWithAuth>
                                             )
                                             }
-                                        </MythicStyledTableCell>
-                                        <MythicStyledTableCell>
+                                        </TableCell>
+                                        <TableCell>
                                             {trackedData.comment}
-                                        </MythicStyledTableCell>
-                                        <MythicStyledTableCell>
+                                        </TableCell>
+                                        <TableCell>
                                             {getStringSize({cellData: {"plaintext": trackedData.size}})}
-                                        </MythicStyledTableCell>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {IconButton, Link} from '@mui/material';
+import {Link} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,8 +16,9 @@ import {getStringSize} from '../Callbacks/ResponseDisplayTable';
 import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
 import {adjustOutput} from "../Eventing/EventGroupInstancesTable";
 import SpeedIcon from '@mui/icons-material/Speed';
-import MythicStyledTableCell from '../../MythicComponents/MythicTableCell';
-import {MythicStateChip} from "../../MythicComponents/MythicStateChip";
+import {MythicStatusChip} from "../../MythicComponents/MythicStatusChip";
+import {MythicStack, MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicCodeSurface, MythicActionButton, MythicMetadataItem, MythicMetadataValue, MythicText} from "../../MythicComponents/MythicContent";
 
 const toggleProxy = gql`
 mutation ToggleProxyMutation($callbackport_id: Int!, $action: String!){
@@ -74,7 +75,7 @@ export function ProxySearchTable(props){
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                
+
                 {callbacks.map( (op) => (
                     (props.showDeleted || !op.deleted) &&
                     <ProxySearchTableRow
@@ -144,98 +145,92 @@ function ProxySearchTableRow(props){
                                          dialogText={confirmDialogText}
                     />
                 }
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-action-row">
+                <TableCell>
+                    <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-search-result-action-row">
                         {props.deleted ? (
                             <MythicStyledTooltip title="Start Proxy Port on Mythic Server">
-                                <IconButton
-                                    className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-success"
+                                <MythicActionButton iconOnly tone="success"
+
                                     size="small"
                                     onClick={()=>{setOpenDeleteDialog(true);}}
                                 >
                                     <RestoreFromTrashIcon fontSize="small" />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                         ) :
                             (<MythicStyledTooltip title="Stop Proxy Port on Mythic Server">
-                                <IconButton
-                                    className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger"
+                                <MythicActionButton iconOnly tone="error"
+
                                     size="small"
                                     onClick={()=>{setOpenDeleteDialog(true);}}
                                 >
                                     <DeleteIcon fontSize="small" />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                             )}
-                        <MythicStateChip compact label={props.deleted ? "Stopped" : "Running"} state={props.deleted ? "disabled" : "active"} />
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-stack">
-                        <div className="mythic-search-result-primary">{props.callback.user}@{props.callback.host}</div>
+                        <MythicStatusChip size="compact" label={props.deleted ? "Stopped" : "Running"} status={props.deleted ? "disabled" : "active"} />
+                    </MythicCluster>
+                </TableCell>
+                <TableCell>
+                    <MythicStack component="div" gap="none" className="mythic-search-result-stack">
+                        <MythicText component="div" preset="value" className="mythic-search-result-primary">{props.callback.user}@{props.callback.host}</MythicText>
                         {props.callback.description &&
-                            <div className="mythic-search-result-secondary">{props.callback.description}</div>
+                            <MythicMetadataValue component="div" size="caption" tone="secondary" className="mythic-search-result-secondary">{props.callback.description}</MythicMetadataValue>
                         }
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-link-row">
-                        <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank"
+                    </MythicStack>
+                </TableCell>
+                <TableCell>
+                    <MythicCluster component="div" gap="xs" inline className="mythic-search-result-link-row">
+                        <Link color="textPrimary" underline="always" target="_blank"
                             href={"/new/callbacks/" + props.callback.display_id}>
                                 C-{props.callback.display_id}
                         </Link>
-                        <span className="mythic-search-result-secondary">/</span>
-                        <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank"
+                        <MythicMetadataValue component="span" size="caption" tone="secondary" className="mythic-search-result-secondary">/</MythicMetadataValue>
+                        <Link color="textPrimary" underline="always" target="_blank"
                               href={"/new/task/" + props.task.display_id}>
                             T-{props.task.display_id}
                         </Link>
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <span className="mythic-search-result-code">{props.local_port}</span>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-stack">
+                    </MythicCluster>
+                </TableCell>
+                <TableCell>
+                    <MythicCodeSurface component="span" density="compact" overflow="visible" tone="snippet">{props.local_port}</MythicCodeSurface>
+                </TableCell>
+                <TableCell>
+                    <MythicStack component="div" gap="none" className="mythic-search-result-stack">
                     {props.remote_port !== 0 &&
-                        <div className="mythic-search-result-primary">{props.remote_ip}:{props.remote_port}</div>
+                        <MythicText component="div" preset="value" className="mythic-search-result-primary">{props.remote_ip}:{props.remote_port}</MythicText>
                     }
                     {props.remote_port === 0 &&
-                        <div className="mythic-search-result-secondary">No remote endpoint</div>
+                        <MythicMetadataValue component="div" size="caption" tone="secondary" className="mythic-search-result-secondary">No remote endpoint</MythicMetadataValue>
                     }
                     {props.username !== "" &&
-                        <div className="mythic-search-result-stack">
-                            <div className="mythic-search-result-inline">
-                                <span className="mythic-search-result-label">Auth</span>
-                                <span className="mythic-search-result-value">{props.username}</span>
-                            </div>
-                            <div className="mythic-search-result-inline">
-                                <span className="mythic-search-result-label">Password</span>
-                                <span className="mythic-search-result-value">{props.password}</span>
-                            </div>
-                        </div>
+                        <MythicStack component="div" gap="none" className="mythic-search-result-stack">
+                            <MythicMetadataItem className="mythic-search-result-inline" density="compact" layout="inline" label="Auth">{props.username}</MythicMetadataItem>
+                            <MythicMetadataItem className="mythic-search-result-inline" density="compact" layout="inline" label="Password">{props.password}</MythicMetadataItem>
+                        </MythicStack>
                     }
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <div className="mythic-search-result-stack">
-                        <span className="mythic-search-result-metric">
+                    </MythicStack>
+                </TableCell>
+                <TableCell>
+                    <MythicStack component="div" gap="none" className="mythic-search-result-stack">
+                        <MythicCluster component="span" gap="xs" inline wrap={false} className="mythic-search-result-metric mythic-border mythic-border-radius">
                             <MythicStyledTooltip title={"Rx is bytes Mythic received from the agent"}>
-                                <span className="mythic-search-result-metric-label">Rx</span>
+                                <span className="mythic-search-result-metric-label mythic-font-size-xs mythic-font-weight-strong mythic-text-secondary">Rx</span>
                             </MythicStyledTooltip>
-                            <span className="mythic-search-result-value">{getStringSize({cellData: {"plaintext": String(props.bytes_received)}})}</span>
-                        </span>
-                        <span className="mythic-search-result-metric">
+                            <MythicMetadataValue component="span" className="mythic-search-result-value">{getStringSize({cellData: {"plaintext": String(props.bytes_received)}})}</MythicMetadataValue>
+                        </MythicCluster>
+                        <MythicCluster component="span" gap="xs" inline wrap={false} className="mythic-search-result-metric mythic-border mythic-border-radius">
                             <MythicStyledTooltip title={"Tx is bytes Mythic sent to the agent"}>
-                                <span className="mythic-search-result-metric-label">Tx</span>
+                                <span className="mythic-search-result-metric-label mythic-font-size-xs mythic-font-weight-strong mythic-text-secondary">Tx</span>
                             </MythicStyledTooltip>
-                            <span className="mythic-search-result-value">{getStringSize({cellData: {"plaintext": String(props.bytes_sent)}})}</span>
-                        </span>
-                    </div>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <MythicStateChip compact label={props.port_type} state="neutral" />
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                            <MythicMetadataValue component="span" className="mythic-search-result-value">{getStringSize({cellData: {"plaintext": String(props.bytes_sent)}})}</MythicMetadataValue>
+                        </MythicCluster>
+                    </MythicStack>
+                </TableCell>
+                <TableCell>
+                    <MythicStatusChip size="compact" label={props.port_type} status="neutral" />
+                </TableCell>
+                <TableCell>
                     <Moment filter={(newTime) => adjustOutput(props, newTime)} interval={1000}
                             parse={"YYYY-MM-DDTHH:mm:ss.SSSSSSZ"}
                             withTitle
@@ -244,20 +239,20 @@ function ProxySearchTableRow(props){
                     >
                         {props.updated_at + "Z"}
                     </Moment>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                </TableCell>
+                <TableCell>
                     {props.remote_port !== 0 &&
                         <MythicStyledTooltip title={"Test Remote Connection"} >
-                            <IconButton
-                                className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-success"
+                            <MythicActionButton iconOnly tone="success"
+
                                 size="small"
                                 onClick={onTestProxy}
                             >
                                 <SpeedIcon fontSize="small" />
-                            </IconButton>
+                            </MythicActionButton>
                         </MythicStyledTooltip>
                     }
-                </MythicStyledTableCell>
+                </TableCell>
             </TableRow>
         </React.Fragment>
     )

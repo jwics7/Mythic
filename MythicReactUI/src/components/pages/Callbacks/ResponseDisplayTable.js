@@ -1,9 +1,11 @@
+import MenuItem from '@mui/material/MenuItem';
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React, {useEffect, useRef} from 'react';
-import {Button} from '@mui/material';
+
 import {MythicViewJSONAsTableDialog, MythicDialog} from '../../MythicComponents/MythicDialog';
 import { MythicDisplayTextDialog } from '../../MythicComponents/MythicDisplayTextDialog';
 import { ResponseDisplayTableDialogTable } from './ResponseDisplayTableDialogTable';
-import {useTheme} from '@mui/material/styles';
+
 import 'react-virtualized/styles.css';
 import {TaskFromUIButton} from './TaskFromUIButton';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -12,10 +14,10 @@ import IconButton from '@mui/material/IconButton';
 import {snackActions} from '../../utilities/Snackbar';
 import {MythicStyledTooltip} from '../../MythicComponents/MythicStyledTooltip';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import MythicResizableGrid from '../../MythicComponents/MythicResizableGrid';
+import MythicResizableGrid from '../../MythicComponents/MythicResizableGrid/MythicResizableGrid';
 import {faCopy, faKey} from '@fortawesome/free-solid-svg-icons';
 import {getIconName} from '../../utilities/IconName';
-import {Dropdown, DropdownMenuItem} from "../../MythicComponents/MythicNestedMenus";
+import {Dropdown} from "../../MythicComponents/MythicNestedMenus";
 import {GetComputedFontSize} from "../../MythicComponents/MythicSavedUserSetting";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {MythicSectionHeader} from "../../MythicComponents/MythicPageHeader";
@@ -28,6 +30,8 @@ import {
 import {gql, useMutation} from '@apollo/client';
 import {CredentialTableNewCredentialDialog} from "../Search/CredentialTableNewCredentialDialog";
 import {getReadableTextColor, isValidHexColor} from "../../MythicComponents/MythicColorInput";
+import {MythicCluster, MythicStack} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 export {getIconName};
 
@@ -119,7 +123,7 @@ const ResponseDisplayTableStringCellCopy = ({cellData}) => {
   )
 }
 const ResponseDisplayTableFontAwesomeStartIcon = ({cellData}) => {
-  const theme = useTheme();
+  const theme = useMythicTheme();
   return (
       cellData?.startIcon &&
       <MythicStyledTooltip title={cellData?.startIconHoverText || ""} >
@@ -128,7 +132,7 @@ const ResponseDisplayTableFontAwesomeStartIcon = ({cellData}) => {
   )
 }
 const ResponseDisplayTableFontAwesomeEndIcon = ({cellData}) => {
-  const theme = useTheme();
+  const theme = useMythicTheme();
   return (
       cellData?.endIcon &&
       <MythicStyledTooltip title={cellData?.endIconHoverText || ""}>
@@ -138,28 +142,28 @@ const ResponseDisplayTableFontAwesomeEndIcon = ({cellData}) => {
 }
 const ResponseDisplayTableStringCell = ({cellData, rowData}) => {
   return (
-    <div className="mythic-response-table-cell" style={{...(cellData?.cellStyle || null), height: "100%"}}>
+    <MythicCluster component="div" gap="xs" inline wrap={false} className="mythic-response-table-cell mythic-max-width-full mythic-nowrap" style={{...(cellData?.cellStyle || null), height: "100%"}}>
       <ResponseDisplayTableStringCellCopy cellData={cellData} />
       <ResponseDisplayTableFontAwesomeStartIcon cellData={cellData} />
       {cellData?.plaintextHoverText? (
         <MythicStyledTooltip title={cellData.plaintextHoverText}>
-          <pre style={{display: "inline-block", margin: 0}}>
+          <pre className="mythic-min-width-0 mythic-overflow-hidden" style={{display: "inline-block", margin: 0}}>
             {cellData?.plaintext?.replaceAll?.("\n", "") || " "}
           </pre>
           
         </MythicStyledTooltip>
       ) : (
-        <pre style={{display: "inline-block", margin: 0}}>
+        <pre className="mythic-min-width-0 mythic-overflow-hidden" style={{display: "inline-block", margin: 0}}>
             {cellData?.plaintext?.replaceAll?.("\n","") || " "}
           </pre>
       )}
       <ResponseDisplayTableFontAwesomeEndIcon cellData={cellData} />
-    </div>
+    </MythicCluster>
   );
 }
 const ResponseDisplayTableNumberCell = ({cellData, rowData}) => {
   return (
-    <div className="mythic-response-table-cell" style={{...(cellData?.cellStyle || null), height: "100%"}}>
+    <MythicCluster component="div" gap="xs" inline wrap={false} className="mythic-response-table-cell mythic-max-width-full mythic-nowrap" style={{...(cellData?.cellStyle || null), height: "100%"}}>
       {cellData?.copyIcon? 
         <MythicStyledTooltip title={"Copy to clipboard"}>
             <IconButton onClick={() => onCopyToClipboard(cellData["plaintext"])} size="small">
@@ -174,13 +178,13 @@ const ResponseDisplayTableNumberCell = ({cellData, rowData}) => {
       }
       {cellData?.plaintextHoverText? (
         <MythicStyledTooltip title={cellData.plaintextHoverText}>
-          <pre style={{display: "inline-block",  margin: 0}}>
+          <pre className="mythic-min-width-0 mythic-overflow-hidden" style={{display: "inline-block",  margin: 0}}>
             {cellData?.plaintext  || " "}
           </pre>
           
         </MythicStyledTooltip>
       ) : (
-        <pre style={{display: "inline-block",  margin: 0}}>
+        <pre className="mythic-min-width-0 mythic-overflow-hidden" style={{display: "inline-block",  margin: 0}}>
             {cellData?.plaintext || " "}
           </pre>
       )}
@@ -189,7 +193,7 @@ const ResponseDisplayTableNumberCell = ({cellData, rowData}) => {
           <FontAwesomeIcon icon={getIconName(cellData?.endIcon)} style={{color: cellData?.endIconColor  || ""}}/>
         </MythicStyledTooltip>: null
       }
-    </div>
+    </MythicCluster>
   );
 }
 export const getStringSize = ({cellData}) => {
@@ -216,36 +220,33 @@ export const getStringSize = ({cellData}) => {
 }
 const ResponseDisplayTableSizeCell = ({cellData, rowData}) => {
   return (
-    <div className="mythic-response-table-cell" style={{...(cellData?.cellStyle || null), height: "100%"}}>
+    <MythicCluster component="div" gap="xs" inline wrap={false} className="mythic-response-table-cell mythic-max-width-full mythic-nowrap" style={{...(cellData?.cellStyle || null), height: "100%"}}>
         {cellData?.plaintextHoverText? (
         <MythicStyledTooltip title={cellData.plaintextHoverText} >
-          <pre style={{display: "inline-block", margin: 0}}>
+          <pre className="mythic-min-width-0 mythic-overflow-hidden" style={{display: "inline-block", margin: 0}}>
             {getStringSize({cellData})}
           </pre>
           
         </MythicStyledTooltip>
       ) : (
-        <pre style={{display: "inline-block", margin: 0}}>
+        <pre className="mythic-min-width-0 mythic-overflow-hidden" style={{display: "inline-block", margin: 0}}>
             {getStringSize({cellData})}
           </pre>
       )}
-     </div>
+     </MythicCluster>
   );
 }
 const actionCellButtonStyle = {paddingTop: 0, paddingBottom: 0};
-const getActionButtonClassName = (intent = "info") => {
-  return `mythic-table-row-action mythic-table-row-action-hover-${intent}`;
-}
 const ResponseDisplayTableActionCell = ({cellData, callback_id, rowData, task}) => {
   return (
-    <div className="mythic-response-table-cell mythic-response-table-action-cell" style={{ height: "100%"}}>
+    <MythicCluster component="div" gap="sm" inline wrap={false} className="mythic-response-table-cell mythic-max-width-full mythic-nowrap mythic-response-table-action-cell" style={{ height: "100%"}}>
       {cellData?.plaintext && cellData.plaintext}
       {cellData?.button && <ResponseDisplayTableActionCellButton cellData={cellData} callback_id={callback_id} task={task} />}
-    </div>
+    </MythicCluster>
   );
 }
 const ResponseDisplayTableActionCellButton = ({cellData, callback_id, task}) => {
-  const theme = useTheme();
+  const theme = useMythicTheme();
   const [openButton, setOpenButton] = React.useState(false);
   const [openTaskingButton, setOpenTaskingButton] = React.useState(false);
   const [openDictionaryButton, setOpenDictionaryButton] = React.useState(false);
@@ -349,12 +350,11 @@ const ResponseDisplayTableActionCellButton = ({cellData, callback_id, task}) => 
         return (
             <React.Fragment>
               <MythicStyledTooltip title={cellData?.button?.hoverText || "View Data"} >
-                <Button size="small"
-                        className={getActionButtonClassName("info")}
+                <MythicActionButton tone="info" size="small"
                         onClick={() => setOpenButton(true)} disabled={cellData?.button?.disabled || false}
                         startIcon={cellData?.button?.startIcon ? <FontAwesomeIcon icon={getIconName(cellData?.button?.startIcon)} style={{color: cellData?.button?.disabled ? "unset" :  getIconColor(theme, cellData?.button?.startIconColor)}}/> : null}
                         style={{...actionCellButtonStyle}}
-                >{cellData?.button?.name}</Button>
+                >{cellData?.button?.name}</MythicActionButton>
               </MythicStyledTooltip>
               {openButton &&
                   <MythicDialog fullWidth={true} maxWidth="lg" open={openButton}
@@ -369,12 +369,11 @@ const ResponseDisplayTableActionCellButton = ({cellData, callback_id, task}) => 
         return (
             <React.Fragment>
               <MythicStyledTooltip title={cellData?.button?.hoverText || "View Data"} >
-                <Button size="small"
-                        className={getActionButtonClassName("info")}
+                <MythicActionButton tone="info" size="small"
                         onClick={() => setOpenButton(true)} disabled={cellData?.button?.disabled || false}
                         startIcon={cellData?.button?.startIcon ? <FontAwesomeIcon icon={getIconName(cellData?.button?.startIcon)} style={{color: cellData?.button?.disabled ? "unset" :  getIconColor(theme, cellData?.button?.startIconColor)}}/> : null}
                         style={{...actionCellButtonStyle}}
-                >{cellData?.button?.name}</Button>
+                >{cellData?.button?.name}</MythicActionButton>
               </MythicStyledTooltip>
               {openButton &&
                   <MythicDisplayTextDialog fullWidth={true} maxWidth="lg" open={openButton} title={cellData?.button?.title} value={cellData?.button?.value || ""}
@@ -387,12 +386,11 @@ const ResponseDisplayTableActionCellButton = ({cellData, callback_id, task}) => 
         return (
             <React.Fragment>
               <MythicStyledTooltip title={cellData?.button?.hoverText || "View Data"} >
-                <Button size="small"
-                        className={getActionButtonClassName("info")}
+                <MythicActionButton tone="info" size="small"
                         onClick={() => setOpenButton(true)} disabled={cellData?.button?.disabled || false}
                         startIcon={cellData?.button?.startIcon ? <FontAwesomeIcon icon={getIconName(cellData?.button?.startIcon)} style={{color: cellData?.button?.disabled ? "unset" :  getIconColor(theme, cellData?.button?.startIconColor || "")}}/> : null}
                         style={{...actionCellButtonStyle}}
-                >{cellData?.button?.name}</Button>
+                >{cellData?.button?.name}</MythicActionButton>
               </MythicStyledTooltip>
               {openButton &&
                   <MythicDialog fullWidth={true} maxWidth="xl" open={openButton}
@@ -407,12 +405,11 @@ const ResponseDisplayTableActionCellButton = ({cellData, callback_id, task}) => 
         return (
             <React.Fragment>
               <MythicStyledTooltip title={cellData?.button?.hoverText || "Create Credential"} >
-                <Button size="small"
-                        className={getActionButtonClassName("success")}
+                <MythicActionButton tone="success" size="small"
                         onClick={() => setOpenCredentialButton(true)} disabled={cellData?.button?.disabled || false}
                         startIcon={cellData?.button?.startIcon ? <FontAwesomeIcon icon={getIconName(cellData?.button?.startIcon)} style={{color: cellData?.button?.disabled ? "unset" :  getIconColor(theme, cellData?.button?.startIconColor || "")}}/> : <FontAwesomeIcon icon={faKey}/>}
                         style={{...actionCellButtonStyle}}
-                >{cellData?.button?.name || "Create Credential"}</Button>
+                >{cellData?.button?.name || "Create Credential"}</MythicActionButton>
               </MythicStyledTooltip>
               {openCredentialButton &&
                   <MythicDialog fullWidth={true} maxWidth="md" open={openCredentialButton}
@@ -426,11 +423,10 @@ const ResponseDisplayTableActionCellButton = ({cellData, callback_id, task}) => 
         return (
             <React.Fragment>
               <MythicStyledTooltip title={cellData?.button?.hoverText || "Submit Task"}>
-                <Button size="small" onClick={() => setOpenTaskingButton(true)} disabled={cellData?.button?.disabled || false}
-                        className={getActionButtonClassName("warning")}
+                <MythicActionButton tone="warning" size="small" onClick={() => setOpenTaskingButton(true)} disabled={cellData?.button?.disabled || false}
                         startIcon={cellData?.button?.startIcon ? <FontAwesomeIcon icon={getIconName(cellData?.button?.startIcon)} style={{color: cellData?.button?.disabled ? "unset" : getIconColor(theme, cellData?.button?.startIconColor || "")}}/> : undefined}
                         style={{...actionCellButtonStyle}}
-                >{cellData?.button?.name ? cellData?.button?.name : cellData?.button?.startIcon ? undefined : "Submit Task"}</Button>
+                >{cellData?.button?.name ? cellData?.button?.name : cellData?.button?.startIcon ? undefined : "Submit Task"}</MythicActionButton>
               </MythicStyledTooltip>
               {openTaskingButton &&
                   <TaskFromUIButton ui_feature={cellData?.button?.ui_feature || " "}
@@ -482,13 +478,12 @@ const ResponseDisplayTableActionCellButton = ({cellData, callback_id, task}) => 
                                 innerDialog={<CredentialTableNewCredentialDialog initialValues={getCredentialInitialValues(taskingData?.value)} onSubmit={onCreateCredential} onClose={finishedViewingData} />}
                   />
               }
-              <Button size="small" ref={dropdownAnchorRef}
-                      className={getActionButtonClassName("info")}
+              <MythicActionButton tone="info" size="small" ref={dropdownAnchorRef}
                       onClick={() => setOpenDropdownButton(true)} disabled={cellData?.button?.disabled || false}
                       startIcon={cellData?.button?.startIcon ? <FontAwesomeIcon icon={getIconName(cellData?.button?.startIcon)} style={{color: cellData?.button?.disabled ? "unset" :  getIconColor(theme, cellData?.button?.startIconColor || "")}}/> : null}
                       style={{...actionCellButtonStyle}}
               >{cellData?.button?.name || " "} <ArrowDropDownIcon />
-              </Button>
+              </MythicActionButton>
               <ClickAwayListener onClickAway={handleClose} mouseEvent={"onMouseDown"}>
                 <Dropdown
                     isOpen={dropdownAnchorRef.current}
@@ -496,7 +491,7 @@ const ResponseDisplayTableActionCellButton = ({cellData, callback_id, task}) => 
                     externallyOpen={openDropdownButton}
                     menu={
                       cellData.button.value.map((option, index) => (
-                          <DropdownMenuItem
+                          <MenuItem
                               key={option.name + index}
                               disabled={option.disabled}
                               onClick={(event) => handleMenuItemClick(event, index)}
@@ -505,7 +500,7 @@ const ResponseDisplayTableActionCellButton = ({cellData, callback_id, task}) => 
                               {option?.startIcon ? <FontAwesomeIcon icon={getIconName(option?.startIcon)} style={{color: getIconColor(theme, cellData?.button?.startIconColor || ""), marginRight: "5px"}}/> : null}
                               {option.name}
                             </MythicStyledTooltip>
-                          </DropdownMenuItem>
+                          </MenuItem>
                       ))
                     }
                 />
@@ -879,7 +874,7 @@ export const ResponseDisplayTable = ({table, callback_id, expand, task}) =>{
         {height: dataHeight, position: "relative", width: "100%"}
   }, [expand, dataHeight, gridData]);
   return (
-        <div className="mythic-response-table" style={{height: "100%", position: "relative"}}>
+        <MythicStack component="div" gap="none" className="mythic-response-table mythic-max-width-full mythic-full-width mythic-overflow-hidden" style={{height: "100%", position: "relative"}}>
             {table?.title && (
                 <MythicSectionHeader
                     dense
@@ -888,7 +883,7 @@ export const ResponseDisplayTable = ({table, callback_id, expand, task}) =>{
                 />
             )}
 
-          <div className="mythic-response-table-grid" style={tableStyle}>
+          <div className="mythic-response-table-grid mythic-max-width-full mythic-min-width-0 mythic-full-width mythic-overflow-hidden" style={tableStyle}>
             <MythicResizableGrid
                   columns={columns}
                   sortIndicatorIndex={sortColumn}
@@ -918,7 +913,7 @@ export const ResponseDisplayTable = ({table, callback_id, expand, task}) =>{
                 />
             }
           </div>
-        </div>
+        </MythicStack>
     
   )   
 }

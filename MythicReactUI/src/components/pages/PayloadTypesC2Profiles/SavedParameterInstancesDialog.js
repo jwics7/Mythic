@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Stack, Typography} from '@mui/material';
+import {Stack, Typography} from '@mui/material';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import MythicTextField from '../../MythicComponents/MythicTextField';
@@ -20,6 +20,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {MythicDialogButton, MythicDialogFooter} from "../../MythicComponents/MythicDialogLayout";
 import {MythicLoadingState} from "../../MythicComponents/MythicStateDisplay";
 import {downloadFileFromMemory} from '../../utilities/Clipboard';
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 const getProfileConfigQuery = gql`
 query getProfileParameters($id: Int!) {
@@ -557,14 +558,14 @@ export function SavedParameterInstancesDialog(props) {
                     </Grid>
                     <Grid size={{xs: 12, md: 4}}>
                         <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" alignItems="center" style={{minHeight: "56px"}}>
-                            <Button className="mythic-table-row-action mythic-table-row-action-hover-danger" disabled={selectedInstance.length === 0} startIcon={<DeleteIcon fontSize="small" />} variant="outlined" onClick={deleteInstanceButton}>
-                                Delete</Button>
-                            <Button className="mythic-table-row-action mythic-table-row-action-success" disabled={selectedInstance.length === 0} startIcon={<IosShareIcon fontSize="small" />} variant="outlined" onClick={exportInstanceButton}>
-                                Export</Button>
-                            <Button className="mythic-table-row-action mythic-table-row-action-hover-info" component="label" startIcon={<SystemUpdateAltIcon fontSize="small" />} variant="outlined">
+                            <MythicActionButton tone="error"  disabled={selectedInstance.length === 0} startIcon={<DeleteIcon fontSize="small" />} variant="outlined" onClick={deleteInstanceButton}>
+                                Delete</MythicActionButton>
+                            <MythicActionButton tone="success" emphasis="always"  disabled={selectedInstance.length === 0} startIcon={<IosShareIcon fontSize="small" />} variant="outlined" onClick={exportInstanceButton}>
+                                Export</MythicActionButton>
+                            <MythicActionButton tone="info"  component="label" startIcon={<SystemUpdateAltIcon fontSize="small" />} variant="outlined">
                                 Import
                                 <input onChange={onFileChange} type="file" hidden />
-                            </Button>
+                            </MythicActionButton>
                         </Stack>
                     </Grid>
                 </Grid>

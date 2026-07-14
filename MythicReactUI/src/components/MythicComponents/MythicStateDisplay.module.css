@@ -1,0 +1,65 @@
+.root {
+  color: var(--mythic-color-text-secondary);
+  min-height: var(--mythic-state-min-height);
+  padding: 20px;
+}
+
+.root[data-density="compact"] {
+  padding: 12px;
+}
+
+.content {
+  max-width: 460px;
+  text-align: center;
+}
+
+.root[data-density="compact"] .content {
+  gap: var(--mythic-foundation-spacing-sm);
+  max-width: 360px;
+}
+
+.icon {
+  background: color-mix(in srgb, var(--mythic-color-text-primary) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mythic-color-text-primary) 8%, transparent);
+  border-radius: var(--mythic-shape-borderRadius);
+  color: var(--mythic-color-text-secondary);
+  height: 40px;
+  width: 40px;
+}
+
+.root[data-density="compact"] .icon {
+  height: 32px;
+  width: 32px;
+}
+
+.root[data-severity="error"] .icon {
+  color: var(--mythic-color-status-error);
+}
+
+.title {
+  color: var(--mythic-color-text-primary);
+}
+
+.description {
+  color: var(--mythic-color-text-secondary);
+}
+
+.root[data-density="compact"] .title { font-size: var(--mythic-foundation-typography-size-bodySmall); }
+.root[data-density="compact"] .description { font-size: var(--mythic-foundation-typography-size-small); }
+
+.action {
+  margin-top: 4px;
+}
+
+.tableCell {
+  border-bottom: 0;
+  padding: 0;
+}
+
+.skeletonCell {
+  padding: 6px 10px;
+}
+
+.skeletonGrid {
+  grid-template-columns: repeat(var(--mythic-skeleton-columns), minmax(0, 1fr));
+}

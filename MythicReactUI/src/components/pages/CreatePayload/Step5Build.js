@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import { gql, useMutation} from '@apollo/client';
 import { CreatePayloadNavigationButtons} from './CreatePayloadNavigationButtons';
-import Typography from '@mui/material/Typography';
+
 import {PayloadSubscriptionNotification} from './PayloadSubscriptionNotification';
 import MythicTextField from '../../MythicComponents/MythicTextField';
 import {snackActions} from '../../utilities/Snackbar';
@@ -10,9 +10,10 @@ import {getSkewedNow} from "../../utilities/Time";
 import {MythicAgentSVGIcon} from "../../MythicComponents/MythicAgentSVGIcon";
 import {ConfigurationSummary, GetGroupedParameters} from "./Step1SelectOS";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import IconButton from '@mui/material/IconButton';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
+import {MythicPanel, MythicActionButton, MythicMetadataItem, MythicSectionHeading, MythicSectionDescription} from "../../MythicComponents/MythicContent";
+import {MythicStack, MythicCluster, MythicGrid} from "../../MythicComponents/MythicLayout";
 
 const create_payload = gql`
  mutation createPayloadMutation($payload: String!) {
@@ -202,102 +203,96 @@ export function Step5Build(props){
     }
 
     return (
-        <div className="mythic-create-flow-shell">
-            <div className="mythic-create-flow-content">
-                <div className="mythic-create-selection-grid">
-                    <section className="mythic-create-section">
-                        <div className="mythic-create-agent-summary">
-                            <div className="mythic-create-agent-icon">
+        <MythicStack component="div" gap="md" className="mythic-create-flow-shell mythic-min-height-0 mythic-full-height">
+            <MythicStack component="div" gap="md" className="mythic-create-flow-content mythic-flex-fill mythic-overflow-hidden mythic-min-height-0">
+                <MythicGrid component="div" gap="md" columns="custom" className="mythic-create-selection-grid mythic-flex-fixed mythic-min-width-0">
+                    <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="hidden">
+                        <MythicCluster component="div" gap="md" align="start" wrap={false} className="mythic-create-agent-summary">
+                            <MythicCluster component="div" gap="none" align="center" justify="center" wrap={false} className="mythic-create-agent-icon mythic-border-radius mythic-border">
                                 <MythicAgentSVGIcon payload_type={props.buildOptions[1].payload_type} style={{width: "100%", height: "100%", objectFit: "contain"}} />
-                            </div>
-                            <div className="mythic-create-meta-list">
-                                <div>
-                                    <span className="mythic-create-meta-label">Operating system</span>
-                                    <div className="mythic-create-meta-value">{props.buildOptions[1].os}</div>
-                                </div>
-                                <div>
-                                    <span className="mythic-create-meta-label">Description</span>
-                                    <div className="mythic-create-meta-value">{props.buildOptions[1].description}</div>
-                                </div>
+                            </MythicCluster>
+                            <MythicStack component="div" gap="sm" className="mythic-create-meta-list">
+                                <MythicMetadataItem label="Operating system">{props.buildOptions[1].os}</MythicMetadataItem>
+                                <MythicMetadataItem label="Description">{props.buildOptions[1].description}</MythicMetadataItem>
                                 <MythicStyledTooltip title={"Edit OS / Payload Type"}>
-                                    <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" size="small" onClick={() => props.moveToStep(0)}>
+                                    <MythicActionButton iconOnly tone="info"  size="small" onClick={() => props.moveToStep(0)}>
                                         <DriveFileRenameOutlineIcon />
-                                    </IconButton>
+                                    </MythicActionButton>
                                 </MythicStyledTooltip>
-                            </div>
-                        </div>
-                    </section>
-                    <section className="mythic-create-section">
-                        <div className="mythic-create-section-header">
+                            </MythicStack>
+                        </MythicCluster>
+                    </MythicPanel>
+                    <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="hidden">
+                        <MythicCluster component="div" gap="md" align="start" justify="between" wrap={false} className="mythic-create-section-header">
                             <div>
-                                <Typography component="div" className="mythic-create-section-title">
+                                <MythicSectionHeading component="div" className="mythic-create-section-title">
                                     Payload name and description
-                                </Typography>
-                                <Typography component="div" className="mythic-create-section-description">
+                                </MythicSectionHeading>
+                                <MythicSectionDescription component="div" className="mythic-create-section-description">
                                     These values are used for the generated file and operator-facing description.
-                                </Typography>
+                                </MythicSectionDescription>
                             </div>
-                        </div>
-                        <div className="mythic-form">
+                        </MythicCluster>
+                        <MythicStack component="div" gap="md" className="mythic-form mythic-full-width">
                             <MythicTextField onEnter={finished} autoFocus={true} required={false} placeholder={"Filename"}
                                              value={filename} multiline={false} onChange={onChangeFilename} display="inline-block"/>
                             <MythicTextField onEnter={finished} required={false} placeholder={"description"} value={description}
                                              multiline={false} onChange={onChangeDescription} display="inline-block"/>
-                        </div>
-                    </section>
-                </div>
+                        </MythicStack>
+                    </MythicPanel>
+                </MythicGrid>
 
-                <div className="mythic-create-builder-split mythic-create-builder-split-three">
-                    <section className="mythic-create-section mythic-create-section-scroll">
-                        <Typography component="div" className="mythic-create-section-title" style={{textAlign: "center"}}>
+                <MythicGrid component="div" gap="md" columns="custom" className="mythic-create-builder-split mythic-create-builder-split-three mythic-flex-fill mythic-overflow-hidden mythic-min-height-0">
+                    <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="auto">
+                        <MythicSectionHeading component="div" className="mythic-create-section-title" align="center">
                             Build parameter configuration
                             <MythicStyledTooltip title={"Edit Build Parameters"}>
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" size="small" onClick={() => props.moveToStep(1)}>
+                                <MythicActionButton iconOnly tone="info"  size="small" onClick={() => props.moveToStep(1)}>
                                     <DriveFileRenameOutlineIcon />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
-                        </Typography>
+                        </MythicSectionHeading>
                         <ConfigurationSummary buildParameters={props.buildOptions[1].parameters} os={props.buildOptions[1].os} />
-                    </section>
-                    <section className="mythic-create-section mythic-create-section-scroll">
-                        <Typography component="div" className="mythic-create-section-title" style={{textAlign: "center"}}>
+                    </MythicPanel>
+                    <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="auto">
+                        <MythicSectionHeading component="div" className="mythic-create-section-title" align="center">
                             Command selection
                             <MythicStyledTooltip title={"Edit Commands"}>
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" size="small" onClick={() => props.moveToStep(2)}>
+                                <MythicActionButton iconOnly tone="info"  size="small" onClick={() => props.moveToStep(2)}>
                                     <DriveFileRenameOutlineIcon />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
-                        </Typography>
+                        </MythicSectionHeading>
                         {props.buildOptions[2]?.map(c => (
                             <div key={c} style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
                                 {c}
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" size="small" onClick={(e) => e.stopPropagation()}
+                                <MythicActionButton iconOnly tone="info"  size="small" onClick={(e) => e.stopPropagation()}
                                             href={"/docs/agents/" + props.buildOptions[1].payload_type + "/commands/" + c}
                                             style={{marginLeft: "10px", float: "right"}} target="_blank">
                                     <MenuBookIcon fontSize="small"/>
-                                </IconButton>
+                                </MythicActionButton>
                             </div>
                         ))}
 
-                    </section>
-                    <section className="mythic-create-section mythic-create-section-scroll">
-                        <Typography component="div" className="mythic-create-section-title" style={{textAlign: "center"}}>
+                    </MythicPanel>
+                    <MythicPanel data-mythic-component="create-section" layout="stack" gap="md" tone="muted" overflow="auto">
+                        <MythicSectionHeading component="div" className="mythic-create-section-title" align="center">
                             C2 configuration
                             <MythicStyledTooltip title={"Edit C2 Parameters"}>
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" size="small" onClick={() => props.moveToStep(3)}>
+                                <MythicActionButton iconOnly tone="info"  size="small" onClick={() => props.moveToStep(3)}>
                                     <DriveFileRenameOutlineIcon />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
-                        </Typography>
+                        </MythicSectionHeading>
                         {props.buildOptions[3]?.c2?.map( (c, index) => (
                             <ConfigurationSummary key={c.name + index} buildParameters={c.c2profileparameters}
                                                   os={props.buildOptions[1].os} c2_name={c.name} />
                         ))}
-                    </section>
-                </div>
-            </div>
+                    </MythicPanel>
+                </MythicGrid>
+            </MythicStack>
 
-            <div className="mythic-create-flow-footer">
+            <div className="mythic-create-flow-footer mythic-flex-fixed">
                 <CreatePayloadNavigationButtons
                     first={props.first}
                     last={props.last}
@@ -308,7 +303,7 @@ export function Step5Build(props){
             </div>
             {startSubscription &&
                 <PayloadSubscriptionNotification me={props.me} subscriptionID={subscriptionID} fromNow={fromNow}/>}
-        </div>
+        </MythicStack>
 
     );
 } 

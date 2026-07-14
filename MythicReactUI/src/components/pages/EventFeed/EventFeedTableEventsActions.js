@@ -1,13 +1,13 @@
 import React from 'react';
-import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 export function EventFeedTableEventsActions(props){
     const [anchorEl, setAnchorEl] = React.useState(null);
-    
+
     const onUpdateResolution = () => {
         handleClose();
         props.onUpdateResolution({id: props.id, resolved: !props.resolved});
@@ -24,13 +24,13 @@ export function EventFeedTableEventsActions(props){
     }, []);
     return (
         <ListItemSecondaryAction >
-            <IconButton
+            <MythicActionButton iconOnly tone="neutral"
                 aria-controls={"eventmenu" + props.id}
                 aria-haspopup="true"
-                className="mythic-table-row-icon-action"
+
                 onClick={handleClick}
                 size="small"><MoreVertIcon fontSize="small" />
-            </IconButton>
+            </MythicActionButton>
                 <Menu elevation={5} id={"eventmenu" + props.id} anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose} >
                     {
                         props.warning && props.resolved ? (

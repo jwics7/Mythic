@@ -5,6 +5,7 @@ import {
     CredentialInspectorSection,
     getNestedMetadataObject,
 } from './CredentialDisplayComponents';
+import {MythicCluster, MythicGrid, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
 
 export const credentialKerberosMetadataKeys = new Set(["kerberos"]);
 export const credentialKerberosIdentityKeys = new Set(["kerberos"]);
@@ -55,13 +56,13 @@ function KerberosPrincipal({label, principal, realm, service=false}){
         return null;
     }
     return (
-        <div className={`mythic-credential-search-kerberos-principal ${service ? "mythic-credential-search-kerberos-principal-service" : ""}`}>
-            <span>{label}</span>
+        <div className={`mythic-credential-search-kerberos-principal mythic-gap-xs mythic-border mythic-min-width-0 mythic-border-radius mythic-grid ${service ? "mythic-credential-search-kerberos-principal-service" : ""}`}>
+            <MythicTruncatedText component="span" className="mythic-font-size-xs mythic-font-weight-heavy">{label}</MythicTruncatedText>
             {hasValue(principal) &&
-                <strong>{principal}</strong>
+                <MythicTruncatedText component="strong" className="mythic-text-primary">{principal}</MythicTruncatedText>
             }
             {hasValue(realm) &&
-                <Chip size="small" variant="outlined" label={realm} className="mythic-credential-search-mini-chip" />
+                <Chip size="small" variant="outlined" label={realm} className="mythic-credential-search-mini-chip mythic-max-width-full" />
             }
         </div>
     )
@@ -73,20 +74,20 @@ function KerberosLifecycle({ticket, validity, highlightLifecycle}){
         return null;
     }
     return (
-        <div className="mythic-credential-search-kerberos-lifecycle">
+        <MythicGrid component="div" gap="xs" columns="custom" className="mythic-credential-search-kerberos-lifecycle mythic-divider-top mythic-min-width-0">
             {visibleFields.map((field) => {
                 const chip = highlightLifecycle ? ticketLifecycleChip(field.key, validity) : null;
                 return (
-                    <div key={field.key} className="mythic-credential-search-kerberos-lifecycle-item">
-                        <span>{field.label}</span>
-                        <strong title={ticket[field.key]}>{ticket[field.key]}</strong>
+                    <MythicGrid component="div" gap="none" columns="custom" key={field.key} className="mythic-credential-search-kerberos-lifecycle-item mythic-min-width-0">
+                        <MythicTruncatedText component="span" className="mythic-font-size-xs mythic-font-weight-heavy">{field.label}</MythicTruncatedText>
+                        <MythicTruncatedText component="strong" className="mythic-text-primary" title={ticket[field.key]}>{ticket[field.key]}</MythicTruncatedText>
                         {chip &&
-                            <Chip size="small" color={chip.color} variant="outlined" label={chip.label} className="mythic-credential-search-inline-chip" />
+                            <Chip size="small" color={chip.color} variant="outlined" label={chip.label} className="mythic-credential-search-inline-chip mythic-max-width-full" />
                         }
-                    </div>
+                    </MythicGrid>
                 )
             })}
-        </div>
+        </MythicGrid>
     )
 }
 
@@ -97,20 +98,20 @@ function KerberosCryptoDetails({ticket}){
         return null;
     }
     return (
-        <div className="mythic-credential-search-kerberos-technical">
+        <MythicCluster component="div" gap="xs" className="mythic-credential-search-kerberos-technical mythic-divider-top">
             {visibleCryptoFields.map((field) => (
-                <div key={field.key} className="mythic-credential-search-kerberos-technical-item">
-                    <span>{field.label}</span>
-                    <strong title={ticket[field.key]}>{ticket[field.key]}</strong>
+                <div key={field.key} className="mythic-credential-search-kerberos-technical-item mythic-gap-xs mythic-border mythic-min-width-0 mythic-align-center mythic-border-radius">
+                    <MythicTruncatedText component="span" className="mythic-font-size-xs mythic-font-weight-heavy">{field.label}</MythicTruncatedText>
+                    <MythicTruncatedText component="strong" className="mythic-text-primary" title={ticket[field.key]}>{ticket[field.key]}</MythicTruncatedText>
                 </div>
             ))}
             {hasKey &&
-                <div className="mythic-credential-search-kerberos-key">
-                    <span>Key</span>
-                    <strong title={ticket.key}>{ticket.key}</strong>
+                <div className="mythic-credential-search-kerberos-key mythic-gap-xs mythic-border mythic-min-width-0 mythic-align-center mythic-border-radius">
+                    <MythicTruncatedText component="span" className="mythic-font-size-xs mythic-font-weight-heavy">Key</MythicTruncatedText>
+                    <MythicTruncatedText component="strong" className="mythic-text-primary" title={ticket.key}>{ticket.key}</MythicTruncatedText>
                 </div>
             }
-        </div>
+        </MythicCluster>
     )
 }
 
@@ -119,20 +120,20 @@ function KerberosTicket({ticket, index, validity}){
     const hasService = hasValue(ticket.service_principal) || hasValue(ticket.service_realm);
     const ticketTitle = ticket.service_principal || ticket.service_realm || ticket.client_principal || `Ticket ${index + 1}`;
     return (
-        <div className="mythic-credential-search-kerberos-ticket">
-            <div className="mythic-credential-search-kerberos-ticket-header">
-                <div>
-                    <span>Ticket {index + 1}</span>
-                    <strong title={ticketTitle}>{ticketTitle}</strong>
+        <MythicGrid component="div" gap="none" columns="custom" className="mythic-credential-search-kerberos-ticket mythic-grid-span-full mythic-min-width-0 mythic-border-radius">
+            <MythicCluster component="div" gap="sm" align="start" justify="between" wrap={false} className="mythic-credential-search-kerberos-ticket-header">
+                <div className="mythic-min-width-0">
+                    <MythicTruncatedText component="span" className="mythic-font-size-xs mythic-font-weight-heavy">Ticket {index + 1}</MythicTruncatedText>
+                    <MythicTruncatedText component="strong" className="mythic-font-weight-heavy" title={ticketTitle}>{ticketTitle}</MythicTruncatedText>
                 </div>
-            </div>
+            </MythicCluster>
             {(hasClient || hasService) &&
-                <div className={`mythic-credential-search-kerberos-route ${!hasClient || !hasService ? "mythic-credential-search-kerberos-route-single" : ""}`}>
+                <div className={`mythic-credential-search-kerberos-route mythic-gap-xs mythic-align-stretch mythic-min-width-0 mythic-grid ${!hasClient || !hasService ? "mythic-credential-search-kerberos-route-single" : ""}`}>
                     {hasClient &&
                         <KerberosPrincipal label="Client" principal={ticket.client_principal} realm={ticket.client_realm} />
                     }
                     {hasClient && hasService &&
-                        <div className="mythic-credential-search-kerberos-route-join">to</div>
+                        <div className="mythic-credential-search-kerberos-route-join mythic-font-weight-heavy mythic-font-size-xs mythic-uppercase mythic-text-secondary">to</div>
                     }
                     {hasService &&
                         <KerberosPrincipal label="Service" principal={ticket.service_principal} realm={ticket.service_realm} service />
@@ -141,7 +142,7 @@ function KerberosTicket({ticket, index, validity}){
             }
             <KerberosLifecycle ticket={ticket} validity={validity} highlightLifecycle={index === 0} />
             <KerberosCryptoDetails ticket={ticket} />
-        </div>
+        </MythicGrid>
     )
 }
 
@@ -156,20 +157,20 @@ export function CredentialKerberosDisplay({metadata, identity, validity={}, vali
         <>
             {showSummary &&
                 <CredentialInspectorSection title="Kerberos Metadata" tone="metadata">
-                    <div className="mythic-credential-search-chip-list mythic-credential-search-section-chips">
+                    <MythicCluster component="div" gap="xs" className="mythic-credential-search-chip-list mythic-credential-search-section-chips mythic-grid-span-full">
                         {summaryEntries.map(([key, value]) => (
-                            <Chip key={key} size="small" variant="outlined" label={`${key}: ${compactMetadataValue(value)}`} className="mythic-credential-search-mini-chip" />
+                            <Chip key={key} size="small" variant="outlined" label={`${key}: ${compactMetadataValue(value)}`} className="mythic-credential-search-mini-chip mythic-max-width-full" />
                         ))}
                         {validityChips.map((chip) => (
-                            <Chip key={chip.label} size="small" color={chip.color} variant="outlined" label={chip.label} className="mythic-credential-search-mini-chip" />
+                            <Chip key={chip.label} size="small" color={chip.color} variant="outlined" label={chip.label} className="mythic-credential-search-mini-chip mythic-max-width-full" />
                         ))}
-                    </div>
+                    </MythicCluster>
                     {warningValues.length > 0 &&
-                        <div className="mythic-credential-search-warning-list">
+                        <MythicCluster component="div" gap="xs" align="stretch" className="mythic-credential-search-warning-list mythic-grid-span-full">
                             {warningValues.map((warning, index) => (
-                                <Chip key={`warning-${index}`} size="small" color="warning" variant="outlined" label={compactMetadataValue(warning)} className="mythic-credential-search-warning-chip" />
+                                <Chip key={`warning-${index}`} size="small" color="warning" variant="outlined" label={compactMetadataValue(warning)} className="mythic-credential-search-warning-chip mythic-max-width-full" />
                             ))}
-                        </div>
+                        </MythicCluster>
                     }
                 </CredentialInspectorSection>
             }

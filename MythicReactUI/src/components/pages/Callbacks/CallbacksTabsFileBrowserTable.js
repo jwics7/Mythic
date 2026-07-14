@@ -1,3 +1,5 @@
+import MenuItem from '@mui/material/MenuItem';
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React, { useEffect } from 'react';
 import { useMutation, useLazyQuery, gql } from '@apollo/client';
 import { snackActions } from '../../utilities/Snackbar';
@@ -11,7 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import DescriptionIcon from '@mui/icons-material/Description';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorIcon from '@mui/icons-material/Error';
-import { useTheme } from '@mui/material/styles';
+
 import { IconButton } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import EditIcon from '@mui/icons-material/Edit';
@@ -24,7 +26,7 @@ import GetAppIcon from '@mui/icons-material/GetApp';
 import 'react-virtualized/styles.css';
 import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
 import { copyStringToClipboard } from '../../utilities/Clipboard';
-import MythicResizableGrid from '../../MythicComponents/MythicResizableGrid';
+import MythicResizableGrid from '../../MythicComponents/MythicResizableGrid/MythicResizableGrid';
 import { MythicStyledTooltip } from '../../MythicComponents/MythicStyledTooltip';
 import {TagsDisplay, ViewEditTags} from '../../MythicComponents/MythicTag';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -33,7 +35,7 @@ import {b64DecodeUnicode} from "./ResponseDisplay";
 import {faPhotoVideo} from '@fortawesome/free-solid-svg-icons';
 import {PreviewFileMediaDialog} from "../../MythicComponents/PreviewFileMedia";
 import RefreshIcon from '@mui/icons-material/Refresh';
-import {Dropdown, DropdownMenuItem, DropdownNestedMenuItem} from "../../MythicComponents/MythicNestedMenus";
+import {Dropdown, DropdownNestedMenuItem} from "../../MythicComponents/MythicNestedMenus";
 import {RenderSingleTask} from "../SingleTaskView/SingleTaskView";
 import {
     GetComputedFontSize,
@@ -95,7 +97,7 @@ const columnDefaults = [
     { name: 'Comment', type: 'string', key: 'comment', width: 200, visible: false },
 ];
 export const CallbacksTabsFileBrowserTable = (props) => {
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const [updateSetting, updateSettings] = useSetMythicSetting();
     const [loading, setLoading] = React.useState(true);
     const [allData, setAllData] = React.useState([]);
@@ -460,7 +462,7 @@ export const CallbacksTabsFileBrowserTable = (props) => {
             menuItems: [
                 {
                     name: 'Name', type: "item",
-                    icon: <FileCopyOutlinedIcon style={{ paddingRight: '5px' }} />,
+                    icon: <FileCopyOutlinedIcon />,
                     click: ({event}) => {
                         event.stopPropagation();
                         if(copyStringToClipboard(element.name_text)){
@@ -470,7 +472,7 @@ export const CallbacksTabsFileBrowserTable = (props) => {
                 },
                 {
                     name: 'Full Path', type: "item",
-                    icon: <FileCopyOutlinedIcon style={{ paddingRight: '5px' }} />,
+                    icon: <FileCopyOutlinedIcon />,
                     click: ({event}) => {
                         event.stopPropagation();
                         if(copyStringToClipboard(element.full_path_text)){
@@ -480,7 +482,7 @@ export const CallbacksTabsFileBrowserTable = (props) => {
                 },
                 {
                     name: 'Metadata', type: "item",
-                    icon: <FileCopyOutlinedIcon style={{ paddingRight: '5px' }} />,
+                    icon: <FileCopyOutlinedIcon />,
                     click: ({event}) => {
                         event.stopPropagation();
                         if(copyStringToClipboard(JSON.stringify(element?.metadata?.permissions, null, 2))){
@@ -523,7 +525,7 @@ export const CallbacksTabsFileBrowserTable = (props) => {
             {
                 name: downloadDisplay, type: "item",
                 disabled: downloadCommand === undefined,
-                icon: <GetAppIcon color="success" style={{ paddingRight: '5px' }} />,
+                icon: <GetAppIcon color="success" />,
                 click: ({event}) => {
                     event.stopPropagation();
                     props.onTaskRowAction({
@@ -538,7 +540,7 @@ export const CallbacksTabsFileBrowserTable = (props) => {
             },
             {
                 name: listDisplay, type: "item", disabled: listCommand === undefined,
-                icon: <ListIcon color="warning" style={{ paddingRight: '5px'}} />,
+                icon: <ListIcon color="warning" />,
                 click: ({event}) => {
                     event.stopPropagation();
                     props.onTaskRowAction({
@@ -554,7 +556,7 @@ export const CallbacksTabsFileBrowserTable = (props) => {
             {
                 name: removeDisplay, type: "item", disabled: removeCommand === undefined,
                 danger: true,
-                icon: <DeleteIcon style={{ paddingRight: '5px' }} />,
+                icon: <DeleteIcon />,
                 click: ({event}) => {
                     event.stopPropagation();
                     props.onTaskRowAction({
@@ -577,7 +579,7 @@ export const CallbacksTabsFileBrowserTable = (props) => {
             return [
                 {
                     name: `Download All Selected`, type: "item",
-                    icon: <GetAppIcon color="success" style={{ paddingRight: '5px' }} />,
+                    icon: <GetAppIcon color="success" />,
                     click: ({event}) => {
                         event.stopPropagation();
                         let newTasks = [];
@@ -598,7 +600,7 @@ export const CallbacksTabsFileBrowserTable = (props) => {
                 {
                     name: `Remove All Selected`, type: "item",
                     danger: true,
-                    icon: <DeleteIcon style={{ paddingRight: '5px' }} />,
+                    icon: <DeleteIcon />,
                     click: ({event}) => {
                         event.stopPropagation();
                         let newTasks = [];
@@ -619,7 +621,7 @@ export const CallbacksTabsFileBrowserTable = (props) => {
                 },
                 {
                     name: `List All Selected`, type: "item",
-                    icon: <ListIcon color="warning" style={{ paddingRight: '5px' }} />,
+                    icon: <ListIcon color="warning" />,
                     click: ({event}) => {
                         event.stopPropagation();
                         let newTasks = [];
@@ -778,7 +780,7 @@ export const CallbacksTabsFileBrowserTable = (props) => {
     );
 };
 const FileBrowserTableRowNameCell = ({cellData,  rowData, treeRootData, selectedFolderData }) => {
-    const theme = useTheme();
+    const theme = useMythicTheme();
 
     return (
         <div style={{ alignItems: 'center', display: 'flex', maxHeight: "100%", textDecoration: treeRootData[selectedFolderData.host][rowData.full_path_text]?.deleted ? 'line-through' : '' }}>
@@ -794,7 +796,7 @@ const FileBrowserTableRowNameCell = ({cellData,  rowData, treeRootData, selected
                         marginLeft: "4px",
                         color:
                         treeRootData[selectedFolderData.host][rowData.full_path_text]?.success || treeRootData[selectedFolderData.host][rowData.full_path_text]?.has_children
-                                ? theme.folderColor
+                                ? theme.color.fileBrowser.folder
                                 : 'grey',
                     }}
                 />
@@ -950,7 +952,7 @@ const FileBrowserTableRowActionCell = ({ rowData, cellData, onTaskRowAction, tre
         },
         {
             name: 'View Permissions', type: "item",
-            icon: <VisibilityIcon style={{ paddingRight: '5px' }} />,
+            icon: <VisibilityIcon />,
             click: ({event}) => {
                 event.stopPropagation();
                 setPermissionData(treeRootData[selectedFolderData.host][rowData.full_path_text].metadata);
@@ -959,7 +961,7 @@ const FileBrowserTableRowActionCell = ({ rowData, cellData, onTaskRowAction, tre
         },
         {
             name: 'Download History', type: "item",
-            icon: <HistoryIcon style={{ paddingRight: '5px' }} />,
+            icon: <HistoryIcon />,
             click: ({event}) => {
                 event.stopPropagation();
                 getHistory({ variables: {
@@ -971,7 +973,7 @@ const FileBrowserTableRowActionCell = ({ rowData, cellData, onTaskRowAction, tre
         },
         {
             name: 'Edit Comment', type: "item",
-            icon: <EditIcon style={{ paddingRight: '5px' }} />,
+            icon: <EditIcon />,
             click: ({event}) => {
                 event.stopPropagation();
                 setFileCommentDialogOpen(true);
@@ -1029,28 +1031,28 @@ const FileBrowserTableRowActionCell = ({ rowData, cellData, onTaskRowAction, tre
                         menu={[
                             ...optionsA.map((option, index) => (
                                 option.type === 'item' ? (
-                                    <DropdownMenuItem
+                                    <MenuItem
                                         key={option.name}
                                         disabled={option.disabled}
                                         className={option.danger ? "mythic-menu-item-hover-danger" : undefined}
                                         onClick={(event) => handleMenuItemClick(event, option.click)}
                                     >
                                         {option.icon} {option.name}
-                                    </DropdownMenuItem>
+                                    </MenuItem>
                                 ) : option.type === 'menu' ? (
                                     <DropdownNestedMenuItem
                                         label={option.name}
                                         disabled={option.disabled}
                                         menu={
                                             option.menuItems.map((menuOption, indx) => (
-                                                <DropdownMenuItem
+                                                <MenuItem
                                                     key={menuOption.name}
                                                     disabled={menuOption.disabled}
                                                     className={menuOption.danger ? "mythic-menu-item-hover-danger" : undefined}
                                                     onClick={(event) => handleMenuItemClick(event, menuOption.click)}
                                                 >
                                                     {menuOption.icon}{menuOption.name}
-                                                </DropdownMenuItem>
+                                                </MenuItem>
                                             ))
                                         }
                                     />

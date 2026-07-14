@@ -1,3 +1,5 @@
+import TableCell from '@mui/material/TableCell';
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React from 'react';
 import TableRow from '@mui/material/TableRow';
 import Table from '@mui/material/Table';
@@ -14,14 +16,14 @@ import {Button, IconButton} from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { snackActions } from '../../utilities/Snackbar';
-import MythicStyledTableCell from "../../MythicComponents/MythicTableCell";
 import MythicTextField from "../../MythicComponents/MythicTextField";
 import MenuItem from '@mui/material/MenuItem';
 import {MythicDialog} from "../../MythicComponents/MythicDialog";
 import {ViewAllCallbackMythicTreeGroupsDialog} from "./ViewCallbackMythicTreeGroupsDialog";
 import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
-import { useTheme } from '@mui/material/styles';
+
 import LayersIcon from '@mui/icons-material/Layers';
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 
 const getCallbackMythicTreeGroups = gql`
@@ -43,7 +45,7 @@ mutation setMythicTreeGroups($callback_id: Int!, $mythictree_groups: [String]!){
 }
 `;
 export function ModifyCallbackMythicTreeGroupsDialog(props){
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const [groups, setGroups] = React.useState([]);
     const [otherGroups, setOtherGroups] = React.useState([]);
     const [selectedGroupDropdown, setSelectedGroupDropdown] = React.useState('');
@@ -124,14 +126,14 @@ export function ModifyCallbackMythicTreeGroupsDialog(props){
             </div>
           <DialogContent dividers={true}>
             <TableContainer className="mythicElement">
-            <Table size="small" aria-label="details" style={{ "overflowWrap": "break-word"}}>
+            <Table size="small" aria-label="details">
                 <TableHead>
                 </TableHead>
                 <TableBody>
                     {otherGroups.length > 0 &&
                         <TableRow>
-                            <MythicStyledTableCell style={{width: "20%"}}>Add an existing group to this callback</MythicStyledTableCell>
-                            <MythicStyledTableCell>
+                            <TableCell style={{width: "20%"}}>Add an existing group to this callback</TableCell>
+                            <TableCell>
                                 <FormControl >
                                     <Select
                                         value={selectedGroupDropdown}
@@ -145,26 +147,26 @@ export function ModifyCallbackMythicTreeGroupsDialog(props){
                                     </Select>
                                 </FormControl>
                                 <IconButton onClick={addArrayOption} size="large"> <AddCircleIcon color="success"  /> </IconButton>
-                            </MythicStyledTableCell>
+                            </TableCell>
                         </TableRow>
                     }
                     {groups.map( (a, i) => (
                         <TableRow key={'array' + props.name + i} >
-                            <MythicStyledTableCell style={{width: "2rem", paddingLeft:"0"}}>
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={(e) => {removeArrayValue(i)}}><DeleteIcon fontSize="small" /> </IconButton>
-                            </MythicStyledTableCell>
-                            <MythicStyledTableCell>
+                            <TableCell style={{width: "2rem", paddingLeft:"0"}}>
+                                <MythicActionButton iconOnly tone="error"  size="small" onClick={(e) => {removeArrayValue(i)}}><DeleteIcon fontSize="small" /> </MythicActionButton>
+                            </TableCell>
+                            <TableCell>
                                 <MythicTextField required={props.required} fullWidth={true} placeholder={""} value={a} multiline={true} autoFocus={ i > 0}
                                                  onChange={(n,v,e) => onChangeArrayText(v, e, i)} display="inline-block" maxRows={5}
                                 />
-                            </MythicStyledTableCell>
+                            </TableCell>
                         </TableRow>
                     ))}
                     <TableRow >
-                        <MythicStyledTableCell style={{width: "5rem", paddingLeft:"0"}}>
+                        <TableCell style={{width: "5rem", paddingLeft:"0"}}>
                             <IconButton onClick={addNewArrayValue} size="large"> <AddCircleIcon color="success"  /> </IconButton>
-                        </MythicStyledTableCell>
-                        <MythicStyledTableCell></MythicStyledTableCell>
+                        </TableCell>
+                        <TableCell></TableCell>
                     </TableRow>
 
                 </TableBody>

@@ -1,3 +1,4 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React from 'react';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
@@ -14,7 +15,7 @@ import { MythicDisplayTextDialog} from '../../MythicComponents/MythicDisplayText
 import { MythicDialog } from '../../MythicComponents/MythicDialog';
 import { SelectPayloadTypeDialog } from './SelectPayloadTypeDialog';
 import {MythicPageHeader, MythicPageHeaderChip} from "../../MythicComponents/MythicPageHeader";
-import {useTheme} from "@mui/material/styles";
+
 import {downloadFileFromMemory} from '../../utilities/Clipboard';
 
 
@@ -47,7 +48,7 @@ export function MitreGrid({entries, onGetCommands, onGetTasks, onGetCommandsFilt
             />
             
             <div style={{display: "flex", flexGrow: 1, overflow: "auto"}}>
-                {backdropOpen && <Backdrop open={backdropOpen} style={{zIndex: 2, position: "absolute"}} invisible={false}>
+                {backdropOpen && <Backdrop className="mythic-local-backdrop" open={backdropOpen} invisible={false}>
                     <CircularProgress color="inherit" />
                 </Backdrop>
                 }
@@ -58,7 +59,7 @@ export function MitreGrid({entries, onGetCommands, onGetTasks, onGetCommandsFilt
 }
 
 function PoperDropdown({onGetCommands, onGetTasks, onGetCommandsFiltered, onGetTasksFiltered, onFilterByTags, setBackdropOpen, entries, showCountGrouping}){
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const dropdownAnchorRef = React.useRef(null);
     const [dropdownOpen, setDropdownOpen] = React.useState(false);
     const [openLicense, setOpenLicense] = React.useState(false);
@@ -178,7 +179,7 @@ function PoperDropdown({onGetCommands, onGetTasks, onGetCommandsFiltered, onGetT
             "metadata": [],
             "links": [],
             "showTacticRowBackground": false,
-            "tacticRowBackground": theme.tableHeader,
+            "tacticRowBackground": theme.color.table.header,
             "selectTechniquesAcrossTactics": true,
             "selectSubtechniquesWithParent": false
         };
@@ -256,7 +257,7 @@ function PoperDropdown({onGetCommands, onGetTasks, onGetCommandsFiltered, onGetT
                     transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
                 }}
                 >
-                <Paper className={"dropdownMenuColored"}>
+                <Paper className="dropdownMenuColored mythic-border-radius">
                     <ClickAwayListener onClickAway={() => setDropdownOpen(false)}>
                     <MenuList id="split-button-menu">
                         {dropDownOptions.map((option, index) => (

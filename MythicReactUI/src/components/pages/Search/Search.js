@@ -94,7 +94,7 @@ export function Search(props){
             className={"no-box-shadow mythic-search-tabs-bar"}
             sx={(theme) => ({
               backgroundColor: theme.surfaces?.muted || theme.palette.background.paper,
-              border: `1px solid ${theme.table?.borderSoft || theme.borderColor}`,
+              border: `1px solid ${theme.table?.borderSoft || theme.color.application.border}`,
               borderRadius: `${theme.shape.borderRadius}px`,
               overflow: "hidden",
             })}

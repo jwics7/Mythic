@@ -74,7 +74,7 @@ export function CallbacksTabsHideMultipleDialog({onClose}) {
   return (
     <React.Fragment>
         <DialogTitle id="form-dialog-title">Hide Multiple Callbacks at Once</DialogTitle>
-        <DialogContentText style={{textAlign: "center"}}>
+        <DialogContentText align="center">
             <b>Note: </b> Last checkin times are based on when this window opened and won't refresh.
         </DialogContentText>
             <CallbacksTabsSelectTable initialData={initialData}
@@ -122,7 +122,7 @@ export function CallbacksTabsSelectMultipleDialog({onClose, onSubmit}) {
     return (
         <React.Fragment>
             <DialogTitle id="form-dialog-title">Select Multiple Callbacks</DialogTitle>
-            <DialogContentText style={{textAlign: "center"}}>
+            <DialogContentText align="center">
                 <b>Note: </b> Last checkin times are based on when this window opened and won't refresh.
             </DialogContentText>
             <CallbacksTabsSelectTable initialData={initialData}

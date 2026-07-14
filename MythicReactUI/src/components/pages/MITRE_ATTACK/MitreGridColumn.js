@@ -1,10 +1,11 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React from 'react';
 import {MitreGridRow} from './MitreGridRow';
-import {useTheme} from '@mui/material/styles';
+
 import { Box } from '@mui/material';
 
 export function MitreGridColumn({column, showCountGrouping}){
-  const theme = useTheme();
+  const theme = useMythicTheme();
   const [groupCounts, setGroupCounts] = React.useState(0);
   const [techniqueCounts, setTechniqueCounts] = React.useState(0);
   React.useEffect( () => {
@@ -33,7 +34,7 @@ export function MitreGridColumn({column, showCountGrouping}){
   }, [column.commands, column.rows, column.tasks, showCountGrouping])
   return (
     <div style={{display: "flex", flexDirection: "column", paddingRight: "15px",}}>
-      <Box width={"100%"} style={{backgroundColor: theme.tableHover}}>
+      <Box width={"100%"} style={{backgroundColor: theme.color.table.hover}}>
         <h2 style={{margin: 0, textAlign: "center"}}><b>{column.tactic}</b></h2>
         <p style={{textAlign: "center", margin: 0}}>{techniqueCounts} techniques</p>
         { showCountGrouping === "" ? null : (

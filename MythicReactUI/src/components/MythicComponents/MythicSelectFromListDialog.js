@@ -8,9 +8,10 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import Input from '@mui/material/Input';
-import Box from '@mui/material/Box';
+
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import {MythicCluster} from "./MythicLayout";
 
 export function MythicSelectFromListDialog(props) {
     const [options, setOptions] = React.useState([]);
@@ -93,29 +94,29 @@ export function MythicSelectFromRawListDialog(props) {
 return (
   <React.Fragment>
       <DialogTitle >{props.title}</DialogTitle>
-      <DialogContent dividers={true} className="mythic-raw-select-dialog-content">
+      <DialogContent dividers={true} className="mythic-raw-select-dialog-content mythic-surface">
           {options.length === 0 ? (
-              <Box className="mythic-raw-select-empty">
+              <MythicCluster gap="none" align="center" justify="center" wrap={false} className="mythic-raw-select-empty mythic-text-secondary">
                   <Typography variant="body2">No options available</Typography>
-              </Box>
+              </MythicCluster>
           ) : (
-              <Stack className="mythic-raw-select-list">
+              <Stack className="mythic-raw-select-list mythic-gap-sm">
                   {options.map( (choice, i) => (
-                      <Box
+                      <MythicCluster gap="md" align="center" justify="between" wrap={false}
                           key={String(choice) + i}
-                          className="mythic-raw-select-row"
+                          className="mythic-raw-select-row mythic-clickable mythic-border mythic-border-radius mythic-text-primary mythic-full-width"
                           role="button"
                           tabIndex={0}
                           onClick={() => handleSubmit(choice)}
                           onKeyDown={(event) => handleKeyDown(event, choice)}
                       >
-                          <Typography className="mythic-raw-select-value" title={String(choice)}>
+                          <Typography className="mythic-raw-select-value mythic-truncate mythic-text-primary mythic-font-size-body-small" title={String(choice)}>
                               {String(choice)}
                           </Typography>
-                          <Button className="mythic-dialog-button-info mythic-raw-select-action" variant="outlined" size="small" tabIndex={-1}>
+                          <Button className="mythic-dialog-button-info mythic-raw-select-action mythic-flex-fixed" variant="outlined" size="small" tabIndex={-1}>
                               {actionText}
                           </Button>
-                      </Box>
+                      </MythicCluster>
                   ))}
               </Stack>
           )}

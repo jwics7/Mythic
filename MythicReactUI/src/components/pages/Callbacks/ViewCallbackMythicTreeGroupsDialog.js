@@ -1,3 +1,4 @@
+import TableCell from '@mui/material/TableCell';
 import React from 'react';
 import {useQuery, gql} from '@apollo/client';
 import DialogActions from '@mui/material/DialogActions';
@@ -18,9 +19,10 @@ import {MythicDialog} from "../../MythicComponents/MythicDialog";
 import LinearProgress from '@mui/material/LinearProgress';
 import {snackActions} from "../../utilities/Snackbar";
 import {MythicAgentSVGIcon} from "../../MythicComponents/MythicAgentSVGIcon";
-import MythicStyledTableCell from "../../MythicComponents/MythicTableCell";
 import {MythicTableEmptyState} from "../../MythicComponents/MythicStateDisplay";
 import {MythicClientSideTablePagination, useMythicClientPagination} from "../../MythicComponents/MythicTablePagination";
+import {MythicCluster, MythicStack, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
+import {MythicPanel, MythicText} from "../../MythicComponents/MythicContent";
 
 
 const getCallbackMythicTreeGroups = gql`
@@ -103,22 +105,22 @@ const callbackGroupColumns = [
 const CallbackGroupStatusCell = ({callback}) => {
     const payloadType = callback.payload?.payloadtype?.name || "unknown";
     return (
-        <div className="mythic-tree-groups-callback-icons">
+        <MythicCluster component="div" gap="sm" align="center" wrap={false} className="mythic-tree-groups-callback-icons mythic-flex-fixed">
             <MythicStyledTooltip title={callback.active ? "Callback is active" : "Callback is not active"}>
-                <span className={`mythic-tree-groups-status ${callback.active ? "mythic-tree-groups-statusActive" : "mythic-tree-groups-statusInactive"}`}>
+                <span className={`mythic-tree-groups-status mythic-justify-center mythic-inline-cluster mythic-border-radius mythic-text-secondary mythic-border ${callback.active ? "mythic-tree-groups-statusActive mythic-text-success" : "mythic-tree-groups-statusInactive mythic-text-warning"}`}>
                     {callback.active ? <VisibilityIcon fontSize="small" /> : <VisibilityOffIcon fontSize="small" />}
                 </span>
             </MythicStyledTooltip>
             <MythicStyledTooltip title={payloadType}>
-                <span className="mythic-tree-groups-agent-icon">
+                <MythicCluster component="span" gap="none" justify="center" inline wrap={false} className="mythic-tree-groups-agent-icon">
                     <MythicAgentSVGIcon payload_type={payloadType} style={{width: "28px", height: "28px"}} />
-                </span>
+                </MythicCluster>
             </MythicStyledTooltip>
-        </div>
+        </MythicCluster>
     );
 };
 const CallbackGroupCellValue = ({value, className = ""}) => (
-    <span className={`mythic-tree-groups-table-value ${className}`.trim()} title={value || ""}>
+    <span className={`mythic-tree-groups-table-value mythic-block mythic-truncate ${className}`.trim()} title={value || ""}>
         {value || "-"}
     </span>
 );
@@ -154,7 +156,7 @@ const CallbackGroupTable = ({callbacks, emptyMessage, tableId}) => {
     return (
         <>
             <TableContainer
-                className="mythicElement mythic-dialog-table-wrap mythic-fixed-row-table-wrap mythic-tree-groups-table-wrap"
+                className="mythicElement mythic-dialog-table-wrap mythic-fixed-row-table-wrap mythic-tree-groups-table-wrap mythic-overflow-auto"
                 data-testid={`${safeTableId}-scroll-region`}
                 id={`${safeTableId}-scroll-region`}
                 role="region"
@@ -163,7 +165,7 @@ const CallbackGroupTable = ({callbacks, emptyMessage, tableId}) => {
                     <TableHead>
                         <TableRow>
                             {callbackGroupColumns.map((column) => (
-                                <MythicStyledTableCell key={column.field} sortDirection={orderBy === column.field ? order : false} style={{width: column.width}}>
+                                <TableCell key={column.field} sortDirection={orderBy === column.field ? order : false} style={{width: column.width}}>
                                     {column.disableSort ? column.headerName : (
                                         <TableSortLabel
                                             active={orderBy === column.field}
@@ -173,7 +175,7 @@ const CallbackGroupTable = ({callbacks, emptyMessage, tableId}) => {
                                             {column.headerName}
                                         </TableSortLabel>
                                     )}
-                                </MythicStyledTableCell>
+                                </TableCell>
                             ))}
                         </TableRow>
                     </TableHead>
@@ -189,30 +191,30 @@ const CallbackGroupTable = ({callbacks, emptyMessage, tableId}) => {
                         ) : (
                             pagination.pageData.map((callback) => (
                                 <TableRow hover key={callback.id || `callback-group-${callback.display_id}-${callback.host}`}>
-                                    <MythicStyledTableCell>
+                                    <TableCell>
                                         <CallbackGroupStatusCell callback={callback} />
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell>
-                                        <CallbackGroupCellValue className="mythic-tree-groups-callback-id" value={`#${callback.display_id}`} />
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell>
+                                    </TableCell>
+                                    <TableCell>
+                                        <CallbackGroupCellValue className="mythic-tree-groups-callback-id mythic-font-size-body-small mythic-font-weight-extra-bold mythic-text-primary" value={`#${callback.display_id}`} />
+                                    </TableCell>
+                                    <TableCell>
                                         <CallbackGroupCellValue value={callback.user} />
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell>
+                                    </TableCell>
+                                    <TableCell>
                                         <CallbackGroupCellValue value={callback.host} />
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell>
+                                    </TableCell>
+                                    <TableCell>
                                         <CallbackGroupCellValue value={callback.domain} />
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell>
+                                    </TableCell>
+                                    <TableCell>
                                         <CallbackGroupCellValue value={callback.ip} />
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell>
+                                    </TableCell>
+                                    <TableCell>
                                         <CallbackGroupCellValue value={callback.pid === undefined || callback.pid === null ? "" : `${callback.pid}`} />
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell>
+                                    </TableCell>
+                                    <TableCell>
                                         <CallbackGroupCellValue className="mythic-tree-groups-description-cell" value={callback.description} />
-                                    </MythicStyledTableCell>
+                                    </TableCell>
                                 </TableRow>
                             ))
                         )}
@@ -247,24 +249,24 @@ export function ViewCallbackMythicTreeGroupsDialog(props){
     }, [groups]);
     return (
         <React.Fragment>
-          <DialogTitle id="form-dialog-title" className="mythic-tree-groups-title">
-              <div className="mythic-dialog-title-row">
-                  <div className="mythic-tree-groups-title-copy">
-                      <span>Callbacks for {props.group_name}</span>
-                      <span>These callbacks contribute aggregated process data for this group.</span>
-                  </div>
+          <DialogTitle id="form-dialog-title" className="mythic-tree-groups-title mythic-divider-bottom mythic-font-weight-extra-bold mythic-relative">
+              <MythicCluster component="div" gap="md" justify="between" className="mythic-dialog-title-row">
+                  <MythicStack component="div" gap="none" className="mythic-tree-groups-title-copy">
+                      <MythicTruncatedText component="span" >Callbacks for {props.group_name}</MythicTruncatedText>
+                      <span className="mythic-text-secondary">These callbacks contribute aggregated process data for this group.</span>
+                  </MythicStack>
                   <MythicStyledTooltip title="View all groups" >
                       <IconButton
-                          className="mythic-file-browser-iconButton mythic-file-browser-hoverInfo"
+                          className="mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-hoverInfo"
                           size="small"
                           onClick={()=>{setOpenViewAllCallbacksDialog(true);}}>
                           <LayersIcon fontSize="small" />
                       </IconButton>
                   </MythicStyledTooltip>
-              </div>
+              </MythicCluster>
           </DialogTitle>
           <DialogContent dividers={true} className="mythic-tree-groups-content">
-              <Backdrop open={backdropOpen} style={{zIndex: 2, position: "absolute"}} invisible={false}>
+              <Backdrop className="mythic-local-backdrop" open={backdropOpen} invisible={false}>
                   <CircularProgress color="inherit" />
               </Backdrop>
               <CallbackGroupTable
@@ -331,35 +333,35 @@ export function ViewAllCallbackMythicTreeGroupsDialog(props){
     }
     return (
         <React.Fragment>
-            <DialogTitle id="form-dialog-title" className="mythic-tree-groups-title">Callback tree groups
+            <DialogTitle id="form-dialog-title" className="mythic-tree-groups-title mythic-divider-bottom mythic-font-weight-extra-bold mythic-relative">Callback tree groups
             </DialogTitle>
             <DialogContent dividers={true} className="mythic-tree-groups-content">
-                <div className="mythic-tree-groups-help">
+                <MythicPanel component="div" density="flush" tone="muted" overflow="visible" radius="md" className="mythic-tree-groups-help mythic-font-size-small mythic-line-height-normal mythic-text-secondary">
                     Callbacks with no groups or with only the "Default" group are not shown.
-                </div>
+                </MythicPanel>
                 {groups.length === 0 ? (
-                    <div className="mythic-tree-groups-empty">
+                    <MythicCluster component="div" gap="none" align="center" justify="center" wrap={false} className="mythic-tree-groups-empty mythic-font-size-small mythic-border-radius mythic-text-secondary">
                         No callback tree groups found.
-                    </div>
+                    </MythicCluster>
                 ) : (
                     groups.map( (g, i) => (
-                        <div key={g.group} className="mythic-dialog-section mythic-tree-groups-section">
-                            <div className="mythic-dialog-section-header">
+                        <MythicPanel component="div" density="flush" tone="muted" overflow="visible" radius="md" key={g.group} className="mythic-dialog-section mythic-tree-groups-section">
+                            <MythicCluster component="div" gap="md" align="start" justify="between" wrap={false} className="mythic-dialog-section-header">
                                 <div>
-                                    <div className="mythic-dialog-section-title">
+                                    <MythicText component="div" preset="section-title" className="mythic-dialog-section-title">
                                         {g.group}
-                                    </div>
-                                    <div className="mythic-dialog-section-description">
+                                    </MythicText>
+                                    <div className="mythic-dialog-section-description mythic-font-size-small mythic-line-height-normal mythic-text-secondary">
                                         {g.callbacks.length} callback{g.callbacks.length === 1 ? "" : "s"}
                                     </div>
                                 </div>
-                            </div>
+                            </MythicCluster>
                             <CallbackGroupTable
                                 callbacks={g.callbacks}
                                 emptyMessage={`No callbacks are contributing to ${g.group}.`}
                                 tableId={`tree-group-${g.group}-callbacks`}
                             />
-                        </div>
+                        </MythicPanel>
                     ))
                 )}
             </DialogContent>

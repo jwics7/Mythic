@@ -1,3 +1,4 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React, { useEffect } from 'react';
 import { useMutation, useLazyQuery, gql } from '@apollo/client';
 import { snackActions } from '../../utilities/Snackbar';
@@ -11,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import DescriptionIcon from '@mui/icons-material/Description';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorIcon from '@mui/icons-material/Error';
-import { useTheme } from '@mui/material/styles';
+
 import { IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -21,7 +22,7 @@ import GetAppIcon from '@mui/icons-material/GetApp';
 import 'react-virtualized/styles.css';
 import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
 import { copyStringToClipboard } from '../../utilities/Clipboard';
-import MythicResizableGrid from '../../MythicComponents/MythicResizableGrid';
+import MythicResizableGrid from '../../MythicComponents/MythicResizableGrid/MythicResizableGrid';
 import { MythicStyledTooltip } from '../../MythicComponents/MythicStyledTooltip';
 import {faFilter} from '@fortawesome/free-solid-svg-icons';
 import {MythicTransferListDialog} from '../../MythicComponents/MythicTransferList';
@@ -53,7 +54,7 @@ const updateFileComment = gql`
 `;
 
 export const CallbacksTabsCustomFileBasedBrowserTable = (props) => {
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const [updateSetting, updateSettings] = useSetMythicSetting();
     const [allData, setAllData] = React.useState([]);
     const [openReorderDialog, setOpenReorderDialog] = React.useState(false);
@@ -321,7 +322,7 @@ export const CallbacksTabsCustomFileBasedBrowserTable = (props) => {
     const contextMenuOptions = [
         {
             name: 'Filter Column', type: "item",
-            icon: <FontAwesomeIcon icon={faFilter} style={{paddingRight: "5px"}} />,
+            icon: <FontAwesomeIcon icon={faFilter} />,
             click: ({event, columnIndex}) => {
                 if(event){
                     event.stopPropagation();
@@ -376,7 +377,7 @@ export const CallbacksTabsCustomFileBasedBrowserTable = (props) => {
             menuItems: [
                 {
                     name: 'Name', type: "item",
-                    icon: <FileCopyOutlinedIcon style={{ paddingRight: '5px' }} />,
+                    icon: <FileCopyOutlinedIcon />,
                     click: ({event}) => {
                         event.stopPropagation();
                         if(copyStringToClipboard(element.name_text)){
@@ -386,7 +387,7 @@ export const CallbacksTabsCustomFileBasedBrowserTable = (props) => {
                 },
                 {
                     name: 'Full Path', type: "item",
-                    icon: <FileCopyOutlinedIcon style={{ paddingRight: '5px' }} />,
+                    icon: <FileCopyOutlinedIcon />,
                     click: ({event}) => {
                         event.stopPropagation();
                         if(copyStringToClipboard(element.full_path_text)){
@@ -396,7 +397,7 @@ export const CallbacksTabsCustomFileBasedBrowserTable = (props) => {
                 },
                 {
                     name: 'Metadata', type: "item",
-                    icon: <FileCopyOutlinedIcon style={{ paddingRight: '5px' }} />,
+                    icon: <FileCopyOutlinedIcon />,
                     click: ({event}) => {
                         event.stopPropagation();
                         if(copyStringToClipboard(JSON.stringify(element?.metadata, null, 2))){
@@ -408,7 +409,7 @@ export const CallbacksTabsCustomFileBasedBrowserTable = (props) => {
         },
         {
             name: 'View Metadata', type: "item",
-            icon: <VisibilityIcon style={{ paddingRight: '5px' }} />,
+            icon: <VisibilityIcon />,
             click: ({event}) => {
                 event.stopPropagation();
                 permissionDataRef.current.metadata = element?.metadata;
@@ -418,7 +419,7 @@ export const CallbacksTabsCustomFileBasedBrowserTable = (props) => {
         },
         {
             name: 'Edit Comment', type: "item",
-            icon: <EditIcon style={{ paddingRight: '5px' }} />,
+            icon: <EditIcon />,
             click: ({event}) => {
                 event.stopPropagation();
                 commentDataRef.current.id = element.id;
@@ -453,7 +454,7 @@ export const CallbacksTabsCustomFileBasedBrowserTable = (props) => {
             {
                 name: downloadDisplay, type: "item",
                 disabled: downloadCommand === undefined,
-                icon: <GetAppIcon color="success" style={{ paddingRight: '5px' }} />,
+                icon: <GetAppIcon color="success" />,
                 click: ({event}) => {
                     event.stopPropagation();
                     props.onTaskRowAction({
@@ -469,7 +470,7 @@ export const CallbacksTabsCustomFileBasedBrowserTable = (props) => {
             {
                 name: listDisplay, type: "item",
                 disabled: listCommand === undefined,
-                icon: <ListIcon color="warning" style={{ paddingRight: '5px'}} />,
+                icon: <ListIcon color="warning" />,
                 click: ({event}) => {
                     event.stopPropagation();
                     props.onTaskRowAction({
@@ -486,7 +487,7 @@ export const CallbacksTabsCustomFileBasedBrowserTable = (props) => {
                 name: removeDisplay, type: "item",
                 disabled: removeCommand === undefined,
                 danger: true,
-                icon: <DeleteIcon style={{ paddingRight: '5px' }} />,
+                icon: <DeleteIcon />,
                 click: ({event}) => {
                     event.stopPropagation();
                     props.onTaskRowAction({
@@ -535,7 +536,7 @@ export const CallbacksTabsCustomFileBasedBrowserTable = (props) => {
                 {
                     name: `Download All Selected`, type: "item",
                     disabled: downloadCommand === undefined,
-                    icon: <GetAppIcon color="success" style={{ paddingRight: '5px' }} />,
+                    icon: <GetAppIcon color="success" />,
                     click: ({event}) => {
                         event.stopPropagation();
                         let newTasks = [];
@@ -557,7 +558,7 @@ export const CallbacksTabsCustomFileBasedBrowserTable = (props) => {
                     name: `Remove All Selected`, type: "item",
                     disabled: removeCommand === undefined,
                     danger: true,
-                    icon: <DeleteIcon style={{ paddingRight: '5px' }} />,
+                    icon: <DeleteIcon />,
                     click: ({event}) => {
                         event.stopPropagation();
                         let newTasks = [];
@@ -579,7 +580,7 @@ export const CallbacksTabsCustomFileBasedBrowserTable = (props) => {
                 {
                     name: `List All Selected`, type: "item",
                     disabled: listCommand === undefined,
-                    icon: <ListIcon color="warning" style={{ paddingRight: '5px' }} />,
+                    icon: <ListIcon color="warning" />,
                     click: ({event}) => {
                         event.stopPropagation();
                         let newTasks = [];
@@ -875,7 +876,7 @@ export const CallbacksTabsCustomFileBasedBrowserTable = (props) => {
     );
 };
 const FileBrowserTableRowNameCell = ({cellData,  rowData, treeRootData, selectedFolderData }) => {
-    const theme = useTheme();
+    const theme = useMythicTheme();
 
     return (
         <div style={{ alignItems: 'center', display: 'flex', maxHeight: "100%", textDecoration: treeRootData[selectedFolderData.host][rowData.full_path_text]?.deleted ? 'line-through' : '' }}>
@@ -891,8 +892,8 @@ const FileBrowserTableRowNameCell = ({cellData,  rowData, treeRootData, selected
                         marginLeft: "4px",
                         color:
                         treeRootData[selectedFolderData.host][rowData.full_path_text]?.success || treeRootData[selectedFolderData.host][rowData.full_path_text]?.has_children
-                                ? theme.folderColor
-                                : theme.emptyFolderColor,
+                                ? theme.color.fileBrowser.folder
+                                : theme.color.fileBrowser.emptyFolder,
                     }}
                 />
             )}

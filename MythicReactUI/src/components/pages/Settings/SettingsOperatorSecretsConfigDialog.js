@@ -1,3 +1,4 @@
+import TableCell from '@mui/material/TableCell';
 import React from 'react';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -13,12 +14,12 @@ import {useMutation, useQuery, gql} from '@apollo/client';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import IconButton from '@mui/material/IconButton';
-import MythicStyledTableCell from "../../MythicComponents/MythicTableCell";
 import MythicTextField from "../../MythicComponents/MythicTextField";
 import {
     MythicDialogBody,
     MythicDialogSection
 } from "../../MythicComponents/MythicDialogLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 const getCurrentSecrets = gql`
 query gettingOperatorSecrets($operator_id: Int) {
@@ -117,20 +118,20 @@ export function SettingsOperatorSecretsConfigDialog(props) {
                       <Table stickyHeader={true} size="small" style={{ "maxWidth": "100%", "overflow": "scroll"}}>
                           <TableHead>
                             <TableRow>
-                                <MythicStyledTableCell style={{width: "2rem"}}/>
-                                <MythicStyledTableCell style={{width: "30%"}}>Secret Key</MythicStyledTableCell>
-                                <MythicStyledTableCell>Secret Value</MythicStyledTableCell>
+                                <TableCell style={{width: "2rem"}}/>
+                                <TableCell style={{width: "30%"}}>Secret Key</TableCell>
+                                <TableCell>Secret Value</TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
                               {settings.map( (s, index) => (
                                   <TableRow hover key={"secret" + index}>
-                                      <MythicStyledTableCell>
-                                          <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={() => removeSecret(index)}>
+                                      <TableCell>
+                                          <MythicActionButton iconOnly tone="error"  size="small" onClick={() => removeSecret(index)}>
                                               <DeleteIcon fontSize="small" />
-                                          </IconButton>
-                                      </MythicStyledTableCell>
-                                    <MythicStyledTableCell>
+                                          </MythicActionButton>
+                                      </TableCell>
+                                    <TableCell>
                                         <MythicTextField
                                             showLabel={false}
                                             placeholder="Secret key"
@@ -139,8 +140,8 @@ export function SettingsOperatorSecretsConfigDialog(props) {
                                             value={s[0]}
                                             onChange={(name, value, error) => onChangeKey(value, index)}
                                         />
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell>
+                                    </TableCell>
+                                    <TableCell>
                                         <MythicTextField
                                             showLabel={false}
                                             placeholder="Secret value"
@@ -149,18 +150,18 @@ export function SettingsOperatorSecretsConfigDialog(props) {
                                             value={s[1]}
                                             onChange={(name, value, error) => onChangeValue(value, index)}
                                         />
-                                    </MythicStyledTableCell>
+                                    </TableCell>
                                   </TableRow>
                               ))}
                               <TableRow>
-                                  <MythicStyledTableCell colSpan={2}>
+                                  <TableCell colSpan={2}>
                                       <IconButton color={"success"} onClick={addSecret}>
                                           <AddCircleOutlineOutlinedIcon    />
                                       </IconButton>
 
-                                  </MythicStyledTableCell>
-                                  <MythicStyledTableCell>
-                                  </MythicStyledTableCell>
+                                  </TableCell>
+                                  <TableCell>
+                                  </TableCell>
                               </TableRow>
                           </TableBody>
                         </Table>

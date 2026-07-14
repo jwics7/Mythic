@@ -1,3 +1,4 @@
+import {useMythicTokens} from '../../../themes/MythicThemeProvider';
 import React, {useState} from 'react';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -7,14 +8,14 @@ import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/theme-xcode';
 import "ace-builds/src-noconflict/ext-searchbox";
-import {useTheme} from '@mui/material/styles';
+
 import {MythicDialogBody, MythicDialogButton, MythicDialogFooter, MythicDialogSection} from "../../MythicComponents/MythicDialogLayout";
 import {mythicFetch} from "../../utilities/MythicConnection";
 
 
 export function ConsumingServicesGetIDPMetadataDialog(props) {
     const [message, setMessage] = useState("");
-    const theme = useTheme();
+    const theme = useMythicTokens();
     React.useEffect( () => {
         const requestOptions = {
             method: "GET",

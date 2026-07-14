@@ -1,3 +1,4 @@
+import {useMythicTokens} from '../../../themes/MythicThemeProvider';
 import React, {useState} from 'react';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -9,9 +10,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import Switch from '@mui/material/Switch';
-import Box from '@mui/material/Box';
+
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -19,7 +19,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import {alpha, useTheme} from '@mui/material/styles';
+import {alpha} from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
 import ReplayIcon from '@mui/icons-material/Replay';
 import StopCircleOutlinedIcon from '@mui/icons-material/StopCircleOutlined';
@@ -38,6 +38,8 @@ import {
     MythicFormField,
     MythicFormSwitchRow
 } from "../../MythicComponents/MythicDialogLayout";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 const hostFileMutation = gql`
 mutation hostFileMutation($c2_id: Int!, $file_uuid: String!, $host_url: String!, $alert_on_download: Boolean) {
@@ -104,18 +106,18 @@ const hostedStatusChipStatus = (status) => {
     return "error";
 }
 
-const HostedFileActionButton = ({title, disabled, onClick, hoverClass, children}) => (
+const HostedFileActionButton = ({title, disabled, onClick, tone, children}) => (
     <MythicStyledTooltip title={title}>
         <span>
-            <IconButton
+            <MythicActionButton iconOnly
                 aria-label={title}
-                className={`mythic-table-row-icon-action ${hoverClass}`}
+                tone={tone}
                 disabled={disabled}
                 onClick={onClick}
                 size="small"
             >
                 {children}
-            </IconButton>
+            </MythicActionButton>
         </span>
     </MythicStyledTooltip>
 );
@@ -131,7 +133,7 @@ export function HostedFileLocationsTable({
     className = "mythicElement",
     sx = {},
 }) {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const rows = hostedFiles || [];
     const hasActions = Boolean(onEdit || onRetry || onStop || onRemove);
     const hasFileColumn = Boolean(renderFile);
@@ -142,7 +144,7 @@ export function HostedFileLocationsTable({
         <TableContainer
             className={className}
             sx={{
-                border: `1px solid ${theme.borderColor || alpha(theme.palette.divider, 0.8)}`,
+                border: `1px solid ${theme.color.application.border || alpha(theme.palette.divider, 0.8)}`,
                 borderRadius: "8px",
                 overflowX: "auto",
                 ...sx,
@@ -153,7 +155,7 @@ export function HostedFileLocationsTable({
                     <TableRow sx={{
                         backgroundColor: alpha(theme.palette.text.primary, theme.palette.mode === "dark" ? 0.07 : 0.04),
                         "& .MuiTableCell-root": {
-                            borderBottom: `1px solid ${theme.borderColor || theme.palette.divider}`,
+                            borderBottom: `1px solid ${theme.color.application.border || theme.palette.divider}`,
                             color: "text.secondary",
                             fontSize: "0.72rem",
                             fontWeight: 700,
@@ -244,22 +246,22 @@ export function HostedFileLocationsTable({
                                 <TableCell align="right">
                                     <Stack direction="row" spacing={0.5} justifyContent="flex-end">
                                         {onEdit &&
-                                            <HostedFileActionButton title="Edit hosted file" hoverClass="mythic-table-row-icon-action-hover-info" onClick={() => onEdit(hostedFile)}>
+                                            <HostedFileActionButton title="Edit hosted file" tone="info" onClick={() => onEdit(hostedFile)}>
                                                 <EditIcon fontSize="small" />
                                             </HostedFileActionButton>
                                         }
                                         {onRetry &&
-                                            <HostedFileActionButton title="Retry hosting" hoverClass="mythic-table-row-icon-action-hover-success" disabled={hostedFile.status === "active" || hostedFile.status === "updating"} onClick={() => onRetry(hostedFile)}>
+                                            <HostedFileActionButton title="Retry hosting" tone="success" disabled={hostedFile.status === "active" || hostedFile.status === "updating"} onClick={() => onRetry(hostedFile)}>
                                                 <ReplayIcon fontSize="small" />
                                             </HostedFileActionButton>
                                         }
                                         {onStop &&
-                                            <HostedFileActionButton title="Stop hosting" hoverClass="mythic-table-row-icon-action-hover-warning" disabled={hostedFile.status === "stopped" || hostedFile.status === "updating"} onClick={() => onStop(hostedFile)}>
+                                            <HostedFileActionButton title="Stop hosting" tone="warning" disabled={hostedFile.status === "stopped" || hostedFile.status === "updating"} onClick={() => onStop(hostedFile)}>
                                                 <StopCircleOutlinedIcon fontSize="small" />
                                             </HostedFileActionButton>
                                         }
                                         {onRemove &&
-                                            <HostedFileActionButton title="Remove hosted file row" hoverClass="mythic-table-row-icon-action-hover-danger" disabled={hostedFile.status === "updating"} onClick={() => onRemove(hostedFile)}>
+                                            <HostedFileActionButton title="Remove hosted file row" tone="error" disabled={hostedFile.status === "updating"} onClick={() => onRemove(hostedFile)}>
                                                 <DeleteOutlineIcon fontSize="small" />
                                             </HostedFileActionButton>
                                         }
@@ -417,11 +419,11 @@ export function HostFileDialog(props) {
         <DialogContent dividers={true}>
           <MythicDialogBody>
             <MythicDialogSection title="File">
-                <Box className="mythic-dialog-preview" sx={{backgroundColor: "background.paper"}}>
+                <MythicCluster gap="none" align="center" wrap={false} className="mythic-dialog-preview mythic-border-radius mythic-border" sx={{backgroundColor: "background.paper"}}>
                     <Typography sx={{wordBreak: "break-all"}}>
                         {props.file_name}
                     </Typography>
-                </Box>
+                </MythicCluster>
             </MythicDialogSection>
             <MythicDialogSection title="Hosting">
                 <MythicDialogGrid>
@@ -470,7 +472,7 @@ export function HostFileDialog(props) {
                     onRetry={retryHosting}
                     onStop={stopHosting}
                     onRemove={removeHosting}
-                    className=""
+
                 />
             </MythicDialogSection>
           </MythicDialogBody>

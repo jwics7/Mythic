@@ -1,3 +1,4 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import { Chip, IconButton, Typography } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import React from 'react';
@@ -18,7 +19,7 @@ import {CircularProgress} from '@mui/material';
 import {getDynamicQueryParams} from "./TaskParametersDialogRow";
 import {MythicAgentSVGIcon} from "../../MythicComponents/MythicAgentSVGIcon";
 import {GetMythicSetting} from "../../MythicComponents/MythicSavedUserSetting";
-import { useTheme } from '@mui/material/styles';
+
 import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
 import {getReadableTextColor, isValidHexColor} from "../../MythicComponents/MythicColorInput";
 import {copyStringToClipboard} from "../../utilities/Clipboard";
@@ -32,6 +33,7 @@ import {
     replaceTextRange
 } from "./taskingReferences";
 import {SettingsOperatorAliasesDialog} from "../Settings/SettingsOperatorAliasesDialog";
+import {MythicCluster, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
 
 const GetLoadedCommandsSubscription = gql`
 subscription GetLoadedCommandsSubscription($callback_id: Int!){
@@ -240,7 +242,7 @@ const TaskingContextChip = ({title, label, value, color, callbackColor, emphasiz
         }
     }
     return (
-        <span className={`mythic-tasking-context-chip${emphasized ? " mythic-tasking-context-chip-emphasized" : ""}`}
+        <span className={`mythic-tasking-context-chip mythic-font-size-caption mythic-align-start mythic-gap-xs mythic-font-weight-strong mythic-line-height-tight mythic-break-anywhere mythic-clickable mythic-max-width-full mythic-inline-flex mythic-border-radius${emphasized ? " mythic-tasking-context-chip-emphasized" : ""}`}
               aria-label={copyLabel}
               onClick={onCopyValue}
               onKeyDown={onCopyKeyDown}
@@ -252,9 +254,9 @@ const TaskingContextChip = ({title, label, value, color, callbackColor, emphasiz
               }}
               tabIndex={0}>
             {label !== "" &&
-                <span className="mythic-tasking-context-chip-label">{label}</span>
+                <span className="mythic-tasking-context-chip-label mythic-font-weight-heavy mythic-letter-spacing-reset mythic-flex-fixed">{label}</span>
             }
-            <span className="mythic-tasking-context-chip-value">{copyValue}</span>
+            <span className="mythic-tasking-context-chip-value mythic-break-anywhere mythic-min-width-0">{copyValue}</span>
         </span>
     )
 }
@@ -277,15 +279,15 @@ const TaskingParameterPreviewChip = ({parameter, required=false, active=false, o
         <Chip
             aria-label={onClick ? `Insert ${getTaskingParameterLabel(parameter)}` : getTaskingParameterLabel(parameter)}
             clickable={Boolean(onClick)}
-            className={`mythic-tasking-parameter-preview-chip${required ? " mythic-tasking-parameter-preview-chip-required" : ""}${active ? " mythic-tasking-parameter-preview-chip-active" : ""}`}
+            className={`mythic-tasking-parameter-preview-chip mythic-border mythic-font-size-xs mythic-flex-fixed mythic-border-radius mythic-font-weight-strong mythic-text-secondary${required ? " mythic-tasking-parameter-preview-chip-required mythic-text-warning" : ""}${active ? " mythic-tasking-parameter-preview-chip-active mythic-text-info" : ""}`}
             label={
-                <span className="mythic-tasking-parameter-preview-chip-label">
+                <MythicCluster component="span" gap="xs" inline wrap={false} className="mythic-tasking-parameter-preview-chip-label">
                     {active &&
-                        <span className="mythic-tasking-parameter-preview-chip-status">Current</span>
+                        <span className="mythic-tasking-parameter-preview-chip-status mythic-inherit-color mythic-font-weight-heavy mythic-line-height-compact mythic-flex-fixed mythic-border-radius-pill">Current</span>
                     }
-                    <span className="mythic-tasking-parameter-preview-chip-name">{getTaskingParameterLabel(parameter)}</span>
-                    <span className="mythic-tasking-parameter-preview-chip-type">{parameter.parameter_type}</span>
-                </span>
+                    <MythicTruncatedText component="span" className="mythic-tasking-parameter-preview-chip-name mythic-min-width-0">{getTaskingParameterLabel(parameter)}</MythicTruncatedText>
+                    <span className="mythic-tasking-parameter-preview-chip-type mythic-inherit-color mythic-font-weight-semibold mythic-flex-fixed">{parameter.parameter_type}</span>
+                </MythicCluster>
             }
             onClick={onClick ? (event) => {
                 event.preventDefault();
@@ -448,7 +450,7 @@ const determineCommandGroupNamesForParameterPreview = (command, parsed) => {
 
 export function CallbacksTabsTaskingInputPreMemo(props){
     const toastId = "tasking-toast-message";
-    const theme = useTheme();
+    const theme = useMythicTheme();
     const inputRef = React.useRef(null);
     const pendingCursorPosition = React.useRef(null);
     const snackMessageStyles = {position:"bottom-left", autoClose: 1000, toastId: toastId, style: {marginBottom: "100px"}};
@@ -2405,7 +2407,7 @@ export function CallbacksTabsTaskingInputPreMemo(props){
             title: "Impersonation Context",
             label: "User",
             value: callbackContext?.impersonation_context,
-            color: theme.taskContextImpersonationColor,
+            color: theme.color.tasking.impersonationContext,
             emphasized: true,
         },
         {
@@ -2413,7 +2415,7 @@ export function CallbacksTabsTaskingInputPreMemo(props){
             title: "User Context" + (callbackContext.integrity_level > 2 ? " (high integrity)" : ""),
             label: "User",
             value: callbackContext?.user ? `${callbackContext.user}${callbackContext.integrity_level > 2 ? "*" : ""}` : "",
-            color: theme.taskContextColor,
+            color: theme.color.tasking.context,
             emphasized: callbackContext.integrity_level > 2,
         },
         {
@@ -2421,61 +2423,61 @@ export function CallbacksTabsTaskingInputPreMemo(props){
             title: "Current Working Directory",
             label: "Dir",
             value: callbackContext?.cwd,
-            color: theme.taskContextColor,
+            color: theme.color.tasking.context,
         },
         {
             key: "host",
             title: "Hostname",
             label: "Host",
             value: callbackContext?.host,
-            color: theme.taskContextColor,
+            color: theme.color.tasking.context,
         },
         {
             key: "ip",
             title: "First IP Address",
             label: "IP",
             value: callbackContext?.ip,
-            color: theme.taskContextColor,
+            color: theme.color.tasking.context,
         },
         {
             key: "pid",
             title: "Process ID",
             label: "PID",
             value: callbackContext?.pid,
-            color: theme.taskContextColor,
+            color: theme.color.tasking.context,
         },
         {
             key: "architecture",
             title: "Process Architecture",
             label: "Arch",
             value: callbackContext?.architecture,
-            color: theme.taskContextColor,
+            color: theme.color.tasking.context,
         },
         {
             key: "process_short_name",
             title: "Process Name",
             label: "Process",
             value: callbackContext?.process_short_name,
-            color: theme.taskContextColor,
+            color: theme.color.tasking.context,
         },
         {
             key: "extra_info",
             title: "Extra Callback Context",
             label: "",
             value: callbackContext?.extra_info,
-            color: theme.taskContextExtraColor,
+            color: theme.color.tasking.extraContext,
             emphasized: true,
         },
     ].filter((chip) => showTaskingContext && taskingContextFields.current.includes(chip.key) && chip.value !== undefined && chip.value !== "");
     return (
-        <div className="mythic-tasking-composer">
-            {backdropOpen && <Backdrop open={backdropOpen} style={{zIndex: 2, position: "absolute"}} invisible={false}>
+        <div className="mythic-tasking-composer mythic-divider-top mythic-relative mythic-min-width-0 mythic-full-width mythic-flex-fixed">
+            {backdropOpen && <Backdrop className="mythic-local-backdrop" open={backdropOpen} invisible={false}>
                 <CircularProgress color="inherit" size={30}/>
             </Backdrop>
             }
             {reverseSearching &&
-                <div className="mythic-tasking-reverse-search">
-                    <Typography component="span" className="mythic-tasking-reverse-search-label">
+                <MythicCluster component="div" gap="sm" align="center" wrap={false} className="mythic-tasking-reverse-search mythic-surface-subtle mythic-border mythic-border-radius">
+                    <Typography component="span" className="mythic-tasking-reverse-search-label mythic-font-weight-extra-bold mythic-font-size-caption mythic-flex-fixed mythic-text-secondary">
                         reverse-i-search
                     </Typography>
                     <TextField
@@ -2493,10 +2495,10 @@ export function CallbacksTabsTaskingInputPreMemo(props){
                             type: 'search',
                         }}
                     />
-                </div>
+                </MythicCluster>
             }
             {taskingContextChips.length > 0 &&
-                <div className="mythic-tasking-context-row">
+                <MythicCluster component="div" gap="xs" align="start" className="mythic-tasking-context-row">
                     {taskingContextChips.map((chip) => (
                         <TaskingContextChip
                             key={chip.key}
@@ -2508,9 +2510,9 @@ export function CallbacksTabsTaskingInputPreMemo(props){
                             emphasized={chip.emphasized}
                         />
                     ))}
-                </div>
+                </MythicCluster>
             }
-            <div className="mythic-tasking-command-row">
+            <MythicCluster component="div" gap="sm" wrap={false} align="stretch" className="mythic-tasking-command-row mythic-full-width">
                 {tokenOptions.current.length > 0 ? (
                     <CallbacksTabsTaskingInputTokenSelect
                         options={tokenOptions.current}
@@ -2534,29 +2536,29 @@ export function CallbacksTabsTaskingInputPreMemo(props){
                     autoFocus={true}
                     fullWidth={true}
                     inputRef={inputRef}
-                    className="mythic-tasking-command-input"
+                    className="mythic-tasking-command-input mythic-flex-fill"
                     InputProps={{
                         type: 'search',
                         spellCheck: false,
                         autoFocus: true,
                         startAdornment:
-                            <span className="mythic-tasking-command-prefix">
+                            <MythicCluster component="span" gap="none" justify="center" inline wrap={false} className="mythic-tasking-command-prefix mythic-flex-fixed mythic-text-secondary">
                                 <TerminalIcon fontSize="small" />
-                            </span>,
+                            </MythicCluster>,
                         endAdornment:
-                            <div className="mythic-tasking-action-row">
+                            <MythicCluster component="div" gap="xs" inline wrap={false} className="mythic-tasking-action-row mythic-flex-fixed">
                                 {commandPayloadType !== "" &&
                                     <MythicStyledTooltip title={commandPayloadType}>
-                                        <span className="mythic-tasking-payload-chip">
+                                        <MythicCluster component="span" gap="none" justify="center" inline wrap={false} className="mythic-tasking-payload-chip mythic-border mythic-flex-fixed mythic-border-radius">
                                             <MythicAgentSVGIcon payload_type={commandPayloadType}
                                                                 style={{width: "20px", height: "20px"}}/>
-                                        </span>
+                                        </MythicCluster>
                                     </MythicStyledTooltip>
                                 }
                                 {props.filterTasks &&
                                     <MythicStyledTooltip title={activeFiltering ? "Adjust active task filters" : "Filter task history"}>
                                         <IconButton
-                                            className={`mythic-tasking-action-button ${activeFiltering ? "mythic-tasking-action-button-warning" : "mythic-tasking-action-button-neutral"}`}
+                                            className={`mythic-tasking-action-button mythic-border mythic-border-radius mythic-text-secondary ${activeFiltering ? "mythic-tasking-action-button-warning" : "mythic-tasking-action-button-neutral"}`}
                                             onClick={onClickFilter}
                                             disableRipple={true}
                                             disableFocusRipple={true}
@@ -2566,7 +2568,7 @@ export function CallbacksTabsTaskingInputPreMemo(props){
                                 }
                                 <MythicStyledTooltip title={"Manage aliases"}>
                                     <IconButton
-                                        className="mythic-tasking-action-button mythic-tasking-action-button-neutral"
+                                        className="mythic-tasking-action-button mythic-border mythic-border-radius mythic-text-secondary mythic-tasking-action-button-neutral"
                                         onClick={() => setOpenAliasesDialog(true)}
                                         disableRipple={true}
                                         disableFocusRipple={true}
@@ -2575,7 +2577,7 @@ export function CallbacksTabsTaskingInputPreMemo(props){
                                 </MythicStyledTooltip>
                                 <MythicStyledTooltip title={"Submit task"}>
                                     <IconButton
-                                        className="mythic-tasking-action-button mythic-tasking-action-button-success"
+                                        className="mythic-tasking-action-button mythic-border mythic-border-radius mythic-text-secondary mythic-tasking-action-button-success"
                                         disableRipple={true}
                                         disableFocusRipple={true}
                                         onClick={onSubmitCommandLine}
@@ -2583,17 +2585,17 @@ export function CallbacksTabsTaskingInputPreMemo(props){
                                         aria-label="Submit task"><SendIcon fontSize="small"/>
                                     </IconButton>
                                 </MythicStyledTooltip>
-                            </div>
+                            </MythicCluster>
                     }}
                 />
-            </div>
-            <div className={`mythic-tasking-parameter-preview${commandParameterPreview.state === "parameters" ? "" : " mythic-tasking-parameter-preview-empty-state"}`}>
-                <div className="mythic-tasking-parameter-preview-heading">
+            </MythicCluster>
+            <div className={`mythic-tasking-parameter-preview mythic-surface-subtle mythic-gap-sm mythic-border mythic-min-width-0 mythic-align-center mythic-grid mythic-border-radius${commandParameterPreview.state === "parameters" ? "" : " mythic-tasking-parameter-preview-empty-state"}`}>
+                <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-tasking-parameter-preview-heading mythic-font-weight-heavy mythic-font-size-caption mythic-line-height-tight mythic-text-secondary">
                     <TerminalIcon fontSize="small" />
                     <span>CLI parameters</span>
-                </div>
+                </MythicCluster>
                 {commandParameterPreview.state === "parameters" ? (
-                    <div className="mythic-tasking-parameter-preview-chip-row">
+                    <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-tasking-parameter-preview-chip-row">
                     {commandParameterPreview.activeParameter &&
                         <TaskingParameterPreviewChip key={"active" + commandParameterPreview.activeParameter.id} parameter={commandParameterPreview.activeParameter} active={true} />
                     }
@@ -2601,24 +2603,24 @@ export function CallbacksTabsTaskingInputPreMemo(props){
                         <TaskingParameterPreviewChip key={"required" + parameter.id} parameter={parameter} required={true} onClick={insertParameterIntoCommandLine} />
                     ))}
                     {commandParameterPreview.requiredParameters.length > (commandParameterPreview.activeParameter ? 5 : 6) &&
-                        <span className="mythic-tasking-parameter-preview-more">
+                        <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-tasking-parameter-preview-more mythic-font-size-xs mythic-font-weight-strong mythic-border mythic-flex-fixed mythic-border-radius mythic-text-secondary">
                             +{commandParameterPreview.requiredParameters.length - (commandParameterPreview.activeParameter ? 5 : 6)} required
-                        </span>
+                        </MythicCluster>
                     }
                     {commandParameterPreview.optionalParameters.slice(0, commandParameterPreview.requiredParameters.length > 0 ? 4 : (commandParameterPreview.activeParameter ? 5 : 6)).map((parameter) => (
                         <TaskingParameterPreviewChip key={"optional" + parameter.id} parameter={parameter} onClick={insertParameterIntoCommandLine} />
                     ))}
                     {commandParameterPreview.optionalParameters.length > (commandParameterPreview.requiredParameters.length > 0 ? 4 : (commandParameterPreview.activeParameter ? 5 : 6)) &&
-                        <span className="mythic-tasking-parameter-preview-more">
+                        <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-tasking-parameter-preview-more mythic-font-size-xs mythic-font-weight-strong mythic-border mythic-flex-fixed mythic-border-radius mythic-text-secondary">
                             +{commandParameterPreview.optionalParameters.length - (commandParameterPreview.requiredParameters.length > 0 ? 4 : (commandParameterPreview.activeParameter ? 5 : 6))} optional
-                        </span>
+                        </MythicCluster>
                     }
-                    </div>
+                    </MythicCluster>
                 ) : (
-                    <div className="mythic-tasking-parameter-preview-empty">
+                    <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-tasking-parameter-preview-empty mythic-font-weight-semibold mythic-font-size-caption">
                         <TerminalIcon fontSize="small" />
-                        <span>{commandParameterPreview.message}</span>
-                    </div>
+                        <MythicTruncatedText component="span" >{commandParameterPreview.message}</MythicTruncatedText>
+                    </MythicCluster>
                 )}
             </div>
             {openFilterOptionsDialog &&

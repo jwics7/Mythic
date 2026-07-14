@@ -1,0 +1,5 @@
+@media (min-width: 600px) {
+    .root {
+        min-width: 344px;
+    }
+}

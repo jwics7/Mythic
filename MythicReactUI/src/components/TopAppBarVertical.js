@@ -1,5 +1,4 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import CameraAltTwoToneIcon from '@mui/icons-material/CameraAltTwoTone';
 import MuiDrawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -49,7 +48,7 @@ import DarkModeTwoToneIcon from '@mui/icons-material/DarkModeTwoTone';
 import PlayCircleFilledTwoToneIcon from '@mui/icons-material/PlayCircleFilledTwoTone';
 import ForumTwoToneIcon from '@mui/icons-material/ForumTwoTone';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import {useQuery, useSubscription, gql} from '@apollo/client';
+import {useQuery, gql} from '@apollo/client';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import AssignmentIcon from '@mui/icons-material/Assignment';
@@ -64,7 +63,7 @@ import Select from '@mui/material/Select';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import {snackActions} from "./utilities/Snackbar";
-import {Dropdown, DropdownMenuItem} from "./MythicComponents/MythicNestedMenus";
+import {Dropdown} from "./MythicComponents/MythicNestedMenus";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import {
     Draggable,
@@ -75,167 +74,35 @@ import {MythicDraggablePortal, reorder} from "./MythicComponents/MythicDraggable
 import { useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
 import TuneIcon from '@mui/icons-material/Tune';
-import {getSkewedNow} from "./utilities/Time";
+import {useChatDirectory} from "./Chat/ChatDirectoryContext";
 import {
     MythicDialogBody,
     MythicDialogButton,
     MythicDialogFooter,
     MythicDialogSection,
 } from "./MythicComponents/MythicDialogLayout";
-
-const PREFIX = 'TopAppBarVertical';
+import styles from './TopAppBarVertical.module.css';
+import {MythicCluster, MythicStack} from "./MythicComponents/MythicLayout";
+import {MythicActionButton} from "./MythicComponents/MythicContent";
 
 const classes = {
-  listSubHeader: `${PREFIX}-listSubHeader`,
+  listSubHeader: styles.listSubHeader,
 };
 
-const openedMixin = () => ({
-    width: drawerWidth,
-    overflowX: 'hidden',
-    borderRadius: "0 !important",
-    border: "0px !important",
-    background: "var(--mythic-nav-background) !important",
-    backgroundColor: "var(--mythic-nav-background-color) !important",
-});
-const closedMixin = () => ({
-    overflowX: 'hidden',
-    width: "60px",
-    borderRadius: "0 !important",
-    border: "0px !important",
-    background: "var(--mythic-nav-background) !important",
-    backgroundColor: "var(--mythic-nav-background-color) !important",
-    '@media (min-width: 600px)': {
-      width: "60px",
-      borderRadius: "0 !important",
-      border: "0px !important",
-  },
-});
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    () => ({
-      width: drawerWidth,
-      flexShrink: 0,
-      whiteSpace: 'nowrap',
-      boxSizing: 'border-box',
-      background: "var(--mythic-nav-background) !important",
-      backgroundColor: "var(--mythic-nav-background-color) !important",
-      color: "var(--mythic-nav-text)",
-      '& .MuiDrawer-paper': {
-        border: "0 !important",
-        borderRight: "0 !important",
-        borderRadius: "0 !important",
-        boxShadow: "none !important",
-      },
-      '& .MuiList-root': {
-        border: "0 !important",
-        borderRadius: "0 !important",
-      },
-      [`& .${classes.listSubHeader}`]: {
-        backgroundColor: "transparent !important",
-        boxSizing: "border-box",
-        maxWidth: "calc(100% - 8px)",
-        width: "auto",
-      },
-      [`& .${classes.listSubHeader}:hover`]: {
-        color: "var(--mythic-nav-text) !important",
-        backgroundColor: "var(--mythic-nav-hover) !important",
-      },
-      variants: [
-        {
-          props: ({ open }) => open,
-          style: {
-            ...openedMixin(),
-            '& .MuiDrawer-paper': {
-                ...openedMixin(),
-                background: "var(--mythic-nav-background) !important",
-                backgroundColor: "var(--mythic-nav-background-color) !important",
-                border: "0 !important",
-                borderRight: "0 !important",
-                borderRadius: "0 !important",
-                boxShadow: "none !important",
-                '& .MuiList-root': {
-                    backgroundColor: "transparent !important",
-                    border: "0 !important",
-                    borderRadius: "0 !important",
-                },
-            },
-          },
-        },
-        {
-          props: ({ open }) => !open,
-          style: {
-            ...closedMixin(),
-            '& .MuiDrawer-paper': {
-                ...closedMixin(),
-                background: "var(--mythic-nav-background) !important",
-                backgroundColor: "var(--mythic-nav-background-color) !important",
-                border: "0 !important",
-                borderRight: "0 !important",
-                borderRadius: "0 !important",
-                boxShadow: "none !important",
-                '& .MuiList-root': {
-                    backgroundColor: "transparent !important",
-                    border: "0 !important",
-                    borderRadius: "0 !important",
-                },
-                '& .MuiListItemText-root': {
-                    display: "none",
-                    margin: "0 !important",
-                    maxWidth: 0,
-                    minWidth: 0,
-                    overflow: "hidden",
-                    width: 0,
-                },
-                '& .MuiListItem-root > .MuiSvgIcon-root': {
-                    display: "none",
-                },
-            },
-          },
-        },
-      ],
-    }),
+const Drawer = ({open, className = "", ...props}) => (
+    <MuiDrawer
+        className={`${styles.drawer} mythic-nowrap ${className}`}
+        data-open={open ? "true" : "false"}
+        open={open}
+        {...props}
+    />
 );
-export const StyledListItem = styled(ListItem)(
-    () => ({
-      minHeight: "34px",
-      paddingTop: "4px",
-      paddingLeft: "8px",
-      paddingRight: "8px",
-      margin: "2px 4px",
-      paddingBottom: "4px",
-      borderRadius: "var(--mythic-radius)",
-      color: "var(--mythic-nav-text)",
-      backgroundColor: "transparent !important",
-      boxSizing: "border-box",
-      maxWidth: "calc(100% - 8px)",
-      width: "auto",
-      "& .MuiListItemText-root": {
-        marginLeft: "0.35rem",
-        minWidth: 0,
-      },
-      "& .MuiListItemText-primary": {
-        fontSize: "0.78125rem",
-        fontWeight: 600,
-      },
-      "&:hover": {
-        backgroundColor: "var(--mythic-nav-hover) !important",
-      },
-    }),
+export const StyledListItem = ({className = "", ...props}) => (
+    <ListItem className={`${styles.listItem} ${className}`} {...props} />
 );
-export const StyledListItemIcon = styled(ListItemIcon)(
-    () => ({
-        paddingTop:0,
-        marginTop: 0,
-        paddingBottom: 0,
-        minWidth: "36px",
-        width: "36px",
-        justifyContent: "center",
-        color: "var(--mythic-nav-icon)",
-        backgroundColor: "transparent !important",
-        overflow: "visible",
-    }),
+export const StyledListItemIcon = ({className = "", ...props}) => (
+    <ListItemIcon className={`${styles.listItemIcon} mythic-justify-center ${className}`} {...props} />
 );
-
-const drawerWidth = 240;
 const GET_SETTINGS = gql`
 query getGlobalSettings {
   getGlobalSettings {
@@ -243,78 +110,6 @@ query getGlobalSettings {
   }
 }
 `;
-
-const CHAT_UNREAD_STATUS_QUERY = gql`
-query ChatUnreadStatus {
-  chat_channel(where: {last_message_id: {_is_null: false}}) {
-    id
-    archived
-    last_message_id
-    updated_at
-  }
-  chat_read_state {
-    channel_id
-    last_read_message_id
-    updated_at
-  }
-}
-`;
-
-const CHAT_UNREAD_CHANNELS_STREAM_SUBSCRIPTION = gql`
-subscription ChatUnreadChannelsStream($now: timestamp!) {
-  chat_channel_stream(batch_size: 50, cursor: {initial_value: {updated_at: $now}, ordering: ASC}, where: {last_message_id: {_is_null: false}}) {
-    id
-    archived
-    last_message_id
-    updated_at
-  }
-}
-`;
-
-const CHAT_UNREAD_READ_STATE_STREAM_SUBSCRIPTION = gql`
-subscription ChatUnreadReadStateStream($now: timestamp!) {
-  chat_read_state_stream(batch_size: 50, cursor: {initial_value: {updated_at: $now}, ordering: ASC}) {
-    channel_id
-    last_read_message_id
-    updated_at
-  }
-}
-`;
-
-const unreadTimestampValue = (timestamp) => {
-    if(!timestamp){ return 0; }
-    const value = new Date(timestamp).getTime();
-    return Number.isNaN(value) ? 0 : value;
-};
-
-const mergeUnreadChannels = (current, incoming) => {
-    if(!incoming || incoming.length === 0){ return current; }
-    const rowsByID = new Map((current || []).map((channel) => [channel.id, channel]));
-    incoming.forEach((channel) => {
-        const existing = rowsByID.get(channel.id);
-        if(!existing || unreadTimestampValue(channel.updated_at) >= unreadTimestampValue(existing.updated_at)){
-            rowsByID.set(channel.id, {...existing, ...channel});
-        }
-    });
-    return [...rowsByID.values()];
-};
-
-const mergeUnreadReadStates = (current, incoming) => {
-    if(!incoming || incoming.length === 0){ return current; }
-    return incoming.reduce((prev, readState) => ({
-        ...prev,
-        [readState.channel_id]: Math.max(prev[readState.channel_id] || 0, readState.last_read_message_id || 0),
-    }), current);
-};
-
-const getUnreadChatCount = (channels, readState) => {
-    return (channels || []).reduce((count, channel) => {
-        if(channel.archived){ return count; }
-        const latestMessageID = channel.last_message_id || 0;
-        const lastReadMessageID = readState[channel.id] || 0;
-        return latestMessageID > lastReadMessageID ? count + 1 : count;
-    }, 0);
-};
 
 const Dashboard = () => {
   return (
@@ -548,59 +343,8 @@ const Eventing = () => {
       </StyledListItem>
   )
 }
-const Chat = ({me}) => {
-    const streamStart = React.useRef(getSkewedNow().toISOString());
-    const [channels, setChannels] = React.useState([]);
-    const [readState, setReadState] = React.useState({});
-    const {data: initialData, error: initialError} = useQuery(CHAT_UNREAD_STATUS_QUERY, {
-        skip: !me?.user?.current_operation_id,
-        fetchPolicy: "no-cache",
-    });
-    React.useEffect(() => {
-        streamStart.current = getSkewedNow().toISOString();
-        setChannels([]);
-        setReadState({});
-    }, [me?.user?.current_operation_id]);
-    React.useEffect(() => {
-        if(initialData?.chat_channel){
-            setChannels((prev) => mergeUnreadChannels(prev, initialData.chat_channel));
-        }
-        if(initialData?.chat_read_state){
-            setReadState((prev) => mergeUnreadReadStates(prev, initialData.chat_read_state));
-        }
-    }, [initialData]);
-    const {error: channelStreamError} = useSubscription(CHAT_UNREAD_CHANNELS_STREAM_SUBSCRIPTION, {
-        variables: {now: streamStart.current},
-        skip: !me?.user?.current_operation_id,
-        fetchPolicy: "no-cache",
-        onData: ({data}) => {
-            const updates = data.data?.chat_channel_stream || [];
-            if(updates.length > 0){
-                setChannels((prev) => mergeUnreadChannels(prev, updates));
-            }
-        },
-        onError: (errorData) => {
-            console.log("chat unread channel stream error");
-            console.error(errorData);
-        },
-    });
-    const {error: readStateStreamError} = useSubscription(CHAT_UNREAD_READ_STATE_STREAM_SUBSCRIPTION, {
-        variables: {now: streamStart.current},
-        skip: !me?.user?.current_operation_id,
-        fetchPolicy: "no-cache",
-        onData: ({data}) => {
-            const updates = data.data?.chat_read_state_stream || [];
-            if(updates.length > 0){
-                setReadState((prev) => mergeUnreadReadStates(prev, updates));
-            }
-        },
-        onError: (errorData) => {
-            console.log("chat unread status error");
-            console.error(errorData);
-        },
-    });
-    const error = initialError || channelStreamError || readStateStreamError;
-    const unreadCount = React.useMemo(() => getUnreadChatCount(channels, readState), [channels, readState]);
+const Chat = () => {
+    const {unreadCount, error} = useChatDirectory();
     const tooltipTitle = error ? "Operation Chat unread status unavailable" :
         unreadCount > 0 ? `Operation Chat (${unreadCount} unread ${unreadCount === 1 ? "chat" : "chats"})` : "Operation Chat";
     return (
@@ -780,22 +524,22 @@ const TopAppBarVerticalAdjustShortcutsDialog = ({onClose, onSave, sideShortcuts}
                         <DragDropContext onDragEnd={onDragEnd}>
                             <Droppable droppableId="vertical-shortcuts-column-list">
                                 {(provided) => (
-                                    <div className="mythic-reorder-list" ref={provided.innerRef} {...provided.droppableProps}>
+                                    <MythicStack component="div" gap="sm" scroll className="mythic-reorder-list mythic-flex-fill" ref={provided.innerRef} {...provided.droppableProps}>
                                         {currentShortcuts.map((c, i) => (
                                             <Draggable key={c + i} draggableId={`shortcut-${c}-${i}`} index={i}>
                                                 {(provided2, snapshot) => {
                                                     const row = (
                                                         <div
                                                             ref={provided2.innerRef}
-                                                            className={`mythic-reorder-row${snapshot.isDragging ? " mythic-reorder-row-dragging" : ""}`}
+                                                            className={`mythic-reorder-row mythic-gap-sm mythic-flex mythic-min-width-0 mythic-align-center mythic-surface-raised mythic-border mythic-border-radius mythic-text-primary mythic-flex-fixed mythic-full-width${snapshot.isDragging ? " mythic-reorder-row-dragging" : ""}`}
                                                             {...provided2.draggableProps}
                                                         >
-                                                            <span className="mythic-reorder-drag-handle" {...provided2.dragHandleProps}>
+                                                            <MythicCluster component="span" gap="none" justify="center" inline wrap={false} className="mythic-reorder-drag-handle mythic-border mythic-border-radius mythic-text-secondary" {...provided2.dragHandleProps}>
                                                                 <DragHandleIcon fontSize="small" />
-                                                            </span>
-                                                            <div className="mythic-reorder-row-main">
+                                                            </MythicCluster>
+                                                            <MythicCluster component="div" gap="sm" align="center" wrap={false} fill className="mythic-reorder-row-main">
                                                                 <Select
-                                                                    className="mythic-reorder-select"
+                                                                    className="mythic-reorder-select mythic-min-width-0 mythic-flex-fill"
                                                                     fullWidth
                                                                     size="small"
                                                                     value={c}
@@ -805,17 +549,17 @@ const TopAppBarVerticalAdjustShortcutsDialog = ({onClose, onSave, sideShortcuts}
                                                                         <MenuItem value={opt} key={opt}>{opt}</MenuItem>
                                                                     ))}
                                                                 </Select>
-                                                            </div>
-                                                            <div className="mythic-reorder-row-actions">
-                                                                <IconButton
+                                                            </MythicCluster>
+                                                            <MythicCluster component="div" gap="xs" align="center" wrap={false} className="mythic-reorder-row-actions mythic-flex-fixed">
+                                                                <MythicActionButton iconOnly tone="error"
                                                                     aria-label={`Remove ${c}`}
-                                                                    className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger"
+
                                                                     size="small"
                                                                     onClick={() => removeShortcut(i)}
                                                                 >
                                                                     <DeleteIcon fontSize="small" />
-                                                                </IconButton>
-                                                            </div>
+                                                                </MythicActionButton>
+                                                            </MythicCluster>
                                                         </div>
                                                     );
                                                     return (
@@ -827,7 +571,7 @@ const TopAppBarVerticalAdjustShortcutsDialog = ({onClose, onSave, sideShortcuts}
                                             </Draggable>
                                         ))}
                                         {provided.placeholder}
-                                    </div>
+                                    </MythicStack>
                                 )}
                             </Droppable>
                         </DragDropContext>
@@ -1160,7 +904,7 @@ function TopBarRightShortcutsVertical({me, menuOpen, serverName}){
                         }}
                         menu={
                             documentationOptions.map(option => (
-                                <DropdownMenuItem
+                                <MenuItem
                                     key={option.name}
                                     disabled={option.disabled}
                                     onClick={handleDocumentationClose}
@@ -1169,7 +913,7 @@ function TopBarRightShortcutsVertical({me, menuOpen, serverName}){
                                     to={option.to}
                                 >
                                     {option.name}
-                                </DropdownMenuItem>
+                                </MenuItem>
                             ))
                         }
                     />
@@ -1194,7 +938,7 @@ function TopBarRightShortcutsVertical({me, menuOpen, serverName}){
                         }}
                         menu={
                             settingsOptions.map(option => (
-                                <DropdownMenuItem
+                                <MenuItem
                                     key={option.name}
                                     disabled={option.disabled}
                                     onClick={option.click}
@@ -1204,7 +948,7 @@ function TopBarRightShortcutsVertical({me, menuOpen, serverName}){
                                     divider={true}
                                 >
                                     {option.name}
-                                </DropdownMenuItem>
+                                </MenuItem>
                             ))
                         }
                     />

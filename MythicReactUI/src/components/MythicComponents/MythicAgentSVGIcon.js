@@ -1,4 +1,5 @@
-import {useTheme} from '@mui/material/styles';
+import {useMythicTokens} from '../../themes/MythicThemeProvider';
+
 import {MythicStyledTooltip} from "./MythicStyledTooltip";
 import WifiIcon from '@mui/icons-material/Wifi';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -6,7 +7,7 @@ import { faLink } from '@fortawesome/free-solid-svg-icons';
 import {ImageWithAuth} from "../utilities/ImageWithAuth";
 
 export const MythicAgentSVGIcon = ({payload_type, style, is_p2p}) => {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     if(payload_type === ""){
         return;
     }
@@ -29,7 +30,7 @@ export const MythicAgentSVGIcon = ({payload_type, style, is_p2p}) => {
     )
 }
 export const MythicAgentSVGIconNoTooltip = ({payload_type, is_p2p, className, style}) => {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     if(payload_type === ""){
         return;
     }

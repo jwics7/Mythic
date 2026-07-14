@@ -218,7 +218,7 @@ export function OperationTableRowUpdateOperatorsDialog(props) {
                       <TableHead>
                           <TableRow>
                               <TableCell style={{width: "8rem"}}>Assign to Operation</TableCell>
-                              <TableCell style={{}}>Operator</TableCell>
+                              <TableCell>Operator</TableCell>
                               <TableCell style={{width: "10rem"}}>Role</TableCell>
                               <TableCell >Block List</TableCell>
                               <TableCell style={{width: "4rem"}}></TableCell>

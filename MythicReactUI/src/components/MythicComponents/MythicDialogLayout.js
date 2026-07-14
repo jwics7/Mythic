@@ -3,13 +3,14 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import Typography from '@mui/material/Typography';
+import styles from "./MythicDialogLayout.module.css";
 
 const joinClasses = (...classes) => classes.filter(Boolean).join(" ");
 
 export function MythicDialogBody({children, className, compact = false, ...props}) {
     return (
         <Box
-            className={joinClasses("mythic-dialog-body", compact && "mythic-dialog-body-compact", className)}
+            className={joinClasses(styles.body, compact && styles.bodyCompact, className)}
             {...props}
         >
             {children}
@@ -19,23 +20,23 @@ export function MythicDialogBody({children, className, compact = false, ...props
 
 export function MythicDialogSection({title, description, actions, children, className, ...props}) {
     return (
-        <Box component="section" className={joinClasses("mythic-dialog-section", className)} {...props}>
+        <Box component="section" className={joinClasses(styles.section, className)} {...props}>
             {(title || description || actions) &&
-                <Box className="mythic-dialog-section-header">
-                    <Box sx={{minWidth: 0}}>
+                <Box className={`${styles.sectionHeader} mythic-align-start mythic-justify-between mythic-flex mythic-min-width-0`}>
+                    <Box className="mythic-min-width-0">
                         {title &&
-                            <Typography component="h3" className="mythic-dialog-section-title">
+                            <Typography component="h3" className={`${styles.sectionTitle} mythic-font-size-body-small mythic-font-weight-bold mythic-line-height-snug`}>
                                 {title}
                             </Typography>
                         }
                         {description &&
-                            <Typography component="div" className="mythic-dialog-section-description">
+                            <Typography component="div" className={`${styles.sectionDescription} mythic-font-size-small mythic-line-height-normal`}>
                                 {description}
                             </Typography>
                         }
                     </Box>
                     {actions &&
-                        <Box className="mythic-dialog-section-actions">
+                        <Box className={`${styles.sectionActions} mythic-gap-sm mythic-align-center mythic-flex mythic-flex-fixed`}>
                             {actions}
                         </Box>
                     }
@@ -46,11 +47,11 @@ export function MythicDialogSection({title, description, actions, children, clas
     );
 }
 
-export function MythicDialogGrid({children, className, minWidth = "16rem", sx = {}, ...props}) {
+export function MythicDialogGrid({children, className, minWidth = "16rem", style, ...props}) {
     return (
         <Box
-            className={joinClasses("mythic-dialog-grid", className)}
-            sx={{"--mythic-dialog-grid-min": minWidth, ...sx}}
+            className={joinClasses(styles.grid, className)}
+            style={{"--mythic-dialog-grid-min": minWidth, ...style}}
             {...props}
         >
             {children}
@@ -60,7 +61,7 @@ export function MythicDialogGrid({children, className, minWidth = "16rem", sx = 
 
 export function MythicDialogChoiceRow({children, className, ...props}) {
     return (
-        <Box className={joinClasses("mythic-dialog-choice-row", className)} {...props}>
+        <Box className={joinClasses(styles.choiceRow, className)} {...props}>
             {children}
         </Box>
     );
@@ -68,7 +69,7 @@ export function MythicDialogChoiceRow({children, className, ...props}) {
 
 export function MythicDialogChoiceDivider({children = "OR", className, ...props}) {
     return (
-        <Box component="span" className={joinClasses("mythic-dialog-choice-divider", className)} {...props}>
+        <Box component="span" className={joinClasses(styles.choiceDivider, className)} {...props}>
             {children}
         </Box>
     );
@@ -76,7 +77,7 @@ export function MythicDialogChoiceDivider({children = "OR", className, ...props}
 
 export function MythicDialogFooter({children, className, ...props}) {
     return (
-        <DialogActions className={joinClasses("mythic-dialog-actions", className)} {...props}>
+        <DialogActions className={joinClasses(styles.footer, className)} {...props}>
             {children}
         </DialogActions>
     );
@@ -85,7 +86,8 @@ export function MythicDialogFooter({children, className, ...props}) {
 export function MythicDialogButton({children, className, intent = "secondary", ...props}) {
     return (
         <Button
-            className={joinClasses("mythic-dialog-button", `mythic-dialog-button-${intent}`, className)}
+            className={joinClasses(styles.button, className)}
+            data-intent={intent}
             size="small"
             variant="contained"
             {...props}
@@ -97,17 +99,17 @@ export function MythicDialogButton({children, className, intent = "secondary", .
 
 export function MythicForm({children, className, ...props}) {
     return (
-        <Box component="form" className={joinClasses("mythic-form", className)} {...props}>
+        <Box component="form" className={joinClasses(styles.form, className)} {...props}>
             {children}
         </Box>
     );
 }
 
-export function MythicFormGrid({children, className, minWidth = "16rem", sx = {}, ...props}) {
+export function MythicFormGrid({children, className, minWidth = "16rem", style, ...props}) {
     return (
         <Box
-            className={joinClasses("mythic-form-grid", className)}
-            sx={{"--mythic-form-grid-min": minWidth, ...sx}}
+            className={joinClasses(styles.formGrid, className)}
+            style={{"--mythic-form-grid-min": minWidth, ...style}}
             {...props}
         >
             {children}
@@ -117,22 +119,22 @@ export function MythicFormGrid({children, className, minWidth = "16rem", sx = {}
 
 export function MythicFormField({children, className, description, label, required = false, ...props}) {
     return (
-        <Box className={joinClasses("mythic-form-field", className)} {...props}>
+        <Box className={joinClasses(styles.formField, className)} {...props}>
             {(label || description) &&
-                <Box className="mythic-form-field-copy">
+                <Box className="mythic-min-width-0">
                     {label &&
-                        <Typography component="label" className="mythic-form-field-label">
-                            {label}{required && <Box component="span" className="mythic-form-field-required"> *</Box>}
+                        <Typography component="label" className={`${styles.fieldLabel} mythic-block mythic-font-size-small mythic-font-weight-strong mythic-line-height-snug`}>
+                            {label}{required && <Box component="span" className="mythic-text-error"> *</Box>}
                         </Typography>
                     }
                     {description &&
-                        <Typography component="div" className="mythic-form-field-description">
+                        <Typography component="div" className={`${styles.fieldDescription} mythic-font-size-caption mythic-line-height-normal`}>
                             {description}
                         </Typography>
                     }
                 </Box>
             }
-            <Box className="mythic-form-field-control">
+            <Box className={`${styles.fieldControl} mythic-min-width-0 mythic-full-width`}>
                 {children}
             </Box>
         </Box>
@@ -141,7 +143,7 @@ export function MythicFormField({children, className, description, label, requir
 
 export function MythicFormNote({children, className, ...props}) {
     return (
-        <Box className={joinClasses("mythic-form-note", className)} {...props}>
+        <Box className={joinClasses(styles.formNote, className)} {...props}>
             {children}
         </Box>
     );
@@ -149,18 +151,18 @@ export function MythicFormNote({children, className, ...props}) {
 
 export function MythicFormSwitchRow({control, label, description, className, ...props}) {
     return (
-        <Box className={joinClasses("mythic-form-switch-row", className)} {...props}>
-            <Box sx={{minWidth: 0}}>
-                <Typography component="div" className="mythic-form-field-label">
+        <Box className={joinClasses(styles.switchRow, className)} {...props}>
+            <Box className="mythic-min-width-0">
+                <Typography component="div" className={`${styles.fieldLabel} mythic-block mythic-font-size-small mythic-font-weight-strong mythic-line-height-snug`}>
                     {label}
                 </Typography>
                 {description &&
-                    <Typography component="div" className="mythic-form-field-description">
+                    <Typography component="div" className={`${styles.fieldDescription} mythic-font-size-caption mythic-line-height-normal`}>
                         {description}
                     </Typography>
                 }
             </Box>
-            <Box className="mythic-form-switch-control">
+            <Box className="mythic-flex-fixed">
                 {control}
             </Box>
         </Box>

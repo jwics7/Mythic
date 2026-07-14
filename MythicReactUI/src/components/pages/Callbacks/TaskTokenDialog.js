@@ -3,7 +3,7 @@ import {useQuery, gql} from '@apollo/client';
 import {snackActions} from '../../utilities/Snackbar';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
-import DialogTitle from '@mui/material/DialogTitle';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';

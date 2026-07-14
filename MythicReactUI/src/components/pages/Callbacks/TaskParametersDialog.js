@@ -18,6 +18,8 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import SegmentIcon from '@mui/icons-material/Segment';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import {MythicDialogButton, MythicDialogFooter} from "../../MythicComponents/MythicDialogLayout";
+import {MythicCluster, MythicStack, MythicGrid} from "../../MythicComponents/MythicLayout";
+import {MythicPanel, MythicText} from "../../MythicComponents/MythicContent";
 
 //if we need to get all the loaded commands for the callback and filter, use this
 const GetLoadedCommandsQuery = gql`
@@ -1056,59 +1058,59 @@ export function TaskParametersDialog(props) {
   const commandName = commandInfo.cmd || props.command?.cmd || "Command";
   return (
     <React.Fragment>
-        <DialogTitle id="mythic-draggable-title" className="mythic-accent-dialog-title">
-            <Box className="mythic-accent-dialog-title-row">
-                <Box className="mythic-accent-dialog-title-icon">
+        <DialogTitle id="mythic-draggable-title" className="mythic-accent-dialog-title mythic-relative">
+            <MythicCluster gap="md" align="center" wrap={false} className="mythic-accent-dialog-title-row">
+                <MythicCluster gap="none" justify="center" inline wrap={false} className="mythic-accent-dialog-title-icon mythic-border-radius mythic-flex-fixed">
                     <TerminalIcon fontSize="small" />
-                </Box>
-                <Box className="mythic-task-parameters-title-copy">
-                    <Typography component="div" className="mythic-task-parameters-title-main">
+                </MythicCluster>
+                <Box className="mythic-task-parameters-title-copy mythic-flex-fill">
+                    <Typography component="div" className="mythic-task-parameters-title-main mythic-break-anywhere mythic-font-weight-heavy">
                         {commandName}
                     </Typography>
-                    <Typography component="div" className="mythic-accent-dialog-title-subtitle">
+                    <Typography component="div" className="mythic-accent-dialog-title-subtitle mythic-font-size-small mythic-font-weight-medium mythic-line-height-snug">
                         Command parameters
                     </Typography>
                 </Box>
-                <Box className="mythic-task-parameters-title-meta">
+                <MythicCluster gap="xs" justify="end" className="mythic-task-parameters-title-meta">
                     {commandInfo?.payloadtype?.name &&
-                        <Chip size="small" className="mythic-task-parameters-title-chip" icon={<SegmentIcon />} label={commandInfo.payloadtype.name} />
+                        <Chip size="small" className="mythic-task-parameters-title-chip mythic-border-radius mythic-font-size-caption mythic-font-weight-strong" icon={<SegmentIcon />} label={commandInfo.payloadtype.name} />
                     }
-                    <Chip size="small" className="mythic-task-parameters-title-chip" icon={<FactCheckIcon />} label={`${parameters.length} parameter${parameters.length === 1 ? "" : "s"}`} />
+                    <Chip size="small" className="mythic-task-parameters-title-chip mythic-border-radius mythic-font-size-caption mythic-font-weight-strong" icon={<FactCheckIcon />} label={`${parameters.length} parameter${parameters.length === 1 ? "" : "s"}`} />
                     {requiredCount > 0 &&
-                        <Chip size="small" className="mythic-task-parameters-title-chip mythic-task-parameters-title-chip-warning" label={`${requiredCount} required`} />
+                        <Chip size="small" className="mythic-task-parameters-title-chip mythic-border-radius mythic-font-size-caption mythic-font-weight-strong mythic-task-parameters-title-chip-warning mythic-text-warning" label={`${requiredCount} required`} />
                     }
                     <Chip
                         size="small"
-                        className={`mythic-task-parameters-title-chip${commandInfo.needs_admin ? " mythic-task-parameters-title-chip-warning" : ""}`}
+                        className={`mythic-task-parameters-title-chip mythic-border-radius mythic-font-size-caption mythic-font-weight-strong${commandInfo.needs_admin ? " mythic-task-parameters-title-chip-warning mythic-text-warning" : ""}`}
                         icon={<AdminPanelSettingsIcon />}
                         label={commandInfo.needs_admin ? "Admin required" : "No admin"}
                     />
-                </Box>
-            </Box>
+                </MythicCluster>
+            </MythicCluster>
         </DialogTitle>
-        <DialogContent dividers={true} className="mythic-task-parameters-content">
+        <DialogContent dividers={true} className="mythic-task-parameters-content mythic-surface-raised mythic-overflow-auto mythic-relative">
             <Backdrop open={backdropOpen} className="mythic-task-parameters-backdrop">
                 <CircularProgress color="inherit" />
             </Backdrop>
-            <Box className="mythic-task-parameters-overview">
-                <Typography component="div" className="mythic-task-parameters-section-label">
+            <MythicPanel component="div" density="flush" tone="muted" overflow="visible" radius="md" className="mythic-task-parameters-overview">
+                <Typography component="div" className="mythic-task-parameters-section-label mythic-font-weight-extra-bold mythic-font-size-small mythic-line-height-snug mythic-text-primary">
                     Description
                 </Typography>
-                <Typography component="pre" className="mythic-task-parameters-description">
+                <MythicText preset="secondary-copy" component="pre" className="mythic-task-parameters-description">
                     {commandInfo.description || "No description provided."}
-                </Typography>
-            </Box>
+                </MythicText>
+            </MythicPanel>
             {parameterGroups.length > 1 &&
-                <Box className="mythic-task-parameters-group-card">
+                <MythicGrid gap="md" columns="custom" className="mythic-task-parameters-group-card mythic-border-radius mythic-min-width-0 mythic-align-center mythic-surface-muted mythic-border">
                     <Box className="mythic-task-parameters-group-copy">
-                        <Typography component="div" className="mythic-task-parameters-section-label">
+                        <Typography component="div" className="mythic-task-parameters-section-label mythic-font-weight-extra-bold mythic-font-size-small mythic-line-height-snug mythic-text-primary">
                             Parameter group
                         </Typography>
-                        <Typography component="div" className="mythic-task-parameters-section-description">
+                        <Typography component="div" className="mythic-task-parameters-section-description mythic-line-height-normal mythic-font-size-caption mythic-text-secondary">
                             {parameterGroups.length} available groups
                         </Typography>
                     </Box>
-                    <FormControl className="mythic-task-parameters-group-select">
+                    <FormControl className="mythic-task-parameters-group-select mythic-full-width">
                         <TextField
                             select
                             size="small"
@@ -1123,9 +1125,9 @@ export function TaskParametersDialog(props) {
                         }
                         </TextField>
                     </FormControl>
-                </Box>
+                </MythicGrid>
             }
-            <Box className="mythic-task-parameters-list">
+            <MythicStack gap="md" className="mythic-task-parameters-list">
                 {parameters.map( (op) => (
                     <TaskParametersDialogRow onSubmit={onSubmit} key={"taskparameterrow" + op.id}
                         onChange={onChange} commandInfo={commandInfo} {...op}
@@ -1139,7 +1141,7 @@ export function TaskParametersDialog(props) {
                                              getOtherParameters={getOtherParameters}
                     />
                 ))}
-            </Box>
+            </MythicStack>
         </DialogContent>
         <MythicDialogFooter className="mythic-task-parameters-actions">
           <MythicDialogButton onClick={props.onClose}>

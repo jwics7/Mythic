@@ -1,3 +1,4 @@
+import {useMythicTokens} from '../../themes/MythicThemeProvider';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Tab from '@mui/material/Tab';
@@ -9,10 +10,11 @@ import MenuList from '@mui/material/MenuList';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Paper from '@mui/material/Paper';
 import Badge from '@mui/material/Badge';
-import {alpha, useTheme} from '@mui/material/styles';
+import {alpha} from '@mui/material/styles';
 import {
     Draggable,
 } from "@hello-pangea/dnd";
+import {MythicCluster} from "./MythicLayout";
 
 export function MythicTabPanel(props) {
     const { children, value, index, maxHeight, tabInfo, getCallbackData, queryParams, changeSearchParam, showDeleted, ...other } =
@@ -74,7 +76,7 @@ export function MythicTabLabel(props) {
     };
     const [openContextMenu, setOpenContextMenu] = React.useState(false);
     const dropdownAnchorRef = React.useRef(null);
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const handleContextClick = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -105,7 +107,7 @@ export function MythicTabLabel(props) {
                         return (
                     <Tab
                         label={
-                            <span onContextMenu={handleContextClick} style={{}} ref={dropdownAnchorRef}>
+                            <span onContextMenu={handleContextClick} ref={dropdownAnchorRef}>
                                 <Badge color="success" variant="dot" invisible={!highlight} >
                                     {label}
                                 </Badge>
@@ -123,9 +125,9 @@ export function MythicTabLabel(props) {
                             minHeight: "32px",
                             borderRadius: `${theme.shape.borderRadius}px ${theme.shape.borderRadius}px 0 0`,
                             borderTop: `2px solid ${selected ? tabAccent : "transparent"}`,
-                            borderRight: `1px solid ${theme.borderColor}`,
-                            borderBottom: selected ? `1px solid ${theme.palette.background.paper}` : `1px solid ${theme.borderColor}`,
-                            borderLeft: `1px solid ${theme.borderColor}`,
+                            borderRight: `1px solid ${theme.color.application.border}`,
+                            borderBottom: selected ? `1px solid ${theme.palette.background.paper}` : `1px solid ${theme.color.application.border}`,
+                            borderLeft: `1px solid ${theme.color.application.border}`,
                             backgroundColor: selected ? selectedTabSurface : theme.surfaces?.muted,
                             backgroundImage: selected ?
                                 `linear-gradient(180deg, ${selectedTabAccent} 0%, ${selectedTabSurface} 82%)` :
@@ -143,7 +145,7 @@ export function MythicTabLabel(props) {
                                     transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
                                 }}
                             >
-                                <Paper variant="outlined" className={"dropdownMenuColored"}>
+                                <Paper variant="outlined" className="dropdownMenuColored mythic-border-radius">
                                     <ClickAwayListener onClickAway={handleClose} mouseEvent={"onMouseDown"}>
                                         <MenuList id="split-button-menu"  >
                                             {contextMenuOptions.map((option, index) => (
@@ -172,10 +174,10 @@ export function MythicSearchTabLabel(props) {
     return (
         <Tab
             label={
-                <span className="mythic-search-tab-label">
+                <MythicCluster component="span" gap="none" inline wrap={false} className="mythic-search-tab-label mythic-nowrap">
                     {iconComponent}
                     <span>{label}</span>
-                </span>
+                </MythicCluster>
             }
             {...a11yProps(index)}
             {...other}

@@ -1,3 +1,4 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
@@ -6,10 +7,8 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import Typography from '@mui/material/Typography';
-import { meState } from '../../../cache';
-import {useReactiveVar} from '@apollo/client';
 import Paper from '@mui/material/Paper';
-import {useTheme} from '@mui/material/styles';
+
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -58,7 +57,7 @@ export function MitreMapDisplayDialog({entry, showCountGrouping, onClose}){
     }, [entry, showCountGrouping]);
     return (
         <React.Fragment>
-          <DialogTitle id="form-dialog-title">{entry.name} - <Link style={{wordBreak: "break-all"}} color="textPrimary" underline="always" target="_blank" href={"https://attack.mitre.org/techniques/" + entry.t_num.replace(".", "/")} >{entry.t_num}</Link></DialogTitle>
+          <DialogTitle id="form-dialog-title">{entry.name} - <Link color="textPrimary" underline="always" target="_blank" href={"https://attack.mitre.org/techniques/" + entry.t_num.replace(".", "/")} >{entry.t_num}</Link></DialogTitle>
           <DialogContent dividers={true}>
             {showCountGrouping === "command" ? 
             (
@@ -79,19 +78,18 @@ export function MitreMapDisplayDialog({entry, showCountGrouping, onClose}){
 }
 
 function DetailedCommandMappingTables({commands}){
-  const me = useReactiveVar(meState);
-    const theme = useTheme();
+    const theme = useMythicTheme();
     return (
       <React.Fragment>
         {commands.map( c => (
           <div key={"agent" + c[0]}>
-            <Paper elevation={5} style={{backgroundColor: theme.pageHeader.main, color: theme.pageHeaderText.main,marginBottom: "5px", marginTop: "10px"}} variant={"elevation"}>
-              <Typography variant="h6" style={{textAlign: "left", display: "inline-block", marginLeft: "20px", color: theme.pageHeaderColor}}>
+            <Paper elevation={5} style={{backgroundColor: theme.color.header.surface, color: theme.color.header.text,marginBottom: "5px", marginTop: "10px"}} variant={"elevation"}>
+              <Typography variant="h6" style={{textAlign: "left", display: "inline-block", marginLeft: "20px", color: theme.color.header.text}}>
                 {c[0]}
               </Typography>
             </Paper>
             <TableContainer className="mythicElement">
-            <Table size="small" aria-label="details" style={{ "overflowWrap": "break-word"}}>
+            <Table size="small" aria-label="details">
               <TableHead>
                 <TableRow>
                   <TableCell>Command</TableCell>
@@ -118,19 +116,18 @@ function DetailedCommandMappingTables({commands}){
 }
 
 function DetailedTaskMappingTables({tasks}){
-  const me = useReactiveVar(meState);
-    const theme = useTheme();
+    const theme = useMythicTheme();
     return (
       <React.Fragment>
         {tasks.map( c => (
           <React.Fragment>
-            <Paper elevation={5} style={{backgroundColor: theme.pageHeader.main, color: theme.pageHeaderText.main,marginBottom: "5px", marginTop: "10px"}} variant={"elevation"}>
-              <Typography variant="h6" style={{textAlign: "left", display: "inline-block", marginLeft: "20px", color: theme.pageHeaderColor}}>
+            <Paper elevation={5} style={{backgroundColor: theme.color.header.surface, color: theme.color.header.text,marginBottom: "5px", marginTop: "10px"}} variant={"elevation"}>
+              <Typography variant="h6" style={{textAlign: "left", display: "inline-block", marginLeft: "20px", color: theme.color.header.text}}>
                 {c[0]}
               </Typography>
             </Paper>
             <TableContainer className="mythicElement">
-            <Table size="small" aria-label="details" style={{ "overflowWrap": "break-word"}}>
+            <Table size="small" aria-label="details">
             <TableHead>
                 <TableRow>
                   <TableCell style={{width: "5rem"}}>Callback</TableCell>
@@ -143,10 +140,10 @@ function DetailedTaskMappingTables({tasks}){
                 {c[1].map( entry => (
                   <TableRow hover>
                       <TableCell>
-                        <Link style={{wordBreak: "break-all"}} underline="always" target="_blank" href={"/new/callbacks/" + entry.callback_id} >{entry.callback_id}</Link>
+                        <Link underline="always" target="_blank" href={"/new/callbacks/" + entry.callback_id} >{entry.callback_id}</Link>
                       </TableCell>
                       <TableCell>
-                      <Link style={{wordBreak: "break-all"}} underline="always" target="_blank" href={"/new/task/" + entry.id} >{entry.id}</Link>
+                      <Link underline="always" target="_blank" href={"/new/task/" + entry.id} >{entry.id}</Link>
                         </TableCell>
                       <TableCell>{entry.command}</TableCell>
                       <TableCell>{entry.comment}</TableCell>

@@ -33,6 +33,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import SettingsInputComponentRoundedIcon from '@mui/icons-material/SettingsInputComponentRounded';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import {getDefaultBrowserSelection, useCallbackBrowserTree} from "./CallbackBrowserTreeStore";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
 
 const fileBrowserDataFragment = gql`
     fragment fileBrowserObjData on mythictree {
@@ -729,7 +730,7 @@ export const CallbacksTabsCustomFileBasedBrowserPanel = ({ index, value, tabInfo
         <MythicTabPanel index={index} value={value}>
             <Split direction="horizontal" style={{width: "100%", height: "100%", display: "flex", overflow: "hidden"}} minSize={[0,0]} sizes={[30, 70]} >
                 <div className="bg-gray-base" style={{display: "inline-flex", height: "100%", minHeight: 0, minWidth: 0, overflow: "hidden"}}>
-                    <Backdrop open={backdropOpen} style={{zIndex: 2, position: "absolute"}} invisible={true}>
+                    <Backdrop className="mythic-local-backdrop" open={backdropOpen} invisible={true}>
                         <CircularProgress color="inherit" />
                     </Backdrop>
                     <CallbacksTabsFileBrowserTree
@@ -769,7 +770,7 @@ export const CallbacksTabsCustomFileBasedBrowserPanel = ({ index, value, tabInfo
                             />
                         </div>
                         <div style={{ flex: "1 1 auto", minHeight: 0, minWidth: 0, overflow: "hidden" }}>
-                            <Backdrop open={backdropOpen} style={{zIndex: 2, position: "absolute"}} invisible={true}>
+                            <Backdrop className="mythic-local-backdrop" open={backdropOpen} invisible={true}>
                                 <CircularProgress color="inherit" />
                             </Backdrop>
                             <CallbacksTabsCustomFileBasedBrowserTable
@@ -1047,7 +1048,7 @@ const FileBrowserTableTop = ({
         autoTaskLsOnEmptyDirectoriesRef.current = autoTaskLsOnEmptyDirectories;
     }, [autoTaskLsOnEmptyDirectories]);
     return (
-        <Grid container spacing={0} className="mythic-file-browser-tableTop">
+        <Grid container spacing={0} className="mythic-file-browser-tableTop mythic-divider-bottom">
             <Grid size={12}>
                 {openEditHostDialog && (
                     <MythicDialog
@@ -1078,7 +1079,7 @@ const FileBrowserTableTop = ({
                         {placeHolder}
                         <MythicStyledTooltip title={`Edit the supplied Host field`}>
                             <IconButton
-                                className="mythic-file-browser-iconButton mythic-file-browser-labelButton mythic-file-browser-hoverInfo"
+                                className="mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-labelButton mythic-file-browser-hoverInfo"
                                 onClick={() => {setOpenEditHostDialog(true);}}
                                 size="small">
                                 <EditIcon fontSize="small" />
@@ -1091,10 +1092,10 @@ const FileBrowserTableTop = ({
                     InputProps={{
                         className: "mythic-file-browser-pathInput",
                         endAdornment: (
-                            <div className="mythic-file-browser-toolbarGroup mythic-file-browser-toolbarGroupEnd">
+                            <MythicCluster component="div" gap="none" inline wrap={false} className="mythic-file-browser-toolbarGroup mythic-file-browser-toolbarGroupEnd mythic-border mythic-border-radius mythic-flex-fixed">
                                 <MythicStyledTooltip title={`Task current callback (${tabInfo["displayID"]}) to list contents`}>
                                     <IconButton
-                                        className="mythic-file-browser-iconButton mythic-file-browser-hoverInfo"
+                                        className="mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-hoverInfo"
                                         onClick={onLocalListFilesButton}
                                         size="small">
                                         <RefreshIcon fontSize="small" />
@@ -1103,7 +1104,7 @@ const FileBrowserTableTop = ({
                                 {autoTaskLsOnEmptyDirectories ? (
                                     <MythicStyledTooltip title={"Currently tasking listing on empty directories, click to toggle off"} >
                                         <IconButton
-                                            className="mythic-file-browser-iconButton mythic-file-browser-activeSuccess mythic-file-browser-hoverSuccess"
+                                            className="mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-activeSuccess mythic-file-browser-hoverSuccess"
                                             onClick={onToggleAutoTaskLsOnEmptyDirectories}
                                             disabled={!treeConfig.show_current_path}
                                             size="small">
@@ -1113,7 +1114,7 @@ const FileBrowserTableTop = ({
                                 ) : (
                                     <MythicStyledTooltip title={"Currently not tasking listing on empty directories, click to toggle on"} >
                                         <IconButton
-                                            className="mythic-file-browser-iconButton mythic-file-browser-hoverWarning"
+                                            className="mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-hoverWarning"
                                             disabled={!treeConfig.show_current_path}
                                             onClick={onToggleAutoTaskLsOnEmptyDirectories}
                                             size="small">
@@ -1123,7 +1124,7 @@ const FileBrowserTableTop = ({
                                 )}
                                 <MythicStyledTooltip title={showDeletedFiles ? 'Hide Deleted Entries' : 'Show Deleted Entries'}>
                                     <IconButton
-                                        className={`mythic-file-browser-iconButton mythic-file-browser-hoverWarning ${showDeletedFiles ? "mythic-file-browser-activeWarning" : ""}`}
+                                        className={`mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-hoverWarning ${showDeletedFiles ? "mythic-file-browser-activeWarning" : ""}`}
                                         onClick={onLocalToggleShowDeletedFiles}
                                         size="small">
                                         {showDeletedFiles ? (
@@ -1135,7 +1136,7 @@ const FileBrowserTableTop = ({
                                 </MythicStyledTooltip>
                                 <MythicStyledTooltip title={`Export Current Path and Children`}>
                                     <IconButton
-                                        className="mythic-file-browser-iconButton mythic-file-browser-hoverInfo"
+                                        className="mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-hoverInfo"
                                         disabled={treeConfig.export_function === ""}
                                         onClick={onLocalExportButton}
                                         size="small">
@@ -1149,7 +1150,7 @@ const FileBrowserTableTop = ({
                                         `Hide Extra Browser Inputs ${extraDataSet ? "( Extra Data Currently Set )" : ""}` :
                                         `Show Extra Browser Inputs ${extraDataSet ? "( Extra Data Currently Set )" : ""}`}>
                                         <IconButton
-                                            className={`mythic-file-browser-iconButton mythic-file-browser-iconButtonCompound ${extraDataRequired ? "mythic-file-browser-activeError mythic-file-browser-hoverError" : extraDataSet ? "mythic-file-browser-activeWarning mythic-file-browser-hoverWarning" : "mythic-file-browser-hoverInfo"}`}
+                                            className={`mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-iconButtonCompound ${extraDataRequired ? "mythic-file-browser-activeError mythic-file-browser-hoverError" : extraDataSet ? "mythic-file-browser-activeWarning mythic-file-browser-hoverWarning" : "mythic-file-browser-hoverInfo"}`}
                                             onClick={() => {setShowExtraInputs(!showExtraInputs)}}
                                             disableFocusRipple={true}
                                             disableRipple={true}
@@ -1158,24 +1159,24 @@ const FileBrowserTableTop = ({
                                             {showExtraInputs ? (
                                                 <KeyboardArrowDownRoundedIcon style={{rotate: "180deg"}} />
                                             ) : (
-                                                <KeyboardArrowDownRoundedIcon style={{}} />
+                                                <KeyboardArrowDownRoundedIcon />
                                             ) }
                                         </IconButton>
                                     </MythicStyledTooltip>
                                 }
-                            </div>
+                            </MythicCluster>
                         ),
                         startAdornment: (
-                            <div className="mythic-file-browser-toolbarGroup mythic-file-browser-toolbarGroupStart">
+                            <MythicCluster component="div" gap="none" inline wrap={false} className="mythic-file-browser-toolbarGroup mythic-file-browser-toolbarGroupStart mythic-border mythic-border-radius mythic-flex-fixed">
                                 {tokenOptions.length > 0 &&
-                                    <div className="mythic-file-browser-tokenSelect">
+                                    <div className="mythic-file-browser-tokenSelect mythic-overflow-hidden">
                                         <CallbacksTabsTaskingInputTokenSelect width={"100%"}
                                             options={tokenOptions} changeSelectedToken={changeSelectedToken}/>
                                     </div>
                                 }
                                 <MythicStyledTooltip title={`Move back to previous listing`}>
                                     <IconButton
-                                        className="mythic-file-browser-iconButton mythic-file-browser-hoverInfo"
+                                        className="mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-hoverInfo"
                                         disabled={historyIndex >= history.length -1 }
                                         onClick={moveIndexToPreviousListing}
                                         size="small">
@@ -1184,7 +1185,7 @@ const FileBrowserTableTop = ({
                                 </MythicStyledTooltip>
                                 <MythicStyledTooltip title={`Move to next listing`}>
                                     <IconButton
-                                        className="mythic-file-browser-iconButton mythic-file-browser-hoverInfo"
+                                        className="mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-hoverInfo"
                                         disabled={historyIndex <= 0}
                                         onClick={moveIndexToNextListing}
                                         size="small">
@@ -1193,7 +1194,7 @@ const FileBrowserTableTop = ({
                                 </MythicStyledTooltip>
                                 <MythicStyledTooltip title={"Move up a directory"} >
                                     <IconButton
-                                        className="mythic-file-browser-iconButton mythic-file-browser-hoverInfo"
+                                        className="mythic-file-browser-iconButton mythic-border-radius mythic-text-secondary mythic-file-browser-hoverInfo"
                                         onClick={onLocalMoveUpDirectoryButton}
                                         disabled={!selectedFolderData?.parent_path_text || selectedFolderData?.parent_path_text?.length === 0 || selectedFolderData.root || fullPath === ""}
                                     >
@@ -1201,7 +1202,7 @@ const FileBrowserTableTop = ({
                                     </IconButton>
                                 </MythicStyledTooltip>
 
-                        </div>),
+                        </MythicCluster>),
                     }}
                 />
                 {showExtraInputs &&

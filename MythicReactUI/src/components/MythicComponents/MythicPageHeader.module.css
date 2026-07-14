@@ -1,0 +1,164 @@
+.root {
+  align-items: center;
+  background: var(--mythic-color-header-surface);
+  border: 1px solid color-mix(in srgb, var(--mythic-color-header-text) 18%, transparent);
+  border-radius: var(--mythic-shape-borderRadius);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--mythic-color-header-text) 12%, transparent);
+  color: var(--mythic-color-header-text);
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: var(--mythic-foundation-spacing-sm);
+  justify-content: space-between;
+  min-height: 58px;
+  min-width: 0;
+  overflow: visible;
+  padding: 11px 14px;
+  width: 100%;
+}
+
+.dense {
+  min-height: 44px;
+  padding: 8px 12px;
+}
+
+.identity {
+  flex: 1 1 24rem;
+}
+
+.icon {
+  background: color-mix(in srgb, var(--mythic-color-header-text) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mythic-color-header-text) 16%, transparent);
+  border-radius: var(--mythic-shape-borderRadius);
+  height: 36px;
+  width: 36px;
+}
+
+.dense .icon {
+  height: 32px;
+  width: 32px;
+}
+
+.copy {
+  gap: 2px;
+}
+
+.title {
+  color: var(--mythic-color-header-text);
+  line-height: 1.18;
+}
+
+.subtitle {
+  color: color-mix(in srgb, var(--mythic-color-header-text) 78%, transparent);
+  max-width: 64rem;
+}
+
+.meta {
+  margin-top: 2px;
+}
+
+.actions {
+  color: var(--mythic-color-header-text);
+  flex: 0 1 auto;
+}
+
+.root :global(.MuiButton-root),
+.root :global(.MuiToggleButton-root) {
+  align-items: center;
+  background: color-mix(in srgb, var(--mythic-color-header-text) 10%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--mythic-color-header-text) 24%, transparent) !important;
+  border-radius: var(--mythic-shape-borderRadius);
+  box-shadow: none !important;
+  color: var(--mythic-color-header-text) !important;
+  font-size: var(--mythic-foundation-typography-size-small);
+  font-weight: var(--mythic-foundation-typography-weight-strong);
+  gap: 3px;
+  justify-content: center;
+  letter-spacing: 0;
+  line-height: 1.2;
+  min-height: 32px;
+  min-width: 7rem;
+  padding-inline: 9px;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.root :global(.MuiButton-root:hover),
+.root :global(.MuiToggleButton-root:hover),
+.root :global(.MuiIconButton-root:hover) {
+  background: color-mix(in srgb, var(--mythic-color-header-text) 16%, transparent) !important;
+  border-color: color-mix(in srgb, var(--mythic-color-header-text) 42%, transparent) !important;
+}
+
+.root :global(.Mui-focusVisible) {
+  outline: 2px solid color-mix(in srgb, var(--mythic-color-header-text) 38%, transparent);
+  outline-offset: 2px;
+}
+
+.root :global(.Mui-disabled) {
+  background: color-mix(in srgb, var(--mythic-color-header-text) 4%, transparent) !important;
+  border-color: color-mix(in srgb, var(--mythic-color-header-text) 10%, transparent) !important;
+  color: color-mix(in srgb, var(--mythic-color-header-text) 38%, transparent) !important;
+}
+
+.root :global(.MuiToggleButton-root.Mui-selected) {
+  background: color-mix(in srgb, var(--mythic-color-header-text) 23%, transparent) !important;
+  border-color: color-mix(in srgb, var(--mythic-color-header-text) 48%, transparent) !important;
+}
+
+.root :global(.MuiIconButton-root) {
+  background: color-mix(in srgb, var(--mythic-color-header-text) 10%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--mythic-color-header-text) 24%, transparent) !important;
+  color: var(--mythic-color-header-text) !important;
+  height: 32px;
+  width: 32px;
+}
+
+.section {
+  background-image: var(--mythic-effect-gradient-sectionHeader);
+  border-color: color-mix(in srgb, var(--mythic-color-header-accent) 55%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--mythic-color-header-text) 22%, transparent), var(--mythic-effect-shadow-menu);
+  margin-block: 10px 4px;
+  padding-left: 26px;
+}
+
+.section::before {
+  background: var(--mythic-color-header-accent);
+  bottom: 0;
+  content: "";
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 6px;
+}
+
+.chip {
+  background: color-mix(in srgb, var(--chip-tone, var(--mythic-color-header-text)) 18%, transparent);
+  border-color: color-mix(in srgb, var(--chip-tone, var(--mythic-color-header-text)) 48%, transparent);
+  color: var(--chip-tone, var(--mythic-color-header-text));
+  height: 22px;
+}
+
+.chip[data-tone="primary"] { --chip-tone: var(--mythic-color-status-primary); }
+.chip[data-tone="secondary"] { --chip-tone: var(--mythic-color-status-secondary); }
+.chip[data-tone="info"] { --chip-tone: var(--mythic-color-status-info); }
+.chip[data-tone="success"] { --chip-tone: var(--mythic-color-status-success); }
+.chip[data-tone="warning"] { --chip-tone: var(--mythic-color-status-warning); }
+.chip[data-tone="error"] { --chip-tone: var(--mythic-color-status-error); }
+
+@media (max-width: 900px) {
+  .root {
+    align-items: stretch;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+
+  .root :global(.MuiButton-root),
+  .root :global(.MuiToggleButton-root) {
+    min-width: auto;
+  }
+}

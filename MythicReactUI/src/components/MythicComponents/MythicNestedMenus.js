@@ -1,5 +1,4 @@
 import * as React from "react";
-import styled from "@emotion/styled";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ArrowRight from "@mui/icons-material/ArrowRight";
@@ -100,7 +99,7 @@ export const Dropdown = React.forwardRef(
     }
 );
 
-const NestedMenuItem = React.forwardRef((props, ref) => {
+export const DropdownNestedMenuItem = React.forwardRef((props, ref) => {
     const {
         parentMenuOpen,
         label,
@@ -253,11 +252,3 @@ const NestedMenuItem = React.forwardRef((props, ref) => {
         </div>
     );
 });
-
-export const DropdownMenuItem = styled(MenuItem)`
-
-`;
-
-export const DropdownNestedMenuItem = styled(NestedMenuItem)`
-
-`;

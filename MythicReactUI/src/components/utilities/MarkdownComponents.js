@@ -13,13 +13,13 @@ const markdownTableAlignments = ["left", "right", "center"];
 const getMarkdownTableAlign = (align) => markdownTableAlignments.includes(align) ? align : "left";
 
 const MarkdownHeading = ({level, children}) => (
-    <Typography component={`h${level}`} className={`mythic-chat-heading mythic-chat-heading-${level}`}>
+    <Typography component={`h${level}`} className={`mythic-chat-heading mythic-font-weight-extra-bold mythic-line-height-snug mythic-chat-heading-${level}`}>
         {children}
     </Typography>
 );
 
 export const markdownComponents = {
-    p: ({children}) => <Typography component="p" className="mythic-chat-paragraph">{children}</Typography>,
+    p: ({children}) => <Typography component="p" className="mythic-chat-paragraph mythic-break-anywhere">{children}</Typography>,
     h1: ({children}) => <MarkdownHeading level={1}>{children}</MarkdownHeading>,
     h2: ({children}) => <MarkdownHeading level={2}>{children}</MarkdownHeading>,
     h3: ({children}) => <MarkdownHeading level={3}>{children}</MarkdownHeading>,
@@ -28,11 +28,11 @@ export const markdownComponents = {
     h6: ({children}) => <MarkdownHeading level={6}>{children}</MarkdownHeading>,
     ul: ({children}) => <ul className="mythic-chat-list">{children}</ul>,
     ol: ({children}) => <ol className="mythic-chat-list">{children}</ol>,
-    blockquote: ({children}) => <Box component="blockquote" className="mythic-chat-blockquote">{children}</Box>,
+    blockquote: ({children}) => <Box component="blockquote" className="mythic-chat-blockquote mythic-inherit-color mythic-border-radius">{children}</Box>,
     hr: () => <hr className="mythic-chat-rule" />,
     table: ({children}) => (
-        <TableContainer className="mythicElement mythic-chat-table-wrap">
-            <Table className="mythic-chat-table" size="small">{children}</Table>
+        <TableContainer className="mythicElement mythic-chat-table-wrap mythic-max-width-full">
+            <Table className="mythic-chat-table mythic-font-size-small mythic-full-width" size="small">{children}</Table>
         </TableContainer>
     ),
     thead: ({children}) => <TableHead>{children}</TableHead>,
@@ -50,14 +50,14 @@ export const markdownComponents = {
             }
         });
         return (
-            <Box className="mythic-chat-code-block">
-                {language && <span className="mythic-chat-code-language">{language}</span>}
+            <Box className="mythic-chat-code-block mythic-relative">
+                {language && <span className="mythic-chat-code-language mythic-font-size-xs mythic-font-weight-bold mythic-border-radius-sm">{language}</span>}
                 <pre>{children}</pre>
             </Box>
         );
     },
     code: ({className, children}) => (
-        <code className={className || "mythic-chat-inline-code"}>{children}</code>
+        <code className={className || "mythic-chat-inline-code mythic-border-radius-sm"}>{children}</code>
     ),
     a: ({href, children}) => {
         if(!isAllowedMarkdownLink(href)){

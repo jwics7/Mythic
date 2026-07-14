@@ -1,3 +1,4 @@
+import {useMythicTheme} from '../../../themes/MythicThemeProvider';
 import React, {useEffect} from 'react';
 import { copyStringToClipboard } from '../../utilities/Clipboard';
 import GetAppIcon from '@mui/icons-material/GetApp';
@@ -7,7 +8,7 @@ import RateReviewOutlinedIcon from '@mui/icons-material/RateReviewOutlined';
 import { MythicDialog } from '../../MythicComponents/MythicDialog';
 import {TaskCommentDialog} from './TaskCommentDialog';
 import {ViewEditTagsDialog} from '../../MythicComponents/MythicTag';
-import {useTheme} from '@mui/material/styles';
+
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import {TaskOpsecDialog} from './TaskOpsecDialog';
@@ -463,7 +464,7 @@ const SideDisplayGeneric = ({toggleViewBrowserScript, toggleSelectAllOutput,
 const TaskActionsToolbarGeneric = ({toggleViewBrowserScript, toggleSelectAllOutput,
                                    toggleOpenSearch, taskData, viewAllOutput, me,
                                    responseRef, viewBrowserScript}) => {
-  const theme = useTheme();
+  const theme = useMythicTheme();
   const [task, setTask] = React.useState(taskData || {});
   const eventingDataRef = React.useRef({name: "", value: 0});
   const [openEventingDialog, setOpenEventingDialog] = React.useState(false);

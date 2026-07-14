@@ -6,14 +6,15 @@ import { gql, useLazyQuery } from '@apollo/client';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
 import CategoryIcon from '@mui/icons-material/Category';
 import {EventStepRenderDialog} from "./EventStepRender";
 import {MythicDialog} from "../../MythicComponents/MythicDialog";
 import {CreateEventingStepper} from "./CreateEventingStepper";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 export const testFileWebhookMutation = gql`
     query testEventGroupFile($file_contents: String!, $output_format: String){
@@ -85,24 +86,24 @@ export function TestEventGroupFileDialog({onClose, initialWorkflow}){
     }
     return (
         <React.Fragment>
-            <DialogTitle id="form-dialog-title" className="mythic-eventing-editor-dialog-title">
+            <MythicCluster component={DialogTitle} gap="none" align="start" justify="between" wrap={false} id="form-dialog-title" className="mythic-eventing-editor-dialog-title mythic-divider-bottom">
                 <div>
-                    <div className="mythic-eventing-editor-title">Create and verify eventing workflow</div>
-                    <div className="mythic-eventing-editor-subtitle">Edit workflow source and validate it before upload.</div>
+                    <div className="mythic-eventing-editor-title mythic-font-weight-heavy mythic-line-height-tight mythic-text-primary">Create and verify eventing workflow</div>
+                    <div className="mythic-eventing-editor-subtitle mythic-font-size-small mythic-font-weight-medium mythic-line-height-normal mythic-text-secondary">Edit workflow source and validate it before upload.</div>
                 </div>
-                <div className="mythic-eventing-editor-title-actions">
+                <MythicCluster component="div" gap="xs" wrap={false} align="stretch" className="mythic-eventing-editor-title-actions mythic-flex-fixed">
                     <MythicStyledTooltip title={"Preview graph"}>
-                        <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" size="small" onClick={previewGraph}>
+                        <MythicActionButton iconOnly tone="info"  size="small" onClick={previewGraph}>
                             <AccountTreeIcon fontSize="small" />
-                        </IconButton>
+                        </MythicActionButton>
                     </MythicStyledTooltip>
                     <MythicStyledTooltip title={"Create with GUI wizard"} >
-                        <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-success" size="small"
+                        <MythicActionButton iconOnly tone="success"  size="small"
                         onClick={() => setOpenCreateEventingStepper(true)}>
                             <CategoryIcon fontSize="small" />
-                        </IconButton>
+                        </MythicActionButton>
                     </MythicStyledTooltip>
-                </div>
+                </MythicCluster>
                 {openEventStepRender.open &&
                     <MythicDialog fullWidth={true} maxWidth="xl" open={openEventStepRender.open}
                                   onClose={() => {
@@ -119,20 +120,20 @@ export function TestEventGroupFileDialog({onClose, initialWorkflow}){
                                   innerDialog={<CreateEventingStepper onClose={onCloseStepper} />}
                     />
                 }
-            </DialogTitle>
-            <DialogContent className="mythic-eventing-editor-dialog-content">
+            </MythicCluster>
+            <DialogContent className="mythic-eventing-editor-dialog-content mythic-overflow-hidden">
                 <ResponseDisplayPlaintext plaintext={fileText.current} onChangeContent={onChangeFileText} initial_mode={"yaml"} expand={true} />
             </DialogContent>
-            <DialogActions className="mythic-eventing-wizard-actions">
-                <Button className="mythic-table-row-action" variant="outlined" onClick={onClose}>
+            <DialogActions className="mythic-eventing-wizard-actions mythic-gap-sm mythic-divider-top">
+                <MythicActionButton tone="neutral"  variant="outlined" onClick={onClose}>
                     Close
-                </Button>
-                <Button className="mythic-table-row-action mythic-table-row-action-hover-info" variant={"outlined"} onClick={testFile}>
+                </MythicActionButton>
+                <MythicActionButton tone="info"  variant={"outlined"} onClick={testFile}>
                     Test
-                </Button>
-                <Button className="mythic-table-row-action mythic-table-row-action-hover-success" variant={"outlined"} onClick={submitAsFile}>
+                </MythicActionButton>
+                <MythicActionButton tone="success"  variant={"outlined"} onClick={submitAsFile}>
                     Save and Submit
-                </Button>
+                </MythicActionButton>
             </DialogActions>
         </React.Fragment>
     )

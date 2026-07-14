@@ -1,3 +1,4 @@
+import TableCell from '@mui/material/TableCell';
 import React, {useEffect} from 'react';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
@@ -6,8 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { snackActions } from '../../utilities/Snackbar';
 
 import {gql, useMutation} from '@apollo/client';
-import { Table, TableBody, TableContainer, TableRow, TableHead, Paper } from '@mui/material';
-import MythicTableCell from '../../MythicComponents/MythicTableCell';
+import {Table, TableBody, TableContainer, TableRow, TableHead} from '@mui/material';
 import MythicTextField from '../../MythicComponents/MythicTextField';
 
 const createCallback = gql`
@@ -99,64 +99,64 @@ export function CreateNewCallbackDialog(props) {
             <Table size="small" style={{ "maxWidth": "100%", "overflow": "scroll"}}>
                 <TableHead>
                     <TableRow>
-                       <MythicTableCell style={{width: "4rem"}}>Attribute</MythicTableCell>
-                        <MythicTableCell >Value</MythicTableCell>
+                       <TableCell style={{width: "4rem"}}>Attribute</TableCell>
+                        <TableCell >Value</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow hover>
-                    <MythicTableCell>IP</MythicTableCell>
-                    <MythicTableCell>
+                    <TableCell>IP</TableCell>
+                    <TableCell>
                       <MythicTextField name="IP..." value={IP} onChange={onChangeText}  />
-                    </MythicTableCell>
+                    </TableCell>
                   </TableRow>
                   <TableRow hover>
-                    <MythicTableCell>External IP</MythicTableCell>
-                    <MythicTableCell>
+                    <TableCell>External IP</TableCell>
+                    <TableCell>
                       <MythicTextField name="External IP..." value={externalIP} onChange={onChangeText}  />
-                    </MythicTableCell>
+                    </TableCell>
                   </TableRow>
                   <TableRow hover>
-                    <MythicTableCell>User</MythicTableCell>
-                    <MythicTableCell>
+                    <TableCell>User</TableCell>
+                    <TableCell>
                       <MythicTextField name="User" value={user} onChange={onChangeText}  />
-                    </MythicTableCell>
+                    </TableCell>
                   </TableRow>
                   <TableRow hover>
-                    <MythicTableCell>Host</MythicTableCell>
-                    <MythicTableCell>
+                    <TableCell>Host</TableCell>
+                    <TableCell>
                       <MythicTextField name="Host" value={host} onChange={onChangeText}  />
-                    </MythicTableCell>
+                    </TableCell>
                   </TableRow>
                   <TableRow hover>
-                    <MythicTableCell>Domain</MythicTableCell>
-                    <MythicTableCell>
+                    <TableCell>Domain</TableCell>
+                    <TableCell>
                       <MythicTextField name="Domain" value={domain} onChange={onChangeText}  />
-                    </MythicTableCell>
+                    </TableCell>
                   </TableRow>
                   <TableRow hover>
-                    <MythicTableCell>Description</MythicTableCell>
-                    <MythicTableCell>
+                    <TableCell>Description</TableCell>
+                    <TableCell>
                       <MythicTextField name="Description" value={description} onChange={onChangeText}  />
-                    </MythicTableCell>
+                    </TableCell>
                   </TableRow>
                   <TableRow hover>
-                    <MythicTableCell>Process Name</MythicTableCell>
-                    <MythicTableCell>
+                    <TableCell>Process Name</TableCell>
+                    <TableCell>
                      <MythicTextField name="Process Name" value={processName} onChange={onChangeText}  />
-                    </MythicTableCell>
+                    </TableCell>
                   </TableRow>
                   <TableRow hover>
-                    <MythicTableCell>Sleep Info</MythicTableCell>
-                    <MythicTableCell>
+                    <TableCell>Sleep Info</TableCell>
+                    <TableCell>
                       <MythicTextField name="Sleep Info" value={sleepInfo} onChange={onChangeText}  />
-                    </MythicTableCell>
+                    </TableCell>
                   </TableRow>
                   <TableRow hover>
-                    <MythicTableCell>Extra Info</MythicTableCell>
-                    <MythicTableCell>
+                    <TableCell>Extra Info</TableCell>
+                    <TableCell>
                       <MythicTextField name="Extra Info" value={extraInfo} onChange={onChangeText}  />
-                    </MythicTableCell>
+                    </TableCell>
                   </TableRow>
                 </TableBody>
             </Table>

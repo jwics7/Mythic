@@ -1,9 +1,8 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
@@ -18,6 +17,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import {MythicFormField} from '../../MythicComponents/MythicDialogLayout';
+import {MythicStack, MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton, MythicPanel, MythicText} from "../../MythicComponents/MythicContent";
 
 const emptyValueForSchema = (schema) => {
     switch(schema?.type){
@@ -90,7 +91,7 @@ const resolveConditionalPlaceholder = (fieldSchema, parentValue) => {
 const FieldHelp = ({description}) => {
     if(!description){return null}
     return (
-        <Typography component="div" className="mythic-form-field-description">
+        <Typography component="div" className="mythic-form-field-description mythic-font-size-caption mythic-line-height-normal mythic-text-secondary">
             {description}
         </Typography>
     );
@@ -100,8 +101,8 @@ const CollapsibleSection = ({label, summary, description, children}) => {
     const [collapsed, setCollapsed] = React.useState(false);
     const toggleCollapsed = () => setCollapsed((current) => !current);
     return (
-        <Box component="section" className="mythic-dialog-section" sx={{p: 1, my: 1}}>
-            <Box
+        <MythicPanel density="flush" tone="muted" overflow="visible" radius="md" component="section" className="mythic-dialog-section" sx={{p: 1, my: 1}}>
+            <MythicCluster gap="md" align="start" justify="between" wrap={false}
                 role="button"
                 tabIndex={0}
                 aria-expanded={!collapsed}
@@ -125,23 +126,23 @@ const CollapsibleSection = ({label, summary, description, children}) => {
                         <ChevronRightIcon fontSize="small" color="secondary" /> :
                         <ExpandMoreIcon fontSize="small" color="secondary" />
                     }
-                    <Typography component="div" className="mythic-dialog-section-title">
+                    <MythicText preset="section-title" component="div" className="mythic-dialog-section-title">
                         {label}
-                    </Typography>
+                    </MythicText>
                     {summary &&
-                        <Typography component="span" className="mythic-form-field-description" sx={{mt: 0}}>
+                        <Typography component="span" className="mythic-form-field-description mythic-font-size-caption mythic-line-height-normal mythic-text-secondary" sx={{mt: 0}}>
                             {summary}
                         </Typography>
                     }
                 </Box>
-            </Box>
+            </MythicCluster>
             {!collapsed && description &&
-                <Typography component="div" className="mythic-dialog-section-description" sx={{mb: 0.75}}>
+                <Typography component="div" className="mythic-dialog-section-description mythic-font-size-small mythic-line-height-normal mythic-text-secondary" sx={{mb: 0.75}}>
                     {description}
                 </Typography>
             }
             {!collapsed && children}
-        </Box>
+        </MythicPanel>
     );
 };
 
@@ -194,12 +195,12 @@ const ObjectField = ({schema, value, onChange, depth = 0}) => {
         return (
             <Box sx={{display: "flex", flexDirection: "column", gap: 0.75, minWidth: 0}}>
                 {schema.label &&
-                    <Typography component="div" className="mythic-dialog-section-title">
+                    <MythicText preset="section-title" component="div" className="mythic-dialog-section-title">
                         {schema.label}
-                    </Typography>
+                    </MythicText>
                 }
                 {schema.description &&
-                    <Typography component="div" className="mythic-dialog-section-description">
+                    <Typography component="div" className="mythic-dialog-section-description mythic-font-size-small mythic-line-height-normal mythic-text-secondary">
                         {schema.description}
                     </Typography>
                 }
@@ -237,8 +238,8 @@ const ArrayOfPrimitiveField = ({schema, value, onChange, depth = 0}) => {
                             }}
                         />
                     </Box>
-                    <IconButton
-                        className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger"
+                    <MythicActionButton iconOnly tone="error"
+
                         size="small"
                         onClick={() => {
                             const next = [...arr];
@@ -247,18 +248,18 @@ const ArrayOfPrimitiveField = ({schema, value, onChange, depth = 0}) => {
                         }}
                     >
                         <DeleteIcon fontSize="small" />
-                    </IconButton>
+                    </MythicActionButton>
                 </Box>
             ))}
-            <Button
-                className="mythic-table-row-action mythic-table-row-action-hover-success"
+            <MythicActionButton tone="success"
+
                 size="small"
                 variant="contained"
                 startIcon={<AddCircleIcon fontSize="small" />}
                 onClick={() => onChange([...arr, emptyValueForSchema(itemSchema)])}
             >
                 Add
-            </Button>
+            </MythicActionButton>
         </Box>
     );
     if(schema.label){
@@ -279,7 +280,7 @@ const ArrayOfObjectField = ({schema, value, onChange, depth = 0}) => {
             {arr.map((item, index) => {
                 const safeItem = isObjectValue(item) ? item : {};
                 return (
-                    <Box
+                    <MythicPanel component="div" density="flush" tone="muted" overflow="visible" radius="md"
                         className="mythic-dialog-section"
                         key={index}
                         sx={{
@@ -315,8 +316,8 @@ const ArrayOfObjectField = ({schema, value, onChange, depth = 0}) => {
                                 );
                             })}
                         </SchemaStack>
-                        <IconButton
-                            className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger"
+                        <MythicActionButton iconOnly tone="error"
+
                             size="small"
                             onClick={() => {
                                 const next = [...arr];
@@ -325,19 +326,19 @@ const ArrayOfObjectField = ({schema, value, onChange, depth = 0}) => {
                             }}
                         >
                             <DeleteIcon fontSize="small" />
-                        </IconButton>
-                    </Box>
+                        </MythicActionButton>
+                    </MythicPanel>
                 );
             })}
-            <Button
-                className="mythic-table-row-action mythic-table-row-action-hover-success"
+            <MythicActionButton tone="success"
+
                 size="small"
                 variant="contained"
                 startIcon={<AddCircleIcon fontSize="small" />}
                 onClick={() => onChange([...arr, emptyValueForSchema(itemSchema)])}
             >
                 Add
-            </Button>
+            </MythicActionButton>
         </Box>
     );
     if(schema.label){
@@ -404,8 +405,8 @@ const StringMapField = ({schema, value, onChange}) => {
                                     />
                                 </TableCell>
                                 <TableCell sx={{borderBottom: 0, p: 0.5, width: "2.5rem"}}>
-                                    <IconButton
-                                        className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger"
+                                    <MythicActionButton iconOnly tone="error"
+
                                         size="small"
                                         onClick={() => {
                                             const next = {...obj};
@@ -414,22 +415,22 @@ const StringMapField = ({schema, value, onChange}) => {
                                         }}
                                     >
                                         <DeleteIcon fontSize="small" />
-                                    </IconButton>
+                                    </MythicActionButton>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             }
-            <Button
-                className="mythic-table-row-action mythic-table-row-action-hover-success"
+            <MythicActionButton tone="success"
+
                 size="small"
                 variant="contained"
                 startIcon={<AddCircleIcon fontSize="small" />}
                 onClick={addEntry}
             >
                 Add entry
-            </Button>
+            </MythicActionButton>
         </Box>
     );
     if(schema.label){
@@ -492,7 +493,7 @@ const NumberField = ({schema, value, onChange}) => (
 );
 
 const BooleanField = ({schema, value, onChange}) => (
-    <Box className="mythic-form-field">
+    <MythicStack gap="xs" className="mythic-form-field">
         <FormControlLabel
             label={schema.label || ""}
             control={
@@ -504,7 +505,7 @@ const BooleanField = ({schema, value, onChange}) => (
             }
         />
         <FieldHelp description={schema.description} />
-    </Box>
+    </MythicStack>
 );
 
 export function SchemaFormRenderer({schema, value, onChange, depth = 0}){
@@ -531,7 +532,7 @@ export function SchemaFormRenderer({schema, value, onChange, depth = 0}){
             return <StringMapField schema={schema} value={value} onChange={onChange} />;
         default:
             return (
-                <Typography component="div" className="mythic-form-field-description">
+                <Typography component="div" className="mythic-form-field-description mythic-font-size-caption mythic-line-height-normal mythic-text-secondary">
                     Unknown schema type: {String(schema?.type)}
                 </Typography>
             );

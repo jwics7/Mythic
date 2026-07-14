@@ -1,0 +1,74 @@
+.root {
+  background-color: var(--mythic-color-application-background);
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--mythic-color-application-background) 60%, transparent),
+      color-mix(in srgb, var(--mythic-color-application-background) 60%, transparent)
+    ),
+    var(--mythic-backgroundImage);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  flex-direction: row;
+  max-height: 100%;
+}
+
+.main {
+  flex-grow: 1;
+  max-height: 100%;
+}
+
+.navigationAccent,
+.navigationAccentHidden {
+  flex: 0 0 auto;
+  height: 2px;
+  width: 100%;
+}
+
+.navigationAccent {
+  background: var(--mythic-effect-gradient-navigation);
+}
+
+.navigationAccentHidden {
+  height: 0;
+}
+
+.operationBanner {
+  background-color: var(--mythic-operation-banner);
+  border-bottom: 1px solid var(--mythic-color-application-border);
+  color: #fff;
+  line-height: 24px;
+  text-align: center;
+}
+
+.connectionAlert {
+  background-color: var(--mythic-palette-error-main);
+  border-bottom: 1px solid var(--mythic-color-application-border);
+  color: #fff;
+  gap: 4px 12px;
+  padding: 4px 12px;
+}
+
+.connectionAlertText {
+  line-height: 24px;
+  text-align: center;
+}
+
+.reloadButton {
+  min-width: auto;
+  padding-block: 2px;
+}
+
+.content {
+  flex-grow: 1;
+}
+
+.toastContainer {
+  min-width: 40%;
+  word-break: break-all;
+}
+
+.tooltip {
+  max-width: 80%;
+  word-break: break-word;
+  z-index: 100000;
+}

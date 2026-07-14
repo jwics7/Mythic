@@ -1,3 +1,5 @@
+import TableCell from '@mui/material/TableCell';
+import {useMythicTokens} from '../../../themes/MythicThemeProvider';
 import React, {useEffect} from 'react';
 import Table from '@mui/material/Table';
 import TableContainer from '@mui/material/TableContainer';
@@ -7,7 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MythicTextField from '../../MythicComponents/MythicTextField';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {IconButton, Input, Button, MenuItem, Grid, Chip, Tabs, Tab} from '@mui/material';
+import {Input, Button, MenuItem, Grid, Chip, Tabs, Tab} from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -15,10 +17,9 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs from 'dayjs';
 import Switch from '@mui/material/Switch';
 import { MythicStyledTooltip } from '../../MythicComponents/MythicStyledTooltip';
-import MythicStyledTableCell from '../../MythicComponents/MythicTableCell';
 import {Typography} from '@mui/material';
 import {snackActions} from "../../utilities/Snackbar";
-import {useTheme} from '@mui/material/styles';
+
 import {gql, useMutation} from '@apollo/client';
 import { Backdrop } from '@mui/material';
 import {CircularProgress} from '@mui/material';
@@ -40,6 +41,8 @@ import {
     MythicDialogFooter,
     MythicDialogSection,
 } from '../../MythicComponents/MythicDialogLayout';
+import {MythicCluster, MythicGrid} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton, MythicText} from "../../MythicComponents/MythicContent";
 
 export const getDynamicQueryBuildParameterParams = gql`
 mutation getDynamicBuildParamsMutation($payload_type: String!, $parameter_name: String!, $selected_os: String!, $other_parameters: jsonb){
@@ -115,7 +118,7 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                                             display_name, json_string_schema,
                                            payload_type, selected_os, c2_profile_name, dynamic_query_function, displayMode = "table",
                                        getOtherParameters}){
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const hasJSONStringSchema = parameter_type === "JSONString" && hasUsableJSONStringSchema(json_string_schema);
     const [configEditorOpen, setConfigEditorOpen] = React.useState(false);
     const [editorTab, setEditorTab] = React.useState("source");
@@ -414,7 +417,7 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
             }, [{name: "Custom...", default_value: "", default_show: false}]);
             setDictSelectOptions(dictSelectOptionsInitial);
             setDictSelectOptionsChoice(dictSelectOptionsInitial[0]);
-            
+
         }else if(parameter_type === "Boolean"){
             setValue( trackedValue );
         }else if(parameter_type === "Array") {
@@ -634,7 +637,7 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
         let choice = {...dictSelectOptionsChoice, default_show: true, value: dictSelectOptionsChoice.default_value};
         if(choice.name === "Custom..."){
             choice.name = "";
-        } 
+        }
         const newDictValue = [...dictValue, choice]
         setDictValue(newDictValue);
         // updated the dict array to the new set of options
@@ -646,7 +649,7 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                 return preCount;
             }, 0);
             if(count === 0){
-                return [...prev, {...op}];    
+                return [...prev, {...op}];
             }else{
                 return [...prev]
             }
@@ -657,7 +660,7 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
         submitDictChange(newDictValue);
         setDictSelectOptions(dictSelectOptionsInitial);
         setDictSelectOptionsChoice(dictSelectOptionsInitial[0]);
-        
+
     }
     const removeDictEntry = (i) => {
         const newValues = dictValue.filter( (opt, index) => {
@@ -674,7 +677,7 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                 return preCount;
             }, 0);
             if(count === 0){
-                return [{...op}, ...prev ];    
+                return [{...op}, ...prev ];
             }else{
                 return [...prev]
             }
@@ -775,8 +778,8 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                 )
             case "ChooseOne":
                 return (
-                    <div className="mythic-create-inline-control">
-                        <Backdrop open={backdropOpen} style={{zIndex: 2, position: "absolute"}} invisible={false}>
+                    <MythicCluster component="div" gap="sm" align="center" wrap={false} className="mythic-create-inline-control mythic-relative mythic-full-width">
+                        <Backdrop className="mythic-local-backdrop" open={backdropOpen} invisible={false}>
                             <CircularProgress color="inherit" />
                         </Backdrop>
                         <FormControl>
@@ -796,20 +799,20 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                         </FormControl>
                         {dynamic_query_function !== "" && dynamic_query_function !== undefined &&
                             <MythicStyledTooltip title={"ReIssue Dynamic Query Function"} tooltipStyle={{display: "inline-block"}}>
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" size="small" onClick={reIssueDynamicQueryFunction}>
+                                <MythicActionButton iconOnly tone="info"  size="small" onClick={reIssueDynamicQueryFunction}>
                                     <RefreshIcon fontSize="small" />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                         }
-                    </div>
+                    </MythicCluster>
                 );
             case "ChooseOneCustom":
                 return (
                     <div style={{position: "relative"}}>
-                        <Backdrop open={backdropOpen} style={{zIndex: 2, position: "absolute"}} invisible={false}>
+                        <Backdrop className="mythic-local-backdrop" open={backdropOpen} invisible={false}>
                             <CircularProgress color="inherit" />
                         </Backdrop>
-                        <div className="mythic-create-inline-control">
+                        <MythicCluster component="div" gap="sm" align="center" wrap={false} className="mythic-create-inline-control mythic-relative mythic-full-width">
                             <FormControl style={{flex: "0 1 12rem"}}>
                                 <Select
                                     multiple={false}
@@ -825,25 +828,25 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                                     }
                                 </Select>
                             </FormControl>
-                            <span className="mythic-create-choice-divider">OR</span>
+                            <span className="mythic-create-choice-divider mythic-font-weight-extra-bold mythic-font-size-xs mythic-text-secondary mythic-flex-fixed">OR</span>
                             <MythicTextField name={name} requiredValue={required} placeholder={"Custom Value"} value={chooseOneCustomValue} multiline={true} maxRows={5}
                                              onChange={onChangeTextChooseOneCustom} display="inline-block"
                             />
                             {dynamic_query_function !== "" && dynamic_query_function !== undefined &&
                                 <MythicStyledTooltip title={"ReIssue Dynamic Query Function"} tooltipStyle={{display: "inline-block"}}>
-                                    <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" size="small" onClick={reIssueDynamicQueryFunction}>
+                                    <MythicActionButton iconOnly tone="info"  size="small" onClick={reIssueDynamicQueryFunction}>
                                         <RefreshIcon fontSize="small" />
-                                    </IconButton>
+                                    </MythicActionButton>
                                 </MythicStyledTooltip>
                             }
-                        </div>
+                        </MythicCluster>
 
                     </div>
                 )
             case "ChooseMultiple":
                 return (
-                    <div className="mythic-create-inline-control">
-                        <Backdrop open={backdropOpen} style={{zIndex: 2, position: "absolute"}} invisible={false}>
+                    <MythicCluster component="div" gap="sm" align="center" wrap={false} className="mythic-create-inline-control mythic-relative mythic-full-width">
+                        <Backdrop className="mythic-local-backdrop" open={backdropOpen} invisible={false}>
                             <CircularProgress color="inherit" />
                         </Backdrop>
                         <FormControl>
@@ -865,12 +868,12 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                         </FormControl>
                         {dynamic_query_function !== "" && dynamic_query_function !== undefined &&
                             <MythicStyledTooltip title={"ReIssue Dynamic Query Function"} tooltipStyle={{display: "inline-block"}}>
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" size="small" onClick={reIssueDynamicQueryFunction}>
+                                <MythicActionButton iconOnly tone="info"  size="small" onClick={reIssueDynamicQueryFunction}>
                                     <RefreshIcon fontSize="small" />
-                                </IconButton>
+                                </MythicActionButton>
                             </MythicStyledTooltip>
                         }
-                    </div>
+                    </MythicCluster>
                 );
             case "Array":
                 return (
@@ -878,25 +881,25 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                         <Table size="small" style={{tableLayout: "fixed", maxWidth: "100%", "overflow": "auto"}}>
                             <TableBody>
                                 {arrayValue.map( (a, i) => (
-                                    <TableRow key={'array' + name + i} style={{}} >
-                                        <MythicStyledTableCell style={{width: "2rem"}}>
-                                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={(e) => {removeArrayValue(i)}}>
+                                    <TableRow key={'array' + name + i} >
+                                        <TableCell style={{width: "2rem"}}>
+                                            <MythicActionButton iconOnly tone="error"  size="small" onClick={(e) => {removeArrayValue(i)}}>
                                                 <DeleteIcon fontSize="small" />
-                                            </IconButton>
-                                        </MythicStyledTableCell>
-                                        <MythicStyledTableCell>
+                                            </MythicActionButton>
+                                        </TableCell>
+                                        <TableCell>
                                             <MythicTextField requiredValue={required} fullWidth={true} placeholder={""} value={a} multiline={true}
                                                 onChange={(n,v,e) => onChangeArrayText(v, e, i)} display="inline-block" autoFocus={i !== 0 && a === ""}
                                                 validate={testParameterValues} errorText={"Must match: " + verifier_regex} marginBottom={"0px"}
                                             />
-                                        </MythicStyledTableCell>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                                 <TableRow >
-                                    <MythicStyledTableCell style={{width: "3rem"}}>
-                                        <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-success" size="small" onClick={addNewArrayValue}> <AddCircleIcon fontSize="small" /> </IconButton>
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell></MythicStyledTableCell>
+                                    <TableCell style={{width: "3rem"}}>
+                                        <MythicActionButton iconOnly tone="success"  size="small" onClick={addNewArrayValue}> <AddCircleIcon fontSize="small" /> </MythicActionButton>
+                                    </TableCell>
+                                    <TableCell></TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
@@ -909,10 +912,10 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                             <TableBody>
                                 {typedArrayValue.map( (a, i) => (
                                     <TableRow key={'typedarray' + name + i} >
-                                        <MythicStyledTableCell style={{width: "2rem", paddingLeft:"0"}}>
-                                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={(e) => {removeTypedArrayValue(i)}}><DeleteIcon fontSize="small" /> </IconButton>
-                                        </MythicStyledTableCell>
-                                        <MythicStyledTableCell>
+                                        <TableCell style={{width: "2rem", paddingLeft:"0"}}>
+                                            <MythicActionButton iconOnly tone="error"  size="small" onClick={(e) => {removeTypedArrayValue(i)}}><DeleteIcon fontSize="small" /> </MythicActionButton>
+                                        </TableCell>
+                                        <TableCell>
                                             <div style={{display: "inline-flex", alignItems: "center", width: "100%"}}>
                                                 <FormControl style={{width: "30%"}}>
                                                     <Select
@@ -933,14 +936,14 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                                                 />
                                             </div>
 
-                                        </MythicStyledTableCell>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                                 <TableRow >
-                                    <MythicStyledTableCell style={{width: "5rem", paddingLeft:"0"}}>
-                                        <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-success" size="small" onClick={addNewTypedArrayValue}> <AddCircleIcon fontSize="small" /> </IconButton>
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell></MythicStyledTableCell>
+                                    <TableCell style={{width: "5rem", paddingLeft:"0"}}>
+                                        <MythicActionButton iconOnly tone="success"  size="small" onClick={addNewTypedArrayValue}> <AddCircleIcon fontSize="small" /> </MythicActionButton>
+                                    </TableCell>
+                                    <TableCell></TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
@@ -950,23 +953,23 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                 return (
                     <React.Fragment>
                         {dictValue.map( (opt, i) => (
-                            <div className="mythic-create-dictionary-row" key={"dictval" + i}>
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" onClick={(e) => {removeDictEntry(i)}} size="small"><DeleteIcon fontSize="small" /> </IconButton>
+                            <MythicGrid component="div" gap="sm" columns="custom" className="mythic-create-dictionary-row mythic-align-center mythic-min-width-0" key={"dictval" + i}>
+                                <MythicActionButton iconOnly tone="error"  onClick={(e) => {removeDictEntry(i)}} size="small"><DeleteIcon fontSize="small" /> </MythicActionButton>
                                 <Input startAdornment={<Button disabled>Key</Button>} size="small" value={opt.name} onChange={(e) => onChangeDictKey(e, i)}></Input>
                                 <Input startAdornment={<Button disabled>Value</Button>} size="small" value={opt.value} onChange={(e) => onChangeDictVal(e, i)}></Input>
-                            </div>
+                            </MythicGrid>
                         )
                         )}
                         {dictSelectOptions.length > 0 ? (
-                            <div className="mythic-create-dictionary-add">
-                                <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-success" size="small" onClick={addDictValEntry}> <AddCircleIcon fontSize="small" /> </IconButton>
+                            <MythicCluster component="div" gap="sm" align="center" wrap={false} className="mythic-create-dictionary-add">
+                                <MythicActionButton iconOnly tone="success"  size="small" onClick={addDictValEntry}> <AddCircleIcon fontSize="small" /> </MythicActionButton>
                                 <Select size="small" value={dictSelectOptionsChoice} onChange={(e) => setDictSelectOptionsChoice(e.target.value)}>
                                     {dictSelectOptions.map( (selectOpt, i) => (
                                         <MenuItem key={"selectopt" + name + i} value={selectOpt}>{selectOpt.name}</MenuItem>
                                     ) )}
                                 </Select>
-                                
-                            </div>
+
+                            </MythicCluster>
                         ) : null
                         }
                     </React.Fragment>
@@ -993,19 +996,19 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                 return (
                     <React.Fragment>
                         <div style={{display: "flex", flexDirection: "column", gap: "0.5rem", minWidth: 0, position: "relative"}}>
-                            <Backdrop open={backdropOpen} style={{zIndex: 2, position: "absolute"}} invisible={false}>
+                            <Backdrop className="mythic-local-backdrop" open={backdropOpen} invisible={false}>
                                 <CircularProgress color="inherit" />
                             </Backdrop>
-                            <div className="mythic-create-inline-control" style={{alignItems: "center", flexWrap: "wrap"}}>
-                                <Button
-                                    className="mythic-table-row-action mythic-table-row-action-hover-info"
+                            <MythicCluster component="div" gap="sm" align="center" wrap={false} className="mythic-create-inline-control mythic-relative mythic-full-width" style={{alignItems: "center", flexWrap: "wrap"}}>
+                                <MythicActionButton tone="info"
+
                                     component="label"
                                     size="small"
                                     variant="contained"
                                 >
                                     Upload
                                     <input onChange={onConfigEditorUpload} type="file" hidden accept=".json,application/json,text/plain" />
-                                </Button>
+                                </MythicActionButton>
                                 {hasPresets &&
                                     <FormControl size="small" style={{flex: "1 1 14rem", minWidth: "12rem"}}>
                                         <Select
@@ -1027,35 +1030,35 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                                         </Select>
                                     </FormControl>
                                 }
-                                <Button
-                                    className="mythic-table-row-action mythic-table-row-action-hover-warning"
+                                <MythicActionButton tone="warning"
+
                                     size="small"
                                     variant="contained"
                                     onClick={onClearConfigEditor}
                                 >
                                     Clear
-                                </Button>
-                                <Button
-                                    className="mythic-table-row-action mythic-table-row-action-hover-success"
+                                </MythicActionButton>
+                                <MythicActionButton tone="success"
+
                                     size="small"
                                     variant="contained"
                                     onClick={openEditor}
                                 >
                                     Edit
-                                </Button>
+                                </MythicActionButton>
                                 <div style={{alignItems: "center", display: "flex", gap: "0.35rem", marginLeft: "auto", minWidth: 0}}>
                                     <Chip size="small" label={status.label} color={chipColor} />
                                     {dynamic_query_function !== "" && dynamic_query_function !== undefined &&
                                         <MythicStyledTooltip title={"ReIssue Dynamic Query Function"} tooltipStyle={{display: "inline-block"}}>
-                                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" size="small" onClick={reIssueDynamicQueryFunction}>
+                                            <MythicActionButton iconOnly tone="info"  size="small" onClick={reIssueDynamicQueryFunction}>
                                                 <RefreshIcon fontSize="small" />
-                                            </IconButton>
+                                            </MythicActionButton>
                                         </MythicStyledTooltip>
                                     }
                                 </div>
-                            </div>
+                            </MythicCluster>
                             {visualParseError !== "" &&
-                                <Typography component="div" color="error" className="mythic-form-field-description">
+                                <Typography component="div" color="error" className="mythic-form-field-description mythic-font-size-caption mythic-line-height-normal mythic-text-secondary">
                                     Visual tab unavailable: {visualParseError}
                                 </Typography>
                             }
@@ -1068,9 +1071,9 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                                 <React.Fragment>
                                     <MythicDraggableDialogTitle>
                                         <div style={{display: "flex", flexDirection: "column", gap: "0.35rem", minWidth: 0}}>
-                                            <Typography component="div" className="mythic-dialog-section-title">
+                                            <MythicText preset="section-title" component="div" className="mythic-dialog-section-title">
                                                 {editorTitle}
-                                            </Typography>
+                                            </MythicText>
                                             {hasJSONStringSchema &&
                                                 <Tabs
                                                     value={editorTab}
@@ -1093,7 +1096,7 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                                     </MythicDraggableDialogTitle>
                                     <DialogContent
                                         dividers={true}
-                                        className="mythic-json-dialog-body"
+                                        className="mythic-json-dialog-body mythic-gap-md mythic-overflow-auto"
                                         style={{display: "flex", flexDirection: "column"}}
                                     >
                                         <MythicDialogBody compact>
@@ -1113,7 +1116,7 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                                                     }
                                                 >
                                                     {visualParseError !== "" &&
-                                                        <Typography component="div" color="error" className="mythic-form-field-description" style={{marginBottom: "0.5rem"}}>
+                                                        <Typography component="div" color="error" className="mythic-form-field-description mythic-font-size-caption mythic-line-height-normal mythic-text-secondary" style={{marginBottom: "0.5rem"}}>
                                                             Visual tab unavailable: {visualParseError}
                                                         </Typography>
                                                     }
@@ -1185,47 +1188,47 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                             <TableBody>
                             {mapArray.map( (val, i) => (
                                 <TableRow key={"payloadtype" + i}>
-                                    <MythicStyledTableCell style={{width: "2rem"}}>
-                                        <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={(e) => {removeMapArrayMap(i)}}>
+                                    <TableCell style={{width: "2rem"}}>
+                                        <MythicActionButton iconOnly tone="error"  size="small" onClick={(e) => {removeMapArrayMap(i)}}>
                                             <DeleteIcon fontSize="small" />
-                                        </IconButton>
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell>
+                                        </MythicActionButton>
+                                    </TableCell>
+                                    <TableCell>
                                         <MythicTextField autoFocus={true} name={"Payload Type Name"} onChange={(name, value) => updateMapArrayMap(i, value)} value={val[0]} />
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell>
+                                    </TableCell>
+                                    <TableCell>
                                         <Table size="small" style={{tableLayout: "fixed", maxWidth: "100%", height: "100%", "overflow": "auto"}}>
                                             <TableBody>
                                                 {val[1].map( (v, j) => (
                                                     <TableRow key={"payloadtypevalue" + i + j}>
-                                                        <MythicStyledTableCell style={{width: "2rem"}}>
-                                                            <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={(e) => {removeMapArray(i, j)}}>
+                                                        <TableCell style={{width: "2rem"}}>
+                                                            <MythicActionButton iconOnly tone="error"  size="small" onClick={(e) => {removeMapArray(i, j)}}>
                                                                 <DeleteIcon fontSize="small" />
-                                                            </IconButton>
-                                                        </MythicStyledTableCell>
-                                                        <MythicStyledTableCell>
+                                                            </MythicActionButton>
+                                                        </TableCell>
+                                                        <TableCell>
                                                             <MythicTextField autoFocus={true} name={"Command Name"} onChange={(name, value) => updateMapArray(i, j, value)} value={v}
                                                                 onEnter={() => addMapArray(i)}/>
-                                                        </MythicStyledTableCell>
+                                                        </TableCell>
                                                     </TableRow>
                                                 ))}
                                                 <TableRow>
-                                                    <MythicStyledTableCell style={{width: "3rem"}}>
-                                                        <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-success" size="small" onClick={() => addMapArray(i)}> <AddCircleIcon fontSize="small" /> </IconButton>
-                                                    </MythicStyledTableCell>
-                                                    <MythicStyledTableCell/>
+                                                    <TableCell style={{width: "3rem"}}>
+                                                        <MythicActionButton iconOnly tone="success"  size="small" onClick={() => addMapArray(i)}> <AddCircleIcon fontSize="small" /> </MythicActionButton>
+                                                    </TableCell>
+                                                    <TableCell/>
                                                 </TableRow>
                                             </TableBody>
                                         </Table>
-                                    </MythicStyledTableCell>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                                 <TableRow>
-                                    <MythicStyledTableCell style={{width: "3rem"}}>
-                                        <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-success" size="small" onClick={addMapArrayMap}> <AddCircleIcon fontSize="small" /> </IconButton>
-                                    </MythicStyledTableCell>
-                                    <MythicStyledTableCell/>
-                                    <MythicStyledTableCell/>
+                                    <TableCell style={{width: "3rem"}}>
+                                        <MythicActionButton iconOnly tone="success"  size="small" onClick={addMapArrayMap}> <AddCircleIcon fontSize="small" /> </MythicActionButton>
+                                    </TableCell>
+                                    <TableCell/>
+                                    <TableCell/>
                                 </TableRow>
                             </TableBody>
                         </Table>
@@ -1271,25 +1274,25 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
     const isModified = modifiedValue();
     if(displayMode === "card"){
         return (
-            <div className={`mythic-create-parameter-card ${isModified ? "mythic-create-parameter-card-modified" : ""}`.trim()} key={"buildparam" + id}>
-                <div className="mythic-create-parameter-copy">
-                    <div className="mythic-create-parameter-title-row">
-                        <Typography component="div" className="mythic-create-parameter-title">
+            <div className={`mythic-create-parameter-card mythic-gap-md mythic-border-radius mythic-border mythic-grid mythic-min-width-0 mythic-surface ${isModified ? "mythic-create-parameter-card-modified" : ""}`.trim()} key={"buildparam" + id}>
+                <div className="mythic-create-parameter-copy mythic-min-width-0">
+                    <MythicCluster component="div" gap="sm" align="start" justify="between" className="mythic-create-parameter-title-row">
+                        <Typography component="div" className="mythic-create-parameter-title mythic-font-weight-extra-bold mythic-font-size-body-small mythic-line-height-snug mythic-text-primary mythic-min-width-0">
                             {display_name ? display_name : name}
                         </Typography>
-                    </div>
-                    <div className="mythic-create-parameter-chips">
-                        <span className="mythic-create-parameter-chip">{parameter_type}</span>
-                        {required && <span className="mythic-create-parameter-chip mythic-create-parameter-chip-required">Required</span>}
-                        {isModified && <span className="mythic-create-parameter-chip mythic-create-parameter-chip-modified">Modified</span>}
-                    </div>
+                    </MythicCluster>
+                    <MythicCluster component="div" gap="xs" align="center" className="mythic-create-parameter-chips">
+                        <span className="mythic-create-parameter-chip mythic-font-weight-extra-bold mythic-font-size-xs mythic-line-height-compact mythic-border-radius mythic-border mythic-text-secondary">{parameter_type}</span>
+                        {required && <span className="mythic-create-parameter-chip mythic-font-weight-extra-bold mythic-font-size-xs mythic-line-height-compact mythic-create-parameter-chip-required mythic-text-error mythic-border-radius mythic-border mythic-text-secondary">Required</span>}
+                        {isModified && <span className="mythic-create-parameter-chip mythic-font-weight-extra-bold mythic-font-size-xs mythic-line-height-compact mythic-create-parameter-chip-modified mythic-text-warning mythic-border-radius mythic-border mythic-text-secondary">Modified</span>}
+                    </MythicCluster>
                     {description &&
-                        <Typography component="div" className="mythic-create-parameter-description">
+                        <Typography component="div" className="mythic-create-parameter-description mythic-font-size-caption mythic-text-secondary">
                             {description}
                         </Typography>
                     }
                 </div>
-                <div className="mythic-create-parameter-control">
+                <div className="mythic-create-parameter-control mythic-relative mythic-min-width-0">
                     {getParameterObject()}
                 </div>
             </div>
@@ -1297,7 +1300,7 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
     }
     return (
             <TableRow key={"buildparam" + id} hover>
-                <MythicStyledTableCell>
+                <TableCell>
                     <MythicStyledTooltip title={name.length > 0 ? name : "No Description"}>
                         <Typography style={{fontWeight: "600"}} >
                             {display_name ? display_name : name}
@@ -1310,10 +1313,10 @@ export function CreatePayloadParameter({onChange, parameter_type, default_value,
                             <Typography color="warning.main">Modified</Typography>
                         ) : null}
                     </MythicStyledTooltip>
-                 </MythicStyledTableCell>
-                <MythicStyledTableCell>
+                 </TableCell>
+                <TableCell>
                     {getParameterObject()}
-                </MythicStyledTableCell>
+                </TableCell>
             </TableRow>
         )
 }

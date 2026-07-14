@@ -1,8 +1,8 @@
+import TableCell from '@mui/material/TableCell';
 import React from 'react';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faLanguage } from '@fortawesome/free-solid-svg-icons';
-import IconButton from '@mui/material/IconButton';
 import {useMutation, gql} from '@apollo/client';
 import {snackActions} from '../../utilities/Snackbar';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -10,7 +10,6 @@ import {MythicConfirmDialog} from '../../MythicComponents/MythicConfirmDialog';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RestoreFromTrashOutlinedIcon from '@mui/icons-material/RestoreFromTrashOutlined';
 import TableRow from '@mui/material/TableRow';
-import MythicTableCell from "../../MythicComponents/MythicTableCell";
 import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
 import {MythicDialog} from "../../MythicComponents/MythicDialog";
 import {C2ProfileListFilesDialog} from "./C2ProfileListFilesDialog";
@@ -19,6 +18,8 @@ import {
     InstalledServiceIdentity,
     InstalledServiceMetadataSummary
 } from "./InstalledServiceTableComponents";
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 const toggleDeleteStatus = gql`
 mutation toggleC2ProfileDeleteStatus($translationcontainer_id: Int!, $deleted: Boolean!){
@@ -53,11 +54,11 @@ export function TranslationContainerRow({service, showDeleted}) {
   return (
     <>
         <TableRow hover>
-            <MythicTableCell>
+            <TableCell>
                 {service.deleted ? (
-                    <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-success" size="small" onClick={()=>{setOpenDeleteDialog(true);}}><RestoreFromTrashOutlinedIcon fontSize="small" /></IconButton>
+                    <MythicActionButton iconOnly tone="success" emphasis="always"  size="small" onClick={()=>{setOpenDeleteDialog(true);}}><RestoreFromTrashOutlinedIcon fontSize="small" /></MythicActionButton>
                 ) : (
-                    <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={()=>{setOpenDeleteDialog(true);}}><DeleteIcon fontSize="small" /></IconButton>
+                    <MythicActionButton iconOnly tone="error"  size="small" onClick={()=>{setOpenDeleteDialog(true);}}><DeleteIcon fontSize="small" /></MythicActionButton>
                 )}
                 {openDelete &&
                     <MythicConfirmDialog onClose={() => {setOpenDeleteDialog(false);}} onSubmit={onAcceptDelete}
@@ -65,19 +66,19 @@ export function TranslationContainerRow({service, showDeleted}) {
                                          acceptText={service.deleted ? "Restore" : "Remove"}
                                          acceptColor={service.deleted ? "success": "error"} />
                 }
-            </MythicTableCell>
-            <MythicTableCell>
+            </TableCell>
+            <TableCell>
                 <FontAwesomeIcon icon={faLanguage} style={{width: "80px", height: "80px"}} />
-            </MythicTableCell>
-            <MythicTableCell>
+            </TableCell>
+            <TableCell>
                 <InstalledServiceIdentity
                     name={service.name}
                     typeLabel="Translation"
                     deleted={service.deleted}
                     status={<InstalledServiceContainerStatus isOnline={service.container_running} />}
                 />
-            </MythicTableCell>
-            <MythicTableCell>
+            </TableCell>
+            <TableCell>
                 <InstalledServiceMetadataSummary
                     items={[
                         {label: "Author", value: service.author},
@@ -86,29 +87,29 @@ export function TranslationContainerRow({service, showDeleted}) {
                     ]}
                     description={service.description}
                 />
-            </MythicTableCell>
-            <MythicTableCell>
-                <div className="mythic-table-row-actions">
+            </TableCell>
+            <TableCell>
+                <MythicCluster component="div" gap="xs" align="center">
                 <MythicStyledTooltip title={"Documentation"}>
-                    <IconButton
-                        className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info"
+                    <MythicActionButton iconOnly tone="info"
+
                         href={"/docs/c2-profiles/" + service.name.toLowerCase()}
                         target="_blank"
                         size="small">
                         <MenuBookIcon fontSize="small" />
-                    </IconButton>
+                    </MythicActionButton>
                 </MythicStyledTooltip>
                 <MythicStyledTooltip title={service.container_running ? "View Files" : "Unable to view files because container is offline"}>
-                    <IconButton
-                        className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info"
+                    <MythicActionButton iconOnly tone="info"
+
                         disabled={!service.container_running}
                         onClick={()=>{setOpenListFilesDialog(true);}}
                         size="small">
                         <AttachFileIcon fontSize="small" />
-                    </IconButton>
+                    </MythicActionButton>
                 </MythicStyledTooltip>
-                </div>
-            </MythicTableCell>
+                </MythicCluster>
+            </TableCell>
         </TableRow>
             {openListFilesDialog &&
                 <MythicDialog fullWidth={true} maxWidth="md" open={openListFilesDialog}

@@ -369,7 +369,7 @@ export function MitreAttack({me}){
     }
     return (
       <MythicPageBody>
-        <Backdrop open={backdropOpen} style={{zIndex: 2, position: "absolute"}} invisible={false}>
+        <Backdrop className="mythic-local-backdrop" open={backdropOpen} invisible={false}>
             <CircularProgress color="inherit" disableShrink />
         </Backdrop>
         <MitreGrid 

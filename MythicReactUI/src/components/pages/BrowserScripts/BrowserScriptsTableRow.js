@@ -1,15 +1,16 @@
+import TableCell from '@mui/material/TableCell';
 import React from 'react';
-import Box from '@mui/material/Box';
+
 import { Switch } from '@mui/material';
 import TableRow from '@mui/material/TableRow';
 import { MythicDialog } from '../../MythicComponents/MythicDialog';
 import {EditScriptDialog} from './EditScriptDialog';
 import EditIcon from '@mui/icons-material/Edit';
-import IconButton from '@mui/material/IconButton';
 import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
 import {MythicAgentSVGIcon} from "../../MythicComponents/MythicAgentSVGIcon";
-import MythicStyledTableCell from "../../MythicComponents/MythicTableCell";
-import {MythicStateChip} from "../../MythicComponents/MythicStateChip";
+import {MythicStatusChip} from "../../MythicComponents/MythicStatusChip";
+import {MythicCluster, MythicStack, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 export function BrowserScriptsTableRow(props){
     const [openEdit, setOpenEdit] = React.useState(false);
@@ -25,22 +26,22 @@ export function BrowserScriptsTableRow(props){
     return (
         <React.Fragment>
             <TableRow className={props.active ? "" : "mythic-browser-script-row-disabled"} key={"payload" + props.id} hover>
-                <MythicStyledTableCell>
-                    <Box className="mythic-browser-script-script-cell">
+                <TableCell>
+                    <MythicCluster gap="sm" align="center" wrap={false} className="mythic-browser-script-script-cell">
                         <MythicStyledTooltip title={props.payloadtype.name}>
-                            <Box className="mythic-browser-script-payload-icon">
+                            <MythicCluster gap="none" justify="center" inline wrap={false} className="mythic-browser-script-payload-icon mythic-surface-subtle mythic-border-radius mythic-flex-fixed mythic-border">
                                 <MythicAgentSVGIcon payload_type={props.payloadtype.name} style={{width: "32px", height: "32px"}} />
-                            </Box>
+                            </MythicCluster>
                         </MythicStyledTooltip>
-                        <Box className="mythic-browser-script-script-copy">
-                            <Box className="mythic-browser-script-command-name">{props.command.cmd}</Box>
-                            <Box className="mythic-browser-script-payload-name">{props.payloadtype.name}</Box>
-                        </Box>
-                    </Box>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>{props.author}</MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <Box className="mythic-browser-script-active-cell">
+                        <MythicStack gap="none" className="mythic-browser-script-script-copy">
+                            <MythicTruncatedText component="div" className="mythic-browser-script-command-name mythic-font-size-body-small mythic-font-weight-strong mythic-line-height-snug mythic-text-primary">{props.command.cmd}</MythicTruncatedText>
+                            <MythicTruncatedText component="div" className="mythic-browser-script-payload-name mythic-font-size-caption mythic-font-weight-semibold mythic-line-height-snug mythic-text-secondary">{props.payloadtype.name}</MythicTruncatedText>
+                        </MythicStack>
+                    </MythicCluster>
+                </TableCell>
+                <TableCell>{props.author}</TableCell>
+                <TableCell>
+                    <MythicCluster gap="sm" align="center" wrap={false} className="mythic-browser-script-active-cell">
                         <Switch
                             checked={props.active}
                             onChange={onToggleActive}
@@ -49,20 +50,20 @@ export function BrowserScriptsTableRow(props){
                             name="Active"
                             size="small"
                           />
-                        <MythicStateChip label={props.active ? "Active" : "Disabled"} state={props.active ? "active" : "disabled"} />
-                    </Box>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell>
-                    <MythicStateChip label={props.user_modified ? "User modified" : "Container default"} state={props.user_modified ? "warning" : "neutral"} />
-                </MythicStyledTableCell>
-                <MythicStyledTableCell style={{textAlign: "center"}}>
-                    <Box className="mythic-table-row-actions mythic-table-row-actions-nowrap mythic-browser-script-actions">
-                        <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info" size="small" onClick={()=>{setOpenEdit(true);}}>
+                        <MythicStatusChip label={props.active ? "Active" : "Disabled"} status={props.active ? "active" : "disabled"} />
+                    </MythicCluster>
+                </TableCell>
+                <TableCell>
+                    <MythicStatusChip label={props.user_modified ? "User modified" : "Container default"} status={props.user_modified ? "warning" : "neutral"} />
+                </TableCell>
+                <TableCell align="center">
+                    <MythicCluster gap="xs" align="center" justify="center" wrap={false} className="mythic-browser-script-actions">
+                        <MythicActionButton iconOnly tone="info"  size="small" onClick={()=>{setOpenEdit(true);}}>
                             <EditIcon fontSize="small" />
-                        </IconButton>
-                    </Box>
-                </MythicStyledTableCell>
-                <MythicStyledTableCell className="mythic-browser-script-spacer-cell" />
+                        </MythicActionButton>
+                    </MythicCluster>
+                </TableCell>
+                <TableCell className="mythic-browser-script-spacer-cell mythic-min-width-0" />
 
                 {openEdit &&
                     <MythicDialog fullWidth={true} maxWidth="xl" open={openEdit} 

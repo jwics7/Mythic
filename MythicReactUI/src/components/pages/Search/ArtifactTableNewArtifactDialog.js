@@ -18,6 +18,7 @@ import {
   MythicDialogChoiceRow,
   MythicDialogSection
 } from '../../MythicComponents/MythicDialogLayout';
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
 
 const artifactHostSearch = gql`
 query artifactHostAndTypeQuery {
@@ -151,8 +152,8 @@ export function ArtifactTableNewArtifactDialog(props) {
             <MythicTextField multiline value={artifact} onChange={onArtifactChange} name="Artifact"/>
           </MythicDialogSection>
           <MythicDialogSection title="Cleanup State">
-            <FormControlLabel
-                className="mythic-dialog-switch-row"
+            <MythicCluster component={FormControlLabel} gap="none" align="center" justify="between" wrap={false}
+                className="mythic-dialog-switch-row mythic-full-width"
                 label={"Artifact needs to be cleaned up"}
                 control={
                   <Switch
@@ -166,8 +167,8 @@ export function ArtifactTableNewArtifactDialog(props) {
                 labelPlacement={"start"}
             />
             {needsCleanup &&
-                <FormControlLabel
-                    className="mythic-dialog-switch-row"
+                <MythicCluster component={FormControlLabel} gap="none" align="center" justify="between" wrap={false}
+                    className="mythic-dialog-switch-row mythic-full-width"
                     label={"Artifact is already cleaned up"}
                     labelPlacement={"start"}
                     control={<Switch

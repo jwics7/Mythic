@@ -1,3 +1,4 @@
+import MenuItem from '@mui/material/MenuItem';
 import { toast } from 'react-toastify';
 import NotificationsPausedIcon from '@mui/icons-material/NotificationsPaused';
 import AlarmIcon from '@mui/icons-material/Alarm';
@@ -7,7 +8,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import SnoozeIcon from '@mui/icons-material/Snooze';
-import {Dropdown, DropdownMenuItem} from "../MythicComponents/MythicNestedMenus";
+import {Dropdown} from "../MythicComponents/MythicNestedMenus";
 import {getSkewedNow} from "./Time";
 import {MythicStyledTooltip} from "../MythicComponents/MythicStyledTooltip";
 
@@ -87,13 +88,13 @@ export const CloseButton = ({ closeToast }) => {
                         externallyOpen={dropdownOpen}
                       menu={
                       dropDownOptions.map((option, index) => (
-                            <DropdownMenuItem
+                            <MenuItem
                                 key={option.name}
                                 disabled={option.disabled}
                                 onClick={(event) => handleMenuItemClick(event, index)}
                             >
                               {option.name}
-                            </DropdownMenuItem>
+                            </MenuItem>
                         ))}
                         />
                     </ClickAwayListener>

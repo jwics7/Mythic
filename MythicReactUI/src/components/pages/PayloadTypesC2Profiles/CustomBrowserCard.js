@@ -1,6 +1,6 @@
+import TableCell from '@mui/material/TableCell';
 import React from 'react';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import IconButton from '@mui/material/IconButton';
 import {useMutation, gql} from '@apollo/client';
 import {snackActions} from '../../utilities/Snackbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,7 +9,6 @@ import {MythicConfirmDialog} from '../../MythicComponents/MythicConfirmDialog';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RestoreFromTrashOutlinedIcon from '@mui/icons-material/RestoreFromTrashOutlined';
 import TableRow from '@mui/material/TableRow';
-import MythicTableCell from "../../MythicComponents/MythicTableCell";
 import {MythicStyledTooltip} from "../../MythicComponents/MythicStyledTooltip";
 import {MythicDialog} from "../../MythicComponents/MythicDialog";
 import {C2ProfileListFilesDialog} from "./C2ProfileListFilesDialog";
@@ -22,6 +21,8 @@ import {
     InstalledServiceIdentity,
     InstalledServiceListValue
 } from "./InstalledServiceTableComponents";
+import {MythicStack, MythicCluster, MythicTruncatedText} from "../../MythicComponents/MythicLayout";
+import {MythicActionButton} from "../../MythicComponents/MythicContent";
 
 const toggleDeleteStatus = gql`
 mutation toggleCustomBrowserDeleteStatus($custombrowser_id: Int!, $deleted: Boolean!){
@@ -56,11 +57,11 @@ export function CustomBrowserRow({service, showDeleted}) {
   return (
         <>
         <TableRow hover>
-            <MythicTableCell>
+            <TableCell>
                 {service.deleted ? (
-                    <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-success" size="small" onClick={()=>{setOpenDeleteDialog(true);}}><RestoreFromTrashOutlinedIcon fontSize="small" /></IconButton>
+                    <MythicActionButton iconOnly tone="success" emphasis="always"  size="small" onClick={()=>{setOpenDeleteDialog(true);}}><RestoreFromTrashOutlinedIcon fontSize="small" /></MythicActionButton>
                 ) : (
-                    <IconButton className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-danger" size="small" onClick={()=>{setOpenDeleteDialog(true);}}><DeleteIcon fontSize="small" /></IconButton>
+                    <MythicActionButton iconOnly tone="error"  size="small" onClick={()=>{setOpenDeleteDialog(true);}}><DeleteIcon fontSize="small" /></MythicActionButton>
                 )}
                 {openDelete &&
                     <MythicConfirmDialog onClose={() => {setOpenDeleteDialog(false);}} onSubmit={onAcceptDelete}
@@ -68,71 +69,71 @@ export function CustomBrowserRow({service, showDeleted}) {
                                          acceptText={service.deleted ? "Restore" : "Remove"}
                                          acceptColor={service.deleted ? "success": "error"} />
                 }
-            </MythicTableCell>
-            <MythicTableCell>
+            </TableCell>
+            <TableCell>
                 <FontAwesomeIcon icon={faFolderOpen} style={{width: "60px", height: "60px"}} />
-            </MythicTableCell>
-            <MythicTableCell>
+            </TableCell>
+            <TableCell>
                 <InstalledServiceIdentity
                     name={service.name}
                     typeLabel={service.type}
                     deleted={service.deleted}
                     status={<InstalledServiceContainerStatus isOnline={service.container_running} />}
                 />
-            </MythicTableCell>
-            <MythicTableCell>
-                <div className="mythic-installed-service-browser-metadata">
+            </TableCell>
+            <TableCell>
+                <MythicStack component="div" gap="sm" className="mythic-installed-service-browser-metadata">
                     {service.author &&
-                        <div className="mythic-installed-service-browser-author" title={service.author}>
+                        <MythicTruncatedText component="div" className="mythic-installed-service-browser-author mythic-font-size-small mythic-text-primary" title={service.author}>
                             {service.author}
-                        </div>
+                        </MythicTruncatedText>
                     }
-                    <div className="mythic-installed-service-browser-metrics">
+                    <MythicCluster component="div" gap="none" className="mythic-installed-service-browser-metrics">
                         {service.semver &&
-                            <span className="mythic-installed-service-browser-metric">
+                            <MythicCluster component="span" gap="xs" inline wrap={false} className="mythic-installed-service-browser-metric">
                                 <span>Version</span>
                                 <InstalledServiceListValue value={[service.semver]} limit={1} />
-                            </span>
+                            </MythicCluster>
                         }
-                        <span className="mythic-installed-service-browser-metric">
+                        <MythicCluster component="span" gap="xs" inline wrap={false} className="mythic-installed-service-browser-metric">
                             <span>Export</span>
                             <strong>{service.export_function === "" ? "False" : "True"}</strong>
-                        </span>
-                        <span className="mythic-installed-service-browser-metric">
+                        </MythicCluster>
+                        <MythicCluster component="span" gap="xs" inline wrap={false} className="mythic-installed-service-browser-metric">
                             <span>Row actions</span>
                             <strong>{(service.row_actions || []).length}</strong>
-                        </span>
-                        <span className="mythic-installed-service-browser-metric">
+                        </MythicCluster>
+                        <MythicCluster component="span" gap="xs" inline wrap={false} className="mythic-installed-service-browser-metric">
                             <span>Columns</span>
                             <strong>{(service.columns || []).length}</strong>
-                        </span>
-                        <span className="mythic-installed-service-browser-metric">
+                        </MythicCluster>
+                        <MythicCluster component="span" gap="xs" inline wrap={false} className="mythic-installed-service-browser-metric">
                             <span>Inputs</span>
                             <strong>{(service.extra_table_inputs || []).length}</strong>
-                        </span>
-                    </div>
+                        </MythicCluster>
+                    </MythicCluster>
                     {service.description &&
-                        <div className="mythic-installed-service-description" title={service.description}>
+                        <div className="mythic-installed-service-description mythic-min-width-0 mythic-text-secondary" title={service.description}>
                             <span>Description</span>
-                            <p>{service.description}</p>
+                            <p className="mythic-overflow-hidden">{service.description}</p>
                         </div>
                     }
-                </div>
-            </MythicTableCell>
-            <MythicTableCell>
-                <div className="mythic-table-row-actions">
+                </MythicStack>
+            </TableCell>
+            <TableCell>
+                <MythicCluster component="div" gap="xs" align="center">
                     <MythicStyledTooltip title={service.container_running ? "View Files" : "Unable to view files because container is offline"}>
-                        <IconButton
-                            className="mythic-table-row-icon-action mythic-table-row-icon-action-hover-info"
+                        <MythicActionButton iconOnly tone="info"
+
                             disabled={!service.container_running}
                             onClick={()=>{setOpenListFilesDialog(true);}}
                             size="small">
                             <AttachFileIcon fontSize="small" />
-                        </IconButton>
+                        </MythicActionButton>
                     </MythicStyledTooltip>
                     <InstalledServiceDetailToggle open={openDetails} onClick={() => setOpenDetails((current) => !current)} />
-                </div>
-            </MythicTableCell>
+                </MythicCluster>
+            </TableCell>
         </TableRow>
         <InstalledServiceDetailRow open={openDetails} colSpan={5}>
             <InstalledServiceDetailSection title="Custom row actions" count={(service.row_actions || []).length}>

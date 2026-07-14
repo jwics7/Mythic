@@ -1,3 +1,4 @@
+import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
 import {FileBrowserVirtualTree} from '../../MythicComponents/MythicFileBrowserVirtualTree';
 import {MythicDialog} from "../../MythicComponents/MythicDialog";
@@ -5,7 +6,7 @@ import {ViewCallbackMythicTreeGroupsDialog} from "./ViewCallbackMythicTreeGroups
 import ListIcon from '@mui/icons-material/List';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import {getAllParentNodes} from "./CallbacksTabsFileBrowser";
-import {Dropdown, DropdownMenuItem, DropdownNestedMenuItem} from "../../MythicComponents/MythicNestedMenus";
+import {Dropdown, DropdownNestedMenuItem} from "../../MythicComponents/MythicNestedMenus";
 import {copyStringToClipboard} from "../../utilities/Clipboard";
 import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
 import {snackActions} from "../../utilities/Snackbar";
@@ -85,7 +86,7 @@ export const CallbacksTabsFileBrowserTreePreMemo = ({ treeRootData, treeAdjMatri
             menuItems: [
                 {
                     name: 'Name', type: "item",
-                    icon: <FileCopyOutlinedIcon style={{ paddingRight: '5px' }} />,
+                    icon: <FileCopyOutlinedIcon />,
                     click: ({event}) => {
                         event.stopPropagation();
                         if(copyStringToClipboard(node.name_text)){
@@ -95,7 +96,7 @@ export const CallbacksTabsFileBrowserTreePreMemo = ({ treeRootData, treeAdjMatri
                 },
                 {
                     name: 'Full Path', type: "item",
-                    icon: <FileCopyOutlinedIcon style={{ paddingRight: '5px' }} />,
+                    icon: <FileCopyOutlinedIcon />,
                     click: ({event}) => {
                         event.stopPropagation();
                         if(copyStringToClipboard(node.full_path_text)){
@@ -105,7 +106,7 @@ export const CallbacksTabsFileBrowserTreePreMemo = ({ treeRootData, treeAdjMatri
                 },
                 {
                     name: 'Metadata', type: "item",
-                    icon: <FileCopyOutlinedIcon style={{ paddingRight: '5px' }} />,
+                    icon: <FileCopyOutlinedIcon />,
                     click: ({event}) => {
                         event.stopPropagation();
                         if(copyStringToClipboard(JSON.stringify(node?.metadata, null, 2))){
@@ -116,7 +117,7 @@ export const CallbacksTabsFileBrowserTreePreMemo = ({ treeRootData, treeAdjMatri
             ]
         },
       {
-          name: 'List', type: "item", icon: <ListIcon color="warning" style={{ paddingRight: '5px'}} />,
+          name: 'List', type: "item", icon: <ListIcon color="warning" />,
           click: ({event}) => {
               event.stopPropagation();
               taskListing(node, callback_id, callback_display_id);
@@ -214,26 +215,26 @@ export const CallbacksTabsFileBrowserTreePreMemo = ({ treeRootData, treeAdjMatri
                       menu={[
                           ...contextMenuData.current?.options?.map((option, index) => (
                               option.type === 'item' ? (
-                                  <DropdownMenuItem
+                                  <MenuItem
                                       key={option.name}
                                       disabled={option.disabled}
                                       onClick={(event) => handleMenuItemClick(event, option.click)}
                                   >
                                       {option.icon} {option.name}
-                                  </DropdownMenuItem>
+                                  </MenuItem>
                               ) : option.type === 'menu' ? (
                                   <DropdownNestedMenuItem
                                       label={option.name}
                                       disabled={option.disabled}
                                       menu={
                                           option.menuItems.map((menuOption, indx) => (
-                                              <DropdownMenuItem
+                                              <MenuItem
                                                   key={menuOption.name}
                                                   disabled={menuOption.disabled}
                                                   onClick={(event) => handleMenuItemClick(event, menuOption.click)}
                                               >
                                                   {menuOption.icon}{menuOption.name}
-                                              </DropdownMenuItem>
+                                              </MenuItem>
                                           ))
                                       }
                                   />

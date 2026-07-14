@@ -6,9 +6,10 @@ import {Step1SelectOS} from './Step1SelectOS';
 import {Step3SelectCommands} from './Step3SelectCommands';
 import {Step4C2Profiles} from './Step4C2Profiles';
 import {Step5Build} from './Step5Build';
-import Typography from '@mui/material/Typography';
 import { snackActions } from '../../utilities/Snackbar';
 import {MythicPageBody} from "../../MythicComponents/MythicPageBody";
+import {MythicPageHeader} from "../../MythicComponents/MythicPageHeader";
+import {MythicStack} from "../../MythicComponents/MythicLayout";
 
 function getSteps(){
     return ['Select Target OS', 'Configure Payload', 'Select Commands', 'Select C2 Profiles', 'Build']
@@ -74,12 +75,9 @@ export function CreatePayload(props){
 
     return (
         <MythicPageBody>
-        <div className="mythic-create-flow-shell">
-            <div className="mythic-detail-section-header">
-                <Typography variant="h5" className="mythic-detail-section-title">
-                    Payload Creation
-                </Typography>
-                <div className="mythic-create-section-fill">
+        <MythicStack component="div" gap="md" className="mythic-create-flow-shell mythic-min-height-0 mythic-full-height">
+            <MythicPageHeader title="Payload Creation" headerVariant="h5">
+                <div className="mythic-create-section-fill mythic-flex-fill">
                 <Stepper activeStep={activeStep} alternativeLabel>
                     {steps.map((label, index) => (
                         <Step key={label}>
@@ -89,11 +87,11 @@ export function CreatePayload(props){
                     ))}
                 </Stepper>
                 </div>
-            </div>
-            <div className="mythic-create-flow-content mythic-create-section-scroll">
+            </MythicPageHeader>
+            <MythicStack component="div" gap="md" className="mythic-create-flow-content mythic-create-section-scroll mythic-flex-fill mythic-overflow-hidden mythic-min-height-0 mythic-overflow-auto">
                 {getStepContent(activeStep)}
-            </div>
-        </div>
+            </MythicStack>
+        </MythicStack>
         </MythicPageBody>
     );
 } 

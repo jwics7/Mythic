@@ -4,6 +4,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import {MythicStyledTooltip} from '../../MythicComponents/MythicStyledTooltip';
 import PermScanWifiIcon from '@mui/icons-material/PermScanWifi';
 import {MythicStatusChip} from '../../MythicComponents/MythicStatusChip';
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
 
 const getC2Status = (c2) => {
     if(c2.c2profile.is_p2p){
@@ -45,7 +46,7 @@ const getC2Status = (c2) => {
 
 export function PayloadsTableRowC2Status(props){
     return (
-        <div className="mythic-status-stack">
+        <MythicCluster component="div" gap="xs" className="mythic-status-stack">
             {
                 props.payloadc2profiles.map( (c2, i) => {
                     const c2Status = getC2Status(c2);
@@ -62,6 +63,6 @@ export function PayloadsTableRowC2Status(props){
                 })
             }
                 
-        </div>
+        </MythicCluster>
         )
 }

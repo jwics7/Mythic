@@ -1,5 +1,4 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { toLocalTime } from '../../utilities/Time';
 import { meState } from '../../../cache';
@@ -8,30 +7,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import {EventFeedTableEventsActions} from './EventFeedTableEventsActions';
 import {MythicStatusChip} from '../../MythicComponents/MythicStatusChip';
-
-const PREFIX = 'EventFeedTableEvents';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    inline: `${PREFIX}-inline`
-};
-
-const StyledListItem = styled(ListItem)((
-    {
-        theme
-    }
-) => ({
-    [`& .${classes.root}`]: {
-      width: '100%',
-      margin: 0,
-      overflowX: 'auto',
-    },
-
-    [`& .${classes.inline}`]: {
-      display: 'inline',
-      margin: 0,
-    }
-}));
+import styles from './EventFeedTableEvents.module.css';
+import {MythicCluster} from "../../MythicComponents/MythicLayout";
+import {MythicCodeSurface} from "../../MythicComponents/MythicContent";
 
 const GetEventStatusChip = ({message}) => {
     if(message.warning || message.level === "warning"){
@@ -55,21 +33,21 @@ export function EventFeedTableEvents(props){
     const isWarning = props.warning || props.level === "warning";
 
     return (
-        <StyledListItem alignItems="flex-start" className={classes.root}>
-            <ListItemText disableTypography className={classes.root}
+        <ListItem alignItems="flex-start" className={`${styles.root} mythic-full-width`}>
+            <ListItemText disableTypography className={`${styles.content} mythic-full-width`}
                 primary={
                     <React.Fragment>
                     <Typography
                         component="span"
                         variant="caption"
-                        className={classes.inline}
+                        className={styles.inline}
                     >
                         {toLocalTime(props.timestamp, me?.user?.view_utc_time || false)}
                     </Typography>
                       <Typography
                         component="strong"
                         variant="body1"
-                        className={classes.inline}
+                        className={styles.inline}
                       >
                         {props.count > 1 ? " ( " + props.count + " )" : ""}
                       </Typography>
@@ -77,18 +55,18 @@ export function EventFeedTableEvents(props){
                     </React.Fragment>
                 }
                 secondary={
-                <div className="mythic-search-result-inline mythic-search-result-inline-nowrap">
+                <MythicCluster component="div" gap="xs" className="mythic-search-result-inline mythic-search-result-inline-nowrap">
                     <GetEventStatusChip message={props} />
-                    <pre className="mythic-search-result-code">
+                    <MythicCodeSurface density="compact" overflow="visible" tone="snippet">
                         {props.message}
-                    </pre>
-                </div>
+                    </MythicCodeSurface>
+                </MythicCluster>
                 }
             />
             <EventFeedTableEventsActions id={props.id} level={props.level} warning={isWarning}
               onUpdateResolution={props.onUpdateResolution}
               onUpdateLevel={props.onUpdateLevel}
               resolved={props.resolved}/>
-        </StyledListItem>
+        </ListItem>
     );
 }

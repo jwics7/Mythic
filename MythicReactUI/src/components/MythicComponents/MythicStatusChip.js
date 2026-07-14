@@ -1,6 +1,5 @@
 import React from 'react';
 import Chip from '@mui/material/Chip';
-import {alpha, useTheme} from '@mui/material/styles';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
@@ -13,6 +12,7 @@ import TimelapseIcon from '@mui/icons-material/Timelapse';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import BlockIcon from '@mui/icons-material/Block';
 import HideSourceIcon from '@mui/icons-material/HideSource';
+import styles from './MythicStatusChip.module.css';
 
 const statusConfig = {
     success: {palette: "success", icon: <CheckCircleOutlineIcon />, label: "Success"},
@@ -58,53 +58,25 @@ export function MythicStatusChip({
     showIcon = true,
     size = "small",
     variant = "soft",
-    sx = {},
+    className = "",
     ...props
 }) {
-    const theme = useTheme();
     const config = getMythicStatusConfig(status);
-    const paletteColor = theme.palette[config.palette]?.main || theme.palette.text.secondary;
-    const textColor = theme.palette.mode === "dark" ? theme.palette.text.primary : paletteColor;
-    const backgroundColor = variant === "outlined" ? "transparent" : alpha(paletteColor, theme.palette.mode === "dark" ? 0.18 : 0.11);
-    const borderColor = alpha(paletteColor, theme.palette.mode === "dark" ? 0.55 : 0.35);
     const chipIcon = showIcon ? (icon || config.icon) : undefined;
+    const tone = ["success", "error", "warning", "info"].includes(config.palette) ? config.palette : "neutral";
+    const normalizedSize = size === "small" ? "small" : size;
 
     return (
         <Chip
             label={label || config.label}
             icon={chipIcon}
-            size={size}
+            size={normalizedSize === "compact" ? "small" : normalizedSize}
             variant="outlined"
-            sx={{
-                backgroundColor,
-                borderColor,
-                borderRadius: "5px",
-                color: textColor,
-                fontSize: "0.72rem",
-                fontWeight: 700,
-                height: size === "small" ? 24 : 28,
-                letterSpacing: 0,
-                maxWidth: "100%",
-                textDecoration: "none",
-                textTransform: "none",
-                "& .MuiChip-label": {
-                    overflow: "hidden",
-                    px: chipIcon ? 0.75 : 1,
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                },
-                "& .MuiChip-icon": {
-                    color: paletteColor,
-                    fontSize: size === "small" ? "0.95rem" : "1.05rem",
-                    marginLeft: "6px",
-                    marginRight: "-2px",
-                },
-                "&.MuiChip-clickable:hover": {
-                    backgroundColor: alpha(paletteColor, theme.palette.mode === "dark" ? 0.28 : 0.18),
-                    borderColor: paletteColor,
-                },
-                ...sx,
-            }}
+            data-mythic-component="status-chip"
+            data-size={normalizedSize}
+            data-tone={tone}
+            data-variant={variant}
+            className={`${styles.root} mythic-font-size-caption mythic-font-weight-bold mythic-letter-spacing-reset mythic-max-width-full${className ? ` ${className}` : ""}`}
             {...props}
         />
     );

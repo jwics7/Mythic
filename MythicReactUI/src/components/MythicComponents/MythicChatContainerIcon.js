@@ -1,5 +1,6 @@
+import {useMythicTokens} from '../../themes/MythicThemeProvider';
 import React from 'react';
-import {useTheme} from '@mui/material/styles';
+
 import SmartToyTwoToneIcon from '@mui/icons-material/SmartToyTwoTone';
 import {ImageWithAuth} from "../utilities/ImageWithAuth";
 
@@ -18,7 +19,7 @@ const shallowEqualObjects = (left = {}, right = {}) => {
 };
 
 const MythicChatContainerIconComponent = ({containerName, className = "", imgClassName = "", iconProps = defaultIconProps, altText}) => {
-    const theme = useTheme();
+    const theme = useMythicTokens();
     const [imageFailed, setImageFailed] = React.useState(false);
     const iconName = String(containerName || "").trim();
     const imageSrc = iconName ? `/static/${iconName}_${theme.palette.mode}.svg` : "";
